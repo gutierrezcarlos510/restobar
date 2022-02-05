@@ -124,7 +124,7 @@ public class UsuarioImpl extends DbConeccion implements UsuarioS {
 	public Persona obtener(Long cod_per){
 		try {
 			List<Persona> personList = db.query("select * from persona_obtener(?)", new BeanPropertyRowMapper<Persona>(Persona.class),cod_per);
-			return Utils.isNotEmptyList(personList)?personList.get(0):null;
+			return UtilClass.getFirst(personList);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;

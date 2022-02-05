@@ -32,14 +32,19 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	private static final int BEBIDA = 2;
 	@Autowired
 	private UtilDataTableS utilDataTableS;
-	public DataTableResults<Producto> listado(HttpServletRequest request, boolean estado) {
+	public DataTableResults<Producto> listado(HttpServletRequest request, boolean estado, Integer clase) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("producto p");
-			sqlBuilder.setSelect("p.*");
-			sqlBuilder.setWhere("p.estado=:xestado");
+			sqlBuilder.setSelect("p.*,tp.nombre as xtipo,p1.nombre as xpresentacion_unidad, p2.nombre as xpresentacion_caja,case p.tipo_grupo when 1 then 'Bebida' when 2 then 'Insumo' end xgrupo,");
+			sqlBuilder.setSelectConcat("case p.tipo_compra when 1 then 'En unidades' else 'En cajas' end xtipo_compra");
+			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id");
+			sqlBuilder.addJoin("presentacion p1 on p1.id = p.presentacion_unidad_id");
+			sqlBuilder.addJoin("presentacion p2 on p2.id = p.presentacion_caja_id");
+			sqlBuilder.setWhere("p.estado=:xestado " + (clase > 0 ? " and p.tipo_grupo = "+clase : ""));
 			sqlBuilder.addParameter("xestado",estado);
 			return utilDataTableS.list(request, Producto.class, sqlBuilder);
 		} catch (Exception e) {
+			logger.error(e.toString());
 			return null;
 		}
 	}
@@ -52,14 +57,18 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			return null;
 		}
 	}
+	public Long generarCodigo() {
+		return db.queryForObject("select coalesce(max(id),0)+1 from producto", Long.class);
+	}
 	public DataResponse adicionar(Producto p){
 		try {
-			Long id = db.queryForObject("select coalesce(max(id),0)+1 from producto", Long.class);
+			p.setFoto(MyConstant.PRODUCTO_DEFAULT);
+			Long id = generarCodigo();
 			sqlString = "INSERT INTO producto(id, nombre, foto, tipo_id, tipo_grupo, pc_unit, pv_unit, pv_caja, pc_caja, pv_unit_descuento, pv_caja_descuento, inventario_minimo_unidad, inventario_minimo_caja, " +
 					"unidad_por_caja, tipo_compra, presentacion_unidad_id, presentacion_caja_id, estado) " +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true);";
 			boolean save = db.update(sqlString, id, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
-					p.getPvUnit(),p.getPvCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
+					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
 					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId()) > 0;
 			return new DataResponse(save, save ? id : null, Utils.getSuccessFailedAdd(ENTITY, save));
 		} catch (Exception e) {
@@ -69,10 +78,11 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	}
 	public DataResponse modificar(Producto p){
 		try {
+			p.setFoto(MyConstant.PRODUCTO_DEFAULT);
 			sqlString = "update producto set nombre=?, foto=?, tipo_id=?, tipo_grupo=?, pc_unit=?, pv_unit=?, pv_caja=?, pc_caja=?, pv_unit_descuento=?, pv_caja_descuento=?, inventario_minimo_unidad=?, inventario_minimo_caja=?, " +
 					"unidad_por_caja=?, tipo_compra=?, presentacion_unidad_id=?, presentacion_caja_id=? where id=? " ;
 			boolean update = db.update(sqlString, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
-					p.getPvUnit(),p.getPvCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
+					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
 					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getId()) > 0;
 			return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 		} catch (Exception e) {

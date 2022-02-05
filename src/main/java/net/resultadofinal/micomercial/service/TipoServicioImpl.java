@@ -4,6 +4,7 @@ import net.resultadofinal.micomercial.mappers.ServicioMapper;
 import net.resultadofinal.micomercial.mappers.TiposervicioMapper;
 import net.resultadofinal.micomercial.model.TipoServicio;
 import net.resultadofinal.micomercial.util.DbConeccion;
+import net.resultadofinal.micomercial.util.UtilClass;
 import net.resultadofinal.micomercial.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class TipoServicioImpl extends DbConeccion implements TipoServicioS {
 	public List<TipoServicio> listarAgrupadoConServicios(){
 		try {
 			List<TipoServicio> lista = db.query("select * from tiposervicio where est_tipser=true", new TiposervicioMapper());
-			if(Utils.isNotEmptyList(lista)) {
+			if(UtilClass.isNotNullEmpty(lista)) {
 				sqlString = "select * from servicio where cod_tipser=? and est_ser=true";
 				lista.forEach(item->{
 					item.setServicios(db.query(sqlString, new ServicioMapper(),item.getCod_tipser()));

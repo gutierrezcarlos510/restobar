@@ -1,45 +1,47 @@
 package net.resultadofinal.micomercial.util;
 
 import net.resultadofinal.micomercial.model.General;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
 public abstract class Utils {
+	public static DataResponse getResponseDataAdd(String entity,boolean status) {
+		return new DataResponse(status, status ? successAdd(entity) : failedAdd(entity));
+	}
+	public static DataResponse getResponseDataMod(String entity,boolean status) {
+		return new DataResponse(status, status ? successMod(entity) : failedMod(entity));
+	}
+	public static DataResponse getResponseDataEli(String entity,boolean status) {
+		return new DataResponse(status, status ? successEli(entity) : failedEli(entity));
+	}
+	public static DataResponse getResponseDataAct(String entity,boolean status) {
+		return new DataResponse(status, status ? successAct(entity) : failedAct(entity));
+	}
 	public static String getSuccessFailedAdd(String entity,boolean status) {
-		if(status) {
-			return successAdd(entity);
-		}else {
-			return failedAdd(entity);
-		}
+		return status ? successAdd(entity) : failedAdd(entity);
 	}
 	public static String getSuccessFailedMod(String entity,boolean status) {
-		if(status) {
-			return successMod(entity);
-		}else {
-			return failedMod(entity);
-		}
+		return status ? successMod(entity) : failedMod(entity);
 	}
 	public static String getSuccessFailedEli(String entity,boolean status) {
-		if(status) {
-			return successEli(entity);
-		}else {
-			return failedEli(entity);
-		}
+		return status ? successEli(entity) : failedEli(entity);
 	}
 	public static String getSuccessFailedAct(String entity,boolean status) {
-		if(status) {
-			return successAct(entity);
-		}else {
-			return failedAct(entity);
-		}
+		return status ? successAct(entity) : failedAct(entity);
 	}
 	public static String successGet(String entidad) {
-		return "Se realizo con exito la consulta de "+entidad;
+		return "Se realizo con exito la obtencion de "+entidad;
 	}
 	public static String failedGet(String entidad) {
 		return "No se logro realizar la obtencion de "+entidad;
@@ -156,25 +158,7 @@ public abstract class Utils {
 	public static String expiredSession(String controller) {
 		return "No se encontro sesion abierta en:"+controller;
 	}
-	@SuppressWarnings("hiding")
-	public static <T> boolean isNotEmptyList(List<T> lista) {
-		return lista !=null && !lista.isEmpty();
-	}
-	public static String SubirArchivo(MultipartFile archivo,String nombre,String repositorio){
-		if(archivo!=null && archivo.getSize()>0){
-			try {
-  	              archivo.transferTo(new File(repositorio+nombre));
-  	    	   	  return nombre;
-			} catch (IllegalStateException|IOException e) {
-  	    	   		e.printStackTrace();	
-  	    	}
-		}
-		return null;
-	}
-	
-	public static void deleteFile(HttpServletRequest r,String folder,String filename) {			
-		new File(r.getSession().getServletContext().getRealPath("images") + "/"+folder+"/" + filename).delete();	
-	}	
+
 	
 	public static String generarAlias(String nombres,String PriApe,String SegApe){
 		String[]noms=nombres.split(" ");
@@ -208,6 +192,76 @@ public abstract class Utils {
 		param.put("ges_gen", general.getGes_gen());
 		param.put("gestion", general.getGes_gen());
 		param.put("logo", general.getLogtex_gen());
+	}
+	/**
+	 * Obtiene un File en base al request de la sesion, la direccion donde se guardara la imagen y el nombre del archivo con el cual se guardara
+	 * @param direccion
+	 * @param nombreArchivo
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	public static File obtenerArchivo(String direccion,String nombreArchivo) throws MalformedURLException {
+		Path pathImage = getPath(direccion, nombreArchivo);
+		Resource recurso = new UrlResource(pathImage.toUri());
+		if(!recurso.exists() || !recurso.isReadable())
+			return null;//throw new RuntimeException("Error no se puede cargar la imagen: "+ pathImage.toString());
+		return pathImage.toFile();
+	}
+	/**
+	 * Devuelve la extension del archivo enviado
+	 * @param archivo
+	 * @return
+	 */
+	public static String getExtensionFile(MultipartFile archivo) {
+		if(archivo==null)
+			return null;
+		if(archivo.isEmpty())
+			return null;
+		return archivo.getOriginalFilename().substring(archivo.getOriginalFilename().lastIndexOf('.'));
+	}
+	/**
+	 * Devuelve si se subio la imagen en tal directorio y nombre especificado
+	 * @param archivo
+	 * @param repositorio
+	 * @param nombreArchivo
+	 * @return Boolean True= se guardo correctamente, False=no se logro guardar
+	 */
+	public static Boolean SubirArchivo(MultipartFile archivo,String repositorio,String nombreArchivo){
+		if(archivo!=null && archivo.getSize()>0){
+			try {
+				Path rootPath = getPath(repositorio, nombreArchivo);
+				Files.copy(archivo.getInputStream(), rootPath);
+				return true;
+			} catch (IllegalStateException|IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	public static Boolean existeArchivo(MultipartFile archivo) {
+		if(archivo == null)
+			return false;
+		if(archivo.getOriginalFilename().isEmpty())
+			return false;
+		return !archivo.isEmpty();
+	}
+	/**
+	 * Elimina el archivo que se envia si es que se encuentra en el reporsitorio especificado
+	 * @param repositorio
+	 * @param nombreArchivo
+	 * @throws MalformedURLException
+	 */
+	public static void eliminarArchivo(String repositorio,String nombreArchivo) throws MalformedURLException {
+		File direccion=obtenerArchivo(repositorio, nombreArchivo);
+		if(direccion != null && direccion.exists() && direccion.canRead())
+			direccion.delete();
+	}
+
+	public static String generateNameArchiveSalida(Integer codSuc,Long codSalida) {
+		return "salida_"+codSuc+"_"+codSalida+".json";
+	}
+	public static Path getPath(String directory, String filename) {
+		return Paths.get(directory).resolve(filename).toAbsolutePath();
 	}
 }
 

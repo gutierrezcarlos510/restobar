@@ -1,17 +1,57 @@
 package net.resultadofinal.micomercial.model;
 
-import net.resultadofinal.micomercial.util.TableRow;
-
 import java.math.BigDecimal;
 
-public class Producto extends TableRow {
+public class Producto {
 	private Long id;
 	private String nombre, foto;
 	private Integer tipoId, tipoGrupo;
 	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento;
 	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
+	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra;
+
+	public String getXtipoCompra() {
+		return xtipoCompra;
+	}
+
+	public void setXtipoCompra(String xtipoCompra) {
+		this.xtipoCompra = xtipoCompra;
+	}
+
+	public String getXgrupo() {
+		return xgrupo;
+	}
+
+	public void setXgrupo(String xgrupo) {
+		this.xgrupo = xgrupo;
+	}
+
 	private Boolean estado;
+
+	public String getXtipo() {
+		return xtipo;
+	}
+
+	public void setXtipo(String xtipo) {
+		this.xtipo = xtipo;
+	}
+
+	public String getXpresentacionUnidad() {
+		return xpresentacionUnidad;
+	}
+
+	public void setXpresentacionUnidad(String xpresentacionUnidad) {
+		this.xpresentacionUnidad = xpresentacionUnidad;
+	}
+
+	public String getXpresentacionCaja() {
+		return xpresentacionCaja;
+	}
+
+	public void setXpresentacionCaja(String xpresentacionCaja) {
+		this.xpresentacionCaja = xpresentacionCaja;
+	}
 
 	public Long getId() {
 		return id;

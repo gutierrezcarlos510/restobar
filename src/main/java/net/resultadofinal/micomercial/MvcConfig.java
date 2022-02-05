@@ -20,10 +20,9 @@ public class MvcConfig implements WebMvcConfigurer {
         String resourcePath = Paths.get(MyConstant.RUTA_AVATAR).toAbsolutePath().toUri().toString();
         registry.addResourceHandler(MyConstant.URL_PATH_AVATAR + "**").addResourceLocations(resourcePath);
         //Url para logo de empresa
-        resourcePath = Paths.get(MyConstant.RUTA_GENERAL).toAbsolutePath().toUri().toString();
-        registry.addResourceHandler(MyConstant.URL_PATH_GENERAL + "**").addResourceLocations(resourcePath);
-        resourcePath = Paths.get(MyConstant.RUTA_CARRERA).toAbsolutePath().toUri().toString();
-        registry.addResourceHandler(MyConstant.URL_PATH_CARRERA + "**").addResourceLocations(resourcePath);
+        String resourcePathProducto = Paths.get(MyConstant.Archivo.RUTA_PRODUCTO).toAbsolutePath().toUri().toString();
+        registry.addResourceHandler(MyConstant.Archivo.DIR_VIEW_PRODUCTOS + "**").addResourceLocations(resourcePathProducto);
+
     }
 
     /**

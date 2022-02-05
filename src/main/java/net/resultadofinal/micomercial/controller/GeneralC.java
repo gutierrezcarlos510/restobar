@@ -7,6 +7,7 @@ import net.resultadofinal.micomercial.service.MenuS;
 import net.resultadofinal.micomercial.service.SucursalS;
 import net.resultadofinal.micomercial.util.MyConstant;
 import net.resultadofinal.micomercial.util.DataResponse;
+import net.resultadofinal.micomercial.util.UtilClass;
 import net.resultadofinal.micomercial.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class GeneralC {
 				Rol rol = (Rol) sesion.getAttribute(MyConstant.Session.ROL);
 				List<GeneralWrap> misSucursales = (List<GeneralWrap>) sesion.getAttribute(MyConstant.Session.SUCURSALES);
 				List<Menu> menuList = null;
-				if(Utils.isNotEmptyList(rolList)) {
+				if(UtilClass.isNotNullEmpty(rolList)) {
 					rol = rolList.get(0);
 					menuList = menuS.listarPorRol(rol.getCod_rol());
 				}

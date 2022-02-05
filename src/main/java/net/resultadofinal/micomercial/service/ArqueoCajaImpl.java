@@ -337,7 +337,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 			sqlString = "select * from arqueocaja_obtener_resumen(?) ";
 			sqlString += "as (cod_arqcaj bigint,tingresos real, tegresos real,tbanco real,monto_real real,es_activo bool,xusuario varchar,finicio text,ffinal text)";
 			List<ArqueoWrap> lista = db.query(sqlString, new ArqueoWrapMapper(),codArqcaj);
-			return Utils.isNotEmptyList(lista) ? lista.get(0) : null;
+			return UtilClass.getFirst(lista);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;
