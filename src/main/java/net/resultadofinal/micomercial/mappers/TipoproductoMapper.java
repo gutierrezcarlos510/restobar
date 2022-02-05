@@ -11,10 +11,10 @@ public class TipoproductoMapper implements RowMapper<TipoProducto> {
 	@Override
 	public TipoProducto mapRow(ResultSet rs, int rowNum)throws SQLException{
 		TipoProducto tipoproducto = new TipoProducto();
-		tipoproducto.setCod_tippro(rs.getInt("cod_tippro")); 
-		tipoproducto.setNom_tippro(rs.getString("nom_tippro")); 
-		tipoproducto.setDes_tippro(rs.getString("des_tippro")); 
-		tipoproducto.setEst_tippro(rs.getBoolean("est_tippro")); 
+		tipoproducto.setId(rs.getInt("id"));
+		tipoproducto.setNombre(rs.getString("nombre"));
+		tipoproducto.setDescripcion(rs.getString("descripcion"));
+		tipoproducto.setEstado(rs.getBoolean("estado"));
 		return tipoproducto;
 }
 }

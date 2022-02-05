@@ -59,6 +59,31 @@ function alertEliminacion(msgTitle, msgText, callBackSuccess){
         }
     })
 }
+function alertActivacion(msgTitle, msgText, callBackSuccess){
+    swalWithBootstrapButtons.fire({
+        title: msgTitle,
+        text: msgText,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Si, aceptar',
+        cancelButtonText: 'No, cancelar!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callBackSuccess();
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'Se ha cancelado la eliminacion del registro',
+                'error'
+            )
+        }
+    })
+}
 function alertEliminacionHtml(msgTitle, msgText, callBackSuccess){
     swalWithBootstrapButtons.fire({
         title: msgTitle,
@@ -124,4 +149,12 @@ function alertCancelacion(msgTitle, msgText, callBackSuccess){
             callBackSuccess();
         }
     })
+}
+function finishTransaction (resp, callbackSuccess) {
+    if(resp.status) {
+        mostrarMensaje('success', resp.msg);
+        callbackSuccess();
+    } else {
+        modalAlert('Transaccion fallida', resp.msg, 'error');
+    }
 }

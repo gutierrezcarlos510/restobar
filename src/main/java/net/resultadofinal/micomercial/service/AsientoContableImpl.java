@@ -128,7 +128,7 @@ public class AsientoContableImpl extends DbConeccion implements AsientoContableS
 			if(codAsiento <= 0) {
 				throw new RuntimeException("Error en el proceso de registro de asiento contable.");
 			}
-			productoS.registrarProductoPerdido(productos, cantidades, codAsiento);
+//			productoS.registrarProductoPerdido(productos, cantidades, codAsiento);
 			return codAsiento;
 		} catch (Exception e) {
 			throw new RuntimeException("Error al realizar la transaccion contable:"+e.getMessage());

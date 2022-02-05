@@ -224,7 +224,7 @@ public class AsientoContableC {
 	}
 	@RequestMapping("adicionarProductoPerdido")
 	public String adicionarProductoPerdido(HttpServletRequest request,Model model)throws IOException{
-		model.addAttribute("productos",productoS.listar(-1, true, "", 0));
+//		model.addAttribute("productos",productoS.listar(-1, true, "", 0));
 		return "asiento-contable/adicionarProductoPerdido";		
 	}
 	@RequestMapping("guardarProductoPerdido")

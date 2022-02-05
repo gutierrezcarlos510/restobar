@@ -28,7 +28,7 @@ public class ProcesoImpl extends DbConeccion implements ProcesoS {
 	public ProcesoImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
 	}
-	private static final Logger logger = LoggerFactory.getLogger(PrestacionImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProcesoImpl.class);
 	private String sqlString;
 	private static final String ENTITY = "proceso";
 	@Autowired

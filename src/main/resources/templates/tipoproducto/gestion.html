@@ -12,11 +12,11 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" id="nom_tippro" name="nom_tippro" data-fv-notempty="true">
+                                <input type="text" class="form-control" name="nombre" data-fv-notempty="true">
                             </div>
                             <div class="form-group">
                                 <label>Descripcion</label>
-                                <textarea class="form-control" id="des_tippro" name="des_tippro" data-fv-notempty="true"></textarea>
+                                <textarea class="form-control" name="descripcion" data-fv-notempty="true"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -24,9 +24,7 @@
                             <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
         </form>
         <form id="formularioModificar" method="post" action="../tipoproducto/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
@@ -38,14 +36,14 @@
                             <h4 class="modal-title">Modificar Tipo de Producto</h4>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" id="cod_tippro1" name="cod_tippro" />
+                            <input type="hidden" name="id" />
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" id="nom_tippro1" name="nom_tippro" data-fv-notempty="true">
+                                <input type="text" class="form-control" name="nombre" data-fv-notempty="true">
                             </div>
                             <div class="form-group">
                                 <label>Descripcion</label>
-                                <textarea class="form-control" id="des_tippro1" name="des_tippro" data-fv-notempty="true"></textarea>
+                                <textarea class="form-control"  name="descripcion" data-fv-notempty="true"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -53,57 +51,10 @@
                             <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
         </form>
-        <div id="modalEliminar" class="modal fade">
-            <div class="modal-dialog">
-                <form id="formularioEliminar" method="post" action="../tipoproducto/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Eliminar Tipo de Producto</h4>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" id="cod_tippro2" name="cod_tippro" />
-                            <p>Desea eliminar a <label id="tipoLabel"></label></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </form>
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
 
-        <div id="modalActivar" class="modal fade">
-            <div class="modal-dialog">
-                <form id="formularioActivar" method="post" action="../tipoproducto/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Activar Tipo de producto</h4>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" id="cod_tippro3" name="cod_tippro" />
-                            <p>Desea activar a <label id="tipoLabel2"></label></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </form>
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
         <!-- /.modal -->
         <div class="row">
             <div class="col-md-8">
@@ -128,7 +79,7 @@
                     <th class="none">C&oacute;digo</th>
                     <th class="all">Nombre</th>
                     <th class="desktop">Descripci&oacute;n</th>
-                    <th class="all">Acciones</th>
+                    <th class="all">Accion</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -139,7 +90,7 @@
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
     $(document).ready(function() {
-        $('#tabla').dataTable({
+        $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
                 className: "btn-primary btn-block active",
@@ -160,56 +111,50 @@
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
-                "data": "cod_tippro","name":"cod_tippro"
+                "data": "id","name":"id"
             }, {
-                "data": "nom_tippro","name":"nom_tippro"
+                "data": "nombre","name":"nombre"
             }, {
-                "data": "des_tippro","name":"des_tippro"
+                "data": "descripcion","name":"descripcion"
             }, {
-                "data": "cod_tippro","name":"cod_tippro"
+                "data": "id","name":"id"
             }],
             "createdRow": function(row, data, index) {
-                if ($('input[name=estado]:checked').val() == 'true') {
-                    $('td', row).eq(3).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_tippro + '"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_tippro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
-                } else
-                    $('td', row).eq(3).html('<button class="btn btn-primary activar" data-id="' + data.cod_tippro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
+                if (data.estado) {
+                    $('td', row).eq(3).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                } else {
+                    $('td', row).eq(3).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
+                }
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
-                    $('#formularioEliminar')[0].reset();
-                    $.post('../tipoproducto/obtener?cod_tippro=' + $(this).data('id'), function(result) {
-                        if (result.status == true) {
-                            $('#modalEliminar').modal('show');
-                            $('#formularioEliminar').loadJSON(result.data);
-                            $('#tipoLabel').html(result.data.nom_tippro);
-                        } else {
-                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                        }
-                    }, 'json');
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    alertEliminacion('Eliminar tipo de producto', 'Esta seguro de eliminar el tipo de producto '+ obj.nombre, function(){
+                        $.post('../tipoproducto/eliminar',{'id':obj.id }, function(resp){
+                            finishTransaction(resp, function(){
+                                $('.modal').modal('hide');
+                                $('#tabla').dataTable().fnDraw('page');
+                            });
+                        })
+                    })
                 });
                 $('.activar').click(function() {
-                    $('#formularioActivar')[0].reset();
-                    $.post('../tipoproducto/obtener?cod_tippro=' + $(this).data('id'), function(result) {
-                        if (result.status == true) {
-                            $('#modalActivar').modal('show');
-                            $('#formularioActivar').loadJSON(result.data);
-                            $('#tipoLabel2').html(result.data.nom_tippro);
-                        } else {
-                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                        }
-                    }, 'json');
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    alertActivacion('Activar tipo de producto', 'Esta seguro de activar el tipo de producto '+ obj.nombre, function(){
+                        $.post('../tipoproducto/activar',{'id':obj.id }, function(resp){
+                            finishTransaction(resp, function(){
+                                $('.modal').modal('hide');
+                                $('#tabla').dataTable().fnDraw('page');
+                            });
+                        })
+                    })
                 });
                 $('.modificar').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
-                    $.post('../tipoproducto/obtener?cod_tippro=' + $(this).data('id'), function(result) {
-                        if (result.status == true) {
-                            $('#formularioModificar').loadJSON(result.data);
-                            $('#modalModificar').modal('show');
-                        } else {
-                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                        }
-                    }, 'json');
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#modalModificar').modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',
@@ -235,39 +180,12 @@
             alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status == true) {
+                    finishTransaction(result, function(){
                         xform.data('formValidation').resetForm();
                         $('.modal').modal('hide');
                         $('#tabla').dataTable().fnDraw('page');
-                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                    } else {
-                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                    }
+                    });
                 }, 'json');
-            });
-        });
-        $('#formularioEliminar,#formularioActivar').formValidation({
-            locale: 'es_ES'
-        }).on('success.form.fv', function(e) {
-            e.preventDefault();
-            var xform = $(e.target);
-            $.post(xform.attr('action'), xform.serialize(), function(result) {
-                if (result.status == true) {
-                    xform.data('formValidation').resetForm();
-                    $('.modal').modal('hide');
-                    $('#tabla').dataTable().fnDraw('page');
-                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                } else {
-                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                }
-            }, 'json');
-        });
-        $('#nom_tippro').blur(function() {
-            $.post('../tipoproducto/validar?nom_tippro=' + $(this).val(), function(resp) {
-                if (resp.status == true) {
-                    $('#nom').val('');
-                    mostrarMensaje('error', 'Este nombre ya existe!!!');
-                }
             });
         });
     });

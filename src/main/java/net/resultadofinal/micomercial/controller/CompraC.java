@@ -34,8 +34,6 @@ public class CompraC {
 	@Autowired
 	private ProveedorS proveedorS;
 	@Autowired
-	private EmpresaS empresaS;
-	@Autowired
 	private TipoProductoS tipoProductoS;
 	@Autowired
 	private DataSource datasource;
@@ -88,7 +86,6 @@ public class CompraC {
 	@RequestMapping("adicionar")
 	public String adicionar(Model model,Boolean isMobil) {
 		model.addAttribute("proveedores", proveedorS.listAll());
-		model.addAttribute("empresas", empresaS.listAll());
 		model.addAttribute("tipos", tipoProductoS.listAll());
 		model.addAttribute("actual", new Fechas().obtenerFechaActual("dd/MM/yyyy"));
 		if(isMobil!=null && isMobil){

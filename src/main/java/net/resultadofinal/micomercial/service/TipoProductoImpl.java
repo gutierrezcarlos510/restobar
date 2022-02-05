@@ -27,6 +27,7 @@ public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
 	private static final Logger logger = LoggerFactory.getLogger(TipoProductoImpl.class);
 	private static final String ENTITY = "tipo de producto";
 	private String sqlString;
+
 	@Autowired
 	private UtilDataTableS utilDataTableS;
 	public DataTableResults<TipoProducto> listado(HttpServletRequest request, boolean estado) {
@@ -60,7 +61,7 @@ public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
 	@Transactional
 	public DataResponse adicionar(TipoProducto obj){
 		try {
-			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from producto", Integer.class);
+			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from tipo_producto", Integer.class);
 			sqlString = "insert into tipo_producto(id,nombre,descripcion,estado) values(?,?,?,true)";
 			boolean isSave = db.update(sqlString, id, obj.getNombre(), obj.getDescripcion()) > 0;
 			return new DataResponse(isSave, isSave ? id : null, Utils.getSuccessFailedAdd(ENTITY, isSave));
@@ -73,7 +74,7 @@ public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
 	public DataResponse modificar(TipoProducto t){
 		try {
 			sqlString = "update tipo_producto set nombre=?, descripcion=? where id=?";
-			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getDescripcion()) > 0;
+			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getDescripcion(), t.getId()) > 0;
 			return new DataResponse(isUpdate, Utils.getSuccessFailedMod(ENTITY, isUpdate));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));

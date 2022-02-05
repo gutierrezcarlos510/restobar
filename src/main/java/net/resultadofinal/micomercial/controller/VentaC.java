@@ -94,7 +94,7 @@ public class VentaC {
 			return "venta/adicionar-mobil";
 		} else {
 			if(MyConstant.VENTA_CON_SELECT){
-				model.addAttribute("productos",tipoProductoS.listarAgrupadoConProductos());
+//				model.addAttribute("productos",tipoProductoS.listarAgrupadoConProductos());
 				return "venta/adicionar-select";
 			}else{
 				return "venta/adicionar";
