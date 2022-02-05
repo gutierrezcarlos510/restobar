@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../css/AdminLTE.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../../css/blue.css">
+    <link href="../../css/formValidation.min.css" rel="stylesheet">
+    <!-- 	notificaciones -->
+    <link href="../../css/pnotify.css" media="all" rel="stylesheet" type="text/css" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../../icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../icon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../icon/favicon-16x16.png">
+    <link rel="manifest" href="../../icon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <style type="text/css">
+        a {
+            text-decoration: none;
+            color: #00c6ff;
+        }
+        
+        h1 {
+            font: 4em normal Arial, Helvetica, sans-serif;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+        
+        h1 small {
+            font: 0.2em normal Arial, Helvetica, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            line-height: 5em;
+            display: block;
+        }
+        
+        h2 {
+            font-weight: 700;
+            color: #bbb;
+            font-size: 20px;
+        }
+        
+        h2,
+        p {
+            margin-bottom: 10px;
+        }
+        
+        @font-face {
+            font-family: 'BebasNeueRegular';
+            src: url('../../fonts/BebasNeue-webfont.eot');
+            src: url('../../fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'), url('../../fonts/BebasNeue-webfont.woff') format('woff'), url('../../fonts/BebasNeue-webfont.ttf') format('truetype'), url('../../fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        .container {
+            width: 960px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .clock {
+            width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            solid #333;
+            color: #000;
+        }
+        
+        #Date {
+            font-family: 'BebasNeueRegular', Arial, Helvetica, sans-serif;
+            font-size: 36px;
+            text-align: center;
+            text-shadow: 0 0 5px #00c6ff;
+        }
+        
+        #titulo {
+            font-weight: bolder;
+            text-decoration: underline;
+            font-family: 'BebasNeueRegular', Arial, Helvetica, sans-serif;
+            font-size: 60px;
+            text-align: center;
+            text-shadow: 0 0 5px #00c6ff;
+        }
+        
+        #subtitulo {
+            text-decoration: underline;
+            font-family: 'BebasNeueRegular', Arial, Helvetica, sans-serif;
+            font-size: 48px;
+            text-align: center;
+            text-shadow: 0 0 5px #00c6ff;
+        }
+        
+        ul {
+            width: 800px;
+            margin: 0 auto;
+            padding: 0px;
+            list-style: none;
+            text-align: center;
+        }
+        
+        ul li {
+            display: inline;
+            font-size: 10em;
+            text-align: center;
+            font-family: 'BebasNeueRegular', Arial, Helvetica, sans-serif;
+            text-shadow: 0 0 50px #00c6ff;
+        }
+        
+        #point {
+            position: relative;
+            -moz-animation: mymove 1s ease infinite;
+            -webkit-animation: mymove 1s ease infinite;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        @-webkit-keyframes mymove {
+            0% {
+                opacity: 1.0;
+                text-shadow: 0 0 20px #00c6ff;
+            }
+            50% {
+                opacity: 0;
+                text-shadow: none;
+            }
+            100% {
+                opacity: 1.0;
+                text-shadow: 0 0 20px #00c6ff;
+            }
+        }
+        
+        @-moz-keyframes mymove {
+            0% {
+                opacity: 1.0;
+                text-shadow: 0 0 20px #00c6ff;
+            }
+            50% {
+                opacity: 0;
+                text-shadow: none;
+            }
+            100% {
+                opacity: 1.0;
+                text-shadow: 0 0 20px #00c6ff;
+            }
+        }
+    </style>
+</head>
+
+<body class="hold-transition login-page">
+    <div class="pull-left text-red">
+        <h1 title="Volver atras">
+            <a id="principal" href="#" data-href="../principal/login">
+                <span class="fa fa-reply-all"></span> <button class="btn btn-danger active">volver</button></a>
+        </h1>
+    </div>
+    <form id="formulario" method="post" action="../inscripcion/marcar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <div class="container">
+
+            <div class="clock">
+                <div id="titulo">INSTITUTO ACADEMICO RESULTADO FINAL</div>
+                <div align="center">
+                    <img src="../../img/resfin.png" alt="User Image" width="250px" class="img-thumbnail">
+                </div>
+                <div id="subtitulo">Registro de Asistencia</div>
+                <div id="Date"></div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="form-group has-feedback">
+                            <input type="password" id="codigo" name="codigo" class="form-control" placeholder="ingresar codigo de biometrico" data-fv-notempty="true">
+                            <span class="fa fa-user-md form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <ul>
+                    <li id="hours"></li>
+                    <li id="point">:</li>
+                    <li id="min"></li>
+                    <li id="point">:</li>
+                    <li id="sec"></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+    <div id="modalAprobado" class="modal fade">
+        <div class="modal-dialog" style="width: 35%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><b><span class="fa fa-hospital-o"></span> Instituto Resultado Final</b><br> Registro Existoso!!!</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 text-center">
+                            <img id="imagen" alt="Imagen del usuario registrado" src="../../img/user.png" class="img-rounded" width="150px">
+                        </div>
+                        <div class="col-md-7">
+                            <h2 class="text-black">Usuario</h2>
+                            <p id="userLabel" style="font-weight: bolder;">Carlos Franz Gutierrez Gutierrez</p>
+                            <h2 class="text-black">Plan</h2>
+                            <p id="planLabel" style="font-weight: bolder;">Carlos Franz Gutierrez Gutierrez</p>
+                            <h2 class="text-black">Hora de Registro</h2>
+                            <p id="horaLabel" style="font-weight: bolder;">10:05:36 AM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal"> Aceptar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div id="modalReprobado" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><b><span class="fa fa-hospital-o"></span> Instituto Resultado Final</b><br> Registro Erroneo!!!</h4>
+                </div>
+                <div class="modal-body">
+                    <label><span class="fa fa-user-times"></span> Por favor intentelo otra vez.</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal"> Aceptar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="../../js/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="../../js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../js/icheck.js"></script>
+    <script src="../../js/formValidation.js"></script>
+    <script src="../../js/framework/bootstrap.min.js"></script>
+    <script src="../../js/es_ES.js"></script>
+    <!-- 	notificaciones -->
+    <script type="text/javascript" src="../../js/pnotify.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#principal').click(function() {
+                location.href = $(this).data('href');
+            });
+            // Creamos 2 variables con los nombres de los meses.
+            var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+            var dayNames = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"]
+
+            // Cramos un dato newDate()
+            var newDate = new Date();
+            // Extraemos la hora del objecto
+            newDate.setDate(newDate.getDate());
+            // Sacamos dia, mes y anio
+            $('#Date').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
+
+            setInterval(function() {
+                // Creamos los newDate() y extraemos los segundos
+                var seconds = new Date().getSeconds();
+
+                $("#sec").html((seconds < 10 ? "0" : "") + seconds);
+            }, 1000);
+
+            setInterval(function() {
+                // Creamos un newDate() y extraemos los minutos
+                var minutes = new Date().getMinutes();
+
+                $("#min").html((minutes < 10 ? "0" : "") + minutes);
+            }, 1000);
+
+            setInterval(function() {
+                //Creamos un newDate() y extraemos la hora
+                var hours = new Date().getHours();
+                // Add a leading zero to the hours value
+                $("#hours").html((hours < 10 ? "0" : "") + hours);
+            }, 1000);
+
+            $('#formulario').formValidation({
+                locale: 'es_ES'
+            }).on('success.form.fv', function(e) {
+                e.preventDefault();
+                var xform = $(e.target);
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
+                    if (result.status == true) {
+                        xform.data('formValidation').resetForm();
+                        $('#userLabel').html(result.estudiante.persona.nom_per + ' ' + result.estudiante.persona.priape_per + ' ' + result.estudiante.persona.segape_per);
+                        $('#horaLabel').html(result.hora);
+                        $('#planLabel').html(result.plan.sig_pla + ' ' + result.plan.nom_pla);
+                        $('#imagen').attr('src', '../../fotos/' + result.estudiante.persona.fot_per);
+                        $('#modalAprobado').modal('show');
+                    } else {
+                        $('#modalReprobado').modal('show');
+                    }
+                    $('#codigo').val('');
+                }, 'json');
+            });
+            $('.tooltip').tooltip();
+            $('button').tooltip({
+                animated: 'fade',
+                placement: 'bottom',
+            });
+        });
+    </script>
+</body>
+
+</html>

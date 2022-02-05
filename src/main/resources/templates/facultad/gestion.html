@@ -1,0 +1,311 @@
+<script src="../../js/fileinput.js"></script>
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../facultad/guardar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Facultad</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Institucion</label>
+                                <select id="cod_ins" name="cod_ins" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				<option value=""></option>
+                                    <option th:each="i : ${instituciones}" th:value="${i.cod_ins}" th:text="${i.nom_ins}"></option>
+                  			</select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control text-uppercase" id="nom_fac1" name="nom_fac" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Sigla</label>
+                                <input type="text" class="form-control text-uppercase" id="sig_fac" name="sig_fac" data-fv-notempty="true">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../facultad/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Facultad</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_fac2" name="cod_fac" />
+                            <div class="form-group">
+                                <label>Institucion</label>
+                                <select id="cod_ins2" name="cod_ins" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				<option value=""></option>
+                                <option th:each="i : ${instituciones}" th:value="${i.cod_ins}" th:text="${i.nom_ins}"></option>
+                  			</select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control text-uppercase" id="nom_fac2" name="nom_fac" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Sigla</label>
+                                <input type="text" class="form-control text-uppercase" id="sig_fac2" name="sig_fac" data-fv-notempty="true">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <div id="modalEliminar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioEliminar" method="post" action="../facultad/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Eliminar Facultad</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_fac3" name="cod_fac" />
+                            <p>Desea eliminar a <label id="facultadLabel"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div id="modalActivar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioActivar" method="post" action="../facultad/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Activar Tipo de producto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_fac4" name="cod_fac" />
+                            <p>Desea activar a <label id="facultadLabel2"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Facultades </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input
+                            type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                    </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input
+                        type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="none">Codigo</th>
+                    <th class="none">Foto</th>
+                    <th class="desktop">Institucion</th>
+                    <th class="all">Facultad</th>
+                    <th class="desktop">Sigla</th>
+                    <th class="all" width="100px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tablaFacultad = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#cod_ins').val('').trigger('chosen:updated');
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../facultad/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columns": [{
+                "data": "cod_fac"
+            }, {
+                "data": "fot_fac"
+            }, {
+                "data": "nom_ins"
+            }, {
+                "data": "nom_fac"
+            }, {
+                "data": "sig_fac"
+            }, {
+                "data": "cod_fac"
+            }],
+            "createdRow": function(row, data, index) {
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    let buttons = '<button class="btn btn-primary modificar" title="Modificar"><i class="fa fa-edit"></i><br>editar</button>';
+                    buttons += '<button class="btn btn-danger eliminar" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+                    $('td', row).eq(5).html('<div class="btn-group-xs">' + buttons + '</div>');
+                } else
+                    $('td', row).eq(5).html('<button class="btn btn-primary activar" data-id="' + data.cod_fac + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i>  </button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    let obj = tablaFacultad.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de facultad", ("Cod. facultad: "+ obj.cod_fac+", Facultad: "+obj.nom_fac), function(){
+        				jQuery.post('../facultad/eliminar?cod_fac='+obj.cod_fac, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.activar').click(function() {
+                    let obj = tablaFacultad.row($(this).closest('tr')).data();
+                	alertEliminacion("Activacion de facultad", ("Cod. facultad: "+ obj.cod_fac+", Facultad: "+obj.nom_fac), function(){
+        				jQuery.post('../facultad/activar?cod_fac='+obj.cod_fac, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    let obj = tablaFacultad.row($(this).closest('tr')).data();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#cod_ins2').trigger('chosen:updated');
+                    $('#modalModificar').modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            let xform = $(e.target);
+            let formData = new FormData(document.getElementById("formulario"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+                $('.bubblingG').hide();
+            });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            let xform = $(e.target);
+            let formData = new FormData(document.getElementById("formularioModificar"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            });
+            });
+        });
+        $('#nom_fac1').blur(function() {
+            $.post('../facultad/validar?nom_fac=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#nom_fac1').val('');
+                    mostrarMensaje('error', 'Este nombre ya existe!!!');
+                }
+            });
+        });
+    });
+</script>
+</section>

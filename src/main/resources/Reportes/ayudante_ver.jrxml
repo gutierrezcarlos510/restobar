@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ayudante_ver" pageWidth="297" pageHeight="421" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="20" uuid="a7f33257-b132-4302-ad24-b76018dd9090">
+	<property name="ireport.zoom" value="3.797498335832415"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="56"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="des_gen" class="java.lang.String"/>
+	<parameter name="dir_gen" class="java.lang.String"/>
+	<parameter name="tel_gen" class="java.lang.String"/>
+	<parameter name="lug_gen" class="java.lang.String"/>
+	<parameter name="path" class="java.lang.String"/>
+	<parameter name="gestion" class="java.lang.Integer"/>
+	<parameter name="logsintex_gen" class="java.lang.String"/>
+	<parameter name="cod_per" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cod_ayu" class="java.lang.Long"/>
+	<parameter name="materias" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from persona_obtener($P{cod_ayu} );]]>
+	</queryString>
+	<field name="ci_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ci_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="ci_per"/>
+	</field>
+	<field name="nom_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_per"/>
+	</field>
+	<field name="priape_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="priape_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="priape_per"/>
+	</field>
+	<field name="segape_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="segape_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="segape_per"/>
+	</field>
+	<field name="tel_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tel_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="tel_per"/>
+	</field>
+	<field name="dir_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dir_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="dir_per"/>
+	</field>
+	<field name="ema_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ema_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="ema_per"/>
+	</field>
+	<field name="fot_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fot_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="fot_per"/>
+	</field>
+	<field name="est_per" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="est_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="est_per"/>
+	</field>
+	<field name="sex_per" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="sex_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="sex_per"/>
+		<fieldDescription><![CDATA[genero masculino=true, femenino=false]]></fieldDescription>
+	</field>
+	<field name="cod_per" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_per"/>
+	</field>
+	<field name="codbio_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codbio_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="codbio_per"/>
+	</field>
+	<field name="codesc_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codesc_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="codesc_per"/>
+		<fieldDescription><![CDATA[codigo escanner]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<textField>
+				<reportElement x="57" y="22" width="180" height="11" forecolor="#000000" uuid="788e6766-c7d2-45aa-846f-6d9d4aba41d5"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="44" width="180" height="11" forecolor="#000000" uuid="67652c28-868d-4793-8de5-02243f12d17a"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gestion "+$P{gestion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="0" width="180" height="11" forecolor="#000000" uuid="ea14018b-161f-4849-bef7-53f1d7db3f6a"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="57" height="55" forecolor="#000000" uuid="5b3185ab-2e7a-4b1d-99be-e7f1c4d58f3a"/>
+				<imageExpression><![CDATA[$P{path}+"/"+$P{logsintex_gen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="57" y="33" width="180" height="11" forecolor="#000000" uuid="a26af520-4c2a-4e40-92c8-b10df17c92db"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="11" width="180" height="11" forecolor="#000000" uuid="79786938-8cdd-4c74-a44c-24f647100557"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="55" width="257" height="20" forecolor="#000000" uuid="7d3f7ee9-ff4b-4374-9002-70e91f29f594"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Personal]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="46" height="12" forecolor="#000000" uuid="02c9336b-dc9a-4f2d-929e-b1684e4b9b1e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ayudante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="0" width="211" height="12" forecolor="#000000" uuid="e50567e4-eed2-4e2f-8240-bfc7c7861c01"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_per}+" "+$F{priape_per}+" "+$F{segape_per}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="12" width="46" height="12" forecolor="#000000" uuid="95b28a40-f559-4d1a-85bd-4b8598001251"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel./Cel.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="12" width="117" height="12" forecolor="#000000" uuid="afaa5a9f-b848-41ad-9e8f-01aa3273d0fe"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tel_per}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="24" width="46" height="12" forecolor="#000000" uuid="f64d2e99-9a2d-4b62-a48c-a46bdda9a177"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="24" width="211" height="12" forecolor="#000000" uuid="77c243b3-4180-46f8-b87e-6d39ed5aaa99"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dir_per}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="163" y="12" width="31" height="12" forecolor="#000000" uuid="8a858327-e5b9-4b62-8840-b759cf4ac258"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cod.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="36" width="46" height="12" forecolor="#000000" uuid="9bd1e69e-b468-4949-a0aa-124ffc647381"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Materias:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="46" y="36" width="211" height="24" forecolor="#000000" uuid="0565eed4-e317-441e-af97-c2be23939f1b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{materias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="194" y="12" width="63" height="12" forecolor="#000000" uuid="78e78625-efcf-48cb-ae94-ad72b119189f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cod_ayu}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,673 @@
+<!-- Default box -->
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div id="modalAdicionar" class="modal fade">
+            <div class="modal-dialog" style="width: 75%">
+                <form id="formulario" method="post" action="../inscripcion/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Inscripcion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Plan</label>
+                                        <select id="cod_pla" name="cod_pla" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      				<option value=""></option>
+                      				#foreach($p in $planes)
+                      				<option value="$p.cod_pla">$p.sig_pla $p.nom_pla</option>
+                      				#end
+                      			</select>
+                                    </div>
+                                    <label>Estudiante</label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <select id="estudiante" name="cod_est" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      					<option value=""></option>
+                      					#foreach($e in $estudiantes)
+                      					<option value="$e.cod_est">$e.nom_per $e.priape_per $!{e.segape_per}</option>
+                      					#end
+                      				</select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-success" title="Adicionar Estudiante" id="adicionarEstudiante"> <span class="glyphicon glyphicon-plus-sign"></span> </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Fecha</label>
+                                                <input type="text" class="form-control" id="fec_ins" name="fec_ins" value="$actual" data-fv-date data-fv-date-format="DD/MM/YYYY" data-fv-date-message="Formato DD/MM/YYYY" data-fv-date-separator="/" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Gestion</label>
+                                                <select id="ges_gen" name="ges_gen" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      					<option value=""></option>
+                      					#foreach($g in $gestiones)
+                      					<option value="$g.ges_gen">$g.ges_gen</option>
+                      					#end
+                      				</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Total</label>
+                                                <input type="text" id="tot_ins" name="tot_ins" class="form-control" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Saldo a favor</label>
+                                                <input type="text" class="form-control" id="sal_ins" name="sal_ins" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Saldo a deber</label>
+                                                <input type="text" class="form-control" id="saldeb_ins" name="saldeb_ins" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="font-size: 18px;">
+                                    <h2 align="center">Detalle del plan</h2>
+                                    <dl class="dl-horizontal">
+                                        <dt>Plan</dt>
+                                        <dd id="sig_plaLabel"></dd>
+                                        <dt>Descripcion</dt>
+                                        <dd id="obs_plaLabel"></dd>
+                                        <dt>Fecha</dt>
+                                        <dd id="fec_plaLabel"></dd>
+                                        <dt>Horas</dt>
+                                        <dd id="hor_plaLabel"></dd>
+                                        <dt>Monto</dt>
+                                        <dd id="mon_plaLabel"></dd>
+                                        <dt>Tipo de plan</dt>
+                                        <dd id="tip_plaLabel"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Aceptar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <form id="formularioEstudiante" method="post" action="../estudiante/guardar" enctype="multiform/data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalEstudiante" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Estudiante</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="codigo" name="cod_per">
+                            <input type="hidden" id="tel_per" name="tel_per" value="">
+                            <input type="hidden" id="dir_per" name="dir_per" value="">
+                            <input type="hidden" id="ema_per1" name="ema_per" value="">
+                            <input type="hidden" id="foto1" name="foto1" value="">
+                            <input type="hidden" id="cod_car" name="carreras" value="0">
+                            <input type="hidden" id="tut_est" name="tut_est" value="">
+                            <input type="hidden" id="teltut_est" name="teltut_est" value="">
+                            <div class="form-group">
+                                <label>C.I.</label>
+                                <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="nom_per" name="nom_per" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Primer Apellido</label>
+                                <input type="text" class="form-control" id="priape_per" name="priape_per" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Segundo Apellido</label>
+                                <input type="text" class="form-control" id="segape_per" name="segape_per">
+                            </div>
+                            <div class="form-group">
+                                <label>Genero</label>
+                                <div class="radio">
+                                    <label for="masculino1"><input type="radio" id="masculino1" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                    <label for="femenino1"><input type="radio"  id="femenino1" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="button" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <div id="modalAdicionarConfirmacion" class="modal fade">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"><span class="fa fa-chevron-circle-right"></span> Mensaje de Confirmacion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>Esta seguro de realizar esta transaccion?</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-ok-sign"></i> Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div id="modalModificar" class="modal fade">
+            <div class="modal-dialog" style="width: 75%">
+                <form id="formularioModificar" method="post" action="../inscripcion/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Inscripcion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_ins">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Plan</label>
+                                        <select id="cod_pla2" name="cod_pla" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      				<option value=""></option>
+                      				#foreach($p in $planes)
+                      				<option value="$p.cod_pla">$p.sig_pla $p.nom_pla</option>
+                      				#end
+                      			</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estudiante</label>
+                                        <select id="cod_est2" name="cod_est" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      				<option value=""></option>
+                      				#foreach($e in $estudiantes)
+                      				<option value="$e.cod_est">$e.nom_per $e.priape_per $!{e.segape_per}</option>
+                      				#end
+                      			</select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Fecha</label>
+                                                <input type="text" class="form-control" id="fec_ins2" name="fec_ins" value="$actual" data-fv-date data-fv-date-format="DD/MM/YYYY" data-fv-date-message="Formato DD/MM/YYYY" data-fv-date-separator="/" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Gestion</label>
+                                                <select id="ges_gen2" name="ges_gen" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      					<option value=""></option>
+                      					#foreach($g in $gestiones)
+                      					<option value="$g.ges_gen" #if($g.ges_gen==$gestion) selected #end>$g.ges_gen</option>
+                      					#end
+                      				</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Total</label>
+                                                <input type="text" id="tot_ins2" name="tot_ins" class="form-control" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Saldo a favor</label>
+                                                <input type="text" class="form-control" id="sal_ins2" name="sal_ins" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="font-size: 18px;">
+                                    <h2 align="center">Detalle del plan</h2>
+                                    <dl class="dl-horizontal">
+                                        <dt>Plan</dt>
+                                        <dd id="sig_plaLabel2"></dd>
+                                        <dt>Descripcion</dt>
+                                        <dd id="obs_plaLabel2"></dd>
+                                        <dt>Fecha</dt>
+                                        <dd id="fec_plaLabel2"></dd>
+                                        <dt>Horas</dt>
+                                        <dd id="hor_plaLabel2"></dd>
+                                        <dt>Monto</dt>
+                                        <dd id="mon_plaLabel2"></dd>
+                                        <dt>Tipo de plan</dt>
+                                        <dd id="tip_plaLabel2"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Aceptar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div id="modalPagar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioPagar" method="post" action="../inscripcion/pagar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Pagar Deuda</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_ins" name="cod_ins">
+                            <div class="form-group">
+                                <label>Estudiante</label>
+                                <input type="text" id="estudiante" name="estudiante" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Plan</label>
+                                <input type="text" id="plan" name="plan" class="form-control" readonly>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Total</label>
+                                        <input type="text" id="tot_ins3" name="tot_ins" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Saldo a favor</label>
+                                        <input type="text" class="form-control" id="saldo3" name="saldo3" readonly>
+                                        <input type="hidden" id="sal_ins3" name="sal_ins">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Saldo a deber</label>
+                                        <input type="text" class="form-control" id="saldeb_ins3" name="saldeb_ins" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Pagar</label>
+                                <input type="text" class="form-control" id="pag_ins3" name="pag_ins" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Aceptar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div id="modalEliminar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioEliminar" method="post" action="../inscripcion/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Anular Inscripcion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_ins" name="cod_ins" />
+                            <p>Desea eliminar a <label id="InscripcionLabel"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+
+        <div class="row">
+            <div class="col-md-5">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Inscripciones </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-xs-5 control-label">Fecha Inicio</label>
+                <div class="col-xs-7">
+                    <input type="text" class="form-control input-sm fecha" id="fini" name="fini">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-xs-5 control-label">Fecha Fin</label>
+                <div class="col-xs-7">
+                    <input type="text" class="form-control input-sm fecha" id="ffin" name="ffin">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pull-right btn-group">
+                    <label class="btn btn-primary active usuarioRadio"> 
+							<input type="radio" name="usuario" value="true"  data-toggle="tooltip" data-placement="top" title="Inscripciones Propias" checked> C. Propias
+						</label>
+                    <label class="btn btn-success usuarioRadio" data-toggle="tooltip" data-placement="top" title="Inscripciones generales"> 
+							<input type="radio" name="usuario" value="false"> C. Generales
+						</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pull-right btn-group">
+                    <label class="btn btn-primary active estadoRadio"> 
+							<input type="radio" name="estado" value="true"  data-toggle="tooltip" data-placement="top" title="Mostrar Activos" checked> Activos
+						</label>
+                    <label class="btn btn-danger estadoRadio" data-toggle="tooltip" data-placement="top" title="Mostrar Inactivos"> 
+							<input type="radio" name="estado" value="false"> Inactivos
+						</label>
+                </div>
+            </div>
+        </div><br>
+        <table id="tabla" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Cod.</th>
+                    <th>Fecha</th>
+                    <th>Plan</th>
+                    <th>Estudiante</th>
+                    <th>Usuario</th>
+                    <th>Total</th>
+                    <th>Deuda</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+    $(document).ready(function() {
+        $('select').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $(".fecha").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $('button').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+        });
+        $('#tabla').dataTable({
+            dom: "<'row'<'col-sm-3'f><'col-sm-2'B><'col-sm-2'l><'col-sm-5'i>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [{
+                text: '<span class="fa fa-plus-circle"></span> Adicionar <span class="fa fa-plus-circle"></span>',
+                className: "btn-primary active",
+                action: function(e, dt, node, config) {
+                    $('#cod_pla').val('').trigger('chosen:updated');
+                    $('#estudiante').val('').trigger('chosen:updated');
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ordering": false,
+            "oLanguage": {
+                "sUrl": "../../js/Spanish.lang"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../inscripcion/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                    d.fini = $('#fini').val();
+                    d.ffin = $('#ffin').val();
+                    d.usuario = $('input[name=usuario]:checked').val();
+                }
+            },
+            "columns": [{
+                "data": "cod_ins"
+            }, {
+                "data": "fecha"
+            }, {
+                "data": "nom_pla"
+            }, {
+                "data": "estudiante"
+            }, {
+                "data": "usuario"
+            }, {
+                "data": "tot_ins"
+            }, {
+                "data": "sal_ins"
+            }, {
+                "data": "cod_ins"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(2).html(data.sig_pla + ' - ' + data.nom_pla);
+                $('td', row).eq(6).html(data.tot_ins - data.sal_ins);
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    var btnPagar = '',
+                        btnModificar = '',
+                        btnEliminar = '';
+                    btnModificar = '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_ins + '"><i class="glyphicon glyphicon-edit"></i> </button>';
+                    btnEliminar = '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_ins + '"><i class="glyphicon glyphicon-remove"></i> </button>';
+                    if ((data.tot_ins - data.sal_ins) > 0)
+                        btnPagar = '<button class="btn btn-warning pagar"  data-toggle="tooltip" data-placement="top" title="Pagar" data-id="' + data.cod_ins + '"><i class="fa fa-dollar"></i> </button>';
+                    $('td', row).eq(7).html('<div class="btn-group">' + btnPagar + '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.cod_ins + '"><i class="glyphicon glyphicon-print"></i> </button>' + btnModificar + btnEliminar + '</div>');
+                } else
+                    $('td', row).eq(7).html('<button class="btn btn-success imprimir" data-id="' + data.cod_ins + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i>  </button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    $('#formularioEliminar')[0].reset();
+                    $.post('../inscripcion/obtener?cod_ins=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalEliminar').modal('show');
+                            $('#formularioEliminar').loadJSON(result.data);
+                            $('#InscripcionLabel').html('la Inscripcion #' + result.data.cod_ins);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $.post('../inscripcion/obtener?cod_ins=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalModificar').modal('show');
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#fec_ins2').val(result.data.fecha);
+                            $('#cod_pla2').val(result.data.cod_pla).trigger('chosen:updated');
+                            $('#cod_est2').val(result.data.cod_est).trigger('chosen:updated');
+                            $('#ges_gen2').val(result.data.ges_gen).trigger('chosen:updated');
+                            $('#sig_plaLabel2').html(result.data.plan.sig_pla + ' ' + result.data.plan.nom_pla);
+                            $('#obs_plaLabel2').html(result.data.plan.obs_pla);
+                            $('#fec_plaLabel2').html(result.data.plan.fechai + ' - ' + result.data.plan.fechaf);
+                            $('#hor_plaLabel2').html(result.data.plan.hor_pla + ' horas');
+                            $('#mon_plaLabel2').html(result.data.plan.mon_pla + ' bs, (descuento ' + result.data.plan.des_pla + ')');
+                            $('#tot_ins2').val(result.data.plan.mon_pla);
+                            $('#saldeb_ins2').val(result.data.plan.mon_pla - result.data.sal_ins);
+                            if (result.data.plan.tip_pla == 1)
+                                $('#tip_plaLabel2').html('simple');
+                            else
+                                $('#tip_plaLabel2').html('combo');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.pagar').click(function() {
+                    $('#formularioPagar')[0].reset();
+                    $('#formularioPagar').data('formValidation').resetForm();
+                    $.post('../inscripcion/obtener?cod_ins=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalPagar').modal('show');
+                            $('#formularioPagar').loadJSON(result.data);
+                            $('#plan').val(result.data.plan.sig_pla + ' ' + result.data.plan.nom_pla);
+                            $('#estudiante').val(result.data.estudiante.persona.nom_per + ' ' + result.data.estudiante.persona.priape_per + ' ' + result.data.estudiante.persona.segape_per);
+                            $('#tot_ins3').val(result.data.tot_ins);
+                            $('#saldo3').val(result.data.sal_ins);
+                            $('#saldeb_ins3').val(result.data.tot_ins - result.data.sal_ins);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../inscripcion/ver?cod_ins=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('.usuarioRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+
+        function isDate(cad) {
+            var d = new Date(cad.substring(3, 5) + '/' + cad.substring(0, 2) + '/' + cad.substring(6, 10));
+            return !isNaN(d.valueOf());
+        }
+        $('#fini').keyup(function() {
+            if (isDate($('#fini').val()))
+                $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#ffin').keyup(function() {
+            if (isDate($('#ffin').val()))
+                $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar,#formularioEliminar,#formularioPagar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+        $('#sal_ins').keyup(function() {
+            if ($('#tot_ins').val() != '' && $(this).val() != '')
+                $('#saldeb_ins').val($('#tot_ins').val() - $(this).val());
+            else
+                $('#saldeb_ins').val('');
+        });
+        $('#pag_ins3').keyup(function() {
+            var saldo = $(this).val();
+            if ($('#pag_ins3').val() == '') saldo = 0;
+            $('#saldeb_ins3').val($('#tot_ins3').val() - $('#sal_ins3').val() - saldo);
+            $('#saldo3').val(parseFloat($('#sal_ins3').val()) + parseFloat(saldo));
+        });
+        $('#cod_pla').chosen().change(function() {
+            $.post('../plan/obtener?cod_pla=' + $(this).val(), function(resp) {
+                if (resp.status) {
+                    $('#sig_plaLabel').html(resp.data.sig_pla + ' ' + resp.data.nom_pla);
+                    $('#obs_plaLabel').html(resp.data.obs_pla);
+                    $('#fec_plaLabel').html(resp.data.fechai + ' - ' + resp.data.fechaf);
+                    $('#hor_plaLabel').html(resp.data.hor_pla + ' horas');
+                    $('#mon_plaLabel').html(resp.data.mon_pla + ' bs, (descuento ' + resp.data.des_pla + ')');
+                    $('#tot_ins').val(resp.data.mon_pla);
+                    if (resp.data.tip_pla == 1)
+                        $('#tip_plaLabel').html('simple');
+                    else
+                        $('#tip_plaLabel').html('combo');
+                }
+            });
+        });
+
+        $('#adicionarEstudiante').click(function() {
+            $('#formularioEstudiante').data('formValidation').resetForm();
+            $('#formularioEstudiante')[0].reset();
+            $('#codigo').val(0);
+            $('#modalEstudiante').modal('show');
+        });
+        $('#btnAdicionarConfirmacion').click(function() {
+            $('#modalAdicionarConfirmacion').modal('show');
+        });
+        $('#formularioEstudiante').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            $('.bubblingG').show();
+            var xform = $(e.target);
+            var formData = new FormData(document.getElementById("formularioEstudiante"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('#estudiante').append($('<option>', {
+                        value: result.cod_est,
+                        text: result.estudiante
+                    }));
+                    $('#estudiante option[value=' + result.cod_est + ']').attr('selected', 'selected');
+                    $('#estudiante').trigger('chosen:updated');
+                    $('.modal').modal('hide');
+
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            });
+        });
+    });
+</script>

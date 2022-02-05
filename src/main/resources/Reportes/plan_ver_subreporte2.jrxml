@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="plan_ver_subreporte2" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9d7a7824-cbe4-4d56-91f2-fcb5e93f9c78">
+	<property name="ireport.zoom" value="1.2100000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESULTADO_FINAL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cod_matplaayu" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from detalleplan_obtenerxcodmatplaayu($P{cod_matplaayu}) as (cod_matplaayu character varying(24),cod_detpla integer,fec_detpla date,hini_detpla character varying(10) ,hfin_detpla character varying(10),fecha varchar(10))]]>
+	</queryString>
+	<field name="cod_matplaayu" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cod_matplaayu"/>
+	</field>
+	<field name="cod_detpla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cod_detpla"/>
+	</field>
+	<field name="fec_detpla" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fec_detpla"/>
+	</field>
+	<field name="hini_detpla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hini_detpla"/>
+	</field>
+	<field name="hfin_detpla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hfin_detpla"/>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="116" y="0" width="200" height="11" uuid="8f2069b9-2df2-4fcc-bb74-c87fba6692c9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fec_detpla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="0" width="70" height="11" uuid="5fac69ca-d640-439a-95ba-768c455c9f73"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hini_detpla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="386" y="0" width="70" height="11" uuid="0a5f8f0a-cbab-432f-acb4-bf92a8284c0a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hfin_detpla}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

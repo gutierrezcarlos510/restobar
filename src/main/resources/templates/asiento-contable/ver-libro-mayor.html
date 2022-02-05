@@ -1,0 +1,68 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+<div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+            <div class="row">
+            	<div class="col-md-4"></div>
+            	<div class="col-md-4">
+            		<div class="panel panel-primary">
+	            	<div class="panel-heading ">
+	            	<h4 th:text="'Cuenta: '+${libroMayor.codigo}+' - '+${libroMayor.xsubcuenta}"></h4>
+	            	</div>
+	            	<div class="panel-body">
+	            		<table class="w3-table-all w3-tiny">
+	            			<thead>
+	            				<tr>
+	            					<th>Asiento</th>
+	            					<th  class="w3-right-align">DEBE</th>
+	            					<th  class="w3-right-align">HABER</th>
+	            				</tr>
+	            			</thead>
+	            			<tbody>
+	            				<tr th:each="d : ${detalles}">
+	            					<td th:text="${d.numero}"></td>
+	            					<td class="w3-right-align" th:text="${d.debe}"></td>
+	            					<td class="w3-right-align" th:text="${d.haber}"></td>
+	            				</tr>
+	            			</tbody>
+	            			<tfoot>
+	            				<tr>
+	            					<td> <strong>Total</strong> </td>
+	            					<td class="w3-right-align"><strong th:text="${tdebe}"></strong></td>
+	            					<td class="w3-right-align"><strong th:text="${thaber}"></strong></td>
+	            				</tr>
+	            				<tr>
+	            					<td></td>
+	            					<td class="w3-right-align"><strong th:text="${diffDebe}"></strong></td>
+	            					<td class="w3-right-align"><strong th:text="${diffHaber}"></strong></td>
+	            				</tr>
+	            			</tfoot>
+	            		</table>
+	            	</div>
+	            	<div class="panel-footer">
+	            		<button type="button" id="btnAtras" class="btn btn-social btn-google"><i class="glyphicon glyphicon-remove-sign"></i> Volver</button>
+	                            <button type="button" onclick="window.print();" class="btn btn-social btn-bitbucket pull-right"><i class="glyphicon glyphicon-print"></i> Imprimir</button>
+	            	</div>
+	            </div>
+            	</div>
+            </div>
+            
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+    $(document).ready(function() {
+        $('#btnAtras').click(function(){
+        	$.post('../asiento/gestion', function(resp) {
+                $('#contenedor').html(resp);
+            });
+        });
+    });
+</script>
+</section>

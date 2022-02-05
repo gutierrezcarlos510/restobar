@@ -1,0 +1,585 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../ayudante/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Ayudante</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="codigo" name="cod_per">
+                            <div class="row">
+                            	<div class="col-md-4">
+                            		<div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" name="ci_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase"  name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="segape_per">
+                                    </div>
+                            	</div>
+                                <div class="col-md-4">
+                                    <div class="box box-success">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Avatar</h3>
+                                            <div class="box-tools pull-right">
+                                                <span class="label label-success">Seleccionado</span>
+                                            </div>
+                                        </div>
+                                        <div class="box-body no-padding">
+                                            <div class="row users-list">
+                                                <div class="col-md-12">
+                                                    <img id="imgAvatar-adicionar" src="#" class="img img-circle center-block" width="190px" style="max-height: 190px;" alt="Avatar seleccionado"> <a
+                                                        class="users-list-name w3-center" href="#" id="labelAvatar-adicionar"></a>
+                                                    <input type="hidden" id="inputAvatar-adicionar" name="fot_per"/>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="box box-danger">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Seleccione Avatar</h3>
+                                            <div class="box-tools pull-right">
+                                                <span class="label label-danger" th:text="${avatars.size()}+' disponibles'"></span>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel" >
+                                                <div class="carousel-inner">
+                                                    <div th:each="a : ${avatars}" th:class="(${a.code} == 0) ? 'item w3-center active' : 'item w3-center'" data-interval="false">
+                                                        <img th:src="@{${a.urlCompleta}}" class="img img-circle center-block" width="190px" style="max-height: 190px;" th:alt="${a.nombre}">
+                                                        <div class="carousel-caption text-black" style="padding-bottom: 0px;bottom: 0px;"><a href="#" th:attr="onclick=|setAvatar('${a.urlImg}','adicionar')|"><span class="label label-danger">Seleccionar avatar</span></a></div>
+                                                    </div>
+                                                </div>
+                                                <a class="left carousel-control text-" href="#carousel-example-generic" data-slide="prev">
+                                                    <span class="fa fa-angle-left text-black"></span>
+                                                </a>
+                                                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                                    <span class="fa fa-angle-right text-black"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>G&eacute;nero</label>
+                                        <div class="radio">
+                                            <label for="masculino1"><input type="radio" id="masculino1" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino1"><input type="radio"  id="femenino1" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono / Celular</label>
+                                        <input type="text" class="form-control" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                	<div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <select id="cod_car" name="cod_car" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                                            <option value=""></option>
+                                            <option th:each="c : ${carreras}" th:value="${c.cod_car}" th:text="${c.nom_car}"></option>
+                  			            </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Materias de Ayudantia</label>
+                                <select id="cod_tipmat" name="cod_tipmat" multiple="multiple" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				    <option value=""></option>
+                                    <option th:each="t : ${tipos}" th:value="${t.cod_tipmat}" th:text="${t.nom_tipmat}"></option>
+                  			    </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Disponibilidad de tiempo del ayudante(horarios)</label>
+                                <textarea name="dis_ayu" class="form-control" data-fv-notempty="true"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../ayudante/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Ayudante</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_per">
+                            <input type="hidden" name="cod_ayu">
+                            <div class="row">
+                            	<div class="col-md-4">
+                            		<div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per1" name="ci_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="segape_per">
+                                    </div>
+                            	</div>
+                            	<div class="col-md-4">
+                            		<div class="box box-success">
+										<div class="box-header with-border">
+											<h3 class="box-title">Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-success">Seleccionado</span>
+											</div>
+										</div>
+										<div class="box-body no-padding">
+											<div class="row users-list">
+												<div class="col-md-12">
+													<img id="imgAvatar-modificar" src="#" class="img img-circle center-block" width="190px" style="max-height: 190px;" alt="Avatar seleccionado"> <a
+														class="users-list-name w3-center" href="#" id="labelAvatar-modificar"></a>
+														<input type="hidden" id="inputAvatar-modificar" name="fot_per"/>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+                            	</div>
+                            	<div class="col-md-4">
+                            		<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Seleccione Avatar</h3>
+											<div class="box-tools pull-right">
+                                                <span class="label label-danger" th:text="${avatars.size()}+' disponibles'"></span>
+											</div>
+										</div>
+										<div class="box-body">
+											<div id="carousel-example-generic2" class="carousel slide carousel-fade" data-ride="carousel" >
+							                    <div class="carousel-inner">
+                                                    <div th:each="a : ${avatars}" th:class="(${a.code} == 0) ? 'item w3-center active' : 'item w3-center'" data-interval="false">
+                                                        <img th:src="@{${a.urlCompleta}}" class="img img-circle center-block" width="190px" style="max-height: 190px;" th:alt="${a.nombre}">
+                                                        <div class="carousel-caption text-black" style="padding-bottom: 0px;bottom: 0px;"><a href="#" th:attr="onclick=|setAvatar('${a.urlImg}','adicionar')|"><span class="label label-danger">Seleccionar avatar</span></a></div>
+                                                    </div>
+							                    </div>
+							                    <a class="left carousel-control text-" href="#carousel-example-generic2" data-slide="prev">
+							                      <span class="fa fa-angle-left text-black"></span>
+							                    </a>
+							                    <a class="right carousel-control" href="#carousel-example-generic2" data-slide="next">
+							                      <span class="fa fa-angle-right text-black"></span>
+							                    </a>
+							                  </div>
+										</div>
+									</div>
+                            	</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>G&eacute;nero</label>
+                                        <div class="radio">
+                                            <label for="masculino2"><input type="radio" id="masculino2" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino2"><input type="radio"  id="femenino2" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Telefono / Celular</label>
+                                        <input type="text" class="form-control" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <select id="cod_car1" name="cod_car" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                                            <option value=""></option>
+                                            <option th:each="c : ${carreras}" th:value="${c.cod_car}" th:text="${c.nom_car}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Materias de Ayudantia</label>
+                                <select id="cod_tipmat1" name="cod_tipmat" multiple="multiple" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				    <option value=""></option>
+                                    <option th:each="t : ${tipos}" th:value="${t.cod_tipmat}" th:text="${t.nom_tipmat}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Disponibilidad de tiempo del ayudante(horarios)</label>
+                                <textarea name="dis_ayu" class="form-control" data-fv-notempty="true"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <div id="modalBuscar" class="modal modal-warning fade">
+            <div class="modal-dialog">
+                <form id="formularioBuscar" method="post" action="../ayudante/buscar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Buscar Ayudante por materia o especialidad</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-sm-3">Introducir materia</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="burcarMateria" name="buscarMateria" />
+                                </div>
+                                <div class="sol-sm-3">
+                                    <button class="btn btn-primary" type="submit" id="buscarCampo" name="buscarCampo"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+                                </div>
+                            </div>
+                            <div id="tablaDetalle" class="table-responsive" style="display: none;">
+                                <table style="background-color: transparent;" id="detalles" class="table table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="15px">No.</th>
+                                            <th> Ayudante </th>
+                                            <th> Celular </th>
+                                            <th width="25px">Imprimir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-5">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Ayudantes </h1>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2">
+                <button class="btn btn-success btn-block" type="button" id="btnBuscar"> <span class="glyphicon glyphicon-search"></span> Bucar Ayudante</button>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos</label>
+                    <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input type="radio" name="estado" value="false"> Inactivos</label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">Cod.</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="desktop">Materias</th>
+                    <th class="desktop">Celular</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+	var dataResp = {};
+	function setAvatar(avatar, idDestino){
+		let found = dataResp.avatars.find(it => it.urlImg == avatar);
+		$('#imgAvatar-'+idDestino).attr('src',found.urlCompleta);
+		$('#labelAvatar-'+idDestino).html(found.nombre);
+		$('#inputAvatar-'+idDestino).val(found.urlImg);
+	}
+	function resetAvatar(idDestino){
+		let found = dataResp.avatars.find(it => it.code == 0);
+		$('#imgAvatar-'+idDestino).attr('src',found.urlCompleta);
+		$('#labelAvatar-'+idDestino).html(found.nombre);
+		$('#inputAvatar-'+idDestino).val(found.urlImg);
+	}
+    $(document).ready(function() {
+    	$.get('../avatar/listar',function(resp){
+    		if(resp.status){
+    			dataResp.avatars = resp.data;
+    		}
+    	});
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $('#btnBuscar').click(function() {
+            $('#detalles > tbody').html('');
+            $('#tablaDetalle').hide();
+            $('#formularioBuscar')[0].reset();
+            $('#formularioBuscar').data('formValidation').resetForm();
+            $('#modalBuscar').modal('show');
+        });
+        var tableUser = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#cod_car').val('').trigger('chosen:updated');
+                    $('#cod_tipmat').val('').trigger('chosen:updated');
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#codigo').val(0);
+                    resetAvatar('adicionar');
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../ayudante/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columnDefs":[{targets: [4],className:'text-right'}],
+            "columns": [{
+                "data": "cod_ayu"
+            }, {
+                "data": "cod_ayu"
+            }, {
+                "data": "materias"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "cod_ayu"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    $('td', row).eq(4).html('<div class="btn-group"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_ayu + '"><i class="fa fa-edit"></i> </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_ayu + '"><i class="glyphicon glyphicon-remove"></i> </button><button class="btn btn-success imprimir" data-id="' + data.cod_ayu + '" data-toggle="tooltip" data-placement="top" title="Imprimir credencial"><i class="glyphicon glyphicon-print"></i> <i class="fa fa-credit-card"></i> </button><button class="btn btn-info ver" data-id="' + data.cod_ayu + '"  data-toggle="tooltip" data-placement="top" title="Imprimir credencial"> <i class="glyphicon glyphicon-print"></i> </button></div>');
+                } else
+                    $('td', row).eq(4).html('<div class="btn-group"><button class="btn btn-primary activar" data-id="' + data.cod_ayu + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i>  </button><button class="btn btn-success imprimir" data-id="' + data.cod_ayu + '" data-toggle="tooltip" data-placement="top" title="Imprimir Credencial"><i class="glyphicon glyphicon-print"></i> <i class="fa fa-credit-card"></i> </button><button class="btn btn-info ver"  data-cod_ayu="' + data.cod_ayu + '" data-toggle="tooltip" data-placement="top" title="Imprimir credencial"> <i class="glyphicon glyphicon-print"></i> </button></div>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tableUser.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de secretaria", ("Cod. ayudante: "+ obj.cod_sec+", Ayudante: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../ayudante/eliminar?cod_ayu='+obj.cod_ayu, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.activar').click(function() {
+                	let obj = tableUser.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de ayudante", ("Cod. ayudante: "+ obj.cod_sec+", Ayudante: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../ayudante/activar?cod_ayu='+obj.cod_ayu, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $.post('../ayudante/obtener?cod_ayu=' + $(this).data('id'), function(result) {
+                        if (result.status) {
+                            $('#formularioModificar').loadJSON(result.data.persona);
+                            $('#ema_per').val(result.data.persona.ema_per);
+                            
+                            $('#formularioModificar').loadJSON(result.data);
+                            setAvatar(result.data.persona.fot_per,'modificar');
+                            $('#cod_car1').val(result.data.cod_car).trigger('chosen:updated');
+                            $('#cod_tipmat1').html('');
+                            if (result.data.tipos) {
+                                $.each(result.data.tipos, function(i, item) {
+                                    var row = $('<option value="' + item.cod_tipmat + '" ' + item.tipo + '>' + item.nom_tipmat + '</option>');
+                                    $('#cod_tipmat1').append(row);
+                                });
+                            }
+                            $('#cod_tipmat1').trigger('chosen:updated');
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../ayudante/ver_credencial?cod_per=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('.ver').click(function() {
+                    $("#frameReportes").attr("src", "../ayudante/ver?cod_per=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            var formData = new FormData(document.getElementById("formulario"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+                $('.bubblingG').hide();
+            });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            var formData = new FormData(document.getElementById("formularioModificar"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+                $('.bubblingG').hide();
+            });
+            });
+        });
+        $('#ci_per').blur(function() {
+            $.post('../usuario/buscarci?ci=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#formulario').loadJSON(resp.data);
+                    mostrarMensaje('info', 'Este usuario ya existe');
+                } else $('#codigo').val(0);
+
+            });
+        });
+        $('#formularioBuscar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.data) {
+                    $('#detalles > tbody').html('');
+                    $.each(result.data, function(index, dato) {
+                        var row = $('<tr></tr>');
+                        $('<td>' + (index + 1) + '</td>').appendTo(row);
+                        $('<td>' + (dato.persona.nom_per + ' ' + dato.persona.priape_per + ' ' + dato.persona.segape_per) + '</td>').appendTo(row);
+                        $('<td>' + dato.persona.tel_per + '</td>').appendTo(row);
+                        $('<td><button type="button" class="btn btn-success btn-sm imprimirBuscar" data-id="' + dato.cod_ayu + '" ><span class="glyphicon glyphicon-print"></span></button></td>').appendTo(row);
+                        $('#detalles > tbody:last').append(row);
+                    });
+                    $('.imprimirBuscar').click(function() {
+                        $("#frameReportes").attr("src", "../ayudante/ver_mini?cod_ayu=" + $(this).data('id'));
+                        $("#reportes").modal('show');
+                    });
+                    $('#tablaDetalle').show(1000);
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+
+    });
+</script>
+</section>

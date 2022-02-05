@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="plan_ver" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd06c55d-82a9-44d6-a3e4-0280244860ba">
+	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="8"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESULTADO_FINAL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cod_pla" class="java.lang.Integer"/>
+	<parameter name="subrep" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="des_gen" class="java.lang.String"/>
+	<parameter name="dir_gen" class="java.lang.String"/>
+	<parameter name="tel_gen" class="java.lang.String"/>
+	<parameter name="lug_gen" class="java.lang.String"/>
+	<parameter name="path" class="java.lang.String"/>
+	<parameter name="gestion" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\CARLOS\\workspace\\resultadofinal\\src\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subrep2" class="java.lang.String"/>
+	<parameter name="logsintex_gen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from plan_obtener($P{cod_pla} ) as (cod_pla integer ,nom_pla character varying(150) ,sig_pla character varying(25) ,fini_pla date ,ffin_pla date ,hor_pla integer ,mon_pla real ,tip_pla smallint ,des_pla real , est_pla boolean ,obs_pla character varying(1500) ,ges_gen integer,tra_pla integer,cod_suc integer,fechai varchar(10),fechaf varchar(10))]]>
+	</queryString>
+	<field name="cod_pla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cod_pla"/>
+	</field>
+	<field name="nom_pla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom_pla"/>
+	</field>
+	<field name="sig_pla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="sig_pla"/>
+	</field>
+	<field name="fini_pla" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fini_pla"/>
+	</field>
+	<field name="ffin_pla" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="ffin_pla"/>
+	</field>
+	<field name="hor_pla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="hor_pla"/>
+	</field>
+	<field name="mon_pla" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.label" value="mon_pla"/>
+	</field>
+	<field name="tip_pla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tip_pla"/>
+		<fieldDescription><![CDATA[tipo 1=simple, combo=2]]></fieldDescription>
+	</field>
+	<field name="des_pla" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.label" value="des_pla"/>
+		<fieldDescription><![CDATA[descuento]]></fieldDescription>
+	</field>
+	<field name="est_pla" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="est_pla"/>
+	</field>
+	<field name="obs_pla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obs_pla"/>
+	</field>
+	<field name="ges_gen" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ges_gen"/>
+	</field>
+	<field name="tra_pla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tra_pla"/>
+		<fieldDescription><![CDATA[1=transicion activa, 2=transicion terminada]]></fieldDescription>
+	</field>
+	<field name="cod_suc" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cod_suc"/>
+	</field>
+	<field name="fechai" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fechai"/>
+	</field>
+	<field name="fechaf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fechaf"/>
+	</field>
+	<variable name="estado" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tra_pla}==1?"Vigente":"Finalizado"]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{tra_pla}==1?"Vigente":"Finalizado"]]></initialValueExpression>
+	</variable>
+	<variable name="tipo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tip_pla}==1?"Simple":"Combo"]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{tip_pla}==1?"Simple":"Combo"]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="105" splitType="Stretch">
+			<textField>
+				<reportElement x="57" y="11" width="180" height="11" uuid="7531cb68-7bd5-41e4-a555-bc5825718092"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="0" width="180" height="11" uuid="fd6136ed-21cb-4038-9288-7a18096715af"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="22" width="180" height="11" uuid="059b2bec-1028-4208-8137-785e1ee33da3"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="33" width="180" height="11" uuid="4b96282b-f3c6-4555-b336-2ee8d540d1b6"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="57" height="55" uuid="11bbc732-7eda-4afd-83b9-6ebf073bc0ab"/>
+				<imageExpression><![CDATA[$P{path}+"/"+$P{logsintex_gen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="57" y="44" width="180" height="11" uuid="2e1394bc-3e32-4375-9e6a-7f28d16e1f64"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gestion "+$P{gestion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="55" width="572" height="24" uuid="47991c27-4947-4242-8ffe-2950183b4d04"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Plan "+$F{nom_pla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="79" width="572" height="16" uuid="7da229d7-da1d-48f6-8aca-44ca2f0ecd89"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sigla "+$F{sig_pla}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="0" width="90" height="13" uuid="c9559364-857d-4f23-a740-6b4097921e81"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gestion :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="0" width="90" height="13" uuid="640e4cdc-245f-4e25-bbca-41ae00c1b23d"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="0" width="90" height="13" uuid="47d65184-f828-4216-ad18-3a90aa16523a"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="13" width="90" height="13" uuid="5723b7d7-44f3-474a-8008-55c9e8a2d66e"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Inicio :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="13" width="90" height="13" uuid="2fc77c8c-ad03-42cd-8423-e4aad84ff8b4"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Fin :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="13" width="90" height="13" uuid="afb88f0b-5120-4df1-80ba-c1f36ebf350f"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horas :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="0" width="90" height="13" uuid="dc895506-e292-487e-ad71-2c633a8308c8"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ges_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="13" width="90" height="13" uuid="85020245-68ad-41b5-a139-b44740871aab"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechai}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="90" height="13" uuid="a4ba636d-0794-4d49-890a-4eb03c0587b3"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="13" width="90" height="13" uuid="c0752598-ef40-4a60-9202-33d5c5d750c8"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="13" width="90" height="13" uuid="32a7a53f-e23f-4f62-8115-e3f66e96091a"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hor_pla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="0" width="90" height="13" uuid="3fe89a32-d0d2-4a6c-b0fd-c3cec098dd30"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["# "+$F{cod_pla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="26" width="90" height="13" uuid="36766cdc-2d8a-4f7e-b471-74a8f712bf68"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto (Bs.) :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="26" width="90" height="13" uuid="8d21e41d-79fb-439d-b2a5-d066d22edbbe"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mon_pla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="196" y="26" width="90" height="13" uuid="350f8c75-3769-4883-b636-e3df16257839"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descuento :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="466" y="26" width="90" height="13" uuid="e4e445d8-6d44-402f-83f0-edbfa63dc809"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tipo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="376" y="26" width="90" height="13" uuid="e76c5f7c-54c1-4ec2-bf5a-130ac3b0a0af"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="286" y="26" width="90" height="13" uuid="60da2ecf-b9b2-48f0-be8f-1e04605c68f3"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_pla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="39" width="90" height="13" uuid="a41437f8-96b7-4737-9555-28d497415b3f"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="39" width="450" height="57" uuid="aa3a71d1-1974-40b7-9a77-020eda269ff3"/>
+				<textElement>
+					<paragraph lineSpacing="1_1_2" leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obs_pla}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20" uuid="4089bd60-5623-48d8-b5f2-9b8c93b0066f"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DETALLE DEL PLAN]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="572" height="46" uuid="8f8a4b1a-e7b6-4325-a0e6-2498bd55a1fb"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="cod_pla">
+					<subreportParameterExpression><![CDATA[$F{cod_pla}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="subrep2">
+					<subreportParameterExpression><![CDATA[$P{subrep2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subrep} + "/plan_ver_subreporte.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="84" y="0" width="272" height="11" uuid="02934f61-612a-41e4-b7f2-ef73f158935b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="84" height="11" uuid="6aa94862-7dc8-48d0-8d56-7f3bd23e1448"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario de impresion :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="34" height="11" uuid="b81dc14f-cc99-4d93-9a27-e8f5da1fc88e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="390" y="0" width="106" height="11" uuid="ade93cfc-a6ec-4ed7-a997-37379790514f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="545" y="0" width="27" height="11" uuid="b36f4e0c-33bf-4507-bf2f-8c477d3a5fb8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="496" y="0" width="49" height="11" uuid="ac099ea7-ae58-4fa2-9a07-cee270bdc2d7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina"+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

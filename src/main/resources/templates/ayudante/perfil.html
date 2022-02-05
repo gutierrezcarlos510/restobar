@@ -1,0 +1,666 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="box box-primary">
+				<div class="box-body box-profile" id="areaPerfil1">
+					<img class="profile-user-img img-responsive img-circle"
+						src="#" alt="User profile picture" id="fotoAyudante" width="200px" style="width:200px;max-height: 200px;">
+					<h3 class="profile-username text-center"><span aria-label="xayudante"></span></h3>
+					<p class="text-muted text-center">Personal de Ayudant&iacute;a</p>
+					<ul class="list-group list-group-unbordered">
+						<li class="list-group-item"><b>Total Prestaciones</b></li>
+						<li class="list-group-item"><b>Cumplidas</b> <a
+							class="pull-right"><span aria-label="totalCumplidos"></span></a></li>
+						<li class="list-group-item"><b>Incumplidas</b> <a
+							class="pull-right"><span aria-label="totalIncumplidos"></span></a></li>
+						<li class="list-group-item"><b>Abandonadas</b> <a
+							class="pull-right"><span aria-label="totalAbandonados"></span></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box box-primary">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Acerca de mi</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body" id="areaPerfil2">
+					<strong><i class="fa fa-book margin-r-5"></i> Estudios en</strong>
+					<p class="text-muted"><span aria-label="nom_car"></span> (<span aria-label="sig_car"></span>)</p>
+
+					
+					<strong><i class="fa fa-envelope margin-r-5"></i> Correo Electr&oacute;nico</strong>
+					<p class="text-muted"><span aria-label="xemail"></span></p>
+
+
+					<strong><i class="fa fa-map-marker margin-r-5"></i>
+						Direcci&oacute;n de domicilio</strong>
+					<p class="text-muted"><span aria-label="dir_per"></span></p>
+
+
+					<strong><i class="fa fa-pencil margin-r-5"></i> Materias a dictar</strong>
+					<p id="areaMaterias"></p>
+
+
+					<strong><i class="fa fa-file-text-o margin-r-5"></i> Horarios disponibles</strong>
+					<p><span aria-label="dis_ayu"></span></p>
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-md-9">
+			<div class="box box-primary">
+				<div class="box-header">
+                  <i class="fa fa-pie-chart"></i>
+                  <h3 class="box-title">Estado de prestaciones en proceso</h3>
+					<div class="box-tools pull-right" th:if="(${actividades} == 1)">
+						<span class="label label-danger"> <a href="#" onclick="volverActividades()">VOLVER A ACTIVIDADES</a></span>
+					</div>
+                </div>
+				<div class="box-body" id="resumenPrestacionEnProceso">
+					<div class="row">
+		            <div class="col-md-4 col-sm-6 col-xs-12">
+		              <div class="info-box">
+		                <span class="info-box-icon bg-aqua"><i class="fa fa-hourglass-end"></i></span>
+		                <div class="info-box-content">
+		                  <span class="info-box-text">Prestaciones </span>
+		                  <span class="info-box-text">Pendientes </span>
+		                  <span class="info-box-number" aria-label="tpendientes"></span>
+		                </div><!-- /.info-box-content -->
+		              </div><!-- /.info-box -->
+		            </div><!-- /.col -->
+		            <div class="col-md-4 col-sm-6 col-xs-12">
+		              <div class="info-box">
+		                <span class="info-box-icon bg-green"><i class="fa fa-user-plus"></i></span>
+		                <div class="info-box-content">
+		                	<span class="info-box-text">Prestaciones </span>
+		                  <span class="info-box-text">Por cobrar</span>
+		                  <span class="info-box-number" aria-label="totalPorCobrar"></span>
+		                </div><!-- /.info-box-content -->
+		              </div><!-- /.info-box -->
+		            </div><!-- /.col -->
+		            <!-- fix for small devices only -->
+		            <div class="clearfix visible-sm-block"></div>
+		            <div class="col-md-4 col-sm-6 col-xs-12">
+		              <div class="info-box">
+		                <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
+		                <div class="info-box-content">
+		                <span class="info-box-text">Prestaciones </span>
+		                  <span class="info-box-text">Por multar</span>
+		                  <span class="info-box-number" aria-label="tincumplidos"></span>
+		                </div><!-- /.info-box-content -->
+		              </div><!-- /.info-box -->
+		            </div><!-- /.col -->
+		          </div><!-- /.row -->
+				</div>
+			</div>		
+		
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs text-black custom-bolder">
+					<li class="active"><a href="#areaPrestacionesPendientes" data-toggle="tab"><span class="fa fa-sticky-note"></span> Actividades Pendientes</a></li>
+					<li><a href="#timeline" data-toggle="tab"><span class="fa fa-hourglass-end"></span> Agenda de entrega</a></li>
+					<li><a href="#settings" data-toggle="tab"><span class="fa fa-user"></span> Actualizar Perfil</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="active tab-pane" id="areaPrestacionesPendientes">
+					</div>
+					<!-- /.tab-pane -->
+					<div class="tab-pane" id="timeline">
+						<ul class="timeline timeline-inverse" id="timelineMain"></ul>
+					</div>
+					<div class="tab-pane" id="settings">
+						<form class="form-horizontal" id="dataFormAyudante">
+							<div class="form-group">
+								<label class="col-sm-3 control-label text-right">C&oacute;digo de ayudante:</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control w3-right-align w3-input" name="cod_per" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label text-right">C.I.:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control w3-right-align w3-input" name="ci_per" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label text-right">Nombre Completo:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control w3-right-align w3-input" name="xayudante" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label text-right">G&eacute;nero:</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control w3-right-align w3-input" name="xsexo" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label">Tel&eacute;fono:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control w3-right-align w3-input" name="tel_per" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Carrera:</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control w3-right-align w3-input" name="xcarrera" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label">Email:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control w3-right-align w3-input" name="ema_per" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Domicilio</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control w3-right-align w3-input" name="dir_per" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Materias a dictar</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control w3-right-align w3-input" name="materias" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Horarios disponibles</label>
+								<div class="col-sm-9">
+									<textarea name="dis_ayu"  class="form-control w3-right-align w3-input" rows="3" readonly="readonly"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn btn-social btn-primary" id="btnEditar"><i class="fa fa-edit"></i> Editar informaci&oacute;n</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<!-- /.content -->
+<form id="formularioModificar" method="post" action="../ayudante/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title custom-bolder">Actualizar informacion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_per">
+                            <input type="hidden" name="cod_ayu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" name="ci_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+	                            		<div class="box box-success">
+											<div class="box-header with-border">
+												<h3 class="box-title">Avatar</h3>
+												<div class="box-tools pull-right">
+													<span class="label label-success">Seleccionado</span>
+												</div>
+											</div>
+											<div class="box-body no-padding">
+												<div class="row users-list">
+													<div class="col-md-12">
+														<img id="imgAvatar-modificar" src="#" class="img img-circle center-block" width="190px" style="max-height: 190px;" alt="Avatar seleccionado"> <a
+															class="users-list-name w3-center" href="#" id="labelAvatar-modificar"></a>
+															<input type="hidden" id="inputAvatar-modificar" name="fot_per"/>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+	                            	</div>
+								<div class="col-md-4">
+									<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Seleccione Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-danger" th:text="${avatars.size()}+' disponibles'"></span>
+											</div>
+										</div>
+										<div class="box-body">
+											<div id="carousel-example-generic2" class="carousel slide carousel-fade" data-ride="carousel" >
+												<div class="carousel-inner">
+													<div th:each="a : ${avatars}" th:class="(${a.code} == 0) ? 'item w3-center active':'item w3-center'" data-interval="false">
+														<img th:src="@{${a.urlCompleta}}" class="img img-circle center-block" width="190px" style="max-height: 190px;" th:alt="${a.nombre}">
+														<div class="carousel-caption text-black" style="padding-bottom: 0px;bottom: 0px;"><a href="#" th:attr="onclick=|setAvatar('${a.urlImg}','modificar')|"><span class="label label-danger">Seleccionar avatar</span></a></div>
+													</div>
+												</div>
+												<a class="left carousel-control text-" href="#carousel-example-generic2" data-slide="prev">
+													<span class="fa fa-angle-left text-black"></span>
+												</a>
+												<a class="right carousel-control" href="#carousel-example-generic2" data-slide="next">
+													<span class="fa fa-angle-right text-black"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino2"><input type="radio" id="masculino2" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino2"><input type="radio"  id="femenino2" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Telefono / Celular</label>
+                                        <input type="text" class="form-control text-right" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="ema_per" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <select id="cod_car1" name="cod_car" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  							<option value=""></option>
+											<option th:each="c : ${carreras}" th:value="${c.cod_car}" th:text="${c.nom_car}"></option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Materias de Ayudantia (En caso de no existir, ingrese el nombre de la materia y presionar <code>Enter</code> )</label>
+                                <select id="cod_tipmat1" name="cod_tipmat" multiple="multiple" class="form-control select2" style="width: 100%" data-fv-notempty>
+                  			</select>
+                            </div>
+                            <div class="form-group">
+                                <label>Disponibilidad de tiempo del ayudante(horarios)</label>
+                                <textarea name="dis_ayu" class="form-control" data-fv-notempty="true"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+	<script th:inline="javascript">
+		var dataResp = {
+			'colores':['danger','success','info','warning','primary'],
+			'bgColor':['blue','aqua','green','yellow','purple'],
+			'actividades' : /*[[${actividades}]]*/ '',
+			codAyudante : /*[[${codAyu}]]*/ 0
+		};
+	</script>
+<script type="text/javascript">
+
+function volverActividades(){
+	$.post('../prestacion/dashboard', function(resp) {
+        $('#contenedor').html(resp);
+    });
+}
+function setAvatar(avatar, idDestino){
+	let found = dataResp.avatars.find(it => it.urlImg == avatar);
+	$('#imgAvatar-'+idDestino).attr('src',found.urlCompleta);
+	$('#labelAvatar-'+idDestino).html(found.nombre);
+	$('#inputAvatar-'+idDestino).val(found.urlImg);
+}
+function obtenerAvatars(){
+	return new Promise((resolve,reject)=>{
+		$.get('../avatar/listar',function(resp){
+			if(resp.status){
+				resolve(resp.data);
+			}else{
+				reject(resp.msg);
+			}
+		});
+	});
+}
+function reformatAyudante(resp){
+	resp.data.xayudante = resp.data.persona.nom_per + ' '+resp.data.persona.priape_per+' '+(resp.data.persona.segape_per||'');
+	resp.data.xcarrera = resp.data.carrera.nom_car;
+	resp.data.materias = resp.data.tipos.filter(it=>it.tipo==="selected").map(item=>item.nom_tipmat).join();
+	resp.data.xsexo = resp.data.persona.sex_per ? 'Masculino':'Femenino';
+	resp.data.xemail = resp.data.persona.ema_per || 'Sin Correo electronico'; 
+}
+function obtenerAyudante(codper){
+	return new Promise((resolve,reject)=>{
+		$.post('../ayudante/obtener?cod_ayu='+codper, function(resp){
+			if(resp.status){
+				reformatAyudante(resp);
+				resolve(resp.data);
+			}else{
+				reject(resp.msg);
+			}
+		},'json');
+	});
+}
+function obtenerPrestacionesPendientesPorAyudante(codayu){
+	return new Promise((resolve,reject)=>{
+		$.post('../prestacion/obtenerPendientesPorAyudante?codayu='+codayu, function(resp){
+			if(resp.status){
+				 resolve(resp.data);
+			}else{
+				reject(resp.msg);
+			}
+		},'json');
+	});
+	
+}
+function obtenerResumenPrestacion(codayu){
+	return new Promise((resolve,reject)=>{
+		$.post('../prestacion/obtenerResumenPorAyudante?codayu='+codayu, function(resp){
+			if(resp.status){
+				resolve(resp.data);
+			}else{
+				reject(resp.msg);
+			}
+		},'json');
+	});
+}
+function obtenerPrestacionesPorPagar(codayu){
+	return new Promise((resolve,reject)=>{
+		$.post('../prestacion/obtenerPorPagarDeAyudante?codayu='+codayu, function(resp){
+			if(resp.status){
+				resolve(resp.data);
+			}else{
+				reject(resp.msg);
+			}
+		},'json');
+	});
+}
+function falloCallback(error) {
+	  console.log("Error generando el cargado del perfil del ayudante " + error);
+}
+function descargarImagen(id){
+	let node = document.getElementById('prestacion-'+id);
+
+    domtoimage.toPng(node).then(function (dataUrl) {
+        let link = document.createElement('a');
+        link.download = 'prestacion-'+id+'.png';
+        link.href = dataUrl;
+        link.click();
+    }).catch(function (error) {
+        console.error('oops, Error al descargar imagen de prestacion!', error);
+    });
+}
+function descargarImagenTimeline(id){
+	let node = document.getElementById('timeline-'+id);
+
+    domtoimage.toPng(node).then(function (dataUrl) {
+        let link = document.createElement('a');
+        link.download = 'prestacion-'+id+'.png';
+        link.href = dataUrl;
+        link.click();
+    }).catch(function (error) {
+        console.error('oops, Error al descargar imagen de prestacion!', error);
+    });
+}
+function concatenarServicios(detalles){
+	let serv = '';
+	if(detalles){
+		detalles.forEach(det=>{
+			serv += '('+det.servicio +'-'+det.nomTem+')';
+		});
+	}
+	return serv;
+}
+function actualizarPerfilGeneralAyudante(){
+	$('#areaPerfil1').loadJSON(dataResp.ayudante);
+	$('#areaPerfil2').loadJSON(dataResp.ayudante);
+	$('#areaPerfil2').loadJSON(dataResp.ayudante.persona);
+	$('#areaPerfil2').loadJSON(dataResp.ayudante.carrera);
+	$('#dataFormAyudante').loadJSON(dataResp.ayudante);
+	$('#dataFormAyudante').loadJSON(dataResp.ayudante.persona);
+	$('#fotoAyudante').attr('src',dataResp.ayudante.persona.urlAvatar)
+	$('#areaMaterias').html('');
+	if(dataResp.ayudante.tipos){
+		let  indexLabel = 0;
+		dataResp.ayudante.tipos.forEach(item=>{
+			if(item.tipo == 'selected'){
+				if(indexLabel > 4){
+					indexLabel = 0;
+				}
+				let materia =$('<span class="label label-'+dataResp.colores[indexLabel]+'">'+item.nom_tipmat+'</span>');
+				$('#areaMaterias').append(' ');
+				$('#areaMaterias').append(materia);
+				indexLabel++;
+			}
+		});
+	}
+}
+async function initPerfil(codayu){
+	try {
+		dataResp.ayudante = await obtenerAyudante(codayu);
+		dataResp.pendienteList = await obtenerPrestacionesPendientesPorAyudante(codayu);
+		dataResp.resumen = await obtenerResumenPrestacion(codayu);
+		dataResp.porPagarList = await obtenerPrestacionesPorPagar(codayu);
+		dataResp.avatars = await obtenerAvatars();
+		$('#areaPerfil1').loadJSON(dataResp.resumen);
+		actualizarPerfilGeneralAyudante();
+		console.log('Se cargo los datos correctamente:',dataResp);
+		if(dataResp){
+			
+			$('#resumenPrestacionEnProceso').loadJSON(dataResp.resumen);
+			
+			
+			if(dataResp.pendienteList){
+				dataResp.pendienteList.forEach(item =>{
+					//concatenacion de servicios
+					let servicios = concatenarServicios(item.detalles);
+					let divMain = $('<div class="post" id="prestacion-'+item.cod_pre+'"></div>');
+					let divUserBlock = $('<div class="user-block"></div>');
+					$('<img class="img-circle img-bordered-sm" src="../../img/prestacion-icon.png" alt="icono de prestacion">').appendTo(divUserBlock);
+					$('<span class="username"> <a href="#">'+servicios+'</a></span>').appendTo(divUserBlock);
+					let dias = moment(item.entrega,'DD/MM/YYYY').diff(moment(),'days');
+					dias = parseInt(dias);
+					if(dias >0){
+						$('<span class="description">Fecha de Entrega - '+item.entrega+' '+item.horent_pre+' (Falta '+dias+' dia(s))</span>').appendTo(divUserBlock);
+					}else{
+						dias = -1*dias;
+						$('<span class="description">Fecha de Entrega - '+item.entrega+' '+item.horent_pre+' (Retraso de entrega '+dias+' dia(s))</span>').appendTo(divUserBlock);
+					}
+					
+					divMain.append(divUserBlock);
+					$('<div class="row"><div class="col-md-11 text-right"><p><strong>Ayudante : '+item.ayudante+'</strong> | <span class="fa fa-user"></span></p></div></div>').appendTo(divMain);
+					let divRow = $('<div class="row"></div>');
+					let divCol1 = $('<div class="col-md-4"></div>');
+					let divDL1 = $('<dl class="dl-horizontal"></dl>');
+					$('<dt>Cod. Prestaci&oacute;n</dt>').appendTo(divDL1);
+					$('<dd>'+item.cod_pre+'</dd>').appendTo(divDL1);
+					$('<dt>Total prestaci&oacute;n</dt>').appendTo(divDL1);
+					$('<dd>'+item.total+'</dd>').appendTo(divDL1);
+					$('<dt>Saldo Pendiente</dt>').appendTo(divDL1);
+					$('<dd>'+item.totalDeuda+'</dd>').appendTo(divDL1);
+					
+					divCol1.append(divDL1);
+					divRow.append(divCol1);
+					
+					let divCol2 = $('<div class="col-md-8"></div>');
+					let divDL2 = $('<dl class="dl-horizontal"></dl>');
+					$('<dt>Registrado por</dt>').appendTo(divDL2);
+					$('<dd>'+item.usuario+'</dd>').appendTo(divDL2);
+					$('<dt>Fecha de registro</dt>').appendTo(divDL2);
+					$('<dd>'+item.fec_pre+'</dd>').appendTo(divDL2);
+					$('<dt>Observaci&oacute;n</dt>').appendTo(divDL2);
+					$('<dd aria-label="cod_pre">'+item.obs_pre+'</dd>').appendTo(divDL2);
+					divCol2.append(divDL2);
+					divRow.append(divCol2);
+					
+					divMain.append(divRow);
+					let diaRegistro = moment(item.fecha,'DD/MM/YYYY').diff(moment(),'days');
+					diaRegistro = parseInt(diaRegistro);
+					let divUl = $('<ul class="list-inline"></ul>');
+					$('<li><a href="#" class="link-black text-sm text-blue" onclick="descargarImagen('+item.cod_pre+')"><i class="fa fa-download margin-r-5"></i> Descargar</a></li>').appendTo(divUl);
+					if(diaRegistro == 0){
+						$('<li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-hourglass-end margin-r-5"></i> Dia de registro: Hoy</a></li>').appendTo(divUl);
+					}else{
+						if(diaRegistro > 0 ){
+							$('<li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-hourglass-end margin-r-5"></i> Dia de registro: Adelantado  '+diaRegistro+' dia(s)</a></li>').appendTo(divUl);
+						}else{
+							diaRegistro = -1*diaRegistro;
+							$('<li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-hourglass-end margin-r-5"></i> Dia de registro: Hace '+diaRegistro+' dia(s)</a></li>').appendTo(divUl);
+						}
+						
+					}
+					
+					divMain.append(divUl);
+					$('#areaPrestacionesPendientes').append(divMain);
+				});
+				
+				//Generacion de pendientes ordenados por linea de tiempo
+				const pendientesSort = dataResp.pendienteList.sort((a,b)=>{return new Date(a.fecent_pre+' '+a.horent_pre+':00') - new Date(b.fecent_pre+' '+b.horent_pre+':00');})
+				let  indexLabel = 0;
+				pendientesSort.forEach(item=>{
+					if(indexLabel > 4){
+						indexLabel = 0;
+					}
+					let liTime = $('<li class="time-label"><span class="bg-'+dataResp.bgColor[indexLabel]+'"> '+moment(item.fecent_pre).format('dddd [,] D [de] MMMM [del] YYYY')+' </span></li>');
+					let liTimeDetalle = $('<li id="timeline-'+item.cod_pre+'"></li>');
+					$('<i class="fa fa-calendar-check-o bg-'+dataResp.bgColor[indexLabel++]+'"></i>').appendTo(liTimeDetalle);
+					let divTime = $('<div class="timeline-item"></div>');
+					$('<span class="time"><i class="fa fa-clock-o"></i> '+item.horent_pre+'</span>').appendTo(divTime);
+					
+					let servicios = concatenarServicios(item.detalles);
+					
+					$('<h3 class="timeline-header"><a href="#">'+servicios+'</a></h3>').appendTo(divTime);
+					let divTimeBody= $('<div class="timeline-body"></div>');
+					$('<p class="text-right"><strong>Ayudante : '+item.ayudante+'</strong></p>').appendTo(divTimeBody);
+					$('<p class="text-right"><strong>Fecha de Registro: '+moment(item.fec_pre).format('D [de] MMMM [del] YYYY [Hrs.] HH:mm:ss')+'</strong></p>').appendTo(divTimeBody);
+					let row = $('<div class="row"></div>');
+					let col1 = $('<div class="col-md-4"></div>');
+					let dl1 = $('<dl class="dl-horizontal"></dl>');
+					$('<dt>Cod. Prestaci&oacute;n</dt>').appendTo(dl1);
+					$('<dd>'+item.cod_pre+'</dd>').appendTo(dl1);
+					$('<dt>Total prestaci&oacute;n</dt>').appendTo(dl1);
+					$('<dd>'+item.total+'</dd>').appendTo(dl1);
+					dl1.appendTo(col1);
+					col1.appendTo(row);
+					let col2 = $('<div class="col-md-8"></div>');
+					let dl2 = $('<dl class="dl-horizontal"></dl>');
+					$('<dt>Registrado por</dt>').appendTo(dl2);
+					$('<dd>'+item.usuario+'</dd>').appendTo(dl2);
+					$('<dt>Observacion</dt>').appendTo(dl2);
+					$('<dd>'+item.obs_pre+'</dd>').appendTo(dl2);
+					dl2.appendTo(col2);
+					col2.appendTo(row);
+					
+					row.appendTo(divTimeBody);
+					divTimeBody.appendTo(divTime)
+					
+					$('<div class="timeline-footer text-right"><a class="btn btn-social btn-primary " href="#" onclick="descargarImagenTimeline('+item.cod_pre+')"> <i class="fa fa-download"></i> Descargar imagen de prestaci&oacute;n</a></div>').appendTo(divTime);
+					
+					divTime.appendTo(liTimeDetalle);
+					
+					$('#timelineMain').append(liTime);
+					$('#timelineMain').append(liTimeDetalle);
+				})
+			}
+		}
+	} catch (e) {
+		falloCallback(e);
+		cerrarLoad();
+	} finally{
+		cerrarLoad();
+	}
+}
+$(document).ready(function() {
+	$('.select-chosen').chosen({
+        no_results_text: "No se encuentra:",
+        width: '100%'
+    });
+	$('.select2').select2({
+		tags: true
+		});
+	abrirLoad('Obteniendo Datos');
+	initPerfil(dataResp.codAyudante);
+	$('#btnEditar').click(function() {
+        $('#formularioModificar').data('formValidation').resetForm();
+        $('#formularioModificar')[0].reset();
+        $('#formularioModificar').loadJSON(dataResp.ayudante);
+        $('#formularioModificar').loadJSON(dataResp.ayudante.persona);
+        $('#ema_per').val(dataResp.ayudante.persona.ema_per);
+        setAvatar(dataResp.ayudante.persona.fot_per,'modificar');
+        $('#cod_car1').val(dataResp.ayudante.cod_car).trigger('chosen:updated');
+        $('#cod_tipmat1').html('');
+        if (dataResp.ayudante.tipos) {
+        	let row;
+            $.each(dataResp.ayudante.tipos, function(i, item) {
+                row = $('<option value="' + item.cod_tipmat + '" ' + item.tipo + '>' + item.nom_tipmat + '</option>');
+                $('#cod_tipmat1').append(row);
+                $('#cod_select').append(row);
+            });
+        }
+        $('#cod_tipmat1').trigger('chosen:updated');
+        $('#cod_select').trigger('change');
+        $('#modalModificar').modal('show');
+    });
+	$('#formularioModificar').formValidation({
+        excluded: [':disabled']
+    }).on('success.form.fv', function(e) {
+        e.preventDefault();
+        alertAdicion('Confirmar transaccion', 'Esta seguro de actualizar la informacion del ayudante?',function(){
+        var xform = $(e.target);
+        var formData = new FormData(document.getElementById("formularioModificar"));
+        $.ajax({
+            url: xform.attr("action"),
+            type: "post",
+            dataType: "json",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).done(function(result) {
+            if (result.status) {
+            	reformatAyudante(result);
+            	dataResp.ayudante = result.data;
+            	if(dataResp.actividades == '0'){ // Es usuario de perfil
+            		actualizarAvatar(result.data.persona.urlAvatar);
+            	}
+            	actualizarPerfilGeneralAyudante(result.data);
+                $('.modal').modal('hide');
+                mostrarMensaje('info', result.msg);
+            } else {
+                modalAlert('Error de actualizacion', result.msg,'error');
+            }
+        });
+        });
+    });
+});
+</script>
+</section>

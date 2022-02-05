@@ -1,0 +1,778 @@
+<!-- Default box -->
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formularioAsignar" method="post" action="../plan/adicionarDetalle" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAsignar" class="modal fade">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Detalles de las fechas</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_pla">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control" id="nom_pla3" name="nom_pla" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Descripcion</label>
+                                                <textarea class="form-control" id="obs_pla3" name="obs_pla" readonly></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Asignacion de Ayudante-Materia</label>
+                                        <select id="cod_matplaayu3" name="cod_matplaayu" class="form-control select-chosen" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                  					</select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Fecha </label>
+                                                <input type="text" class="form-control fecha" id="fecha3" name="fecha" data-fv-date="true" data-fv-date-format="DD/MM/YYYY" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Hora inicio </label>
+                                                <input type="text" class="form-control hora" id="inicio3" name="inicio" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Hora fin </label>
+                                                <input type="text" class="form-control hora" id="fin3" name="fin" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" id="adicionar3">Adicionar</button>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="table-responsive">
+                                        <table style="background-color: transparent;" id="detalles3" class="table table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3" class="w3-center"> <strong>Detalle de Horarios</strong> </td>
+                                                </tr>
+                                                <tr>
+                                                    <th> Fecha </th>
+                                                    <th> Horario </th>
+                                                    <th width="25px">Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="unit3" class="w3-center">
+                                                    <td colspan="3">Sin ningun detalle</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="formulario" method="post" action="../plan/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog" style="width: 95%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Plan</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control text-uppercase" id="nom_pla" name="nom_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Descripcion</label>
+                                                <textarea class="form-control" id="obs_pla" name="obs_pla" data-fv-notempty="true"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Sigla</label>
+                                                <input type="text" class="form-control text-uppercase" id="sig_pla" name="sig_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Fecha de Inicio</label>
+                                                <input type="text" class="form-control fecha" id="fini_pla" name="fini_pla" data-fv-date-format="DD/MM/YYYY" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Fecha Fin</label>
+                                                <input type="text" class="form-control fecha" id="ffin_pla" name="ffin_pla" data-fv-date-format="DD/MM/YYYY" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Tipo de plan</label>
+                                                <div class="radio">
+                                                    <label for="simple"><input type="radio" id="simple" name="tip_pla" value="1" data-fv-notempty="true"/>Simple </label>
+                                                    <label for="combo"><input type="radio"  id="combo" name="tip_pla" value="2" data-fv-notempty="true"/>Combo </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Monto</label>
+                                                <input type="number" min="0" class="form-control" id="mon_pla" name="mon_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Horas</label>
+                                                <input type="number" min="0" class="form-control" id="hor_pla" name="hor_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Descuento</label>
+                                                <input type="text" class="form-control" id="des_pla" name="des_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Gestion </label>
+                                                <select id="ges_gen" name="ges_gen" class="form-control select-chosen" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                  						<option value=""></option>
+                  						#foreach($g in $gestiones)
+                  							<option value="$g.ges_gen">$g.ges_gen</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ayudante </label>
+                                                <select id="cod_ayu1" name="cod_ayu1" class="form-control select-chosen" data-placeholder="Seleccionar...">
+                  						<option value=""></option>
+                  						#foreach($a in $ayudantes)
+                  							<option value="$a.cod_ayu">$a.nom_per $a.priape_per $!{a.segape_per}</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Materia </label>
+                                                <select id="cod_mat1" name="cod_mat1" class="form-control select-chosen" data-placeholder="Seleccionar...">
+                  						<option value=""></option>
+                  						#foreach($m in $materias)
+                  							<option value="$m.cod_mat">$m.nom_car $m.nom_mat</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-success btn-block" id="adicionar">Adicionar</button>
+                                    <div class="table-responsive">
+                                        <table style="background-color: transparent;" id="detalles" class="table table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr align="center">
+                                                    <td colspan="3"> Asignaciones </td>
+                                                </tr>
+                                                <tr>
+                                                    <th> Ayudante </th>
+                                                    <th> Materia </th>
+                                                    <th width="25px">Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="unit" align="center">
+                                                    <td colspan="3">Sin ningun detalle</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../plan/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog" style="width: 95%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Plan</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_pla">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control text-uppercase" id="nom_pla1" name="nom_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Descripcion</label>
+                                                <textarea class="form-control" id="obs_pla1" name="obs_pla" data-fv-notempty="true"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Sigla</label>
+                                                <input type="text" class="form-control text-uppercase" id="sig_pla1" name="sig_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Fecha de Inicio</label>
+                                                <input type="text" class="form-control fecha" id="fini_pla1" name="fini_pla" data-fv-date-format="DD/MM/YYYY" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Fecha Fin</label>
+                                                <input type="text" class="form-control fecha" id="ffin_pla1" name="ffin_pla" data-fv-date-format="DD/MM/YYYY" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Tipo de plan</label>
+                                                <div class="radio">
+                                                    <label for="simple1"><input type="radio" id="simple1" name="tip_pla" value="1" data-fv-notempty="true"/>Simple </label>
+                                                    <label for="combo1"><input type="radio"  id="combo1" name="tip_pla" value="2" data-fv-notempty="true"/>Combo </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Monto</label>
+                                                <input type="text" min="0" class="form-control" name="mon_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Horas</label>
+                                                <input type="text" min="0" class="form-control" name="hor_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Descuento</label>
+                                                <input type="text" class="form-control" id="des_pla1" name="des_pla" data-fv-notempty="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Gestion </label>
+                                                <select id="ges_gen1" name="ges_gen" class="form-control select-chosen" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                  						<option value=""></option>
+                  						#foreach($g in $gestiones)
+                  							<option value="$g.ges_gen">$g.ges_gen</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ayudante </label>
+                                                <select id="cod_ayu2" name="cod_ayu2" class="form-control select-chosen" data-placeholder="Seleccionar...">
+                  						<option value=""></option>
+                  						#foreach($a in $ayudantes)
+                  							<option value="$a.cod_ayu">$a.nom_per $a.priape_per $!{a.segape_per}</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Materia </label>
+                                                <select id="cod_mat2" name="cod_mat2" class="form-control select-chosen" data-placeholder="Seleccionar...">
+                  						<option value=""></option>
+                  						#foreach($m in $materias)
+                  							<option value="$m.cod_mat">$m.nom_car $m.nom_mat</option>
+                  						#end
+                  					</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-success btn-block" id="adicionar2">Adicionar</button>
+                                    <div class="table-responsive">
+                                        <table style="background-color: transparent;" id="detalles2" class="table table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr align="center">
+                                                    <td colspan="3"> Asignaciones </td>
+                                                </tr>
+                                                <tr>
+                                                    <th> Ayudante </th>
+                                                    <th> Materia </th>
+                                                    <th width="25px">Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="unit2" align="center">
+                                                    <td colspan="3">Sin ningun detalle</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Planes </h1>
+            </div>
+            <div class="col-md-7">
+                <div class="pull-right btn-group">
+                    <label class="btn btn-primary active tipoRadio"> 
+							<input type="radio" name="tipo" value="1"  data-toggle="tooltip" data-placement="top" title="Mostrar Planes Activos" checked> Planes Activos
+						</label>
+                    <label class="btn btn-danger tipoRadio"> 
+							<input type="radio" name="tipo" value="2"  data-toggle="tooltip" data-placement="top" title="Mostrar Planes Finalizados"> P. Finalizados
+						</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <div class="pull-right btn-group">
+                    <label class="btn btn-primary active estadoRadio"> <input
+				type="radio" name="estado" value="true"  data-toggle="tooltip" data-placement="top" title="Mostrar Activos" checked> Activos
+			</label> <label class="btn btn-danger estadoRadio" data-toggle="tooltip" data-placement="top" title="Mostrar Inactivos"> <input
+				type="radio" name="estado" value="false"> Inactivos
+			</label>
+                </div>
+            </div>
+        </div>
+        <table id="tabla" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Sigla</th>
+                    <th>Nombre</th>
+                    <th>F.Inicio</th>
+                    <th>F.Fin</th>
+                    <th>Horas</th>
+                    <th>Monto</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+    $(document).ready(function() {
+        $(".fecha").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $(".hora").inputmask("99:99", {
+            "placeholder": "hh:mm"
+        });
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tablaPlan = $('#tabla').DataTable({
+            dom: "<'row'<'col-sm-3'f><'col-sm-2'B><'col-sm-2'l><'col-sm-5'i>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [{
+                text: '<span class="fa fa-plus-circle"></span> Adicionar <span class="fa fa-plus-circle"></span>',
+                className: "btn-primary active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#detalles > tbody').html('');
+                    var row = $('<tr id="unit" align="center"></tr>');
+                    $('<td colspan="6">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles > tbody:last').append(row);
+                    $('#cod_mat1 option:disabled').removeAttr('disabled');
+                    $('#cod_mat1').trigger('chosen:updated');
+                    $('#cod_ayu1 option:disabled').removeAttr('disabled');
+                    $('#cod_ayu1').trigger('chosen:updated');
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ordering": false,
+            "oLanguage": {
+                "sUrl": "../../js/Spanish.lang"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../plan/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                    d.tipo = $('input[name=tipo]:checked').val();
+                }
+            },
+            "columnDefs":[{targets: [2,3,4,5,6,7],className:'text-right'}],
+            "columns": [{
+                "data": "sig_pla"
+            }, {
+                "data": "nom_pla"
+            }, {
+                "data": "fechai"
+            }, {
+                "data": "fechaf"
+            }, {
+                "data": "hor_pla"
+            }, {
+                "data": "mon_pla"
+            }, {
+                "data": "cod_pla"
+            }, {
+                "data": "cod_pla"
+            }],
+            "createdRow": function(row, data, index) {
+                if (data.tip_pla == 1) $('td', row).eq(6).html('<small class="label label-success">Simple</small>');
+                else $('td', row).eq(6).html('<small class="label label-primary">Simple</small>');
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    let botones = '';
+                    if (data.tra_pla == 1) botones = '<button class="btn btn-success asignar"  data-toggle="tooltip" data-placement="top" title="Asignar horarios" data-id="' + data.cod_pla + '"><i class="fa fa-group"></i> | asignar</button><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pla + '"><i class="fa fa-edit"></i> </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pla + '"><i class="glyphicon glyphicon-remove"></i> </button><button class="btn btn-warning finalizar" data-id="' + data.cod_pla + '" data-toggle="tooltip" data-placement="top" title="Finalizar plan"><i class="fa fa-unlock-alt"></i></button>';
+                    $('td', row).eq(7).html('<div class="btn-group">' + botones + '<button class="btn btn-success imprimir" data-id="' + data.cod_pla + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i>  </button></div>');
+                } else
+                    $('td', row).eq(7).html('<button class="btn btn-primary activar" data-id="' + data.cod_pla + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i> </button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tablaPlan.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de plan", ("Cod. plan: "+ obj.cod_pla+", Nombre: "+obj.nom_pla+", Fecha: "+obj.fechai+" - "+obj.fechaf), function(){
+        				jQuery.post('../plan/eliminar?cod_pla='+obj.cod_pla, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.activar').click(function() {
+                	let obj = tablaPlan.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de plan", ("Cod. plan: "+ obj.cod_pla+", Nombre: "+obj.nom_pla+", Fecha: "+obj.fechai+" - "+obj.fechaf), function(){
+        				jQuery.post('../plan/activar?cod_pla='+obj.cod_pla, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.finalizar').click(function() {
+                    let obj = tablaPlan.row($(this).closest('tr')).data();
+                	alertAdicion("Finalizacion del plan", ("Cod. plan: "+ obj.cod_pla+", Nombre: "+obj.nom_pla+", Fecha: "+obj.fechai+" - "+obj.fechaf), function(){
+        				jQuery.post('../plan/finalizar?cod_pla='+obj.cod_pla, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error al finalizar plan', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#detalles2 > tbody').html('');
+                    $.post('../plan/obtener?cod_pla=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $.each(result.data.asignaciones, function(index, data) {
+                                $('#unit2').remove();
+                                var row = $('<tr></tr>');
+                                $('<td>' + data['nom_per'] + ' ' + data['priape_per'] + ' ' + data['segape_per'] + '</td>').appendTo(row);
+                                $('<td>' + data['nom_car'] + '-' + data['nom_mat'] + '</td>').appendTo(row);
+                                $('<td><button type="button" class="btn btn-danger btn-sm input-remove" data-ayudante="' + data['cod_ayu'] + '" data-materia="' + data['cod_mat'] + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                                $('<input type="hidden" name="ayudantes" value="' + data['cod_ayu'] + '" >').appendTo(row);
+                                $('<input type="hidden" name="materias" value="' + data['cod_mat'] + '" >').appendTo(row);
+                                $('<input type="hidden" name="code_matplaayu" value="' + data['cod_matplaayu'] + '" >').appendTo(row);
+                                $('#detalles2 > tbody:last').append(row);
+                                $('#cod_ayu2 option[id=' + data['cod_ayu'] + ']').attr('disabled', 'disabled');
+                                $("#cod_ayu2").val('').trigger("chosen:updated");
+                                $('#cod_mat2 option[id=' + data['cod_ayu'] + ']').attr('disabled', 'disabled');
+                                $("#cod_mat2").val('').trigger("chosen:updated");
+                            });
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#fini_pla1').val(result.data.fechai);
+                            $('#ffin_pla1').val(result.data.fechaf);
+                            $('#ges_gen1').val(result.data.ges_gen).trigger('chosen:updated');
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.asignar').click(function() {
+                    $('#formularioAsignar')[0].reset();
+                    $('#formularioAsignar').data('formValidation').resetForm();
+
+                    $.post('../plan/obtener?cod_pla=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalAsignar').modal('show');
+                            $('#formularioAsignar').loadJSON(result.data);
+                            $('#cod_matplaayu3').html('');
+                            let row1 = $('<option value=""></option>');
+                            $('#cod_matplaayu3').append(row1);
+                            $.each(result.data.asignaciones, function(index, data) {
+                                var row = $('<option value="' + data['cod_matplaayu'] + '">' + data['nom_per'] + ' ' + data['priape_per'] + ' ' + data['segape_per'] + ' - ' + data['nom_car'] + ' ' + data['nom_mat'] + '</option>');
+                                $('#cod_matplaayu3').append(row);
+                            });
+                            $('#cod_matplaayu3').trigger('chosen:updated');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../plan/ver?cod_pla=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('.tipoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar,#formularioFinalizar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        	});
+        });
+        $('#nom_pla').blur(function() {
+            $.post('../plan/validar?nom_pla=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#nom').val('');
+                    mostrarMensaje('error', 'Este nombre ya existe!!!');
+                }
+            });
+        });
+        $(document).on('click', '.input-remove-row', function() {
+            $('#cod_ayu1 option[value=' + $(this).data('ayudante') + ']').removeAttr('disabled');
+            $("#cod_ayu1").trigger("chosen:updated");
+            $('#cod_mat1 option[value=' + $(this).data('materia') + ']').removeAttr('disabled');
+            $("#cod_mat1").trigger("chosen:updated");
+            let tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                if ($('#detalles > tbody>tr').length == 0) {
+                	let row = $('<tr id="unit" align="center"></tr>');
+                    $('<td colspan="3">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles > tbody:last').append(row);
+                }
+            });
+        });
+        $(document).on('click', '.input-remove', function() {
+            $('#cod_ayu2 option[value=' + $(this).data('ayudante') + ']').removeAttr('disabled');
+            $("#cod_ayu2").trigger("chosen:updated");
+            $('#cod_mat2 option[value=' + $(this).data('materia') + ']').removeAttr('disabled');
+            $("#cod_mat2").trigger("chosen:updated");
+            let tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                if ($('#detalles2 > tbody>tr').length == 0) {
+                    var row = $('<tr id="unit2" align="center"></tr>');
+                    $('<td colspan="3">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles2 > tbody:last').append(row);
+                }
+            });
+            if ($(this).data('matplaayu') != 'undefined')
+                $.post('../plan/eliminarAsignacion?cod_matplaayu=' + $(this).data('matplaayu'), function() {
+                    if (status == true) {
+                        mostrarMensaje('info', 'Se realizo con exito la eliminacion.');
+                    }
+                });
+        });
+        $(document).on('click', '.input-remove-fila', function() {
+        	let tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                if ($('#detalles3 > tbody>tr').length == 0) {
+                    var row = $('<tr id="unit3" align="center"></tr>');
+                    $('<td colspan="3">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles3 > tbody:last').append(row);
+                }
+            });
+        });
+        $(document).on('click', '.input-remove4', function() {
+        	let tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                if ($('#detalles4 > tbody>tr').length == 0) {
+                    var row = $('<tr id="unit4" align="center"></tr>');
+                    $('<td colspan="3">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles4 > tbody:last').append(row);
+                }
+            });
+            if ($(this).data('matplaayu') != '0')
+                $.post('../plan/eliminarDetalle?cod_matplaayu=' + $(this).data('matplaayu') + '&cod_detpla=' + $(this).data('detpla'), function(resp) {
+                    if (resp.status) {
+                        mostrarMensaje('info', resp.msg);
+                    }else{
+                    	mostrarMensaje('error', resp.msg);
+                    }
+                });
+        });
+        $('#adicionar').click(function() {
+            if ($('#cod_ayu1').val() != '' && $('#cod_mat1').val() != '') {
+                $('#unit').remove();
+                let row = $('<tr></tr>');
+                $('<td>' + $('#cod_ayu1 option:selected').text() + '</td>').appendTo(row);
+                $('<td>' + $('#cod_mat1 option:selected').text() + '</td>').appendTo(row);
+                $('<td><button type="button" class="btn btn-danger btn-sm input-remove-row" data-ayudante="' + $('#cod_ayu1').val() + '" data-materia="' + $('#cod_mat1').val() + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                $('<input type="hidden" name="ayudantes" value="' + $('#cod_ayu1').val() + '" >').appendTo(row);
+                $('<input type="hidden" name="materias" value="' + $('#cod_mat1').val() + '" >').appendTo(row);
+                $('#detalles > tbody:last').append(row);
+                $("#cod_ayu1 option:selected").attr('disabled', 'disabled');
+                $("#cod_ayu1").val('').trigger("chosen:updated");
+                $("#cod_mat1 option:selected").attr('disabled', 'disabled');
+                $("#cod_mat1").val('').trigger("chosen:updated");
+            }
+        });
+        $('#adicionar2').click(function() {
+            if ($('#cod_ayu2').val() != '' && $('#cod_mat2').val() != '') {
+                $('#unit2').remove();
+                let row = $('<tr></tr>');
+                $('<td>' + $('#cod_ayu2 option:selected').text() + '</td>').appendTo(row);
+                $('<td>' + $('#cod_mat2 option:selected').text() + '</td>').appendTo(row);
+                $('<td><button type="button" class="btn btn-danger btn-sm input-remove" data-ayudante="' + $('#cod_ayu2').val() + '" data-materia="' + $('#cod_mat2').val() + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                $('<input type="hidden" name="ayudantes" value="' + $('#cod_ayu2').val() + '" >').appendTo(row);
+                $('<input type="hidden" name="materias" value="' + $('#cod_mat2').val() + '" >').appendTo(row);
+                $('<input type="hidden" name="code_matplaayu" value="0" >').appendTo(row);
+                $('#detalles2 > tbody:last').append(row);
+                $("#cod_ayu2 option:selected").attr('disabled', 'disabled');
+                $("#cod_ayu2").val('').trigger("chosen:updated");
+                $("#cod_mat2 option:selected").attr('disabled', 'disabled');
+                $("#cod_mat2").val('').trigger("chosen:updated");
+            }
+        });
+        $('#formularioAsignar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(resp) {
+                if (resp.status) {
+                    $('#unit3').remove();
+                    var row = $('<tr></tr>');
+                    $('<td>' + $('#fecha3').val() + '</td>').appendTo(row);
+                    $('<td>' + $('#inicio3').val() + ' - ' + $('#fin3').val() + '</td>').appendTo(row);
+                    $('<td><button type="button" class="btn btn-danger btn-sm input-remove4" data-matplaayu="' + $('#cod_matplaayu3').val() + '" data-detpla="' + resp.cod_detpla + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                    $('<input type="hidden" name="fechas" value="' + $('#fecha3').val() + '" >').appendTo(row);
+                    $('<input type="hidden" name="inicios" value="' + $('#inicio3').val() + '" >').appendTo(row);
+                    $('<input type="hidden" name="fines" value="' + $('#fin3').val() + '" >').appendTo(row);
+                    $('#detalles3 > tbody:last').append(row);
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+        });
+        $('#cod_matplaayu3').chosen().change(function() {
+            $.post('../plan/obtenerxcodmatplaayu?cod_matplaayu=' + $(this).val(), function(result) {
+            	$('#detalles3 > tbody').html('');
+                if (result.status) {
+                	if(result.data){
+                		result.data.forEach(item=>{
+                			$('#unit3').remove();
+                            let row = $('<tr></tr>');
+                            $('<td>' + item.fecha + '</td>').appendTo(row);
+                            $('<td>' + item.hini_detpla + '-' + item.hfin_detpla + '</td>').appendTo(row);
+                            $('<td><button type="button" class="btn btn-danger btn-sm input-remove4" data-matplaayu="' + item.cod_matplaayu + '" data-detpla="' + item.cod_detpla + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                            $('<input type="hidden" name="fecha2" value="' + item.fecha + '" >').appendTo(row);
+                            $('<input type="hidden" name="inicios" value="' + item.hini_detpla + '" >').appendTo(row);
+                            $('<input type="hidden" name="fines" value="' + item.hfin_detpla + '" >').appendTo(row);
+                            $('#detalles3 > tbody:last').append(row);
+                		});
+                	}
+                }
+            }, 'json');
+        });
+    });
+</script>

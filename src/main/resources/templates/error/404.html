@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Error</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/AdminLTE.css" />
+    <link rel="stylesheet" href="/css/_all-skins.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+
+
+  </head>
+  <body class="hold-transition skin-blue layout-top-nav">
+  <div class="wrapper">
+
+    <header class="main-header">
+      <nav class="navbar navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <a href="/" class="logo">
+              <span class="logo-lg"><img src="/icon/favicon-32x32.png" alt="Logo Mi Comercial"> | Mi Comercial</span>
+            </a>
+          </div>
+
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>
+    <!-- Full Width Column -->
+    <div class="content-wrapper">
+      <div class="container">
+        <!-- Content Header (Page header) -->
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="error-page">
+            <h2 class="headline text-yellow" > 404</h2>
+            <div class="error-content">
+              <h3><i class="fa fa-warning text-yellow"></i> <span th:text="${errorMsg}"></span></h3>
+              <p>
+                Estimado usuario si persiste el problema favor de comunicarse con servicio tecnico, muchas gracias.
+              </p>
+              <div class="pull-right">
+                <a  name="boton404" href="/" class="btn btn-lg btn-warning btn-flat"><i class="fa fa-home"></i> Volver a Inicio</a>
+              </div>
+            </div><!-- /.error-content -->
+
+          </div><!-- /.error-page -->
+          <img src="/img/404.svg" class="img-responsive" alt="">
+        </section><!-- /.content -->
+      </div><!-- /.container -->
+    </div><!-- /.content-wrapper -->
+    <footer class="main-footer"  style="position: fixed;bottom: 0;width: 100%;">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 2.1
+      </div>
+      <strong>Copyright &copy; 2021 <a href="#" class="text-primary">Carlos F. Gutierrez G.</a> Sitio potenciado con software libre y
+        de codigo abierto Tarija - Bolivia
+      </strong>
+    </footer>
+  </div><!-- ./wrapper -->
+
+    <script src="/js/jquery-3.5.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/fastclick.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/demo.js" charset="UTF-8"></script>
+  </body>
+</html>

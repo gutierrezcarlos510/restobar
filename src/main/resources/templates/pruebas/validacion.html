@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de Bibliotecas</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    
+	<!--     date-picker -->
+    <link href="../../css/bootstrap-datetimepicker.css" rel="stylesheet">
+    
+    <!-- Bootstrap validation CSS -->
+     <link href="../../css/formValidation.min.css" rel="stylesheet">
+
+<!-- 	chosen select -->
+ 	<link rel="stylesheet" href="../../css/chosen.css">
+	
+    <!-- MetisMenu CSS -->
+    <link href="../../css/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+<!--     libreria para subir imagenes -->
+	<link href="../../css/fileinput.css" rel="stylesheet" type="text/css">
+
+<!-- 	notificaciones -->
+	<link href="../../css/pnotify.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<form id="basicBootstrapForm" class="form-horizontal"
+    data-fv-framework="bootstrap"
+    data-fv-icon-valid="glyphicon glyphicon-ok"
+    data-fv-icon-invalid="glyphicon glyphicon-remove"
+    data-fv-icon-validating="glyphicon glyphicon-refresh">
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Full name</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" name="firstName" placeholder="First name"
+                data-fv-row=".col-xs-4"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The first name is required" />
+        </div>
+
+        <div class="col-xs-4">
+            <input type="text" class="form-control" name="lastName" placeholder="Last name"
+                data-fv-row=".col-xs-4"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The last name is required" />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Full name</label>
+        <div class="col-xs-4">
+            <input type="file" class="form-control file" name="firstName" placeholder="First name"
+                data-fv-row=".col-xs-4"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The first name is required" />
+        </div>
+
+        <div class="col-xs-4">
+            <input type="text" class="form-control" name="lastName" placeholder="Last name"
+                data-fv-row=".col-xs-4"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The last name is required" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Username</label>
+        <div class="col-xs-5">
+            <input type="text" class="form-control" name="username"
+                data-fv-notempty="true"
+                
+
+                data-fv-stringlength="true"
+                data-fv-stringlength-min="6"
+                data-fv-stringlength-max="30"
+ 
+
+                data-fv-regexp="true"
+                data-fv-regexp-regexp="^[a-zA-Z0-9_\.]+$"
+                />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Roles</label>
+        <div class="col-xs-5">
+            <select name="roles" class="form-control input-md">
+            <option value="1">Admin</option>
+            <option value="2">Secretaria</option>
+            <option value="3">Gerente</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Fecha de Nacimiento</label>
+        <div class="col-xs-5">
+            <div class="input-group input-append date" >
+                <input type="text" id="fecha" class="form-control" name="eventDate" />
+                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Solo fecha</label>
+        <div class="col-xs-5">
+            <div class='input-group date' id='datetimepicker3'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Solo Hora</label>
+        <div class="col-xs-5">
+             <div class='input-group date' id='datetimepicker4'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Email address</label>
+        <div class="col-xs-5">
+            <input type="text" class="form-control" name="email"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The email address is required"
+
+                data-fv-emailaddress="true"
+                data-fv-emailaddress-message="The input is not a valid email address" />
+        </div>
+    </div>
+    
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Password</label>
+        <div class="col-xs-5">
+            <input type="password" class="form-control" name="password"
+                data-fv-notempty="true"
+                data-fv-notempty-message="The password is required"
+
+                data-fv-different="true"
+                data-fv-different-field="username"
+                data-fv-different-message="The password cannot be the same as username" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Gender</label>
+        <div class="col-xs-6">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="gender" value="male"
+                        data-fv-notempty="true"
+                        data-fv-notempty-message="The gender is required" /> Male
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="gender" value="female" /> Female
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="gender" value="other" /> Other
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label" id="captchaOperation"></label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" name="captcha"
+                data-fv-callback="true"
+                data-fv-callback-callback="checkCaptcha"
+                data-fv-callback-message="Wrong answer" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6 col-xs-offset-3">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="agree" value="agree"
+                        data-fv-notempty="true"
+                        data-fv-notempty-message="You must agree with the terms and conditions" /> Agree with the terms and conditions
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-9 col-xs-offset-3">
+            <button type="submit" class="btn btn-primary" name="signup" value="Sign up">Submit</button>
+        </div>
+    </div>
+</form>
+
+<!-- jQuery -->
+    <script src="../../js/jquery.min.js"></script>
+	<!-- 	date-picker -->
+	<script src="../../js/moment.js"></script>
+	
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../js/bootstrap.min.js"></script>
+    
+    
+    <script src="../../js/bootstrap-datetimepicker.js"></script>
+    <script src="../../js/es.js"></script>
+    
+ 	<!-- Bootstrap Validation JavaScript -->
+	<script src="../../js/formValidation.js"></script>
+	<script src="../../js/framework/bootstrap.min.js"></script>
+	<script src="../../js/es_ES.js"></script>
+	
+<!-- 	chosen select -->
+	<script src="../../js/chosen.js"></script>
+	
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../../js/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../../js/sb-admin-2.js"></script>
+	<script src="../../js/fileinput.js"></script>
+	
+<!-- 	notificaciones -->
+	<script type="text/javascript" src="../../js/pnotify.js"></script>
+	
+	<script type="text/javascript"> 
+		var ahora = new Date();
+		var dias = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves","Viernes", "Sabado");
+		var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo","Junio", "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+		var hoy=dias[ahora.getDay()]+', '+ahora.getDate()+' de '+meses[(ahora.getMonth()+1)]+' del '+ahora.getFullYear();	
+		$('#fecha').html('Fecha : '+hoy);
+
+// Check the captcha
+function checkCaptcha(value, validator, $field) {
+    var items = $('#captchaOperation').html().split(' '),
+        sum   = parseInt(items[0]) + parseInt(items[2]);
+    return value == sum;
+}
+
+$(document).ready(function() {
+	var notificacion=new PNotify({
+        title: 'Notificacion',
+        text: 'Hola mundo.',
+        type: 'info',
+        delay: 1000
+    });
+	notificacion;
+	$('#fecha').datetimepicker({
+		locale : 'es'
+	});
+	$('#datetimepicker3').datetimepicker({
+		 locale : 'es',
+		 format: 'L'
+    }); 
+	$('#datetimepicker4').datetimepicker({
+		 locale : 'es',
+		 format: 'LT'
+     });
+	$('select').chosen({
+		no_results_text : "No se encuentra:",
+		width : '100%'
+	});
+    // Generate a simple captcha
+    function randomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    $('#captchaOperation').html([randomNumber(1, 100), '+', randomNumber(1, 200), '='].join(' '));
+
+    $('#basicBootstrapForm').formValidation({
+    	locale: 'es_ES'
+    });
+});
+</script>
+</body>
+</html>

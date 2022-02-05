@@ -1,0 +1,809 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../cotizacion/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog" style="width: 98%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Cotizacion</h4>
+                        </div>
+                        <div class="modal-body">
+                        	<div class="row">
+                        		<div class="col-md-6">
+                        		<div class="box box-success">
+			                <div class="box-header">
+			                  <i class="fa fa-odnoklassniki-square"></i>
+			                  <h3 class="box-title">Estudiantes del Sistema</h3>
+			                </div>
+			                <div class="box-body chat" id="chat-box">
+			                  <!-- chat item -->
+			                  <div class="item" id="dataEstudiante">
+			                    <img src="/avatars/user.png" alt="user image" class="online">
+			                    <p class="message">
+			                      <a href="#" class="name">
+			                        <label class="text-success pull-right"><i class="fa fa-whatsapp"></i> Cel. <span aria-label="tel_per"></span></label>
+			                        C&oacute;digo de estudiante: <span aria-label="cod_est"></span>
+			                      </a>
+			                      Nombre y apellidos: <span aria-label="xestudiante"></span>
+			                    </p>
+			                    
+			                  </div><!-- /.item -->
+			                </div><!-- /.chat -->
+			              </div><!-- /.box (chat box) -->
+                			<div class="box box-primary">
+							<div class="box-body">
+								<div class="">
+								<table id="tablaEstudiante" class="table table-sm table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th class="desktop">Cod.</th>
+											<th class="desktop">Celular</th>
+											<th class="all">Estudiante</th>
+											<th class="all">Seleccionar</th>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+								</div>
+							</div>
+							</div>
+                        		</div>
+                        		<div class="col-md-6">
+                        			<div class="form-group">
+		                                <label>Celular del estudiante</label>
+		                                <div class="input-group">
+					                        <div class="input-group-addon">
+					                          <i class="fa fa-phone"></i>
+					                        </div>
+					                        <input type="text" class="form-control input-sm text-uppercase" id="celularAdd" name="celular" data-fv-notempty="true">
+					                      </div>
+		                            </div>
+		                            
+		                            <div class="form-group" style="display: none;" id="celularPropietarioDiv">
+		                                <label>Estudiante encontrado</label>
+		                                <div class="input-group">
+					                        <div class="input-group-addon">
+					                          <i class="fa fa-user"></i>
+					                        </div>
+					                        <input type="text" class="form-control text-uppercase" id="celularPropietarioAdd" name="celularPropietario">
+					                      </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label>Ciudad</label>
+		                                <div class="radio">
+		                                	<label for="ciudad1" class="col-md-4"><input type="radio" id="ciudad1" name="ciudad" value="Tarija" data-fv-notempty="true"/>Tarija</label>
+		                                	<label for="ciudad2" class="col-md-4"><input type="radio" id="ciudad2" name="ciudad" value="La Paz" data-fv-notempty="true"/>La Paz</label>
+		                                	<label for="ciudad3" class="col-md-4"><input type="radio" id="ciudad3" name="ciudad" value="Santa Cruz" data-fv-notempty="true"/>Santa Cruz</label>
+		                                	<label for="ciudad4" class="col-md-4"><input type="radio" id="ciudad4" name="ciudad" value="Cochabamba" data-fv-notempty="true"/>Cochabamba</label>
+		                                	<label for="ciudad5" class="col-md-4"><input type="radio" id="ciudad5" name="ciudad" value="Oruro" data-fv-notempty="true"/>Oruro</label>
+		                                	<label for="ciudad6" class="col-md-4"><input type="radio" id="ciudad6" name="ciudad" value="Potosi" data-fv-notempty="true"/>Potosi</label>
+		                                	<label for="ciudad7" class="col-md-4"><input type="radio" id="ciudad7" name="ciudad" value="Sucre" data-fv-notempty="true"/>Sucre</label>
+		                                	<label for="ciudad8" class="col-md-4"><input type="radio" id="ciudad8" name="ciudad" value="Beni" data-fv-notempty="true"/>Beni</label>
+		                                	<label for="ciudad9" class="col-md-4"><input type="radio" id="ciudad9" name="ciudad" value="Pando" data-fv-notempty="true"/>Pando</label>
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label>Servicios para</label>
+		                                <div class="radio">
+		                                	<label for="tipoEstudio1" class="col-md-4"><input type="radio" id="tipoEstudio1" name="tipoEstudio" value="Colegio Primaria" data-fv-notempty="true"/>Colegio Primaria</label>
+		                                	<label for="tipoEstudio2" class="col-md-4"><input type="radio" id="tipoEstudio2" name="tipoEstudio" value="Colegio Secundaria" data-fv-notempty="true"/>Colegio Secundaria</label>
+		                                	<label for="tipoEstudio3" class="col-md-4"><input type="radio" id="tipoEstudio3" name="tipoEstudio" value="Universidad" data-fv-notempty="true"/>Universidad</label>
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label>Tipo Servicio</label>
+		                                <div class="row">
+											<label th:each="t : ${tipos}" th:for="'cod-' + ${t.cod_tipser}" style="font-weight: normal;" class="col-md-4">
+												<input type="radio" th:id="'cod-' + ${t.cod_tipser}" name="codTipser" th:value="${t.cod_tipser}" data-fv-notempty="true"/>
+												<span th:text="${t.nom_tipser}"></span>
+											</label>
+		                  				</div>
+		                  			</div>
+		                  			<div class="row">
+		                  				<div class="col-md-6">
+		                  					<div class="form-group">
+				                                <label>Materia</label>
+				                                <div class="input-group">
+							                        <div class="input-group-addon">
+							                          <i class="fa fa-bookmark"></i>
+							                        </div>
+							                        <input type="text" class="form-control" name="materia" data-fv-notempty="true">
+							                      </div>
+				                  			</div>
+		                  				</div>
+		                  				<div class="col-md-6">
+		                  					<div class="form-group">
+				                                <label>Tema</label>
+				                                <div class="input-group">
+							                        <div class="input-group-addon">
+							                          <i class="fa fa-book"></i>
+							                        </div>
+							                        <input type="text" class="form-control" name="tema" data-fv-notempty="true">
+							                      </div>
+				                  			</div>
+		                  				</div>
+		                  			</div>
+		                  			<div class="form-group">
+		                                <label>Docente o profesor de su establecimiento</label>
+		                                <div class="input-group">
+					                        <div class="input-group-addon">
+					                          <i class="fa fa-user-secret"></i>
+					                        </div>
+					                        <input type="text" class="form-control" id="docente" name="docente" data-fv-notempty="true">
+					                      </div>
+		                            </div>
+		                            <div class="form-group text-right">
+		                            	<div class="form-check">
+		                            		<input type="checkbox" class="form-check-input" id="sinDocente" /> <label class="form-check-label" for="sinDocente"> Sin docente</label>
+		                            	</div>
+		                            </div>
+		                            <div class="row">
+		                            	<div class="col-md-7">
+		                            		<div class="form-group">
+		                            		<label>Fecha de Entrega</label>
+		                            		<div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-calendar-check-o"></i>
+						                        </div>
+												<input type="hidden" id="pfecha" name="pfecha">
+						                        <input type="date" class="form-control" id="fechaInput" name="fechaInput" data-fv-notempty="true">
+						                      </div>
+		                            		</div>
+		                            	</div>
+		                            	<div class="col-md-5">
+		                            		<div class="form-group">
+			                            		<label>Hora de Entrega</label>
+			                            		<div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-clock-o"></i>
+						                        </div>
+												<input type="hidden" id="phora" name="phora">
+						                        <input type="time" class="form-control" id="horaInput" name="horaInput" data-fv-notempty="true">
+					                      		</div>
+		                            		</div>
+		                            	</div>
+		                            </div>
+                        		</div>
+                        	</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../cotizacion/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade" >
+                <div class="modal-dialog" style="width: 98%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Cotizacion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cotizacionId" />
+                            <div class="row">
+                            	<div class="col-md-6">
+                        		<div class="box box-success">
+			                <div class="box-header">
+			                  <i class="fa fa-odnoklassniki-square"></i>
+			                  <h3 class="box-title">Estudiantes del Sistema</h3>
+			                </div>
+			                <div class="box-body chat" id="chat-box2">
+			                  <!-- chat item -->
+			                  <div class="item" id="dataEstudianteMod">
+			                    <img src="/avatars/user.png" alt="user image" class="online">
+			                    <p class="message">
+			                      <a href="#" class="name">
+			                        <label class="text-success pull-right"><i class="fa fa-whatsapp"></i> Cel. <span aria-label="tel_per"></span></label>
+			                        C&oacute;digo de estudiante: <span aria-label="cod_est"></span>
+			                      </a>
+			                      Nombre y apellidos: <span aria-label="xestudiante"></span>
+			                    </p>
+			                  </div><!-- /.item -->
+			                </div><!-- /.chat -->
+			              </div><!-- /.box (chat box) -->
+                			<div class="box box-primary">
+							<div class="box-body">
+								<div class="">
+								<table id="tablaEstudiante2" class="table table-sm table-striped table-bordered" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th>Cod.</th>
+											<th>Celular</th>
+											<th>Estudiante</th>
+											<th>Seleccionar</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								</div>
+							</div>
+							</div>
+                        		</div>
+                        		<div class="col-md-6">
+                        			<div class="row">
+		                            	<div class="col-md-4">
+		                            		<div class="form-group">
+				                                <label>Celular del estudiante</label>
+				                                <div class="input-group">
+							                        <div class="input-group-addon">
+							                          <i class="fa fa-phone"></i>
+							                        </div>
+							                        <input type="text" class="form-control input-sm" id="celularMod" name="celular" data-fv-notempty="true">
+							                      </div>
+				                            </div>
+		                            	</div>
+		                            	<div class="col-md-8">
+		                            		<div class="form-group">
+				                                <label>Estudiante encontrado</label>
+				                                <div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-user"></i>
+						                        </div>
+						                        <input type="text" class="form-control input-sm" id="celularPropietarioMod" name="celularPropietario">
+						                      </div>
+				                            </div>
+		                            	</div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label>Ciudad</label>
+		                                <div class="radio">
+		                                	<label for="ciudadMod1" class="col-md-4"><input type="radio" id="ciudadMod1" name="ciudad" value="Tarija" data-fv-notempty="true"/>Tarija</label>
+		                                	<label for="ciudadMod2" class="col-md-4"><input type="radio" id="ciudadMod2" name="ciudad" value="La Paz" data-fv-notempty="true"/>La Paz</label>
+		                                	<label for="ciudadMod3" class="col-md-4"><input type="radio" id="ciudadMod3" name="ciudad" value="Santa Cruz" data-fv-notempty="true"/>Santa Cruz</label>
+		                                	<label for="ciudadMod4" class="col-md-4"><input type="radio" id="ciudadMod4" name="ciudad" value="Cochabamba" data-fv-notempty="true"/>Cochabamba</label>
+		                                	<label for="ciudadMod5" class="col-md-4"><input type="radio" id="ciudadMod5" name="ciudad" value="Oruro" data-fv-notempty="true"/>Oruro</label>
+		                                	<label for="ciudadMod6" class="col-md-4"><input type="radio" id="ciudadMod6" name="ciudad" value="Potosi" data-fv-notempty="true"/>Potosi</label>
+		                                	<label for="ciudadMod7" class="col-md-4"><input type="radio" id="ciudadMod7" name="ciudad" value="Sucre" data-fv-notempty="true"/>Sucre</label>
+		                                	<label for="ciudadMod8" class="col-md-4"><input type="radio" id="ciudadMod8" name="ciudad" value="Beni" data-fv-notempty="true"/>Beni</label>
+		                                	<label for="ciudadMod9" class="col-md-4"><input type="radio" id="ciudadMod9" name="ciudad" value="Pando" data-fv-notempty="true"/>Pando</label>
+		                                </div>
+		                            </div><br /><br /><br /><br />
+		                            <div class="form-group">
+		                                <label>Servicios para</label>
+		                                <div class="radio">
+		                                	<label for="tipoEstudioMod1" class="col-md-4"><input type="radio" id="tipoEstudioMod1" name="tipoEstudio" value="Colegio Primaria" data-fv-notempty="true"/>Colegio Primaria</label>
+		                                	<label for="tipoEstudioMod2" class="col-md-4"><input type="radio" id="tipoEstudioMod2" name="tipoEstudio" value="Colegio Secundaria" data-fv-notempty="true"/>Colegio Secundaria</label>
+		                                	<label for="tipoEstudioMod3" class="col-md-4"><input type="radio" id="tipoEstudioMod3" name="tipoEstudio" value="Universidad" data-fv-notempty="true"/>Universidad</label>
+		                                </div>
+		                            </div><br /><br />
+		                            <div class="form-group">
+		                                <label>Tipo Servicio</label>
+		                                <div class="row">
+										<label th:each="t : ${tipos}" th:for="'codMod-'+${t.cod_tipser}" style="font-weight: normal;" class="col-md-4">
+											<input type="radio" th:id="'codMod-'+${t.cod_tipser}" name="codTipser" th:value="${t.cod_tipser}" data-fv-notempty="true"/>
+											<span th:text="${t.nom_tipser}"></span>
+										</label>
+		                  				</div>
+		                  			</div>
+		                  			<div class="row">
+		                  				<div class="col-md-6">
+		                  					<div class="form-group">
+				                                <label>Materia</label>
+				                                <div class="input-group">
+							                        <div class="input-group-addon">
+							                          <i class="fa fa-bookmark"></i>
+							                        </div>
+							                        <input type="text" class="form-control input-sm" name="materia" data-fv-notempty="true">
+							                      </div>
+				                  			</div>
+		                  				</div>
+		                  				<div class="col-md-6">
+		                  					<div class="form-group">
+				                                <label>Tema</label>
+				                                <div class="input-group">
+							                        <div class="input-group-addon">
+							                          <i class="fa fa-book"></i>
+							                        </div>
+							                        <input type="text" class="form-control input-sm" name="tema" data-fv-notempty="true">
+							                      </div>
+				                  			</div>
+		                  				</div>
+		                  			</div>
+		                  			<div class="row">
+		                  				<div class="col-md-7">
+		                  					<div class="form-group">
+				                                <label>Docente o profesor de su establecimiento</label>
+				                                
+				                                <div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-user-secret"></i>
+						                        </div>
+						                        <input type="text" class="form-control input-sm" id="docenteMod" name="docente" data-fv-notempty="true">
+						                      </div>
+				                            </div>
+		                  				</div>
+		                  				<div class="col-md-5">
+		                  					<div class="form-group"><br />
+				                            	<div class="form-check">
+				                            		<input type="checkbox" class="form-check-input" id="sinDocenteMod" /> <label class="form-check-label" for="sinDocenteMod"> Autocompletar sin docente</label>
+				                            	</div>
+				                            </div>
+		                  				</div>
+		                  			</div>
+		                            <div class="row">
+		                            	<div class="col-md-7">
+		                            		<div class="form-group">
+		                            		<label>Fecha de Entrega</label>
+		                            		<div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-calendar-check-o"></i>
+						                        </div>
+												<input type="hidden" id="pFechaMod" name="pfecha">
+						                        <input type="date" class="form-control input-sm" id="fechaInput2" name="fechaInput2" data-fv-notempty="true">
+						                      </div>
+		                            		</div>
+		                            	</div>
+		                            	<div class="col-md-5">
+		                            		<div class="form-group">
+		                            		<label>Hora de Entrega</label>
+		                            		<div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-clock-o"></i>
+						                        </div>
+						                        <input type="time" class="form-control input-sm" id="phoraMod" name="phora" data-fv-notempty="true">
+					                      		</div>
+		                            		</div>
+		                            	</div>
+		                            </div>
+		                            <div class="row">
+		                            	<div class="col-md-7">
+		                            		<div class="form-group">
+				                        	<label class="control-label">Ayudante (Si se tiene elegido)</label>
+				                        	<select id="ayudante" name="codAyu" class="form-control input-xs select-chosen" data-placeholder="Seleccione ayudante">
+												<option value=""></option>
+												<option th:each="a : ${ayudantes}" th:value="${a.cod_ayu}" th:text="${a.nom_per} + ' ' + ${a.priape_per} + ' ' + ${a.segape_per}"></option>
+											</select>
+				                    		</div>
+		                            	</div>
+		                            	<div class="col-md-5">
+		                            		<div class="form-group">
+		                            			<label>Precio (Opcional)</label>
+		                            			
+		                            			<div class="input-group">
+						                        <div class="input-group-addon">
+						                          <i class="fa fa-usd"></i>
+						                        </div>
+						                        <input type="text" class="form-control" name=precio data-fv-notempty="true">
+					                      		</div>
+		                            		</div>
+		                            	</div>
+		                            </div>
+                        		</div>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+       
+       <div id="modalVer" class="modal modal-default fade" data-backdrop="static">
+            <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> cerrar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                	<fieldset class="scheduler-border">
+										<legend class="scheduler-border">Cotizacion</legend>
+                                    <dl class="dl-horizontal h5" id="dataVer">
+                                        <dt>Codigo de Cotizaci&oacute;n</dt>
+                                        <dd aria-label="cotizacionId"></dd>
+                                        <dt>Estado</dt>
+                                        <dd aria-label="xestado"></dd>
+                                        <dt>Fecha de registro</dt>
+                                        <dd aria-label="xcreatedAt"></dd>
+                                        <dt>Usuario</dt>
+                                        <dd aria-label="xusuario"></dd>
+                                        <dt>Estudiante</dt>
+                                        <dd aria-label="xestudiante"></dd>
+                                        <dt>Area</dt>
+                                        <dd aria-label="tipoEstudio"></dd>
+                                        <dt>Tipo de servicio</dt>
+                                        <dd aria-label="xtiposervicio"></dd>
+                                        <dt>Materia</dt>
+                                        <dd aria-label="materia"></dd>
+                                        <dt>Tema</dt>
+                                        <dd aria-label="tema"></dd>
+                                        <dt>Docente</dt>
+                                        <dd aria-label="docente"></dd>
+                                        <dt >Fecha de Entrega</dt>
+                                        <dd aria-label="xfecha"></dd>
+                                        <dt>Ayudante</dt>
+                                        <dd aria-label="xayudante"></dd>
+                                        <dt>Precio del servicio</dt>
+                                        <dd aria-label="precio"></dd>
+                                    </dl>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        	<div class="row">
+								<div class="col-md-4 padding-bottom-md">
+									<button type="button" class="btn btn-block btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> cerrar</button>
+								</div>
+								<div class="col-md-4 padding-bottom-md">
+									<button type="button" id="btnEnviarAyudantes" onclick="enviarMensajeAyudantes()" class="btn btn-block bg-olive" data-dismiss="modal"><i class="fa fa-whatsapp"></i> Enviar a grupo de ayudantes</button>
+								</div>
+								<div class="col-md-4">
+                        			<button type="button" id="btnEnviarEstudiante" onclick="enviarMensajeEstudiante()" class="btn btn-block bg-olive" data-dismiss="modal"><i class="fa fa-whatsapp"></i> Enviar respuesta a cliente con precio</button>
+                        		</div>
+                        	</div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<h1 class="box-title"><span class="fa  fa-ellipsis-v"></span> Cotizaciones </h1>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-block btn-linkedin" id="btnVolverPrestacion"><i class="glyphicon glyphicon-new-window"></i> Volver a prestaciones</button>
+			</div>
+			<div class="col-md-4">
+				<div class="btn-group btn-group-justified">
+					<label class="btn btn-danger estadoRadio" title="Mostrar cotizaciones en espera"><input type="radio" name="xtipo" value="true" checked="checked" /> En espera <i class="glyphicon glyphicon-question-sign"></i></label>
+					<label class="btn btn-success estadoRadio" title="Mostrar cotizaciones realizadas"><input type="radio" name="xtipo" value="false" /> Realizado <i class="glyphicon glyphicon-ok-sign"></i></label>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="all">Codigo</th>
+                    <th class="all">Cliente</th>
+                    <th class="desktop">Celular</th>
+                    <th class="desktop">Servicio</th>
+                    <th class="desktop">Fecha de entrega</th>
+                    <th class="desktop">Estado</th>
+                    <th class="all" width="250px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+var dataView = {
+		dataCotizacion: {},
+		dataEstudiante:{}
+	}
+	function resetEstudiante(){
+		dataView.dataEstudiante={cod_est:-1,xestudiante:'Sin seleccion',tel_per:'-'}
+	}
+	
+	function enviarMensajeAyudantes(){
+		let dataSend = '-- COTIZACION (Para Ayudantes) --\n';
+    	dataSend += 'Cotizacion: '+dataView.dataCotizacion.cotizacionId+'\n';
+    	dataSend += 'Fecha de registro: '+moment(dataView.dataCotizacion.createdAt).format('LLLL')+'\n';
+    	dataSend += 'Ciudad:\t'+dataView.dataCotizacion.ciudad+'\n';
+    	dataSend += 'Area:\t'+dataView.dataCotizacion.tipoEstudio+'\n';
+    	dataSend += 'Servicio:\t'+dataView.dataCotizacion.xtiposervicio+'\n';
+    	dataSend += 'Docente-Profesor:'+dataView.dataCotizacion.docente+'\n';
+    	dataSend += 'Materia:\t'+dataView.dataCotizacion.materia+'\n';
+    	dataSend += 'Tema:\t'+dataView.dataCotizacion.tema+'\n';
+    	dataSend += 'Fecha de realizacion:\t'+moment(dataView.dataCotizacion.fecha).format('LLLL')+'\n\n\n';
+    	dataSend += 'Envianos tu propuesta economica para realizar el servicio?';
+    	let dataEncode = encodeURI(dataSend);
+    	window.open('https://wa.me?text='+dataEncode, '_blank');
+	}
+	
+	function enviarMensajeEstudiante(){
+		let dataSend = '-- RESPUESTA COTIZACION A ESTUDIANTE --\n';
+    	dataSend += 'Cotizacion: '+dataView.dataCotizacion.cotizacionId+'\n';
+    	dataSend += 'Servicio:\t'+dataView.dataCotizacion.xtiposervicio+'\n';
+    	dataSend += 'Docente-Profesor:'+dataView.dataCotizacion.docente+'\n';
+    	dataSend += 'Materia:\t'+dataView.dataCotizacion.materia+'\n';
+    	dataSend += 'Tema:\t'+dataView.dataCotizacion.tema+'\n';
+    	dataSend += 'Fecha de realizacion:\t'+moment(dataView.dataCotizacion.fecha).format('LLLL')+'\n\n\n';
+    	dataSend += 'Precio del servicio:\t'+dataView.dataCotizacion.precio+'\n';
+    	dataSend += 'Esperamos su confirmacion, muchas gracias!!!';
+    	let dataEncode = encodeURI(dataSend);
+    	
+    	window.open('https://wa.me/591'+dataView.dataCotizacion.celular+'?text='+dataEncode, '_blank');
+	}
+    $(document).ready(function() {
+    	UtilDate.inputFormatData('fechaInput',null,'pfecha');
+		UtilDate.inputFormatData('fechaInput2',null,'pFechaMod');
+		UtilDate.inputTime('horaInput','HH:mm','phora');
+		UtilDate.inputTime('horaInput2','HH:mm','phoraMod');
+    	var tablaEstudiante = $('#tablaEstudiante').DataTable({
+            dom: "<'row'<'col-sm-12 w3-tiny'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 w3-tiny'p>>",
+            "ordering": false,
+            "oLanguage": {
+            	"sSearch": "Buscar usuario por codigo, nombre o celular:"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../estudiante/lista",
+                "data": function(d) {
+                    d.estado = true;
+                }
+            },
+            "sSearch": "Buscar usuario",
+            "pageLength":5,
+            "columnDefs":[{targets: [3],className:'text-right'}],
+            "columns": [{
+                "data": "cod_est"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "dir_per"
+            }, {
+                "data": "cod_est"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(2).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                $('td', row).eq(3).html('<a href="#" class="btn btn-xs btn-info seleccionar"><i class="fa fa-arrow-right"></i></a>');
+            },
+            "drawCallback": function(settings) {
+                $('.seleccionar').click(function() {
+                	let obj = tablaEstudiante.row($(this).closest('tr')).data();
+                	obj.xestudiante = obj.nom_per + ' ' + obj.priape_per + ' ' + obj.segape_per;
+                	$('#dataEstudiante').loadJSON(obj);
+                	dataView.dataEstudiante = obj;
+                	$('#celularAdd').val(obj.tel_per);
+                	$('#celularPropietarioAdd').val(obj.nom_per + ' ' + obj.priape_per + ' ' + obj.segape_per);
+                	$('#celularPropietarioDiv').show(800);
+                });
+            },
+            "initComplete": function(settings, json) {
+                $('#tablaEstudiante_filter input').unbind();
+                $('#tablaEstudiante_filter input').bind('keyup', function(e) {
+                    if(e.keyCode == 13) {
+                    	tablaEstudiante.search( this.value ).draw();
+                    }
+                });
+            }
+        });
+    	var tablaEstudiante2 = $('#tablaEstudiante2').DataTable({
+            dom: "<'row'<'col-sm-12'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12'p>>",
+            "ordering": false,
+            "oLanguage": {
+            	"sSearch": "Buscar usuario por codigo, nombre o celular:"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../estudiante/lista",
+                "data": function(d) {
+                    d.estado = true;
+                }
+            },
+            "sSearch": "Buscar usuario",
+            "pageLength":5,
+            "columnDefs":[{targets: [3],className:'text-right'}],
+            "columns": [{
+                "data": "cod_est"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "dir_per"
+            }, {
+                "data": "cod_est"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(2).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                $('td', row).eq(3).html('<a href="#" class="btn btn-info btn-xs seleccionar2"><i class="fa fa-arrow-right"></i></a>');
+            },
+            "drawCallback": function(settings) {
+                $('.seleccionar2').click(function() {
+                	let obj = tablaEstudiante2.row($(this).closest('tr')).data();
+                	obj.xestudiante = obj.nom_per + ' ' + obj.priape_per + ' ' + obj.segape_per;
+                	$('#dataEstudianteMod').loadJSON(obj);
+                	dataView.dataEstudiante = obj;
+                	$('#celularMod').val(obj.tel_per);
+                	$('#celularPropietarioMod').val(obj.nom_per + ' ' + obj.priape_per + ' ' + obj.segape_per);
+                });
+            },
+            "initComplete": function(settings, json) {
+                $('#tablaEstudiante2_filter input').unbind();
+                $('#tablaEstudiante2_filter input').bind('keyup', function(e) {
+                    if(e.keyCode == 13) {
+                    	tablaEstudiante2.search( this.value ).draw();
+                    }
+                });
+            }
+        });
+    	$('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+    	$('#btnVolverPrestacion').click(function(){
+        	abrirLoad();
+            $.post('../prestacion/gestion', function(resp) {
+                $('#contenedor').html(resp);
+                cerrarLoad();
+            });
+        });
+    	$(".fecha").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $(".hora").inputmask("hh:mm", {
+            "placeholder": "hh:mm"
+        });
+        var tablaTipo = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#modalAdicionar').modal('show');
+                    resetEstudiante();
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../cotizacion/lista",
+                "data": function(d) {
+                    d.tipo = $('input[name=xtipo]:checked').val();
+                    d.estado = true;
+                }
+            },
+            "columnDefs":[{targets:[6],className:"text-right"}],
+            "columns": [{
+                "data": "cotizacionId"
+            }, {
+                "data": "celularPropietario"
+            }, {
+            	"data": "celular"
+            }, {
+            	"data": "xtiposervicio"
+            }, {
+            	"data": "fecha"
+            }, {
+            	"data": "xestado"
+            }, {
+                "data": "cotizacionId"
+            }],
+            "createdRow": function(row, data, index) {
+            	if(data.codPre){
+            		$('td', row).eq(5).html('<span class="label label-success">'+data.xestado+'</span');
+            	}else{
+            		$('td', row).eq(5).html('<span class="label label-danger">'+data.xestado+'</span');
+            	}
+            	$('td', row).eq(4).html(moment(data.fecha).format('LLLL'));
+            	let btnAction ='<div class="btn-group-xs">';
+            	
+            	if(!data.codPre || (data.codPre && data.codPre == 0)){
+            		btnAction += '<button class="btn btn-sm bg-purple verificar" title="Confirmar cotizacion y crear la prestacion"><i class="glyphicon glyphicon-check"></i><br>revisar</button>';
+            	}
+            	btnAction += '<button class="btn btn-sm btn-info ver" title="Ver"><i class="fa fa-eye"></i><br>ver</button>';
+            	if(!data.codPre || (data.codPre && data.codPre == 0)){
+            		btnAction +='<button class="btn btn-sm btn-primary modificar" title="Modificar"><i class="fa fa-edit"></i><br>editar</button>';
+                	btnAction +='<button class="btn btn-sm btn-danger eliminar" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+            	}
+            	btnAction += '</div>';
+            	$('td', row).eq(6).html(btnAction);
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tablaTipo.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de cotizacion", ("Cod.Cotizacion: "+ obj.cotizacionId+", estudiante: "+obj.celularPropietario+", servicio:"+obj.xtiposervicio), function(){
+        				jQuery.post('../cotizacion/eliminar?cod='+obj.cotizacionId, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.verificar').click(function() {
+                	let obj = tablaTipo.row($(this).closest('tr')).data();
+                	alertAdicion("Confirmar de cotizacion para realizar", ("Cod.Cotizacion: "+ obj.cotizacionId+", estudiante: "+obj.celularPropietario+", servicio:"+obj.xtiposervicio), function(){
+                		abrirLoad();
+                        $.post('../prestacion/adicionar?cotizacionId='+obj.cotizacionId, function(resp) {
+                            $('#contenedor').html(resp);
+                            cerrarLoad();
+                        });
+        			});
+                });
+                $('.modificar').click(function() {
+                	let obj = tablaTipo.row($(this).closest('tr')).data();
+                	$('#fechaInput2')
+                	obj.pfecha = moment(obj.fecha).format('DD/MM/YYYY');
+                	obj.fechaInput2 = moment(obj.fecha).format('YYYY-MM-DD');
+                	obj.phora = moment(obj.fecha).format('HH:mm');
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#ayudante').trigger('chosen:updated');
+                    $('#modalModificar').modal('show');
+                });
+                $('.ver').click(function() {
+                	let obj = tablaTipo.row($(this).closest('tr')).data();
+                	dataView.dataCotizacion = obj;
+                	obj.xcreatedAt = moment(obj.createdAt).format('LLLL');
+                	obj.xestudiante = obj.celularPropietario + '('+obj.celular+')';
+                	obj.xfecha = moment(obj.fecha).format('LLLL');
+                	if(!obj.xayudante || (obj.xayudante && obj.xayudante==''))
+                		obj.xayudante = 'No se tiene';
+                    $('#dataVer').loadJSON(obj);
+                    $('#modalVer').modal('show');
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', result.msg);
+                } else {
+                    modalAlert('Error de transaccion', result.msg,'error');
+                }
+            }, 'json');
+            });
+        });
+        $('#celularAdd').blur(function() {
+        	let xcel = $(this).val();
+        	$.post('../estudiante/buscarPorCelular?celular=' + xcel, function(resp) {
+                if (resp.status && resp.data && resp.data.xestudiante) {
+                    $('#celularPropietarioDiv').show(800);
+                    $('#celularPropietarioAdd').val(resp.data.xestudiante);
+                }else{
+                	$('#celularPropietarioDiv').hide(800);
+                	$('#celularPropietarioAdd').val('');
+                }
+            });
+        });
+        $('#celularMod').blur(function() {
+        	let xcel = $(this).val();
+        	$.post('../estudiante/buscarPorCelular?celular=' + xcel, function(resp) {
+                if (resp.status && resp.data && resp.data.xestudiante) {
+                    $('#celularPropietarioMod').val(resp.data.xestudiante);
+                }else{
+                	$('#celularPropietarioMod').val('');
+                }
+            });
+        });
+        $('#sinDocente').click(function(){
+    		if($("#sinDocente").is(':checked'))
+    		    $("#docente").val('Sin docente');  // checked
+    		else
+    		    $("#docente").val('');  // unchecked
+    	});
+        $('#sinDocenteMod').click(function(){
+    		if($("#sinDocenteMod").is(':checked'))
+    		    $("#docenteMod").val('Sin docente');  // checked
+    		else
+    		    $("#docenteMod").val('');  // unchecked
+    	});
+    });
+</script>
+</section>

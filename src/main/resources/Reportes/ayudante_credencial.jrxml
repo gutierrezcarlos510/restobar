@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ayudante_credencial" pageWidth="752" pageHeight="572" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0d3e17ef-9de3-4c73-9f66-49f2a175f0eb">
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Tue May 03 23:51:42 BOT 2016"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESULTADO_FINAL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="dataset1" uuid="66df564a-a4f2-43b8-a551-b9e1b412396d"/>
+	<parameter name="tipo" class="java.lang.String"/>
+	<parameter name="path" class="java.lang.String"/>
+	<parameter name="des_gen" class="java.lang.String"/>
+	<parameter name="dir_gen" class="java.lang.String"/>
+	<parameter name="tel_gen" class="java.lang.String"/>
+	<parameter name="lug_gen" class="java.lang.String"/>
+	<parameter name="cod_per" class="java.lang.Long"/>
+	<parameter name="ges_gen" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="path2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from persona where cod_per=$P{cod_per}]]>
+	</queryString>
+	<field name="ci_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ci_per"/>
+	</field>
+	<field name="nom_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom_per"/>
+	</field>
+	<field name="priape_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="priape_per"/>
+	</field>
+	<field name="segape_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="segape_per"/>
+	</field>
+	<field name="tel_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tel_per"/>
+	</field>
+	<field name="dir_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="dir_per"/>
+	</field>
+	<field name="ema_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ema_per"/>
+	</field>
+	<field name="fot_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fot_per"/>
+	</field>
+	<field name="est_per" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="est_per"/>
+	</field>
+	<field name="sex_per" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="sex_per"/>
+		<fieldDescription><![CDATA[genero masculino=true, femenino=false]]></fieldDescription>
+	</field>
+	<field name="cod_per" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="cod_per"/>
+	</field>
+	<field name="codbio_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codbio_per"/>
+	</field>
+	<field name="codesc_per" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codesc_per"/>
+		<fieldDescription><![CDATA[codigo escanner]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="171" splitType="Stretch">
+			<line direction="BottomUp">
+				<reportElement x="9" y="10" width="1" height="155" uuid="475a74ed-dafc-42d8-9a81-1089014f5910"/>
+			</line>
+			<line>
+				<reportElement x="9" y="9" width="240" height="1" uuid="cac26593-d5e9-488f-9e79-b30f9262108e"/>
+			</line>
+			<line>
+				<reportElement x="10" y="165" width="240" height="1" uuid="35c5dd28-7e10-4f11-b6eb-33753d438d68"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="249" y="10" width="1" height="155" uuid="b8e6f91c-a06d-4ba6-af22-904b3193b8a3"/>
+			</line>
+			<line>
+				<reportElement x="255" y="9" width="240" height="1" uuid="ad69906a-6d40-4e24-9206-3f32da45824f"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="255" y="10" width="1" height="155" uuid="89691fbe-3d96-41da-9333-12ab8fa518cb"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="495" y="10" width="1" height="155" uuid="f20f0893-412c-4f1e-a58f-1a8bacb952ae"/>
+			</line>
+			<line>
+				<reportElement x="256" y="165" width="240" height="1" uuid="c75a5070-6502-4c83-928a-0aba095b75e7"/>
+			</line>
+			<line>
+				<reportElement x="500" y="9" width="240" height="1" uuid="2bb9f830-f054-4c02-9f5e-27b374568ae3"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="500" y="10" width="1" height="155" uuid="c54f9947-a5ff-4467-a159-67d9eed46ad9"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="740" y="10" width="1" height="155" uuid="b0e7cbd0-58c3-44ef-8914-6c5c5023afdc"/>
+			</line>
+			<line>
+				<reportElement x="501" y="165" width="240" height="1" uuid="5b7227b3-83eb-4428-b231-a3a9378d52af"/>
+			</line>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="18" y="98" width="57" height="55" uuid="6065b18b-c7ff-4eae-b23b-6878a3a1d059"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA[$P{path}+"/"+$F{fot_per}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="83" y="109" width="100" height="11" uuid="56e3f5a1-71f0-4e45-9693-707f463c2687"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="83" y="82" width="158" height="27" uuid="e0ad4699-2965-49b4-96b5-a1df9948b320"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="83" y="142" width="158" height="11" uuid="0fea90e6-9017-4b6c-94ed-a9aea7d6da4d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{priape_per}+" "+$F{segape_per}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="83" y="131" width="100" height="11" uuid="c6aacbc8-cabb-463d-a533-2f72393974a5"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="83" y="120" width="158" height="11" uuid="5c0087c1-71c0-4768-9283-b8099bbbd326"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_per}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="43" width="158" height="13" uuid="13143f73-d618-4c24-81b9-2b1492792857"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="30" width="158" height="13" uuid="daf29996-b545-4f55-99a2-a00471e3d4c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="56" width="158" height="13" uuid="36a838d2-e5c6-4b0b-a8e3-ccd72a60f8f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="17" width="158" height="13" uuid="c936e003-631f-4509-8b99-5a4e95a1407a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="176" y="17" width="65" height="65" uuid="2450cf36-4564-43ea-8b7b-abc38b6db229"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA[$P{path2}+"/"+$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="18" y="69" width="158" height="13" uuid="a7b1cf27-26c2-41b7-8825-e8334b5bf1d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ges_gen}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="262" y="98" width="225" height="50" uuid="62480ae3-3a45-4536-bea9-d09a9158ebcb"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false" barHeight="70">
+					<jr:codeExpression><![CDATA[$F{codesc_per}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<line>
+				<reportElement x="256" y="92" width="239" height="1" uuid="39b3d80c-7ab8-4066-9498-cd302e8511b5"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="256" y="89" width="239" height="1" uuid="06806957-3443-4701-b9eb-2b1344b05115"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="256" y="154" width="239" height="1" uuid="8ddd5def-b3a8-481a-bbe3-14dc3253bd39"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="256" y="152" width="239" height="1" uuid="11c59bf8-2ccb-440f-b71a-5a7c4c41e270"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

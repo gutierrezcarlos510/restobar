@@ -1,0 +1,474 @@
+<script src="../../js/fileinput.js"></script>
+<!-- Default box -->
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../general/guardar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar General</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Gestion</label>
+                                        <input type="text" id="ges_gen" name="ges_gen" class="form-control" data-fv-notempty="true" data-fv-integer="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre empresa o sigla</label>
+                                        <input type="text" id="nom_gen" name="nom_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Descripcion empresa</label>
+                                        <input type="text" id="des_gen" name="des_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Logo empresa</label>
+                                        <input type="file" id="logtex_gen" name="logtex_gen1" class="form-control file" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Logo Sin texto</label>
+                                        <input type="file" id="logsintex_gen" name="logsintex_gen1" class="form-control file" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" id="tel_gen" name="tel_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Direccion</label>
+                                        <input type="text" id="dir_gen" name="dir_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Lugar</label>
+                                        <input type="text" id="lug_gen" name="lug_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nit</label>
+                                        <input type="text" id="nit_gen" name="nit_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Sucursal</label>
+                                        <select id="cod_suc" name="cod_suc" class="form-control select-chosen" data-fv-notempty="true">
+											<option value="">Seleccionar</option>
+                                        <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:title="${s.descripcion}" th:text="${s.nombre}"></option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../general/actualizar" enctype="multipart/file" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar General</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Gestion</label>
+                                        <input type="text" id="ges_gen1" name="ges_gen" class="form-control" data-fv-notempty="true" data-fv-integer="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre empresa o sigla</label>
+                                        <input type="text" id="nom_gen1" name="nom_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Descripcion empresa</label>
+                                        <input type="text" id="des_gen1" name="des_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 center">
+                                    <img id="imagen1" class="img-thumbnail" width="125px">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Logo</label>
+                                        <input type="file" id="logtex_gen1" name="logtex_gen1" class="form-control file">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 center">
+                                    <img id="imagen2" class="img-thumbnail" width="125px">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Logo sin texto</label>
+                                        <input type="file" id="logsintex_gen1" name="logsintex_gen1" class="form-control file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" id="tel_gen1" name="tel_gen" class="form-control" data-fv-notempty="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Direccion</label>
+                                        <input type="text" id="dir_gen1" name="dir_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Lugar</label>
+                                        <input type="text" id="lug_gen1" name="lug_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nit</label>
+                                        <input type="text" id="nit_gen1" name="nit_gen" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Sucursal</label>
+                                        <select class="form-control select-chosen" id="cod_suc1" name="cod_suc" data-fv-notempty="true">
+								            <option value="">Seleccionar</option>
+                                            <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:title="${s.descripcion}" th:text="${s.nombre}"></option>
+							            </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <div id="modalEliminar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioEliminar" method="post" action="../general/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Eliminar General</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="ges_gen3" name="ges_gen" />
+                            <input type="hidden" id="cod_suc3" name="cod_suc" />
+                            <p>Desea eliminar a <label id="ges_genLabel1"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div id="modalActivar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioActivar" method="post" action="../general/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Activar General</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="ges_gen4" name="ges_gen" />
+                            <input type="hidden" id="cod_suc4" name="cod_suc" />
+                            <p>Desea activar a <label id="gestionLabel2"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gesti&oacute;n General </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="pull-right btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input
+                            type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                    </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input
+                        type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">Gesti&oacute;n</th>
+                    <th class="all">Empresa</th>
+                    <th class="desktop">Sucursal</th>
+                    <th class="desktop">Tel&eacute;fono</th>
+                    <th class="desktop">Direcci&oacute;n</th>
+                    <th class="none">Lugar</th>
+                    <th class="none">N.I.T.</th>
+                    <th class="none">Descripci&oacute;n</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $('#tabla').dataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#logtex_gen1').fileinput('clear');
+                    $('#logsintex_gen1').fileinput('clear');
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../general/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "ordering":true,
+            "order":[[0,'desc']],
+            "columnDefs":[{targets: [8],className:'text-right'}],
+            "columns": [{
+                "data": "ges_gen"
+            }, {
+                "data": "nom_gen"
+            }, {
+                "data": "xsucursal"
+            }, {
+                "data": "tel_gen"
+            }, {
+                "data": "dir_gen"
+            }, {
+                "data": "lug_gen"
+            }, {
+                "data": "nit_gen"
+            }, {
+                "data": "des_gen"
+            }, {
+                "data": "ges_gen"
+            }],
+            "createdRow": function(row, data, index) {
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    $('td', row).eq(8).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-suc="' + data.cod_suc + '" data-id="' + data.ges_gen + '"><i class="fa fa-edit"></i><br/>editar</button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-suc="' + data.cod_suc + '" data-id="' + data.ges_gen + '"><i class="glyphicon glyphicon-remove"></i><br/>borrar</button></div>');
+                } else
+                    $('td', row).eq(8).html('<button class="btn btn-primary activar" data-suc="' + data.cod_suc + '" data-id="' + data.ges_gen + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
+            },
+            "drawCallback": function(settings) {
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $('#logtex_gen').fileinput('clear');
+                    $('#logsintex_gen').fileinput('clear');
+                    $.post('../general/obtener?ges_gen=' + $(this).data('id') + '&cod_suc=' + $(this).data('suc'), function(result) {
+                        if (result.status == true) {
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#cod_suc1').val(result.data.cod_suc).trigger('chosen:updated');
+                            $('#imagen1').attr('src', '/general/' + result.data.logtex_gen);
+                            $('#imagen2').attr('src', '/general/' + result.data.logsintex_gen);
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.eliminar').click(function() {
+                    $('#formularioEliminar')[0].reset();
+                    $.post('../general/obtener?ges_gen=' + $(this).data('id') + '&cod_suc=' + $(this).data('suc'), function(result) {
+                        if (result.status == true) {
+                            $('#modalEliminar').modal('show');
+                            $('#formularioEliminar').loadJSON(result.data);
+                            $('#ges_genLabel1').html('Gestion ' + result.data.ges_gen);
+                        } else {
+                            mostrarmensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.activar').click(function() {
+                    $('#formularioActivar')[0].reset();
+                    $.post('../general/obtener?ges_gen=' + $(this).data('id') + '&cod_suc=' + $(this).data('cod_suc'), function(result) {
+                        if (result.status == true) {
+                            $('#modalActivar').modal('show');
+                            $('#formularioActivar').loadJSON(result.data);
+                            $('#gestionLabel2').html('Gestion ' + result.data.ges_gen);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            },
+            "initComplete": function(settings, json) {
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e){
+                    if(e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formularioEliminar,#formularioActivar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarmensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formulario"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status == true) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else {
+                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    }
+                });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formularioModificar"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status == true) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else {
+                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    }
+                });            	
+            });
+        });
+        $('#gestion').blur(function() {
+            $.post('../general/validar?gestion=' + $(this).val(), function(resp) {
+                if (resp.status) {
+                    $('#gestion').val('');
+                    mostrarMensaje('error', 'Esta gestion ya existe!!!');
+                }
+            });
+        });
+    });
+</script>
+</section>

@@ -1,0 +1,414 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../estudiante/guardar" enctype="multiform/data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Estudiante</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="codigo" name="cod_per">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I.(Ingresar cero si no se tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino1"><input type="radio" id="masculino1" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino1"><input type="radio"  id="femenino1" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" class="form-control" id="tel_per" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="ema_per1" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <select id="cod_car" name="carreras" multiple="multiple" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				            <option value=""></option>
+                                            <option th:each="c : ${carreras}" th:value="${c.cod_car}" th:text="${c.nom_car}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Tutor del estudiante (Si el estudiante lo tiene)</label>
+                                        <input type="text" class="form-control text-uppercase" id="tut_est" name="tut_est">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono del Tutor (Opcional)</label>
+                                        <input type="text" class="form-control" id="teltut_est" name="teltut_est">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../estudiante/actualizar" enctype="multiform/data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog" style="width: 75%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Estudiante</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_per">
+                            <input type="hidden" name="cod_est">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I.(Ingresar cero si no se tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per2" name="ci_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per2" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per2" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per2" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino2"><input type="radio" id="masculino2" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino2"><input type="radio"  id="femenino2" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" class="form-control" id="tel_per2" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per2" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="ema_per2" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <select id="cod_car1" name="carreras" multiple="multiple" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                                            <option value=""></option>
+                                            <option th:each="c : ${carreras}" th:value="${c.cod_car}" th:text="${c.nom_car}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Tutor del estudiante</label>
+                                        <input type="text" class="form-control text-uppercase" id="tut_est2" name="tut_est">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono del Tutor</label>
+                                        <input type="text" class="form-control" id="teltut_est2" name="teltut_est">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Estudiantes </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input type="radio" name="estado" value="true"  data-toggle="tooltip" data-placement="top" title="Mostrar Activos" checked> Activos</label>
+                    <label class="btn btn-danger estadoRadio" data-toggle="tooltip" data-placement="top" title="Mostrar Inactivos"> <input type="radio" name="estado" value="false"> Inactivos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">C&oacute;digo</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="desktop">Telefono</th>
+                    <th class="none">Direccion</th>
+                    <th class="none">Email</th>
+                    <th class="all" width="300px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+    $(document).ready(function() {
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tableUser = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#cod_car').val('').trigger('chosen:updated');
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#codigo').val(0);
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../estudiante/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columnDefs":[{targets: [5],className:'text-right'}],
+            "columns": [{
+                "data": "cod_est"
+            }, {
+                "data": "cod_est"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "dir_per"
+            }, {
+                "data": "ema_per"
+            }, {
+                "data": "cod_est"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-sm btn-primary modificar"  title="Modificar" data-id="' + data.cod_est + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar" title="Eliminar" data-id="' + data.cod_est + '"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button><button class="btn btn-sm btn-success imprimir" data-id="' + data.cod_per + '" title="Imprimir credencial"><i class="glyphicon glyphicon-print"></i> <i class="fa fa-credit-card"></i><br>imprimir</button></div>');
+                } else
+                    $('td', row).eq(5).html('<button class="btn btn-primary activar" data-id="' + data.cod_est + '" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i>activar</button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tableUser.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de estudiante", ("Cod. estudiante: "+ obj.cod_est+", Estudiante: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../estudiante/eliminar?cod_est='+obj.cod_est, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.activar').click(function() {
+                	let obj = tableUser.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de estudiante", ("Cod. estudiante: "+ obj.cod_sec+", Estudiante: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../estudiante/activar?cod_est='+obj.cod_est, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $.post('../estudiante/obtener?cod_est=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#formularioModificar').loadJSON(result.data.persona);
+                            $('#ema_per').val(result.data.persona.ema_per);
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#cod_car1').html('');
+                            if (result.data.carreras)
+                                $.each(result.data.carreras, function(i, item) {
+                                    var row = $('<option value="' + item.cod_car + '" ' + item.tipo + '>' + item.nom_car + '</option>');
+                                    $('#cod_car1').append(row);
+                                });
+                            $('#cod_car1').trigger('chosen:updated');
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    let obj = tableUser.row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../estudiante/ver_credencial?cod_per=" + obj.cod_est);
+                    $("#reportes").modal('show');
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            var formData = new FormData(document.getElementById("formulario"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            var formData = new FormData(document.getElementById("formularioModificar"));
+            $.ajax({
+                url: xform.attr("action"),
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            });
+            });
+        });
+        $('#ci_per').blur(function() {
+            $.post('../usuario/buscarci?ci=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#formulario').loadJSON(resp.data);
+                    $('#ema_per1').val(resp.data.ema_per);
+                    $('#imagen1').attr('src', '../../fotos/' + resp.data.fot_per);
+                    $('#box_image').show();
+                    mostrarMensaje('info', 'Este usuario ya existe');
+                } else $('#codigo').val(0);
+
+            });
+        });
+    });
+</script>
+</section>

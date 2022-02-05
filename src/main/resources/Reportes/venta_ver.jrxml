@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="185" leftMargin="20" rightMargin="10" topMargin="0" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
+	<property name="ireport.zoom" value="3.4522712143931042"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="482"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\CARLOS\\workspace\\resultadofinal\\src\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cod_ven" class="java.lang.Long"/>
+	<parameter name="subrep" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="des_detven" class="java.lang.Float"/>
+	<parameter name="des_gen" class="java.lang.String"/>
+	<parameter name="dir_gen" class="java.lang.String"/>
+	<parameter name="tel_gen" class="java.lang.String"/>
+	<parameter name="lug_gen" class="java.lang.String"/>
+	<parameter name="nom_gen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from venta_obtener($P{cod_ven}) as (cod_ven bigint,cod_per bigint,cod_cli bigint,fec_ven timestamp,obs_ven character varying(500),tot_ven real,des_ven real,ges_gen integer,est_ven boolean,cod_arqcaj bigint,cod_detarq integer,tip_ven integer,cod_suc integer,subtot_ven real,usuario varchar(100),cliente varchar(100),fecha varchar(15))]]>
+	</queryString>
+	<field name="cod_ven" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ven"/>
+	</field>
+	<field name="cod_per" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_per"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_per"/>
+	</field>
+	<field name="cod_cli" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_cli"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_cli"/>
+	</field>
+	<field name="fec_ven" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fec_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="fec_ven"/>
+	</field>
+	<field name="obs_ven" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="obs_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="obs_ven"/>
+	</field>
+	<field name="tot_ven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="tot_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="tot_ven"/>
+	</field>
+	<field name="des_ven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="des_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_ven"/>
+	</field>
+	<field name="ges_gen" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ges_gen"/>
+		<property name="com.jaspersoft.studio.field.label" value="ges_gen"/>
+	</field>
+	<field name="est_ven" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="est_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="est_ven"/>
+	</field>
+	<field name="cod_arqcaj" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_arqcaj"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_arqcaj"/>
+		<fieldDescription><![CDATA[codigo de arqueo]]></fieldDescription>
+	</field>
+	<field name="cod_detarq" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_detarq"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_detarq"/>
+	</field>
+	<field name="tip_ven" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="tip_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="tip_ven"/>
+		<fieldDescription><![CDATA[tipo de venta 1=normal,0=simple]]></fieldDescription>
+	</field>
+	<field name="cod_suc" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_suc"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_suc"/>
+	</field>
+	<field name="subtot_ven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="subtot_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtot_ven"/>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+	</field>
+	<variable name="total" class="java.lang.Float">
+		<variableExpression><![CDATA[$F{tot_ven}-$F{des_ven}-$P{des_detven}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="des_detven" class="java.lang.Float">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Float">
+		<variableExpression><![CDATA[$F{des_ven}+$V{des_detven}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="106" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="79" width="130" height="13" forecolor="#000000" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE VENTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="92" width="130" height="14" forecolor="#000000" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gestion "+$F{ges_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="130" height="13" forecolor="#000000" uuid="c5912309-1a61-4ed0-9cb4-278ffac86cef"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="39" width="130" height="13" forecolor="#000000" uuid="c6b02d88-fc9f-41dc-a7b1-969573141bfe"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="13" width="130" height="26" forecolor="#000000" uuid="17fba570-4a08-4737-9306-91b6ba36747b"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="65" width="130" height="13" forecolor="#000000" uuid="5d4815d6-9918-4beb-93ed-206dd4c54996"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="130" height="13" forecolor="#000000" uuid="c2ee16bc-37f8-4c06-b4a5-d263dd640f05"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nom_gen}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="72" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="12" forecolor="#000000" uuid="d0143aa7-9486-493c-ac43-7e4b248b3f2a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="32" y="0" width="42" height="12" forecolor="#000000" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="0" width="24" height="12" forecolor="#000000" uuid="83377334-e8ee-4c37-b4fe-d464c041365e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cod :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="0" width="31" height="12" forecolor="#000000" uuid="f9057fff-980a-4367-ac21-077b041bc558"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_ven}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="12" width="130" height="12" uuid="5df1a06e-882e-48b4-847b-beea3cce9181"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cliente : "+$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="36" width="130" height="36" forecolor="#000000" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Descripcion : "+$F{obs_ven}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="24" width="130" height="12" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Vendedor : "+$F{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="74" height="12" forecolor="#000000" uuid="d9b456f0-c2e2-439c-8d83-55021a5da380"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="12" width="27" height="12" forecolor="#000000" uuid="cdd4953d-cb99-487f-a222-9847194c3c4c"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="12" width="30" height="12" forecolor="#000000" uuid="9761d0ad-420c-43cf-8bc5-a8221ad3c50f"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pre bs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="12" width="24" height="12" forecolor="#000000" uuid="4e37c997-a512-4ec9-8708-969986a20826"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="82" y="12" width="24" height="12" forecolor="#000000" uuid="f1da03b9-447b-4417-85b2-3c8895054f5c"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desc.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Prevent">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="130" height="12" uuid="ddc04b25-ad1b-4164-8e4b-754f795627b5"/>
+				<subreportParameter name="cod_ven">
+					<subreportParameterExpression><![CDATA[$P{cod_ven}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="descuento" toVariable="des_detven"/>
+				<subreportExpression><![CDATA[$P{subrep} + "/venta_ver_subreporte.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="110" splitType="Stretch">
+			<textField>
+				<reportElement x="75" y="0" width="55" height="17" uuid="d9f42b9d-d449-417e-8ac5-45df2af6fc11"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total : "+$F{tot_ven}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="17" width="134" height="12" uuid="00e3160c-b833-47d8-b717-025506c2e005"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESCUENTO APARTE : "+$F{des_ven}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="29" width="134" height="12" uuid="c67bedeb-e000-429d-9e41-891704d88af9"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL A PAGAR : "+$V{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="86" width="134" height="12" forecolor="#000000" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario :"+$P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="32" y="98" width="102" height="12" forecolor="#000000" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="98" width="32" height="12" forecolor="#000000" uuid="7126d6d5-c9d4-4b0e-af2a-08f8cccf7781"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="75" height="17" uuid="b0055a2d-d4fa-4628-b74d-781c033344ec"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Subdescuento : "+$V{des_detven}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="51" width="134" height="30" uuid="fe56a114-985d-4453-8c44-7e277adccc2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Estimado cliente, por favor conserve esta nota para cualquier reclamo. Gracias por su preferencia.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,98 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Cuentas Contables </h1>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <table id="tabla" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Grupo</th>
+                    <th>C&oacute;digo</th>
+                    <th>Nombre</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#tabla').dataTable({
+            dom: "<'row'<'col-sm-3'f><'col-sm-2'l><'col-sm-5'i>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "ordering": false,
+            "oLanguage": {
+                "sUrl": "../../js/Spanish.lang"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../cuenta/lista",
+                "data": function(d) {
+                    d.estado = true;
+                }
+            },
+            "columnDefs":[
+            	{className:"w3-right-align","targets":[1]}
+            ],
+            "columns": [{
+                "data": "xtipo"
+            }, {
+                "data": "codigo"
+            }, {
+                "data": "nombre"
+            }, {
+                "data": "descripcion"
+            }, {
+                "data": "codCuenta"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(4).html('<div class="btn-group"><button class="btn btn-sm btn-primary ingresar"  data-toggle="tooltip" data-placement="top" title="Ver subcuentas" data-id="' + data.codCuenta + '"><i class="fa fa-eye"> | ver subcuentas</i> </button></div>');
+            },
+            "drawCallback": function(settings) {
+                $('.ingresar').click(function() {
+                	let xcode = jQuery(this).data('id');
+                    jQuery.get('../cuenta/vistaSubcuentas?codCuenta='+xcode,function(resp){
+                    	jQuery('#contenedor').html(resp);
+                    });
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            }
+        });
+        $('#formularioEliminar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+    });
+</script>

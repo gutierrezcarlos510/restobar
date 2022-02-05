@@ -1,0 +1,580 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<form id="formularioCliente" method="post" action="../cliente/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+    <div id="modalCliente" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Adicionar Cliente</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="codigo" name="cod_per">
+                    <input type="hidden" name="ci_per" value="0">
+                    <input type="hidden" name="dir_per" value="">
+                    <input type="hidden" name="segape_per" value="">
+                    <input type="hidden" name="fot_per" value="user.png">
+                    <div class="form-group">
+                    	<label>Celular.</label>
+                    	<input type="text" class="form-control text-right" id="tel_per" name="tel_per">
+                    </div>
+                    <div class="form-group">
+                    	<label>Nombre</label>
+                    	<input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                    </div>
+                    <div class="form-group">
+                    	<label>Apellidos</label>
+                    	<input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                    </div>
+                    <div class="form-group">
+                    	<label>Correo Electronico</label>
+                    	<input type="email" class="form-control" id="ema_per" name="ema_per">
+                    </div>
+                    <div class="form-group">
+                    	<label>Genero</label>
+                    	<div class="radio">
+                    		<label for="masculino"><input type="radio" id="masculino" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                    		<label for="femenino"><input type="radio"  id="femenino" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                    	</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                    <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- panel preview -->
+<div class="panel panel-primary">
+            <div class="panel-heading btn-primary active">
+                <h4 style="color: white;">Adicionar Venta :</h4>
+            </div>
+            <div class="panel-body">
+                <form id="formulario1" name="formulario1" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="row">
+                    	<div class="col-md-4">
+                    	<div class="row">
+                    		<div class="col-md-10">
+                    		<div class="form-group">
+                            	<label>Cliente</label>
+                                <select id="cliente" name="codCli" class="form-control input-lg" data-placeholder="Seleccione..." data-fv-notempty="true">
+								<option value=""></option>
+                                    <option th:each="c : ${clientes}" th:value="${c.cod_cli}" th:selected="(${c.cod_cli}==0)" th:text="${c.nom_per} +' '+${c.priape_per} +' '+${c.segape_per}"></option>
+							</select>
+                        </div>
+                    		</div>
+                    		<div class="col-md-2">
+                    		<div class="form-group">
+                    			<label for="">.</label>
+                    			<button type="button" class="btn btn-sm btn-success form-control" title="Adicionar Cliente" id="adicionarCliente"> <span class="glyphicon glyphicon-plus"></span></button>
+                    		</div>
+                    		</div>
+                    	</div>
+                    	
+                    	</div>
+                    	
+                    	<div class="col-md-3">
+                    		<label class="control-label">Descripci&oacute;n</label>
+                    		<textarea class="form-control" id="obsVen" name="obsVen">Por venta de productos</textarea>
+                    	</div>
+                    	<div class="col-md-2">
+                    		<div class="form-group">
+		                    	<label>Forma de pago</label>
+		                    	<div class="radio">
+		                    		<label for="ventaEfectivo"><input type="radio" id="ventaEfectivo" class="campoFormaPago" name="formapago" value="0" data-fv-notempty="true" checked="checked"/>En efectivo</label>
+		                    		<label for="ventaBanco"><input type="radio"  id="ventaBanco" class="campoFormaPago" name="formapago" value="1" data-fv-notempty="true"/>Deposito bancario</label>
+		                    	</div>
+		                    </div>
+                    	</div>
+                    	<div class="col-md-3">
+                    		<div class="form-group" style="display: none" id="areaSubcuenta">
+		                    	<label for="codSubcuenta">Deposito bancario</label>
+		                    	<select name="codSubcuenta" id="codSubcuenta" class="form-control select-chosen">
+		                    		<option value="">Seleccionar</option>
+                                    <option th:each="c : ${cuentas}" th:value="${c.codSubcuenta}" th:text="${c.nombre}"></option>
+		                    	</select>
+		                    </div>
+                    	</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                    <form id="formulario4" name="formulario4" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="form-group">
+                        <label class="col-md-8 control-label">Ingresar c&oacute;digo de barra</label>
+                        <div class="col-md-4">
+                            <div class="form-group has-feedback">
+				            <input type="text" autocomplete="off" class="form-control text-right" id="barcode" name="barcode">
+				            <span class="glyphicon glyphicon-barcode form-control-feedback"></span>
+				          </div>
+                        </div>
+                    </div>
+                    </form>
+                    <form id="formulario2" name="formulario2" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="form-group">
+                        <label class="control-label">Producto</label>
+                        <select id="producto" name="producto" class="form-control" data-placeholder="Seleccione..." data-fv-notempty="true">
+							<option value=""></option>
+                    		<optgroup th:each="m : ${productos}" th:label="${m.nom_tippro}">
+							<option th:each="p : ${m.productos}" th:id="${p.cod_pro}" th:value="${p.cod_pro}" th:data-can="${p.can_pro}" th:data-pre="${p.preven_pro}" th:text="${p.nom_pro}"></option>
+                    		</optgroup>
+						</select>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">Cantidad</label>
+                        <div class="col-md-9 w3-right-align">
+                            <input type="text" class="form-control text-right" id="can1" name="can1" data-fv-notempty="true" min="1" data-fv-integer="true" onClick="this.setSelectionRange(0, this.value.length)">
+                            <span class="input-group-abdon" id="exi" style="display: none;"> 
+							<label id="existencia"></label>
+						</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">Precio</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control text-right" id="pre1" name="pre1" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="0.01" onClick="this.setSelectionRange(0, this.value.length)">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">Total</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control text-right" id="tot1" name="tot1" readonly>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-success" id="adicionar">
+							<span class="glyphicon glyphicon-plus-sign"></span> Adicionar
+	            			</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / panel preview -->
+    <div class="col-lg-8">
+        <form id="formulario3" name="formulario3" action="../venta/guardar" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="panel panel-primary">
+                
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table id="detalles" class="w3-table-all w3-tiny">
+                            <thead>
+                                <tr>
+                                    <th width="300px">Producto</th>
+                                    <th>Cantidad</th>
+                                    <th> Precio </th>
+                                    <th>Subtotal</th>
+                                    <th>Descuento</th>
+                                    <th>Total</th>
+                                    <th width="25px">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="unit">
+                                    <td colspan="7" class="w3-center">Sin ningun detalle</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="w3-right-align" colspan="3">Subtotal</td>
+                                    <td>
+                                    <input type="text" id="subtotal" class="form-control input-xs text-right" name="subtotal" value="0" readonly="readonly">
+                                    </td>
+                                    <td>
+                                    <input type="text" id="subdescuento" class="form-control input-xs text-right" name="subdescuento" value="0" readonly="readonly">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr class="w3-right-align">
+                                    <td colspan="3"  class="w3-right-align">Total + descuento</td>
+                                    <td colspan="3">
+                                    <input type="text" id="subtotal-descuento" class="form-control input-xs text-right" readonly="readonly" name="subtotVen" value="0">
+                                    </td>
+                                </tr>
+                                <tr  class="w3-right-align">
+                                    <td colspan="3" class="w3-right-align">Descuento Total</td>
+                                    <td colspan="3"  class="w3-right-align">
+                                    	<input type="text" id="descuento" name="desVen" min="0" class="form-control input-xs text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." value="0" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td colspan="2">
+                                	<div class="row">
+                                		<div class="col-md-6">
+                                		<div class="form-group">
+                                		<label>Total pagado</label>
+                                		<input type="text" class="form-control input-xs text-right" id="totalPagado" name="totalPagado"/>
+                                		</div>
+                                		</div>
+                                		<div class="col-md-6">
+                                		<div class="form-group">
+                                		<label>Cambio a entregar</label>
+                                		<input type="text" class="form-control input-xs text-right" id="totalCambio" name="totalCambio" readonly="readonly"/>
+                                		</div>
+                                		</div>
+                                	</div>
+                                	</td>
+                                    <td class="w3-right-align">Total a Pagar</td>
+                                    <td colspan="3">
+                                    <input type="text" id="total" class="form-control input-xs text-right" readonly="readonly" name="totVen" value="0">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                	<div class="row">
+                		<div class="col-md-6">
+                			<button type="button" id="btnCancelar" class="btn btn-danger btn-block">
+							<span class="glyphicon glyphicon-remove-sign"></span> Cancelar
+							</button>
+                		</div>
+                		<div class="col-md-6">
+                			<button type="submit" id="guardar" class="btn btn-primary btn-block active">Enviar</button>
+                		</div>
+                	</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+	function calcularCambio(){
+		let totalPagado = $('#totalPagado').val();
+    	if(!totalPagado){
+    		totalPagado = 0;
+    	}
+    	let total = $('#total').val();
+    	if(!total){
+    		total = 0;
+    	}
+    	let cambio = totalPagado - total;
+    	$('#totalCambio').val(cambio);
+	}
+    $(document).ready(function() {
+        numero = {
+            validators: {
+                notEmpty: {
+                    message: 'ingresar'
+                },
+                numeric: {
+                    message: 'numero'
+                }
+            }
+        }
+        entero = {
+            validators: {
+                notEmpty: {
+                    message: 'ingresar'
+                },
+                integer: {
+                    message: 'numero'
+                }
+            }
+        }
+        $('#totalPagado').keyup(function(){
+        	calcularCambio();
+        });
+        $('#codSubcuenta,#producto,#cliente').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $('.campoFormaPago').change(function(){
+        	let value = parseInt(this.value);
+        	if(value===1){
+        		$('#areaSubcuenta').show(500);
+        	}else{
+        		$('#areaSubcuenta').hide(500);
+        	}
+        });
+        $(".fec").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $('#btnCancelar').click(function() {
+        	alertEliminacion('Cancelar venta', 'Esta seguro de cancelar la venta?', function(){
+        		$.post('../venta/gestion', function(resp) {
+                    $('#contenedor').html(resp);
+                });
+        	})
+        });
+        $(document).on('click', '.input-remove-row', function() {
+            $('#producto option[id=' + $(this).data('producto') + ']').removeAttr('disabled');
+            $("#producto").trigger("chosen:updated");
+            var tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                calc_total();
+                if ($('#detalles > tbody>tr').length == 0) {
+                    var row = $('<tr id="unit" align="center"></tr>');
+                    $('<td colspan="7">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles > tbody:last').append(row);
+                }
+            });
+        });
+        $('#formulario1').formValidation({
+            locale: 'es_ES',
+            excluded: ':disabled',
+            fields: {
+                cliente: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Por favor seleccione un producto'
+                        }
+                    }
+                }
+            }
+        }).on('success.field.fv', function(e, data) {
+            var estadoForm1 = $('#formulario1').data('formValidation').isValid();
+            if (estadoForm1 == true)
+                $('#guardar').removeAttr('disabled');
+        }).on('err.field.fv.', function(e, data) {
+            $('#guardar').attr('disabled', 'disabled');
+        });
+        $('#formulario2').formValidation({
+            locale: 'es_ES',
+            excluded: ':disabled',
+            fields: {
+                producto: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Por favor seleccione un producto'
+                        }
+                    }
+                }
+            }
+        }).on('success.field.fv', '[name="can1"]', function(e, data) {
+            if (data.fv.isValidField('producto') != null) {
+                $('#existencia').html('Existencia : ' + ($('#producto option:selected').data('can') - $('#can1').val()));
+                if ($('#producto option:selected').data('can') < $('#can1').val()) {
+                    $('#can1').val('');
+                    $('#existencia').html('Existencia : ' + $('#producto option:selected').data('can'));
+                    mostrarMensaje('info', 'La cantidad es mayor a la que se tiene');
+                } else {
+                    if ($('#pre1').val() != '' && data.fv.isValidField('producto') != null) {
+                        $('#tot1').val($('#can1').val() * $('#pre1').val());
+                    }
+                }
+            }
+        }).on('success.field.fv', '[name="pre1"]', function(e, data) {
+            if (data.fv.isValidField('can1') != null && data.fv.isValidField('producto') != null) {
+                if (data.fv.isValidField('can1')) {
+                    $('#existencia').html('Existencia : ' + ($('#producto option:selected').data('can') - $('#can1').val()));
+                    $('#tot1').val(($('#can1').val() * $('#pre1').val()).toFixed(2));
+                }
+            }
+        }).on('err.field.fv', function() {
+            $('#tot1').val('');
+        }).on('success.form.fv', function(e) {
+        	e.preventDefault();
+            var xform = $(e.target);
+            var bv = xform.data('formValidation');
+            var estado = $('#formulario2').data('formValidation').isValid();
+            if (estado) {
+            	let xprod = $('#producto').val();
+                $('#unit').remove();
+                let row = $('<tr></tr>');
+                $('<td>' + $('#producto option:selected').text() + '</td>').appendTo(row);
+                $('<td><input type="text" onkeyup="calc_subtotal(' + xprod + ')" id="can-' + xprod + '" name="cantidades" onClick="this.setSelectionRange(0, this.value.length)" class="form-control input-xs text-right" value="' + $('#can1').val() + '"></div></td>').appendTo(row);
+                $('<td><input type="text" onkeyup="calc_subtotal(' + xprod + ')" id="pre-' + xprod + '" name="precios" onClick="this.setSelectionRange(0, this.value.length)" class="form-control input-xs text-right" value="' + $('#pre1').val() + '"></div></td>').appendTo(row);
+                $('<td><input type="text"  id="subtot-' + xprod + '" name="subtotales" class="form-control input-xs input-subtot text-right" value="' + $('#tot1').val() + '" readonly></div></td>').appendTo(row);
+                $('<td><input type="text" id="des-' + xprod + '" onkeyup="calc_subtotal(' + xprod + ')" name="descuentos" class="form-control input-xs input-des text-right" onClick="this.setSelectionRange(0, this.value.length)" value="0"></div></td>').appendTo(row);
+                $('<td><input type="text"  id="tot-' + xprod + '" name="totales" class="form-control input-xs input-tot text-right" value="' + $('#tot1').val() + '" readonly></td>').appendTo(row);
+                $('<td class="remove-row"><button type="button" class="btn btn-xs btn-danger input-remove-row" data-producto="' + xprod + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                $('<input type="hidden" name="productos" value="' + xprod + '" >').appendTo(row);
+                $('#detalles > tbody:last').append(row);
+                $("#producto option:selected").attr('disabled', 'disabled');
+                $("#producto").val('').trigger("chosen:updated");
+                calc_total();
+                $('#formulario2')[0].reset();
+                xform.data('formValidation').resetForm();
+                $('#formulario3').formValidation('addField', 'descuentos', numero);
+                $('#formulario3').formValidation('addField', 'cantidades', entero);
+                $('#formulario3').formValidation('addField', 'precios', numero);
+            }
+        });
+        $('#formulario3').formValidation({
+            locale: 'es_ES'
+        }).on('success.fv.field', '[name="desVen"]', function() {
+        	calc_total();
+        }).on('success.fv.field', '[name="descuentos"]', function() {
+            calc_total();
+        }).on('success.fv.field', function() {
+            var estadoForm3 = $('#formulario3').data('formValidation').isValid();
+            if (estadoForm3) {
+                calc_total();
+            }
+        }).on('err.field.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $('#total-final').html('');
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let xform = $(e.target);
+            let formapago = parseInt($('input[name=formapago]:checked').val());
+            if(formapago == 1){
+            	let codSubcuenta = $('#codSubcuenta option:selected').val();
+            	if(codSubcuenta == ''){
+            		modalAlert('Validacion incorrecta', 'Seleccione una cuenta bancaria, si la forma de pago es por deposito bancario','error');
+            		return;
+            	}
+            }
+            alertAdicion('Confirmacion de registro de venta', 'Esta seguro de realizar esta venta?', function(){
+            	$('#formulario1').data('formValidation').validate();
+                var estadoForm1 = $('#formulario1').data('formValidation').isValid();
+                if ($('#total').val() > 0) {
+                    if (estadoForm1) {
+                            $.post(xform.attr('action'), $('#formulario1').serialize() + '&' + xform.serialize(), function(result) {
+                                if (result.status) {
+                                    xform.data('formValidation').resetForm();
+                                    $.post('../venta/gestion', function(respuno) {
+                                        mostrarMensaje('info', 'Se realizo con exito la Transaccion.');
+                                        $('#contenedor').html(respuno);
+                                    });
+                                } else {
+                                    mostrarMensaje('error', 'No se realizo con exito la transaccion.');
+                                }
+                            }, 'json');
+                    } else {
+                        $('#formulario1').data('formValidation').validate();
+                        mostrarMensaje('error', 'Valide los campos requeridos.');
+                    }
+
+                } else {
+                    mostrarMensaje('error', 'Por favor ingrese el detalle.');
+                }
+            });
+        });
+        $('#adicionarCliente').click(function() {
+            $('#formularioCliente').data('formValidation').resetForm();
+            $('#formularioCliente')[0].reset();
+            $('#codigo').val(0);
+            $('#modalCliente').modal('show');
+        });
+        $('#obtenerProducto').click(function() {
+            $('#formularioBarCode').data('formValidation').resetForm();
+            $('#formularioBarCode')[0].reset();
+            $('#modalBarCode').modal('show');
+        });
+        $('#formularioCliente').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            alertAdicion('Registro de cliente', 'Esta seguro de registrar este cliente?', function(){
+            	$.post(xform.attr('action'), xform.serialize(), function(result) {
+                    if (result.status == true) {
+                        xform.data('formValidation').resetForm();
+                        $('#cliente').append($('<option>', {
+                            value: result.codCli,
+                            text: result.cliente
+                        }));
+                        $('#cliente option[value=' + result.codCli + ']').attr('selected', 'selected');
+                        $('#cliente').trigger('chosen:updated');
+                        $('.modal').modal('hide');
+
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else {
+                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    }
+                }, 'json');
+            })
+        });
+        $('#producto').chosen().change(function() {
+        	let cantidad = parseInt($('#producto option:selected').data('can'));
+            
+            $('#pre1').val($('#producto option:selected').data('pre'));
+            if(cantidad > 0){
+        		$('#can1').val(1);
+        		$('#tot1').val($('#pre1').val());
+        		$('#existencia').html('Cantidad existente : ' + cantidad);
+        	}else{
+        		$('#existencia').html('Sin existencia en almacen');
+        	}
+            $('#exi').show();
+        });
+    });
+
+    function buscarCodigo() {
+        if ($('#barcode').val() != '')
+            $.post('../producto/obtenerxcodigo?barcode=' + $('#barcode').val(), function(resp) {
+                if (resp.status) {
+                    if (resp.data.can_pro > 0) {
+                        $('#producto').val(resp.data.cod_pro).trigger('chosen:updated');
+                        $('#can1').val(1);
+                        $('#pre1').val(resp.data.preven_pro);
+                        $('#tot1').val(resp.data.preven_pro);
+                        $('#adicionar').click();
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else
+                        mostrarMensaje('info', 'Se acabo la cantidad de este producto.');
+                } else {
+                    mostrarMensaje('error', 'No se encontro producto con este numero de codigo.');
+                }
+                $('#barcode').val('');
+            }, 'json');
+    }
+    function calc_total() {
+        let subtot = 0;
+        let des = 0;
+        let tot = 0;
+        $('.input-subtot').each(function() {
+            subtot += parseFloat($(this).val());
+        });
+        
+        $('.input-des').each(function() {
+            des += parseFloat($(this).val());
+        });
+        $('.input-tot').each(function() {
+            tot += parseFloat($(this).val());
+        });
+        $("#subtotal").val(subtot.toFixed(2));
+        $("#subdescuento").val(des.toFixed(2));
+        $("#subtotal-descuento").val(tot.toFixed(2));
+        let descuentoTotal = parseFloat($('#descuento').val());
+        let totalGeneral = tot - descuentoTotal;
+        $('#total').val(totalGeneral.toFixed(2));
+        calcularCambio();
+    }
+
+    function calc_subtotal(valor) {
+        let cantidad = $('#can-' + valor).val();
+        let precio = $('#pre-' + valor).val();
+        let descuento = $('#des-' + valor).val();
+        if(!cantidad){
+        	cantidad = 0
+        }
+        if(!precio){
+        	precio = 0;
+        }
+        if(!descuento){
+        	descuento = 0;
+        }
+        let subtotal = parseFloat(precio) * parseFloat(cantidad);
+        let total = subtotal - parseFloat(descuento);
+        $('#subtot-' + valor).val(subtotal.toFixed(2));
+        $('#tot-'+valor).val(total.toFixed(2));
+        calc_total();
+    }
+
+    function stopRKey(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+        if (evt.keyCode == 13) {
+        	if(node.id === 'barcode'){
+        		let barcode = $('#barcode').val();
+        		buscarCodigo();
+        	}else{
+        		$('#adicionar').click();
+        	}
+            return false;
+        }
+    }
+    document.onkeypress = stopRKey;
+</script>
+</section>

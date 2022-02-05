@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver_subreporte" pageWidth="164" pageHeight="500" columnWidth="164" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dea03c5e-e608-4769-96b4-d5c685a3493f">
+	<property name="ireport.zoom" value="3.797498335832416"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce RESFIT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="111"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="884"/>
+	<parameter name="cod_ven" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT d.cod_ven, d.cod_detven, d.cod_pro, d.pre_detven, d.can_detven, d.des_detven,
+	d.subtot_detven,d.tot_detven,p.nom_pro::varchar producto
+	FROM detalleventa d
+	join producto p on p.cod_pro=d.cod_pro
+	join tipoproducto tp on tp.cod_tippro=p.cod_tippro
+	where d.cod_ven=$P{cod_ven}]]>
+	</queryString>
+	<field name="cod_ven" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ven"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="cod_detven" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="cod_pro" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_pro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="pre_detven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="pre_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="pre_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="can_detven" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="can_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="can_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="des_detven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="des_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="subtot_detven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="subtot_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtot_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="tot_detven" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="tot_detven"/>
+		<property name="com.jaspersoft.studio.field.label" value="tot_detven"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	</field>
+	<field name="producto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="producto"/>
+		<property name="com.jaspersoft.studio.field.label" value="producto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
+	</field>
+	<variable name="total" class="java.lang.Float">
+		<variableExpression><![CDATA[($F{pre_detven}*$F{can_detven})-$F{des_detven}]]></variableExpression>
+	</variable>
+	<variable name="descuento" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{des_detven}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="130" height="24" uuid="d46050cc-5a50-435d-a7bf-4a7636baf49b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["#"+$F{cod_pro}+" - "+$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="30" y="24" width="28" height="12" uuid="fcd407c2-00eb-43ec-9268-8745188e6c93"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+					<paragraph lineSpacing="Single" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{can_detven}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="58" y="24" width="24" height="12" uuid="2eec375d-3ec5-4f14-be2c-b8351de9d6ca"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+					<paragraph lineSpacing="Single" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pre_detven}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="106" y="24" width="24" height="12" uuid="4de7ac1a-0fd8-451d-bf2a-6378318be66e"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+					<paragraph lineSpacing="Single" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="82" y="24" width="24" height="12" uuid="82999f85-72d3-4741-ab6c-762569e1fb54"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+					<paragraph lineSpacing="Single" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_detven}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

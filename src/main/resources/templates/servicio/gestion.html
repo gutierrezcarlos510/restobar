@@ -1,0 +1,255 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../servicio/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Servicio</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Tipo Servicio</label>
+                                <select id="cod_tipser" name="cod_tipser" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				<option value=""></option>
+                                    <option th:each="t : ${tipos}" th:value="${t.cod_tipser}" th:text="${t.nom_tipser}"></option>
+                  			</select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control text-uppercase" id="nom_ser" name="nom_ser" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input type="text" class="form-control" id="pre_ser" name="pre_ser" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Porcentaje de multa si no es realizado el servicio</label>
+                                <input type="text" class="form-control" id="porcentajeMulta" name="porcentaje_multa" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Porcentaje de ganancia para el ayudante</label>
+                                <input type="text" class="form-control" name="porcentaje_ayudante" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripci&oacute;n</label>
+                                <textarea class="form-control" id="des_ser" name="des_ser"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../servicio/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Servicio</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_ser" name="cod_ser" />
+                            <div class="form-group">
+                                <label>Tipo Servicio</label>
+                                <select id="cod_tipser1" name="cod_tipser" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
+                  				<option value=""></option>
+                                    <option th:each="t : ${tipos}" th:value="${t.cod_tipser}" th:text="${t.nom_tipser}"></option>
+                  			</select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control text-uppercase" id="nom_ser1" name="nom_ser" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input type="text" class="form-control" id="pre_ser1" name="pre_ser" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripci&oacute;n</label>
+                                <textarea class="form-control" id="des_ser1" name="des_ser"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Porcentaje de multa si no es realizado el servicio</label>
+                                <input type="text" class="form-control" id="porcentajeMulta1" name="porcentaje_multa" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Porcentaje de ganancia para el ayudante</label>
+                                <input type="text" class="form-control" name="porcentaje_ayudante" data-fv-notempty="true" data-fv-numeric="true">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Servicios </h1>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input
+                            type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                    </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input
+                        type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">Codigo</th>
+                    <th class="desktop">Tipo de Servicio</th>
+                    <th class="all">Nombre</th>
+                    <th class="desktop">Precio</th>
+                    <th class="desktop">Prc.multa %</th>
+                    <th class="desktop">Porc.ganancia %</th>
+                    <th class="all" width="100px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tablaServicio =$('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#cod_tipser').val('').trigger('chosen:updated');
+                    $('#cod_car').val('').trigger('chosen:updated');
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../servicio/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columnDefs":[{targets:[3,4,5],className:"text-right"}],
+            "columns": [{
+                "data": "cod_ser"
+            }, {
+                "data": "nom_tipser"
+            }, {
+                "data": "nom_ser"
+            }, {
+                "data": "pre_ser"
+            }, {
+                "data": "porcentaje_multa"
+            }, {
+                "data": "porcentaje_ayudante"
+            }, {
+                "data": "cod_ser"
+            }],
+            "createdRow": function(row, data, index) {
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    let buttons = '<button class="btn btn-primary modificar" title="Modificar"><i class="fa fa-edit"></i><br>editar</button>';
+                    buttons += '<button class="btn btn-danger eliminar" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+                    $('td', row).eq(6).html('<div class="btn-group-xs">' + buttons + '</div>');
+                } else
+                    $('td', row).eq(6).html('<button class="btn btn-primary activar" data-id="' + data.cod_ser + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i>  </button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    let obj = tablaServicio.row($(this).closest('tr')).data();
+                	alertAdicion("Eliminacion de servicio", ("Cod. servicio: "+ obj.cod_ser+", Nombre: "+obj.nom_ser), function(){
+        				jQuery.post('../servicio/eliminar?cod_ser='+obj.cod_ser, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.activar').click(function() {
+                	let obj = tablaServicio.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de servicio", ("Cod. servicio: "+ obj.cod_ser+", Nombre: "+obj.nom_ser), function(){
+        				jQuery.post('../servicio/activar?cod_ser='+obj.cod_ser, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                	let obj = tablaServicio.row($(this).closest('tr')).data();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#cod_tipser1').trigger('chosen:updated');
+                    $('#modalModificar').modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+        });
+        $('#nom_ser1').blur(function() {
+            $.post('../servicio/validar?nom_ser=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#nom_ser1').val('');
+                    mostrarMensaje('error', 'Este nombre ya existe!!!');
+                }
+            });
+        });
+    });
+</script>
+</section>

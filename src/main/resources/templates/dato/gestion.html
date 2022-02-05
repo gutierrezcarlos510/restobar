@@ -1,0 +1,316 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div id="modalEliminar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioEliminar" method="post" action="../dato/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Eliminaci&oacute;n de Datos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per" name="cod_per" />
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <img id="imageEliminar" name="image" class="img-thumbnail img-circle">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Desea eliminar los datos del usuario</label>
+                                        <label id="usuarioLabelEliminar" class="form-control w3-border-0"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div id="modalActivar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioActivar" method="post" action="../usuario/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Activar Usuario</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per1" name="cod_per" />
+                            <p><img id="imageActivar" name="image" class="img-thumbnail" width="75px" src="/avatars/user.png"> Desea activar a <label id="usuarioLabel2"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div id="modalGenerar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioGenerar" method="post" action="../dato/generar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Generar los datos del Usuario</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per2" name="cod_per" />
+
+                            <div class="w3-center">
+                                <img id="imageGenerar" name="image" class="img-thumbnail img-circle" src="#" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="form-group">
+                                        <label>Nombre de Usuario</label>
+                                        <input type="text" name="log_dat" class="form-control" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="w3-center"> Desea generar los datos del usuario: <label id="usuarioLabelGenerar"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalAsignar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioAsignar" method="post" action="../dato/guardarBiometrico" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Asignar Datos del Biom&eacute;trico</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per3" name="cod_per" />
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <img id="imageAsignar" name="image" class="img-thumbnail img-circle" src="">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Usuario</label>
+                                        <input type="text" class="form-control" id="usuarioLabelAsignar" name="user" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>C&oacute;digo de Biom&eacute;trico</label>
+                                        <input type="text" class="form-control" id="codbio_per" name="codbio_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8">
+                <h1><span class="fa fa-ellipsis-v"></span> Datos de Acceso al Sistema </h1>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">C&oacute;digo de usuario</th>
+                    <th class="none">Carnet de identidad</th>
+                    <th class="none">Celular</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="desktop">Login</th>
+                    <th class="none">Codigo de barra</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $('#tabla').DataTable({
+            buttons: [],
+            "ajax": {
+                "type": "POST",
+                "url": "../dato/lista"
+            },
+            "ordering": true,
+            "order":[[2,'desc']],
+            "columnDefs":[
+            	{targets: [6],className:'text-right'}],
+            "columns": [{
+                "data": "cod_per","name": "cod_per"
+            }, {
+                "data": "ci_per","name": "ci_per"
+            }, {
+                "data": "tel_per","name": "tel_per"
+            }, {
+                "data": "nom_per","name": "nom_per"
+            }, {
+                "data": "logDat","name": "log_dat"
+            }, {
+                "data": "codesc_per","name": "segape_per"
+            }, {
+                "data": "cod_per","name": "priape_per"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(3).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                let buttons = '';
+                buttons += '<button class="btn btn-warning generar"  data-toggle="tooltip" data-placement="top" title="generar clave" data-id="' + data.cod_per + '"><i class="fa fa-key"></i><br/>generar clave</button>';
+                buttons += '<button class="btn btn-info asignar"  data-toggle="tooltip" data-placement="top" title="Asgnar biometrico" data-id="' + data.cod_per + '"><i class="fa fa-user-times"></i><br/>biometrico</button>';
+                if (data.esActivo) {
+                    buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-remove"></i><br/>eliminar clave </button>';
+                    buttons += '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir datos" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-print"></i><br/> imprimir</button>';
+                }
+                if (!data.codbio_per && data.codbio_per != '') {
+                    buttons += '<button class="btn btn-primary asignar"  data-toggle="tooltip" data-placement="top" title="Reasignar biometrico" data-id="' + data.cod_per + '"><i class="fa fa-expeditedssl"></i><br/>reasignar biometrico</button>';
+                }
+                $('td', row).eq(6).html('<div class="btn-group btn-group-xs">' + buttons + '</div>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    $('#formularioEliminar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalEliminar').modal('show');
+                            $('#formularioEliminar').loadJSON(result.data);
+                            $('#usuarioLabelEliminar').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                            $('#imageEliminar').attr('src', '/avatars/' + result.data.fot_per);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.activar').click(function() {
+                    $('#formularioActivar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalActivar').modal('show');
+                            $('#formularioActivar').loadJSON(result.data);
+                            $('#usuarioLabel2').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.generar').click(function() {
+                    $('#formularioGenerar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalGenerar').modal('show');
+                            $('#formularioGenerar').loadJSON(result.data);
+                            $('#usuarioLabelGenerar').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                            $('#imageGenerar').attr('src', '/avatars/' + result.data.fot_per);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.asignar').click(function() {
+                    $('#formularioAsignar').data('formValidation').resetForm();
+                    $('#formularioAsignar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalAsignar').modal('show');
+                            $('#formularioAsignar').loadJSON(result.data);
+                            $('#usuarioLabelAsignar').val(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                            $('#imageAsignar').attr('src', '/avatars/' + result.data.fot_per);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../dato/ver?cod_per=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            }
+            , "initComplete": function (settings, json) {
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function (e) {
+                    if (e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                });
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formularioEliminar,#formularioActivar,#formularioAsignar,#formularioGenerar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', result.msg);
+                } else {
+                    modalAlert('Error de transaccion', result.msg, 'error');
+                }
+            }, 'json');
+        });
+        $('#formularioAsignar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+
+        $('#codbio_per').blur(function() {
+            $.post('../dato/validarBiometrico?codbio_per=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#codbio_per').val('');
+                    $('#formularioAsignar').formValidation('revalidateField', 'codbio_per');
+                    mostrarMensaje('error', 'Este codigo de biometrico ya existe!!!');
+                }
+            });
+        });
+    });
+</script>
+</section>

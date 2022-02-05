@@ -1,0 +1,499 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../secretaria/guardar" enctype="multiform/data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Personal de Venta</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="codigo" name="cod_per">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino1"><input type="radio" id="masculino1" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino1"><input type="radio"  id="femenino1" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" class="form-control text-right" id="tel_per" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="ema_per" name="ema_per">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>F. Ingreso</label>
+                                        <input type="text" class="form-control fecha" id="fini_sec" name="fini_sec" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Sueldo</label>
+                                        <input type="text" class="form-control text-right" id="sue_sec" name="sue_sec" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre de Usuario</label>
+                                        <input type="text" class="form-control" name="logDat" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Sucursales</label>
+                                        <select name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../secretaria/actualizar" enctype="multiform/data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Personal de venta</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_per">
+                            <input type="hidden" name="cod_sec">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per1" name="ci_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per1" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per1" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per1" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino2"><input type="radio" id="masculino2" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino2"><input type="radio"  id="femenino2" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" class="form-control text-right" id="tel_per1" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per1" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" id="ema_per1" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>F. Ingreso</label>
+                                        <input type="text" class="form-control fecha" id="fini_sec1" name="fini_sec" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Sueldo</label>
+                                        <input type="text" class="form-control text-right" id="sue_sec1" name="sue_sec" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        
+        <div id="modalAsignarSucursales" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioAsignarSucursales" method="post" action="../usuario/guardarSucursales" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Asignaci&oacute;n de sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per" name="cod_per" />
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <img id="imageSucursal" name="image" class="img-thumbnail img-circle" src="#">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Usuario</label>
+                                        <label id="usuarioLabelSucursal" class="form-control w3-border-0"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Seleccionar sucursal o sucursales</label>
+                                        <select name="sucursales" id="sucursales2" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="pull-left"><span class="fa  fa-ellipsis-v"></span> Gestion Personal de Ventas </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input type="radio" name="estado" value="true"  title="Mostrar Activos" checked> Activos
+                </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="none">C&oacute;digo de usuario</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="none">Carnet de identidad</th>
+                    <th class="desktop">Celular</th>
+                    <th class="none">Domicilio</th>
+                    <th class="none">Correo electr&oacute;nico</th>
+                    <th class="desktop">Fecha de Ingreso</th>
+                    <th class="none">Sueldo</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $(".fecha").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tableSecretaria = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#codigo').val(0);
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../secretaria/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columnDefs":[
+            	{targets: [8],className:'text-right'}],
+            "ordering": true,
+            "order": [[0,'desc']],
+            "columns": [{
+                "data": "cod_sec","name":"cod_sec"
+            }, {
+                "data": "cod_sec","name":"nom_per"
+            }, {
+                "data": "ci_per","name":"ci_per"
+            }, {
+                "data": "tel_per","name":"tel_per"
+            }, {
+                "data": "dir_per","name":"dir_per"
+            }, {
+                "data": "ema_per","name":"ema_per"
+            }, {
+                "data": "fecha","name":"fecha"
+            }, {
+                "data": "sue_sec","name":"priape_per"
+            }, {
+                "data": "cod_sec","name":"segape_per"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                if ($('input[name=estado]:checked').val() == 'true') {
+                	let buttons = '<button class="btn btn-warning asignarSucursales"  data-toggle="tooltip" data-placement="top" title="Asignar sucursal" data-id="' + data.cod_sec + '"><i class="fa  fa-building"></i><br/>sucursal</button>';
+                	buttons += '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_sec + '"><i class="fa fa-edit"></i><br/> editar </button>';
+                	buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_sec + '"><i class="glyphicon glyphicon-remove"></i><br/> eliminar</button>';
+                	buttons += '<button class="btn btn-success imprimir" data-id="' + data.cod_per + '" data-toggle="tooltip" data-placement="top" title="Imprimir credencial"><i class="glyphicon glyphicon-print"></i> <i class="fa fa-credit-card"></i><br/> imprimir </button>';
+                    $('td', row).eq(8).html('<div class="btn-group btn-group-xs">'+buttons+'</div>');
+                } else
+                    $('td', row).eq(8).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_sec + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar </button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tableSecretaria.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de secretaria", ("Cod. secretaria: "+ obj.cod_sec+", Secretaria: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../secretaria/eliminar?cod_sec='+obj.cod_sec, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.activar').click(function() {
+                	let obj = tableSecretaria.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de secretaria", ("Cod. secretaria: "+ obj.cod_sec+", Secretaria: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../secretaria/activar?cod_sec='+obj.cod_sec, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    let obj = tableSecretaria.row($(this).closest('tr')).data();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    obj.fini_sec = obj.fecha;
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#imagen').attr('src', '/avatars/' + obj.fot_per);
+                    $('#modalModificar').modal('show');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../secretaria/ver_credencial?cod_per=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('.asignarSucursales').click(function() {
+                    $('#formularioAsignarSucursales').data('formValidation').resetForm();
+                    $('#formularioAsignarSucursales')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status) {
+                            $('#modalAsignarSucursales').modal('show');
+                            if (result.data) 
+                            	$('#formularioAsignarSucursales').loadJSON(result.data);
+                            $('#usuarioLabelSucursal').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                            $('#imageSucursal').attr('src','/avatars/'+result.data.fot_per);
+                            $('#sucursales2').html('');
+                            if(result.sucursales){
+                            	result.sucursales.forEach( item => {
+                            		let row = $('<option value="'+item.cod_suc+'" '+item.tipo+'>'+item.nombre+'</option>');
+                            		$('#sucursales2').append(row);
+                            	});
+                            }
+                            $('#sucursales2').trigger('chosen:updated');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            }
+            ,"initComplete": function(settings, json) {
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e){
+                    if(e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formularioAsignarSucursales').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    modalAlert('Error de transaccion', result.msg, 'error')
+                }
+            }, 'json');
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formulario"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', result.msg);
+                    } else {
+                        modalAlert('Error de transaccion', result.msg, 'error');
+                    }
+                });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formularioModificar"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', result.msg);
+                    } else {
+                        modalAlert('Error de transaccion', result.msg, 'error');
+                    }
+                });
+            });            
+        });
+        $('#ci_per').blur(function() {
+            $.post('../usuario/buscarci?ci=' + $(this).val(), function(resp) {
+                if (resp.status) {
+                    $('#formulario').loadJSON(resp.data);
+                    mostrarMensaje('info', 'Este usuario ya existe');
+                } else $('#codigo').val(0);
+
+            });
+        });
+    });
+</script>

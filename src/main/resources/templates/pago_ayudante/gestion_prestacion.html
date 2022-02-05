@@ -1,0 +1,639 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+
+        <div id="modalPagar" class="modal fade" data-backdrop="static">
+            <div class="modal-dialog" style="width: 98%" >
+                <form id="formularioPagar" method="post" action="../ayudante/pagar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                            <div class="row">
+                            	<div class="col-md-3">
+                            		<h4 class="modal-title">Pagar los servicios prestados</h4>
+                            	</div>
+                            	<div class="col-md-6">
+                            		<p>
+                            			<strong>Total a Pagar: </strong>
+                            			<span id="vtotalPagar"></span>
+                            		</p>
+                            	</div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="codAyu" />
+                            <label>Ayudante : <b id="ayudanteLabel"></b></label>
+                            <div class="row">
+                            	<div class="col-md-8">
+	                            	<div class="box box-primary">
+		                            	<div class="box-body">
+		                            	<fieldset class="scheduler-border">
+										<legend class="scheduler-border">Prestaciones Cumplidas</legend>
+		                            	<div class="table-responsive">
+											<table id="detalles" class="w3-table-all w3-hoverable">
+												<thead>
+												<tr>
+													<th width="25px">No.</th>
+													<th>Cod.</th>
+													<th>Servicio</th>
+													<th>Estudiante</th>
+													<th>Total</th>
+													<th width="100px">Pagar</th>
+													<th width="25px">Sel</th>
+												</tr>
+												</thead>
+												<tbody>
+												</tbody>
+												<tfoot>
+												<tr >
+													<td colspan="4" class="w3-right-align">Total a pagar</td>
+													<td colspan="3" id="total-final" class="w3-right-align"></td>
+												</tr>
+												</tfoot>
+											</table>
+										</div>
+		                                </fieldset>
+		                            	</div>
+	                            	</div>
+	                            	<div class="box box-success">
+		                            		<div class="box-body">
+		                            		<fieldset class="scheduler-border">
+										<legend class="scheduler-border">Prestaciones Abandonadas</legend>
+												<div class="table-responsive">
+													<table id="detallesAbandono" class="w3-table-all w3-hoverable">
+														<thead>
+														<tr>
+															<th width="25px">No.</th>
+															<th>Cod.</th>
+															<th>Servicio</th>
+															<th>Estudiante</th>
+															<th width="100px">Total</th>
+															<th width="100px">A cuenta</th>
+															<th width="25px">Sel</th>
+														</tr>
+														</thead>
+														<tbody>
+														</tbody>
+														<tfoot>
+														<tr >
+															<td colspan="4" class="w3-right-align">Total a Pagar</td>
+															<td colspan="3" id="total-final-abandono" class="w3-right-align"></td>
+														</tr>
+														</tfoot>
+													</table>
+												</div>
+				                                </fieldset>
+		                            		</div>
+		                            	</div>
+	                            	<div class="box box-danger">
+		                            		<div class="box-body">
+		                            		<fieldset class="scheduler-border">
+										<legend class="scheduler-border">Prestaciones incumplidas</legend>
+		                            			<div class="table-responsive">
+													<table id="detallesIncumplido" class="w3-table-all w3-hoverable">
+														<thead>
+														<tr>
+															<th width="25px">No.</th>
+															<th>Cod.</th>
+															<th>Servicio</th>
+															<th>Estudiante</th>
+															<th width="100px">Total</th>
+															<th width="50px">Perdonar</th>
+															<th width="100px">Multa</th>
+															<th width="25px">Sel</th>
+														</tr>
+														</thead>
+														<tbody>
+														</tbody>
+														<tfoot>
+														<tr >
+															<td colspan="4" class="w3-right-align">Total a multar</td>
+															<td colspan="3" id="total-final-incumplido" class="w3-right-align"></td>
+														</tr>
+														</tfoot>
+													</table>
+												</div>
+				                                </fieldset>
+		                            		</div>
+		                            	</div>
+                            	</div>
+                            	<div class="col-md-4">
+                            		<div class="panel panel-primary">
+                            		<div class="panel-body">
+                            		 <fieldset class="scheduler-border" id="areaPrestacion" style="display: none;">
+										<legend class="scheduler-border">Prestaci&oacute;n</legend>
+                                    <dl class="dl-horizontal" id="dataPrestacion">
+                                        <dt>Cod. Prestaci&oacute;n</dt>
+                                        <dd aria-label="cod_pre"></dd>
+                                        <dt>Estado</dt>
+                                        <dd aria-label="tipo"></dd>
+                                        <dt>Fecha de registro</dt>
+                                        <dd aria-label="fecha"></dd>
+                                        <dt>Estudiante</dt>
+                                        <dd aria-label="estudiante"></dd>
+                                        <dt>Docente</dt>
+                                        <dd aria-label="docente"></dd>
+                                        <dt>Ayudante</dt>
+                                        <dd aria-label="ayudante"></dd>
+                                        <dt>Usuario</dt>
+                                        <dd aria-label="usuario"></dd>
+                                        <dt>Fecha de Entrega</dt>
+                                        <dd><span aria-label="entrega"></span> <span aria-label="horent_pre"></span></dd>
+                                        <dt>Descripci&oacute;n</dt>
+                                        <dd aria-label="obs_pre"></dd>
+                                        <dt>Subtotal</dt>
+                                        <dd aria-label="tot_pre"></dd>
+                                        <dt>Descuento</dt>
+                                        <dd aria-label="des_pre"></dd>
+                                        <dt>TOTAL</dt>
+                                        <dd aria-label="totalPrestacion"></dd>
+                                        <dt>TOTAL PAGADO</dt>
+                                        <dd aria-label="sal_pre"></dd>
+                                    </dl>
+                                    </fieldset>
+                            		</div>
+                            		</div>
+                            		<div class="panel panel-primary">
+                            			<div class="panel-body">
+                            				<fieldset class="scheduler-border">
+												<legend class="scheduler-border">Detalle de prestaci&oacute;n</legend>
+											<div class="table-responsive">
+												<table class="w3-table-all" id="tablaDetallePrestacion" style="display: none;">
+													<thead>
+													<tr>
+														<td colspan="4" class="w3-center">Detalle de servicios</td>
+													</tr>
+													<tr  style="border-bottom: 1px solid black;">
+														<td>Servicio</td>
+														<td class="w3-right-align">Precio</td>
+														<td class="w3-right-align">% Gan</td>
+														<td class="w3-right-align">Ganancia</td>
+													</tr>
+													</thead>
+													<tbody></tbody>
+													<tfoot style="font-weight: bolder;"></tfoot>
+												</table>
+											</div>
+											<div class="table-responsive">
+												<table class="w3-table-all" id="tablaDetallePrestacionIncumplido" style="display: none;">
+													<thead>
+													<tr>
+														<td colspan="4" class="w3-center">Detalle de servicios</td>
+													</tr>
+													<tr  style="border-bottom: 1px solid black;">
+														<td>Servicio</td>
+														<td class="w3-right-align">Precio</td>
+														<td class="w3-right-align">% Multa</td>
+														<td class="w3-right-align">Multa</td>
+													</tr>
+													</thead>
+													<tbody></tbody>
+													<tfoot style="font-weight: bolder;"></tfoot>
+												</table>
+											</div>
+											<div class="table-responsive">
+												<table class="w3-table-all" id="tablaDetallePrestacionAbandono" style="display: none;">
+													<thead>
+													<tr>
+														<td colspan="2" class="w3-center">Detalle de servicios</td>
+													</tr>
+													<tr  style="border-bottom: 1px solid black;">
+														<td>Servicio</td>
+														<td class="w3-right-align">Precio</td>
+													</tr>
+													</thead>
+													<tbody></tbody>
+													<tfoot style="font-weight: bolder;"></tfoot>
+												</table>
+											</div>
+		                                	</fieldset>
+                            			</div>
+                            		</div>
+                            	</div>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Aceptar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+		<div class="row">
+			<div class="col-md-8">
+				<h1 class="pull-left"><span class="fa  fa-ellipsis-v"></span> Pago a Ayudantes </h1>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-block btn-success" id="btnVerPagosRealizados"><i class="fa fa-usd"></i> | Ver Pagos o Multas Realizados</button>
+			</div>
+		</div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">Cod.Ayudante</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="desktop">Total</th>
+                    <th class="none">Prestaciones</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script>
+	var dataResponse = [];
+	var dataResumen = {
+		'totalCumplido':0,
+		'totalAbandonado':0,
+		'totalMultado':0,
+		'totalPagar':0
+	};
+	function calculoDetalle(codPre){
+		setTimeout(() => {
+			let ganancia = $('#sal-'+codPre).val();
+			if(!ganancia){
+				ganancia = 0;
+			}else{
+				ganancia = parseFloat(ganancia);
+			}
+			$('#cod-'+codPre).val(ganancia);
+			calculoTotal();
+		}, 1000);
+	}
+	function calculoDetalleAbandonado(codPre){
+		console.log('calculeDetalleAbandonado');
+		setTimeout(() => {
+			let ganancia = $('#saldoAbandonado-'+codPre).val();
+			if(!ganancia){
+				ganancia = 0;
+			}else{
+				ganancia = parseFloat(ganancia);
+			}
+			$('#codAbandonado-'+codPre).val(ganancia);
+			calcularTotalAbandonado();
+		}, 1000);
+	}
+	function calculoDetalleIncumplido(codPre){
+		setTimeout(() => {
+			let ganancia = $('#multaIncumplido-'+codPre).val();
+			if(!ganancia){
+				ganancia = 0;
+			}else{
+				ganancia = parseFloat(ganancia);
+			}
+			$('#codIncumplido-'+codPre).val(ganancia);
+			calcularTotalIncumplido();
+		}, 1000);
+	}
+	function revisarIncumplido(codPre){
+		console.log('rervisar Incumplido');
+		if ($('#checkPerdonar-'+codPre).is(':checked')){
+			$('#codIncumplido-'+codPre).prop('checked',false);
+			$('#codIncumplido-'+codPre).prop('disabled',true);
+		}else{
+			$('#codIncumplido-'+codPre).prop('disabled',false);
+		}
+		calcularTotalIncumplido();
+	}
+    $(document).ready(function() {
+    	$('#btnVerPagosRealizados').click(function(){
+    		$.post('../pagoPrestacion/gestion', function(resp) {
+                $('#contenedor').html(resp);
+            });
+    	});
+        var tablaDeudas = $('#tabla').DataTable({
+            dom: "<'row'<'col-sm-5'f><'col-sm-2'l><'col-sm-5'i>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "ordering": false,
+            "oLanguage": {
+            	"sUrl": "../../js/Spanish.lang"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "type": "POST",
+                "url": "../ayudante/lista_pago_ayudante",
+                "data": function(d) {
+                    d.estado = true;
+                }
+            },
+            "columnDefs":[{targets:[4],className:"text-right"},{targets:[3],className:"w3-center"}],
+            "columns": [{
+                "data": "codAyu"
+            }, {
+                "data": "ayudante"
+            }, {
+                "data": "total"
+            }, {
+                "data": "prestaciones"
+            }, {
+                "data": "codAyu"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(4).html('<div class="btn-group-xs"><button class="btn btn-primary pagar" title="Pagar" ><i class="fa fa-dollar"></i><br> pagar ayudante</button></div>');
+            },
+            "drawCallback": function(settings) {
+                $('.pagar').click(function() {
+                	$('#areaPrestacion').hide();
+                	resetDataResumen();
+                	let obj = tablaDeudas.row($(this).closest('tr')).data();
+                    $('#formularioPagar')[0].reset();
+                    $('#formularioPagar').data('formValidation').resetForm();
+                    $.post('../ayudante/obtenerDeuda?cod_ayu=' +obj.codAyu, function(result) {
+                    	$('#formularioPagar').loadJSON(obj);
+                        $('#ayudanteLabel').html(obj.ayudante);
+                        if (result.status) {
+                            $('#detalles > tbody').html('');
+                            $('#detallesAbandono > tbody').html('');
+                            $('#detallesIncumplido > tbody').html('');
+                            if(result.data){
+                            	dataResponse = result.data;
+                            	let indCumplido =0,indIncumplido=0,indAbandonado=0;
+                            	result.data.forEach(function(item,indice) {
+                            		if(item.tip_pre == 2){//Prestaciones cumplidas
+                            			indCumplido++;
+                            			let row = $('<tr></tr>');
+                                        $('<td>' + indCumplido + '</td>').appendTo(row);
+                                        $('<td>' + item.cod_pre + '</td>').appendTo(row);
+                                        $('<td>' + item.servicios + '</td>').appendTo(row);
+                                        $('<td>' + item.estudiante + '</td>').appendTo(row);
+                                        $('<td class="w3-right-align">' + item.sal_pre + '</td>').appendTo(row);
+                                        $('<td><input type="text" class="form-control w3-right-align subtotal input-sm" onkeyup="calculoDetalle('+item.cod_pre+')" id="sal-' + item.cod_pre + '" name="subtotal" value="' + item.total_ganancia + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                                        $('<td><input type="checkbox" style="width: 20px; height: 20px;" onchange="calcular('+item.cod_pre+');" class="datos" id="cod-' + item.cod_pre + '" name="prestaciones" data-id="'+item.cod_pre+'" value="' + item.total_ganancia+ '" ></td>').appendTo(row);
+                                        $('#detalles > tbody:last').append(row);
+                            		}
+                            		if(item.tip_pre == 3){//Prestaciones incumplidas
+                            			indIncumplido++;
+                            			let row = $('<tr></tr>');
+                                        $('<td>' + indIncumplido + '</td>').appendTo(row);
+                                        $('<td>' + item.cod_pre + '</td>').appendTo(row);
+                                        $('<td>' + item.servicios + '</td>').appendTo(row);
+                                        $('<td>' + item.estudiante + '</td>').appendTo(row);
+                                        $('<td class="w3-right-align">' + item.tot_pre + '</td>').appendTo(row);
+                                        $('<td class="w3-center"><input type="checkbox" style="width: 20px; height: 20px;" onchange="revisarIncumplido('+item.cod_pre+');" id="checkPerdonar-' + item.cod_pre + '" name="prestacionesPerdonadas" value="' + item.cod_pre+ '" ></td>').appendTo(row);
+                                        $('<td><input type="text" class="form-control w3-right-align subtotalIncumplido input-sm" onkeyup="calculoDetalleIncumplido('+item.cod_pre+')" id="multaIncumplido-' + item.cod_pre + '" name="subtotal" value="' + item.total_multa + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                                        $('<td><input type="checkbox" style="width: 20px; height: 20px;" onchange="calcularIncumplido('+item.cod_pre+');" class="datosIncumplido" id="codIncumplido-' + item.cod_pre + '" data-id="'+item.cod_pre+'" name="prestacionesIncumplido" value="' + item.total_multa+ '" ></td>').appendTo(row);
+                                        $('#detallesIncumplido > tbody:last').append(row);
+                            		}
+                            		if(item.tip_pre == 5){//Prestaciones abandonadas
+                            			indAbandonado++;
+                            			let row = $('<tr></tr>');
+                                        $('<td>' + indAbandonado + '</td>').appendTo(row);
+                                        $('<td>' + item.cod_pre + '</td>').appendTo(row);
+                                        $('<td>' + item.servicios + '</td>').appendTo(row);
+                                        $('<td>' + item.estudiante + '</td>').appendTo(row);
+                                        $('<td class="w3-right-align">' + (item.tot_pre - item.des_pre).toFixed(2) + '</td>').appendTo(row);
+                                        $('<td><input type="text" class="form-control w3-right-align subtotalAbandonado input-sm" onkeyup="calculoDetalleAbandonado('+item.cod_pre+')" id="saldoAbandonado-' + item.cod_pre + '" name="subtotal" value="' + item.sal_pre + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                                        $('<td><input type="checkbox" style="width: 20px; height: 20px;" onchange="calcularAbandonado('+item.cod_pre+');" class="datosAbandonado" id="codAbandonado-' + item.cod_pre + '" data-id="'+item.cod_pre+'" name="prestacionesAbandonado" value="' + item.sal_pre+ '" ></td>').appendTo(row);
+                                        $('#detallesAbandono > tbody:last').append(row);
+                            		}
+                                });
+                            	if(indCumplido ==1){
+                            		let row = $('<tr><td colspan="7" class="w3-center">Sin prestaciones cumplidas</td></tr>');
+                                    $('#detalles > tbody:last').append(row);
+                            	}
+                            	if(indAbandonado ==1){
+                            		let row = $('<tr><td colspan="7" class="w3-center">Sin prestaciones abandonadas</td></tr>');
+                                    $('#detallesAbandono > tbody:last').append(row);
+                            	}
+                            	if(indIncumplido==1){
+                            		let row = $('<tr><td colspan="8" class="w3-center">Sin prestaciones incumplidas</td></tr>');
+                                    $('#detallesIncumplido > tbody:last').append(row);
+                            	}
+                            }
+                            $('#modalPagar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            }
+        });
+        $('#formularioPagar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	$('.datos').each(function() {
+                    if ($(this).is(':checked')){
+                    	$(this).val($(this).data('id')+'-'+$(this).val());
+                    }
+                });
+            	$('.datosAbandonado').each(function() {
+                    if ($(this).is(':checked')){
+                    	$(this).val($(this).data('id')+'-'+$(this).val());
+                    }
+                });
+            	$('.datosIncumplido').each(function() {
+                    if ($(this).is(':checked')){
+                    	$(this).val($(this).data('id')+'-'+$(this).val());
+                    }
+                });
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(resp) {
+            	$('.modal').modal('hide');
+            	if (resp.status) {
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', resp.msg);
+                    $("#frameReportes").attr("src", "../pagoPrestacion/imprimir?codPagoPrestacion=" + resp.data);
+                    $("#reportes").modal('show');
+                } else {
+                    modalAlert('error', resp.msg);
+                }
+            }, 'json');
+        });
+        });
+    });
+
+    function calcular(codPrestacion) {
+    	calculoTotal();
+    	if(dataResponse){
+    		let dataPrestacion = dataResponse.find(item=>item.cod_pre==codPrestacion);
+    		if(dataPrestacion){
+    			dataPrestacion.tipo = dataPrestacion.tip_pre==2?'Cumplido':(dataPrestacion.tip_pre==5?'Abandonado':(dataPrestacion.tip_pre==3?'Incumplido':''))
+    			dataPrestacion.totalPrestacion = dataPrestacion.tot_pre - dataPrestacion.des_pre;
+    			$('#dataPrestacion').loadJSON(dataPrestacion);
+    			$('#areaPrestacion').show();
+    			$('#tablaDetallePrestacionAbandono').hide();
+    			$('#tablaDetallePrestacion').show();
+    			$('#tablaDetallePrestacionIncumplido').hide();
+    			$('#tablaDetallePrestacion > tbody').html('');
+    			$('#tablaDetallePrestacion > tfoot').html('');
+    			$.post('../prestacion/obtenerDetallesPagos?cod_pre='+codPrestacion,function(resp){
+    				if(resp.status){
+    					let totalGanancia = 0;
+    					if(resp.data){
+    						resp.data.forEach(item=>{
+    							let row = $('<tr></tr>');
+    							$('<td>'+item.nom_ser+'</td>').appendTo(row);
+    							$('<td class="w3-right-align">'+item.pre_detpre+'</td>').appendTo(row);
+    							$('<td class="w3-right-align">'+item.porcentaje_ayudante+'</td>').appendTo(row)
+    							$('<td class="w3-right-align">'+item.monto_ganancia+'</td>').appendTo(row);
+    							$('#tablaDetallePrestacion > tbody:last').append(row);
+    							totalGanancia += item.monto_ganancia;
+    						});
+    						let row = $('<tr></tr>');
+    						$('<td class="w3-right-align" colspan="2">Subtotal Ganancia:</td>').appendTo(row);
+    						$('<td colspan="2" class="w3-right-align">'+totalGanancia+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacion > tfoot:last').append(row);
+    						row = $('<tr></tr>');
+    						$('<td class="w3-right-align" colspan="2">Descuento en el servicio:</td>').appendTo(row);
+    						$('<td colspan="2" class="w3-right-align">'+dataPrestacion.des_pre+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacion > tfoot:last').append(row);
+    						totalGanancia -= dataPrestacion.des_pre;
+    						row = $('<tr></tr>');
+    						$('<td class="w3-right-align" colspan="2">TOTAL GANANCIA:</td>').appendTo(row);
+    						$('<td colspan="2" class="w3-right-align">'+totalGanancia+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacion > tfoot:last').append(row);
+    					}
+    				}
+    			})
+    		}else{
+    			$('#areaPrestacion').hide();
+    		}
+    	}
+    }
+    function calcularIncumplido(codPrestacion) {
+    	calcularTotalIncumplido();
+    	if(dataResponse){
+    		let dataPrestacion = dataResponse.find(item=>item.cod_pre==codPrestacion);
+    		if(dataPrestacion){
+    			dataPrestacion.tipo = dataPrestacion.tip_pre==2?'Cumplido':(dataPrestacion.tip_pre==5?'Abandonado':(dataPrestacion.tip_pre==3?'Incumplido':''))
+    			dataPrestacion.totalPrestacion = dataPrestacion.tot_pre - dataPrestacion.des_pre;
+    			$('#dataPrestacion').loadJSON(dataPrestacion);
+    			$('#areaPrestacion').show();
+    			$('#tablaDetallePrestacionAbandono').hide();
+    			$('#tablaDetallePrestacion').hide();
+    			$('#tablaDetallePrestacionIncumplido').show();
+    			$('#tablaDetallePrestacionIncumplido > tbody').html('');
+    			$('#tablaDetallePrestacionIncumplido > tfoot').html('');
+    			$.post('../prestacion/obtenerDetallesPagos?cod_pre='+codPrestacion,function(resp){
+    				if(resp.status){
+    					let totalMulta = 0;
+    					if(resp.data){
+    						resp.data.forEach(item=>{
+    							let row = $('<tr></tr>');
+    							$('<td>'+item.nom_ser+'</td>').appendTo(row);
+    							$('<td class="w3-right-align">'+item.pre_detpre+'</td>').appendTo(row);
+    							$('<td class="w3-right-align">'+item.porcentaje_multa+'</td>').appendTo(row)
+    							$('<td class="w3-right-align">'+item.monto_multa+'</td>').appendTo(row);
+    							$('#tablaDetallePrestacionIncumplido > tbody:last').append(row);
+    							totalMulta += item.monto_multa;
+    						});
+    						let row = $('<tr></tr>');
+    						$('<td class="w3-right-align" colspan="2">TOTAL MULTA:</td>').appendTo(row);
+    						$('<td colspan="2" class="w3-right-align">'+totalMulta+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacionIncumplido > tfoot:last').append(row);
+    					}
+    				}
+    			})
+    		}else{
+    			$('#areaPrestacion').hide();
+    		}
+    	}
+    }
+    function calcularAbandonado(codPrestacion) {
+    	calcularTotalAbandonado();
+    	if(dataResponse){
+    		let dataPrestacion = dataResponse.find(item=>item.cod_pre==codPrestacion);
+    		if(dataPrestacion){
+    			dataPrestacion.tipo = dataPrestacion.tip_pre==2?'Cumplido':(dataPrestacion.tip_pre==5?'Abandonado':(dataPrestacion.tip_pre==3?'Incumplido':''))
+    			dataPrestacion.totalPrestacion = dataPrestacion.tot_pre - dataPrestacion.des_pre;
+    			$('#dataPrestacion').loadJSON(dataPrestacion);
+    			$('#areaPrestacion').show();
+    			$('#tablaDetallePrestacionIncumplido').hide();
+    			$('#tablaDetallePrestacion').hide();
+    			$('#tablaDetallePrestacionAbandono').show();
+    			$('#tablaDetallePrestacionAbandono > tbody').html('');
+    			$('#tablaDetallePrestacionAbandono > tfoot').html('');
+    			$.post('../prestacion/obtenerDetallesPagos?cod_pre='+codPrestacion,function(resp){
+    				if(resp.status){
+    					let totalGanancia = 0;
+    					if(resp.data){
+    						resp.data.forEach(item=>{
+    							let row = $('<tr></tr>');
+    							$('<td>'+item.nom_ser+'</td>').appendTo(row);
+    							$('<td class="w3-right-align">'+item.pre_detpre+'</td>').appendTo(row);
+    							$('#tablaDetallePrestacionAbandono > tbody:last').append(row);
+    							totalGanancia += item.sal_pre;
+    						});
+    						let row = $('<tr></tr>');
+    						$('<td class="w3-right-align" >Subtotal:</td>').appendTo(row);
+    						$('<td class="w3-right-align">'+dataPrestacion.tot_pre+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacionAbandono > tfoot:last').append(row);
+    						row = $('<tr></tr>');
+    						$('<td class="w3-right-align" >Descuento:</td>').appendTo(row);
+    						$('<td class="w3-right-align">'+dataPrestacion.des_pre+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacionAbandono > tfoot:last').append(row);
+    						row = $('<tr></tr>');
+    						$('<td class="w3-right-align" >TOTAL:</td>').appendTo(row);
+    						$('<td class="w3-right-align">'+(dataPrestacion.tot_pre - dataPrestacion.des_pre)+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacionAbandono > tfoot:last').append(row);
+    						row = $('<tr></tr>');
+    						$('<td class="w3-right-align" >TOTAL PAGADO:</td>').appendTo(row);
+    						$('<td class="w3-right-align">'+dataPrestacion.sal_pre+'</td>').appendTo(row);
+    						$('#tablaDetallePrestacionAbandono > tfoot:last').append(row);
+    					}
+    				}
+    			})
+    		}else{
+    			$('#areaPrestacion').hide();
+    		}
+    	}
+    }
+    function calculoTotal(){
+    	let tot = 0;
+        $('.datos').each(function() {
+            if ($(this).is(':checked'))
+                tot += parseFloat($(this).val());
+        });
+        dataResumen.totalCumplido = tot;
+        calculoGeneral();
+        $('#total-final').html(tot.toFixed(2) + ' Bs.');
+    }
+    function calcularTotalAbandonado(){
+    	let tot = 0;
+        $('.datosAbandonado').each(function() {
+            if ($(this).is(':checked'))
+                tot += parseFloat($(this).val());
+        });
+        dataResumen.totalAbandonado = tot;
+        calculoGeneral();
+        $('#total-final-abandono').html(tot.toFixed(2) + ' Bs.');
+    }
+    function calcularTotalIncumplido(){
+    	let tot = 0;
+        $('.datosIncumplido').each(function() {
+            if ($(this).is(':checked'))
+                tot += parseFloat($(this).val());
+        });
+        dataResumen.totalMultado = tot;
+        calculoGeneral();
+        $('#total-final-incumplido').html(tot.toFixed(2) + ' Bs.');
+    }
+    function calculoGeneral(){
+    	dataResumen.totalPagar = dataResumen.totalCumplido + dataResumen.totalAbandonado - dataResumen.totalMultado;
+    	if(dataResumen.totalPagar <0){
+    		$('#vtotalPagar').html('El ayudante debera pagar: '+dataResumen.totalPagar.toFixed(2)+' ('+numeroALetras((-1*dataResumen.totalPagar))+')');
+    	}else{
+    		$('#vtotalPagar').html(dataResumen.totalPagar.toFixed(2)+' ('+numeroALetras(dataResumen.totalPagar)+')');
+    	}
+    	
+    }
+    function resetDataResumen(){
+    	dataResumen.totalPagar = 0;
+    	dataResumen.totalCumplido =0;
+    	dataResumen.totalAbandonado = 0;
+    	dataResumen.totalMultado = 0;
+    	calculoGeneral();
+    }
+    
+</script>

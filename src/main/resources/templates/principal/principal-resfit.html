@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="tipo_contenido" content="text/html;" http-equiv="content-type" charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mi Comercial</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" href="/css/formValidation.min.css" />
+    <link rel="stylesheet" href="/css/fileinput.css" type="text/css" />
+    <link rel="stylesheet" href="/css/pnotify.css" media="all" type="text/css" />
+    <link rel="stylesheet" href="/css/chosen.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/ionicons.min.css" />
+    <link rel="stylesheet" href="/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/buttons.bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/fullcalendar.min.css" />
+    <link rel="stylesheet" href="/css/fullcalendar.print.css" media="print" />
+    <link rel="stylesheet" href="/css/AdminLTE.css" />
+    <link rel="stylesheet" href="/css/_all-skins.css" />
+    <link rel="stylesheet" href="/css/morris.css" />
+    <link rel="stylesheet" href="/css/jquery-jvectormap-1.2.2.css" />
+    <link rel="stylesheet" href="/css/datepicker3.css" />
+    <link rel="stylesheet" href="/css/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="/css/bootstrap3-wysihtml5.css" />
+    <link rel="stylesheet" href="/css/bootstrap-iconpicker.css" />
+    <link rel="stylesheet" href="/css/w3.css" />
+    <link rel="stylesheet" href="/css/SimpleCalculadorajQuery.css" />
+    <link rel="stylesheet" href="/css/smart_wizard_all.min.css" />
+    <link rel="stylesheet" href="/css/select2.min.css" />
+    <link rel="stylesheet" href="/css/fileinput.css" media="all" type="text/css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png" />
+    <link rel="manifest" href="/icon/site.webmanifest" />
+    <style>
+#WindowLoad {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 3200;
+	filter: alpha(opacity = 85);
+	-moz-opacity: 85;
+	opacity: 0.85;
+	background: #333;
+}
+</style>
+</head>
+
+<body class="hold-transition skin-blue-light sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><img src="/icon/favicon-32x32.png" alt="Logo Mi Comercial"></span>
+                <span class="logo-lg"><img src="/icon/favicon-32x32.png" alt="Logo Mi Comercial"> | Mi Comercial</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" id="btnAndroid" class="sidebar-toggle" data-toggle="offcanvas" role="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" id="miCalculadora"><i class="fa fa-calculator"></i> Calculadora</a></li>
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-suitcase"></i>
+                                <span class="label label-warning" th:text="${roles.size()}"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header custom-bolder" th:text="'Usted tiene '+${roles.size()} +' rol(es).'"></li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li th:each="r : ${roles}">
+                                            <a href="#" th:data-href="'../principal/cambiarRol?cod_rol='+${r.cod_rol}" th:title="${r.des_rol}" class="cambiarRol">
+                                                <i class="fa fa-user-secret text-green"></i> <span th:text="${r.nom_rol}"></span> <span th:if="${rol.cod_rol} == ${r.cod_rol}">(Seleccionado)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">Ver todos</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-calendar-times-o" data-toggle="tooltip" data-placement="down" th:title="${gestion.des_gen}"></i> <span class="label label-danger" th:text="${gestion.ges_gen}"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header custom-bolder">Sucursales</li>
+                                <li>
+                                    <ul class="menu" th:each="s : ${sucursales}">
+                                            <li align="center"  th:each="g : ${s.generalList}">
+                                                <a th:href="@{'../general/cambiar?gestion='+${g.ges_gen}+'&codSuc='+${g.cod_suc}}" th:text="${s.sucursal.nombre} +' - '+${g.ges_gen}"></a>
+                                            </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">Gestiones del Sistema</a></li>
+                            </ul>
+                        </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img id="imageUser2" th:src="@{${user.urlAvatar}}" class="user-image mainAvatar" alt="User Image"> <span id="nameUser2" class="hidden-xs" th:text="${user}"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header"><img id="imageUser" th:src="@{${user.urlAvatar}}" class="img-circle mainAvatar" alt="User Image">
+                                    <p>
+                                        <b id="nameUser" th:text="${user}"></b>
+                                        <small th:text="'Rol : '+${rol.nom_rol}"></small>
+                                        <small th:text="'Sucursal: '+${sucursal.nombre}+' - '+${gestion.ges_gen}"></small>
+                                    </p>
+                                </li>
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <button class="btn btn-primary btn-flat" id="asignar1">Cambiar
+											Clave</button>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="../principal/salir" class="btn btn-danger btn-flat text-black">Cerrar
+											Sesion</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li><a href="#" data-toggle="control-sidebar"><i
+								class="fa fa-gears"></i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img id="imageUser1" th:src="@{${user.urlAvatar}}" class="img-circle mainAvatar" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p id="nameUser1"><span th:text="${user.nom_per}"></span><br><span th:text="${user.priape_per} +' '+ ${user.segape_per}"></span></p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> En linea</a>
+                    </div>
+                </div>
+
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="header">
+                        <h4><i class="fa fa-tasks"></i> Menu Principal</h4>
+                    </li>
+                    <li class="treeview text-capitalize" th:each="menu : ${menus}">
+                        <a href="#">
+                            <i th:class="${menu.ico_men}"></i>
+                            <span th:text="${menu.nom_men}"></span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu text-capitalize" th:if="*{#lists.size(menu.procesos) > 0}">
+                            <li class="w3-hover-blue text-capitalize" th:each="proceso:${menu.procesos}">
+                                <a href="#" th:data-href="${proceso.url_pro}" class="enlace text-capitalize">
+                                    <i th:class="${proceso.ico_pro}"></i> <span th:text="${proceso.nom_pro}"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content PAGINA PRINCIPAL -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header" id="sectionHeader" style="display: block;">
+                <h1>
+                    <i class="fa fa-users"></i> <span th:text="${gestion.nom_gen}"></span> <small id="labelEmpresaGeneral"><span th:text="${gestion.des_gen}+' - '+${sucursal.nombre}"></span></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-calendar-check-o"></i> <b> Fecha: <span class="fechaHoy"></span></b></li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content" id="contenedor">
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.2
+            </div>
+            <strong>Copyright &copy; 2022 <a href="#" class="text-primary">Carlos F. Gutierrez G.</a> Sitio potenciado con software libre y
+				de codigo abierto Tarija - Bolivia
+			</strong>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Create the tabs -->
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i
+						class="fa fa-home"></i></a></li>
+
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i
+						class="fa fa-gears"></i></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <!-- Home tab content -->
+                <div class="tab-pane active" id="control-sidebar-home-tab">
+                    <h3 class="control-sidebar-heading">Configuraci&oacute;n General</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="#"> <i class="menu-icon fa fa-calendar-check-o bg-red"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Fecha de Hoy</h4>
+                                    <p class="fechaHoy"></p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="menu-icon fa fa-user bg-yellow"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Usuario Sesionado
+                                    </h4>
+                                    <p th:text="${user.nom_per + ' ' + user.priape_per}"></p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="menu-icon fa fa-suitcase bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Rol Utilizado
+                                    </h4>
+                                    <p th:text="${rol.nom_rol}"></p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="menu-icon fa fa-home bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Sucursal
+                                    </h4>
+                                    <p th:text="${sucursal.nombre}+' - '+${gestion.ges_gen}"></p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.control-sidebar-menu -->
+
+                    <h3 class="control-sidebar-heading">Notificaci&oacute;n de Sucursal</h3>
+                    <ul class="control-sidebar-menu">
+                        <li id="cajaNotificacion">
+                            <a href="#"> <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading" ><span aria-label="tituloNotificacion"></span></h4>
+                                    <span aria-label="mensajeNotificacion" >
+<!--                                        <textarea name="mensajeNotificacion" aria-label="mensajeNotificacion" class="w3-input" readonly rows="10"></textarea>-->
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <!-- /.control-sidebar-menu -->
+
+                </div>
+                <!-- /.tab-pane -->
+                <!-- Stats tab content -->
+                <div class="tab-pane" id="control-sidebar-stats-tab">Area informativa
+                </div>
+                <!-- /.tab-pane -->
+                <!-- Settings tab content -->
+                <div class="tab-pane" id="control-sidebar-settings-tab">
+                    <form method="post">
+                        <h3 class="control-sidebar-heading">Configuracion General</h3>
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading"> Informe de uso
+								del panel <input type="checkbox" class="pull-right" checked>
+							</label>
+                            <p>Parte de la informacion acerca de esta opcion de configuracion generales</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading"> Permitir
+								redireccion de correo <input type="checkbox" class="pull-right"
+								checked>
+							</label>
+                            <p>Otros grupos de opciones estan disponibles</p>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+    <div id="modalAsignar1" class="modal fade">
+        <div class="modal-dialog">
+            <form id="formularioAsignar1" method="post" action="../usuario/cambiarClave" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+                        <h4 class="modal-title">Cambiar Clave</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="cod_per" name="cod_per" />
+                        <div class="row">
+                        	<div class="col-md-6 text-center">
+                        		<img id="imageCambiarClave" name="image" class="img-thumbnail mainAvatar" width="375px" th:src="@{${user.urlAvatar}}">
+                        	</div>
+                        	<div class="col-md-6">
+                        		Usuario: <br /> <label id="usuarioLabel3"></label>
+                        		<br />Rol: <br />
+                        		<label th:text="${rol.nom_rol}"></label>
+                        		<div class="form-group">
+                                    <label>Usuario</label> <input type="text" class="form-control" autocomplete="off" id="log_dat" name="log_dat" placeholder="Ingrese usuario" data-fv-notempty="true">
+                                </div>
+                        <div class="form-group" id="claveAnterior">
+                                    <label for="claAnt">Clave Anterior</label>
+                                    <input type="hidden" id="cla_dat" name="cla_dat" />
+                                    <input type="password" class="form-control" id="claAnt" name="claAnt"  autocomplete="off" placeholder="Ingrese clave anterior" data-fv-identical="true" data-fv-identical-field="cla_dat" data-fv-identical-message="La clave anterior es incorrecta">
+                                </div>
+                        <div class="form-group">
+                                    <label>Clave</label> <input type="password" class="form-control" id="cla1" name="cla1" autocomplete="off" placeholder="Ingrese clave" data-fv-notempty data-fv-different="true" maxlength="32" minlength="8" data-fv-different-field="claAnt"
+                                        data-fv-different-message="La nueva clave tiene que ser diferente" />
+                                    <div class="progress password-meter" id="passwordMeter">
+                                        <div class="progress-bar"></div>
+                                    </div>
+                                </div>
+                        <div class="form-group">
+                                    <label for="cla2">Confirmar Clave</label>
+                                    <input type="password" class="form-control" id="cla2" name="cla2" autocomplete="off" placeholder="repita clave" maxlength="32" minlength="8" data-fv-notempty data-fv-identical="true" data-fv-identical-field="cla1">
+                                </div>
+                        	</div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">
+							<i class="fa fa-times-circle"></i> Cancelar
+						</button>
+                        <button type="submit" class="btn btn-primary">
+							<i class="fa fa-check-circle"></i> Guardar
+						</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="reportes" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <iframe id="frameReportes" width="100%" height="600px"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modalCalculadora" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div id="idCalculadora"> </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalNotificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabelNotificacion" data-backdrop="static">
+        <div class="modal-dialog" style="min-width: 85%" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="w3-center">
+                        <img src="../../img/notificacion_icon.jpg" alt="Logo notificacion" width="500px">
+                    </div>
+                    <div class="alert w3-pale-blue" id="areaNotificacionModal">
+                        <h1 class="w3-xxxlarge font-weight-bold"><span class="text-uppercase" aria-label="tituloNotificacion"></span></h1>
+                        <div class="form-group">
+                            <textarea class="w3-input w3-xlarge" style="background: transparent;border: 0 none;" readonly name="mensajeNotificacion" rows="8"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCerrarModalNotificacion" class="btn btn-sm btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.5.1.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables.bootstrap.min.js"></script>
+    <script src="/js/dataTables.responsive.min.js"></script>
+    <script src="/js/responsive.bootstrap.min.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/buttons.bootstrap.min.js"></script>
+    <script src="/js/jquery.loadJSON.js" type="text/javascript"></script>
+    <script src="/js/formValidation.js"></script>
+    <script src="/js/framework/bootstrap.min.js"></script>
+    <script src="/js/es_ES.js"></script>
+    <script src="/js/chosen.js"></script>
+    <script src="/js/pnotify.js" type="text/javascript"></script>
+    <script src="/js/raphael-min.js"></script>
+    <script src="/js/morris.js"></script>
+    <script src="/js/jquery.sparkline.js"></script>
+    <script src="/js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/js/jquery.knob.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/daterangepicker.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+    <script src="/js/jquery.slimscroll.js"></script>
+    <script src="/js/fastclick.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/Chart.js"></script>
+<!--    <script src="/js/demo.js" charset="UTF-8"></script>-->
+    <script src="/js/bootstrap-datetimepicker.js"></script>
+    <script src="/js/es.js"></script>
+    <script src="/js/jquery.inputmask.js"></script>
+    <script src="/js/jquery.inputmask.date.extensions.js"></script>
+    <script src="/js/jquery.inputmask.extensions.js"></script>
+    <script src="/js/fullcalendar.min.js"></script>
+    <script src="/js/es_calendar.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/dom-to-image.min.js"></script>
+    <script type="text/javascript" src="/js/sweetalert2.all.min.js"></script>
+    <script src="/js/fechas.js"></script>
+    <script src="/js/select2.min.js"></script>
+    <script src="/js/SimpleCalculadorajQuery.js"></script>
+    <script src="/js/jquery.smartWizard.min.js" type="text/javascript"></script>
+    <script src="/js/dev/loading.js"></script>
+    <script src="/js/dev/mensajes.js"></script>
+    <script th:inline="javascript">
+        var msgBienvenida = /*[[${msg}]]*/ '';
+        msgBienvenida += ', al Sistema de Ventas';
+        var userSession = /*[[${user}]]*/ {};
+    </script>
+    <script type="text/javascript">
+        var notificacionGeneral = {
+            estado : false,
+            estadoModal: false,//modal que se abre por una vez, cuando hay notificacion
+            data: {}
+        };
+
+        function actualizarNotificacion(){
+            if(notificacionGeneral.estado) {
+                if(notificacionGeneral.estadoModal) {
+                    //abrir modal
+                    $('#areaNotificacionModal').loadJSON(notificacionGeneral.data);
+                    $('#cajaNotificacion').loadJSON(notificacionGeneral.data);
+                    $('#modalNotificacion').modal('show');
+                }
+                //Abrir banner notificacion siempre
+                $('#cajaNotificacion').show(500);
+
+            } else {
+                //Ocultar Modal y banner de notificacion
+                $('#cajaNotificacion').hide(500);
+            }
+        }
+        function revisarNotificacion(){
+            $.get('../sucursal/obtenerNotificacionPorSucursal', function(resp){
+                if(resp) {
+                    if(resp.estadoNotificacion) {
+                        if(!notificacionGeneral.estado) { // si no existe notificacion anterior
+                            notificacionGeneral.estado = true;
+                            notificacionGeneral.estadoModal = true;
+                        } else {
+                            if(notificacionGeneral.estado &&
+                                (notificacionGeneral.data.tituloNotificacion !== resp.tituloNotificacion ||
+                                    notificacionGeneral.data.mensajeNotificacion !== resp.mensajeNotificacion)) {//Si existe notificacion pero se cambio el contexto
+                                notificacionGeneral.estadoModal = true;
+                            }
+                        }
+                    } else {
+                        notificacionGeneral.estado = false;
+                        notificacionGeneral.estadoModal = false;
+                    }
+                    notificacionGeneral.data = resp;
+                    actualizarNotificacion();
+                }
+            })
+        }
+        function init() {
+            let hoy = moment().format('LLL');
+            $('.fechaHoy').html(hoy);
+            revisarNotificacion();
+        }
+        function actualizarAvatar(imgNew){
+            $('.mainAvatar').attr('src',imgNew);
+        }
+        Toast.fire({
+            icon: 'success',
+            title: msgBienvenida,
+            toast: true,
+            position: 'bottom-end'
+        })
+        $.extend( $.fn.dataTable.defaults, {
+            "ordering": false,
+            "oLanguage": {
+                "sUrl": "/js/Spanish.lang"
+            },
+            "processing": true,
+            "serverSide": true,
+            dom: "<'row'<'col-sm-3 w3-tiny'f><'col-sm-2'B><'col-sm-2 w3-tiny'l><'col-sm-5 w3-tiny'i>><'row'<'col-sm-12'tr>><'row'<'col-sm-5 w3-tiny'i><'col-sm-7 w3-tiny'p>>"
+        } );
+        $(document).ready(function() {
+            $.AdminLTE.pushMenu.expandOnHover()
+            $("[data-enable='expandOnHover']").click();
+            //Inicializacion
+            if(UtilBrowser.isMobil()){
+                $('#labelEmpresaGeneral').addClass('padding-top-md padding-bottom-md');
+                $('#sectionHeader').hide();
+            }
+
+            $("#idCalculadora").Calculadora();
+        	$('#miCalculadora').click(function (){
+                $('#modalCalculadora').modal('show');
+            })
+
+            $(".enlace").click(function() {
+            	abrirLoad();
+                $.post($(this).data("href"), function(resp) {
+                    if(UtilBrowser.isMobil()){
+                        $('#btnAndroid').click();
+                    }
+                    $("#contenedor").html(resp);
+                    cerrarLoad();
+                });
+            });
+            $('.cambiarRol').click(function() {
+                location.href = $(this).data('href');
+            });
+            $('#asignar1').click(function() {
+                $('#formularioAsignar1').data('formValidation').resetForm();
+                $('#formularioAsignar1')[0].reset();
+                $.post('../usuario/obtener?cod_per='+userSession.cod_per, function(result) {
+                    if (result.status) {
+                        $('#modalAsignar1').modal('show');
+                        $('#formularioAsignar1').loadJSON(result.datos);
+                        $('#log_dat').val('');
+                        $('#claveAnterior').show(500);
+                        $('#imageCambiarClave').attr('src',result.data.urlAvatar);
+                        $('#usuarioLabel3').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                        $('#log_dat').val(userSession.dato.log_dat);
+                    } else {
+                        mostrarMensaje('error', 'No se realizo con exito la Transacci�n');
+                    }
+                }, 'json');
+            });
+
+            $('#formularioAsignar1').formValidation({
+                fields: {
+                    cla1: {
+                        validators: {
+                            notEmpty: {message: 'El password es requerido'},
+                            callback: {
+                                callback: function(value, validator, $field) {
+                                    var score = 0;
+                                    if (value === '') {
+                                        return {
+                                            valid: true,
+                                            score: null
+                                        };
+                                    }
+                                    score += ((value.length >= 8) ? 1 : -1);
+                                    if (/[A-Z]/.test(value)) {
+                                        score += 1;
+                                    }
+                                    if (/[a-z]/.test(value)) {
+                                        score += 1;
+                                    }
+                                    if (/[0-9]/.test(value)) {
+                                        score += 1;
+                                    }
+                                    if (/[!#$%&^~*_]/.test(value)) {
+                                        score += 1;
+                                    }
+                                    return {
+                                        valid: true,
+                                        score: score // We will get the score later
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }).on('success.validator.fv', function(e, data) {
+                // The password passes the callback validator
+                if (data.field === 'cla1' && data.validator === 'callback') {
+                    // Get the score
+                    var score = data.result.score,
+                        xbar = $('#passwordMeter').find('.progress-bar');
+                    switch (true) {
+                        case (score === null):
+                            xbar.html('').css('width', '0%').removeClass().addClass('progress-bar');
+                            break;
+                        case (score <= 0):
+                            xbar.html('Muy Debil').css('width', '25%').removeClass().addClass('progress-bar progress-bar-danger');
+                            break;
+                        case (score > 0 && score <= 2):
+                            xbar.html('Debil').css('width', '50%').removeClass().addClass('progress-bar progress-bar-warning');
+                            break;
+                        case (score > 2 && score <= 4):
+                            xbar.html('Medio').css('width', '75%').removeClass().addClass('progress-bar progress-bar-info');
+                            break;
+                        case (score > 4):
+                            xbar.html('Fuerte').css('width', '100%').removeClass().addClass('progress-bar progress-bar-success');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }).on('success.form.fv', function(e) {
+                e.preventDefault();
+                var xform = $(e.target);
+                var bv = xform.data('formValidation');
+                		$.post(xform.attr('action'), xform.serialize(), function(result) {
+                            if (result.status) {
+                                $('.modal').modal('hide');
+                                mostrarMensaje('info', result.msg);
+                            } else {
+                                modalAlert('Error', result.msg, 'error');
+                            }
+                            xform.data('formValidation').resetForm();
+                        }, 'json');
+            });
+            $('#btnCerrarModalNotificacion').click(function(){
+                notificacionGeneral.estadoModal = false;
+                $('#modalNotificacion').modal('hide');
+            })
+
+            init();
+            var intervalo = setInterval('revisarNotificacion()',30000);//300000 5 min
+        });
+    </script>
+</body>
+
+</html>

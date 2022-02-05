@@ -1,0 +1,159 @@
+package net.resultadofinal.micomercial.model;
+
+import net.resultadofinal.micomercial.util.TableRow;
+
+import java.math.BigDecimal;
+
+public class Producto extends TableRow {
+	private Long id;
+	private String nombre, foto;
+	private Integer tipoId, tipoGrupo;
+	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento;
+	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
+	private Integer presentacionUnidadId, presentacionCajaId;
+	private Boolean estado;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public Integer getTipoId() {
+		return tipoId;
+	}
+
+	public void setTipoId(Integer tipoId) {
+		this.tipoId = tipoId;
+	}
+
+	public Integer getTipoGrupo() {
+		return tipoGrupo;
+	}
+
+	public void setTipoGrupo(Integer tipoGrupo) {
+		this.tipoGrupo = tipoGrupo;
+	}
+
+	public BigDecimal getPcUnit() {
+		return pcUnit;
+	}
+
+	public void setPcUnit(BigDecimal pcUnit) {
+		this.pcUnit = pcUnit;
+	}
+
+	public BigDecimal getPvUnit() {
+		return pvUnit;
+	}
+
+	public void setPvUnit(BigDecimal pvUnit) {
+		this.pvUnit = pvUnit;
+	}
+
+	public BigDecimal getPvCaja() {
+		return pvCaja;
+	}
+
+	public void setPvCaja(BigDecimal pvCaja) {
+		this.pvCaja = pvCaja;
+	}
+
+	public BigDecimal getPcCaja() {
+		return pcCaja;
+	}
+
+	public void setPcCaja(BigDecimal pcCaja) {
+		this.pcCaja = pcCaja;
+	}
+
+	public BigDecimal getPvUnitDescuento() {
+		return pvUnitDescuento;
+	}
+
+	public void setPvUnitDescuento(BigDecimal pvUnitDescuento) {
+		this.pvUnitDescuento = pvUnitDescuento;
+	}
+
+	public BigDecimal getPvCajaDescuento() {
+		return pvCajaDescuento;
+	}
+
+	public void setPvCajaDescuento(BigDecimal pvCajaDescuento) {
+		this.pvCajaDescuento = pvCajaDescuento;
+	}
+
+	public Integer getInventarioMinimoUnidad() {
+		return inventarioMinimoUnidad;
+	}
+
+	public void setInventarioMinimoUnidad(Integer inventarioMinimoUnidad) {
+		this.inventarioMinimoUnidad = inventarioMinimoUnidad;
+	}
+
+	public Integer getInventarioMinimoCaja() {
+		return inventarioMinimoCaja;
+	}
+
+	public void setInventarioMinimoCaja(Integer inventarioMinimoCaja) {
+		this.inventarioMinimoCaja = inventarioMinimoCaja;
+	}
+
+	public Integer getUnidadPorCaja() {
+		return unidadPorCaja;
+	}
+
+	public void setUnidadPorCaja(Integer unidadPorCaja) {
+		this.unidadPorCaja = unidadPorCaja;
+	}
+
+	public Integer getTipoCompra() {
+		return tipoCompra;
+	}
+
+	public void setTipoCompra(Integer tipoCompra) {
+		this.tipoCompra = tipoCompra;
+	}
+
+	public Integer getPresentacionUnidadId() {
+		return presentacionUnidadId;
+	}
+
+	public void setPresentacionUnidadId(Integer presentacionUnidadId) {
+		this.presentacionUnidadId = presentacionUnidadId;
+	}
+
+	public Integer getPresentacionCajaId() {
+		return presentacionCajaId;
+	}
+
+	public void setPresentacionCajaId(Integer presentacionCajaId) {
+		this.presentacionCajaId = presentacionCajaId;
+	}
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+}

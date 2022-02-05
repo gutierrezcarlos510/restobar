@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="multa" pageWidth="215" pageHeight="500" whenNoDataType="AllSectionsNoDetail" columnWidth="185" leftMargin="20" rightMargin="10" topMargin="0" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
+	<property name="ireport.zoom" value="3.4522712143931042"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\CARLOS\\workspace\\resultadofinal\\src\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cod_multa" class="java.lang.Long"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="des_gen" class="java.lang.String"/>
+	<parameter name="dir_gen" class="java.lang.String"/>
+	<parameter name="tel_gen" class="java.lang.String"/>
+	<parameter name="lug_gen" class="java.lang.String"/>
+	<parameter name="gestion" class="java.lang.Integer"/>
+	<parameter name="nom_gen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select m.*,concat(p1.nom_per,' ',p1.priape_per) xayudante,concat(p2.nom_per,' ',p2.priape_per) xusuario,
+			to_char(m.fecha,'DD/MM/YYYY') xfecha from multa_obtener($P{cod_multa} ) as m
+inner join persona p1 on p1.cod_per = m.cod_ayu 
+			inner join persona p2 on p2.cod_per = m.created_by ]]>
+	</queryString>
+	<field name="cod_multa" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_multa"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_multa"/>
+	</field>
+	<field name="monto" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="monto"/>
+		<property name="com.jaspersoft.studio.field.label" value="monto"/>
+	</field>
+	<field name="cod_ayu" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ayu"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ayu"/>
+	</field>
+	<field name="tipo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="concepto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="concepto"/>
+		<property name="com.jaspersoft.studio.field.label" value="concepto"/>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="observacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="observacion"/>
+	</field>
+	<field name="cod_pre" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_pre"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_pre"/>
+	</field>
+	<field name="estado" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+	</field>
+	<field name="created_by" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="created_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="created_by"/>
+	</field>
+	<field name="created_at" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="created_at"/>
+		<property name="com.jaspersoft.studio.field.label" value="created_at"/>
+	</field>
+	<field name="xayudante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xayudante"/>
+		<property name="com.jaspersoft.studio.field.label" value="xayudante"/>
+	</field>
+	<field name="xusuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xusuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="xusuario"/>
+	</field>
+	<field name="xfecha" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xfecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="xfecha"/>
+	</field>
+	<variable name="xtipo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tipo}==1?"Pendiente":($F{tipo}==2?"Aceptado":"Perdonado")]]></variableExpression>
+	</variable>
+	<variable name="xobservacion" class="java.lang.String">
+		<variableExpression><![CDATA[$F{observacion}!=null?$F{observacion}:"Sin observaciones"]]></variableExpression>
+	</variable>
+	<variable name="xprestacion" class="java.lang.String">
+		<variableExpression><![CDATA["Prestacion: "+($F{cod_pre}!=null?("Codigo de Prestacion relacionado: "+$F{cod_pre}):"No")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="127" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="98" width="150" height="13" forecolor="#030000" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE MULTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="111" width="150" height="14" forecolor="#030000" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cod.# "+$F{cod_multa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="150" height="13" forecolor="#030000" uuid="2c9489ad-34a7-4fb0-b289-ade91d39303c"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nom_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="39" width="150" height="13" forecolor="#030000" uuid="984919a8-7506-43d8-8305-a0f6201e4026"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="150" height="13" forecolor="#030000" uuid="5fcbf9f2-e40c-4730-8cdb-f065e9dbc721"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="65" width="150" height="13" forecolor="#030000" uuid="af37a873-9f06-49a2-9f47-67af1d57d29c"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="13" width="150" height="26" forecolor="#030000" uuid="6ec7e178-33b7-44ee-8813-36070a3c19e5"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="78" width="150" height="13" forecolor="#030000" uuid="f6af2373-c7af-4988-87c7-46d7693cb903"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gestion "+$P{gestion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="176" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="150" width="150" height="12" forecolor="#030000" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario :"+$P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="30" y="162" width="120" height="12" forecolor="#030000" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="162" width="30" height="12" forecolor="#030000" uuid="7126d6d5-c9d4-4b0e-af2a-08f8cccf7781"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="150" height="12" forecolor="#030000" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario : "+$F{xusuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="12" width="150" height="12" forecolor="#030000" uuid="5df1a06e-882e-48b4-847b-beea3cce9181"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha : "+$F{xfecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="24" width="150" height="12" forecolor="#030000" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ayudante : "+$F{xayudante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="150" height="24" forecolor="#030000" uuid="ee22a55e-197b-4ba7-8ba2-65d2bce629f8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Concepto: "+$F{concepto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="48" width="150" height="12" forecolor="#030000" uuid="5629a2ed-b45f-4e61-b754-ca1d8a03b3c1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estado : "+$V{xtipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="84" width="150" height="24" forecolor="#030000" uuid="1258ea76-d1de-4d9e-b868-5969901c1adf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Observaciones : "+$V{xobservacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="36" width="150" height="12" forecolor="#030000" uuid="be0c6b30-ef57-465b-a925-ed37b3b105bc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Monto : "+$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="108" width="150" height="12" forecolor="#030000" uuid="691dc097-eac4-45d3-a1e4-824997a5f107"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{xprestacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

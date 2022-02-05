@@ -1,0 +1,96 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+<div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <form id="formulario" method="post" action="../asiento/guardarAsientoEfectivo" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+            	<div class="col-md-4"></div>
+            	<div class="col-md-4">
+            		<div class="panel panel-primary">
+	            	<div class="panel-heading ">
+	            	<h4>Pago de Sueldos y salarios</h4>
+	            	<input type="hidden" name="cuentaDestino" th:value="${cuentaDestino}" />
+	            	</div>
+	            	<div class="panel-body">
+	            		<div class="alert alert-info">
+	            			<p><strong>Caja - Banco:</strong> Operaci&oacute;n de transefrencia entre banco o cajas.</p>
+	            		</div>
+	            		<div class="form-group">
+	                                <label>Origen</label>
+	                                <select class="form-control select-chosen" name="cuentaOrigen" id="cuentaOrigen">
+	                                	<option value="">Seleccionar</option>
+										<option th:each="c : ${cuentas}" th:id="'sub-'+${c.codSubcuenta}" class="selectOrigen"  th:value="${c.codSubcuenta}" th:text="${c.nombre}"></option>
+										<option th:each="c : ${cuentas2}" th:id="'sub-'+${c.codSubcuenta}" class="selectOrigen"  th:value="${c.codSubcuenta}" th:text="${c.nombre}"></option>
+	                                </select>
+	                            </div>
+	                            <div class="form-group">
+	                                <label>Monto</label>
+	                                <input type="text" class="form-control text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." name="monto" data-fv-numeric="true" data-fv-notempty="true">
+	                            </div>
+	                            <div class="form-group">
+                                <label>Concepto</label>
+                                <textarea class="form-control" id="concepto" name="concepto" data-fv-notempty="true" >Ingreso de efectivo.</textarea>
+                            </div>
+	            	</div>
+	            	<div class="panel-footer">
+	            		<button type="button" id="btnAtras" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+	                            <button type="submit" class="btn btn-social btn-bitbucket pull-right"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+	            	</div>
+	            </div>
+            	</div>
+            </div>
+            
+        </form>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script>
+    $(document).ready(function() {
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $('#btnAtras').click(function(){
+        	$.post('../asiento/gestion', function(resp) {
+                $('#contenedor').html(resp);
+            });
+        });
+        $('#cuentaOrigen').chosen().change(function() {
+            let xid = $(this).val();
+            $('.selectDestino').removeAttr('disabled');
+            $('#sub2-'+xid).attr('disabled','disabled');
+            $('#cuentaDestino').trigger('chosen:updated');
+        });
+        $('#cuentaDestino').chosen().change(function() {
+            let xid = $(this).val();
+            $('.selectOrigen').removeAttr('disabled');
+            $('#sub-'+xid).attr('disabled','disabled');
+            $('#cuentaOrigen').trigger('chosen:updated');
+        });
+        $('#formulario').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar el registro de ingreso de efectivo?', function(){
+            	var xform = $(e.target);
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
+                    if (result.status) {
+                    	$.post('../asiento/gestion', function(resp) {
+                            $('#contenedor').html(resp);
+                            mostrarMensaje('info', resp.msg);
+                        });
+                    } else {
+                        modalAlert('Error al guardar',resp.msg,'error');
+                    }
+                }, 'json');
+            } );
+        });
+    });
+</script>
+</section>

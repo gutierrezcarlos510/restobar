@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prestacion_ver_subreporte" pageWidth="215" pageHeight="297" columnWidth="215" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dea03c5e-e608-4769-96b4-d5c685a3493f">
+	<property name="ireport.zoom" value="3.797498335832416"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cod_pre" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[select * from detalleprestacion_obtener($P{cod_pre})  as (cod_pre bigint,cod_detpre integer,cod_ser integer,pre_detpre real,cod_tem integer,servicio varchar(150),nom_tem varchar(150))]]>
+	</queryString>
+	<field name="cod_pre" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cod_pre"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_pre"/>
+	</field>
+	<field name="cod_detpre" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_detpre"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_detpre"/>
+	</field>
+	<field name="cod_ser" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_ser"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_ser"/>
+	</field>
+	<field name="pre_detpre" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.name" value="pre_detpre"/>
+		<property name="com.jaspersoft.studio.field.label" value="pre_detpre"/>
+	</field>
+	<field name="cod_tem" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_tem"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_tem"/>
+	</field>
+	<field name="servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="servicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="servicio"/>
+	</field>
+	<field name="nom_tem" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_tem"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_tem"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="174" height="24" uuid="d46050cc-5a50-435d-a7bf-4a7636baf49b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servicio}+" - "+$F{nom_tem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(-#,##0.00#)">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="24" width="174" height="12" uuid="2eec375d-3ec5-4f14-be2c-b8351de9d6ca">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pre_detpre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

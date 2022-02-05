@@ -1,0 +1,255 @@
+<!-- Default box -->
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../cliente/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Cliente</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="codigo" name="cod_per">
+                            <input type="hidden" name="ema_per" value="">
+                            <input type="hidden" name="fot_per" value="user.png">
+                            <input type="hidden" name="sex_per" value="true"/>
+                            <input type="hidden" name="ci_per" value="0"/>
+                            <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="segape_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Celular o tel&eacute;fono</label>
+                                        <input type="text" class="form-control" name="tel_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Direcci&oacute;n de domicilio</label>
+                                        <input type="text" class="form-control" name="dir_per">
+                                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../cliente/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Cliente</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_per">
+                            <input type="hidden" name="cod_cli">
+                            <input type="hidden" name="ci_per" value="0">
+                            <input type="hidden" name="ema_per" value="">
+                            <input type="hidden" name="fot_per" value="user.png">
+                            <input type="hidden" name="sex_per" value="true"/>
+                            <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" name="segape_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Celular o tel&eacute;fono</label>
+                                        <input type="text" class="form-control" name="tel_per">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Direcci&oacute;n de domicilio</label>
+                                        <input type="text" class="form-control" name="dir_per">
+                                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="pull-left"><span class="fa  fa-ellipsis-v"></span> Gestion Clientes </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input type="radio" name="estado" value="true"  title="Mostrar Activos" checked> Activos
+                </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="none">C&oacute;digo de cliente</th>
+                    <th class="all">Nombre y Apellidos</th>
+                    <th class="desktop">Telefono celular</th>
+                    <th class="desktop">Direccion domicilio</th>
+                    <th width="200px" class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        var tableCliente = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#codigo').val(0);
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../cliente/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "ordering": true,
+            "order": [[0,'desc']],
+            "columns": [{
+                "data": "cod_cli"
+            }, {
+                "data": "cod_cli"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "dir_per"
+            }, {
+                "data": "cod_cli"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    $('td', row).eq(4).html('<div class="btn-group btn-group-justified btn-group-xs"><div class="btn-group"><button class="btn btn-xs btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_cli + '"><i class="fa fa-edit"></i><br/>editar</button></div><div class="btn-group"><button class="btn btn-xs btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_cli + '"><i class="glyphicon glyphicon-remove"></i><br/>eliminar</button></div><div class="btn-group"><button class="btn btn-xs btn-success imprimir" data-id="' + data.cod_per + '" data-toggle="tooltip" data-placement="top" title="Imprimir credencial"><i class="glyphicon glyphicon-print"></i> <i class="fa fa-credit-card"></i><br/>Credencial</button></div></div>');
+                } else {
+                    $('td', row).eq(4).html('<button class="btn btn-xs btn-primary activar" data-id="' + data.cod_cli + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                }
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tableCliente.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de cliente", ("Cod. cliente: "+ obj.cod_cli+", Cliente: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../cliente/eliminar?cod_cli='+obj.cod_cli, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.activar').click(function() {
+                	let obj = tableCliente.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de cliente", ("Cod. cliente: "+ obj.cod_per+", Cliente: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../cliente/activar?cod_cli='+obj.cod_cli, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $.post('../cliente/obtener?cod_cli=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#cod_emp1').val(result.data.cod_emp).trigger('chosen:updated');
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../cliente/ver_credencial?cod_per=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            }
+            ,"initComplete": function(settings, json) {
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e) {
+                    if ( e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmacion de transaccion', 'Esta seguro de realizar la transaccion', function(){
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', result.msg);
+                } else {
+                    modalAlert('Error de transaccion', result.msg, 'error');
+                }
+            }, 'json');
+            });
+        });
+        $('#ci_per').blur(function() {
+            $.post('../usuario/buscarci?ci=' + $(this).val(), function(resp) {
+                if (resp.status == true) {
+                    $('#formulario').loadJSON(resp.data);
+                    mostrarMensaje('info', 'Este usuario ya existe');
+                } else $('#codigo').val(0);
+
+            });
+        });
+    });
+</script>

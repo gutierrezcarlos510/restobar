@@ -1,0 +1,24 @@
+<div class="error-page">
+            <h1 class="headline text-red" > <span style="font-size: 208px;" class="fa fa-warning"></span></h1>
+            <div class="error-content"><br><br>
+              <h3><i class="fa fa-warning text-red"></i> Registrar caja inicial.</h3>
+              <p>
+                Estimado usuario, para ingreso de la contabilidad del sistema, primero tiene que registrar el estado actual de la empresa. 
+                Ingresar a caja y registrar la mercancia y el dinero de la empresa.
+              </p>
+              <div class="pull-right">
+                		<button class="btn btn-primary" id="btnIniciarArqueo"> <span class="glyphicon glyphicon-duplicate"></span> Iniciar arqueo inicial</button>
+                	</div>
+            </div><!-- /.error-content -->
+          </div><!-- /.error-page -->
+<script type="text/javascript">
+    $(document).ready(function() {
+    	$('#btnIniciarArqueo').click(function(){
+    		alertAdicion('Confirmar registro de apertura', 'Esta seguro de registrar el arqueo de caja inicial?',function(){
+    			$.post('../arqueocaja/adicionarArqueoInicial', function(resp) {
+                    $("#contenedor").html(resp);
+                });
+    		});
+    	});
+    });
+    </script>

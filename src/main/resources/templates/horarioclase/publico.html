@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="refrersh" content="1">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>ResFin</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../css/AdminLTE.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../../css/blue.css">
+    <link rel="stylesheet" href="../../css/chosen.css">
+    <link rel="manifest" href="../../icon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="../../icon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <style type="text/css">
+        #datos {
+            position: absolute;
+            z-index: 1;
+            background: #333333;
+            width: 100%;
+            padding-left: 10px;
+        }
+        
+        #encabezado {
+            position: absolute;
+            z-index: 1;
+            background: #333333;
+            width: 100%;
+            padding-left: 1px;
+        }
+        
+        tabla {
+            background: #333333;
+            color: white;
+        }
+        
+        tbody,
+        thead {
+            color: white;
+        }
+        
+        tr {
+            background: #333333;
+        }
+        
+        td {
+            background: #333333;
+        }
+        
+        .celda {
+            font-family: "Times New Roman", Times, serif;
+            font: "Serif";
+            font-weight: bolder;
+            color: white;
+        }
+        
+        .celdahora {
+            font-family: "Times New Roman", Times, serif;
+            font: "Serif";
+            font-weight: bolder;
+            color: white;
+            font-size: xx-large;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="datos">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="ion ion-person-stalker"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Ayudante</span>
+                        <span class="info-box-number">Linder Cardozo</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="ion ion-flash-off"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Materias</span>
+                        <span class="info-box-number">Matematicas, Fisica</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa  fa-rebel"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Int. Resultado Final</span>
+                        <span class="info-box-number"><a href="../horarioclase/publico">Actualizar <span class="fa fa-youtube-play"></span></a>
+                        </span>
+                        <span class="info-box-number"><a href="../principal/login">Inicio <span class="fa fa-youtube-play"></span></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped " cellspacing="0" border="2" width="100%">
+            <thead>
+                <tr align="center">
+                    <th width="10%"><img width="100%" src="../../images/horasdias.png"></th>
+                    #foreach($d in $dias)
+                    <th width="18%">
+                        <h1 align="center"><b>$d.literal</b></h1>
+                        <h1 align="center"><b>$d.fecha</b></h1>
+                    </th>
+                    #set($dia1=$d.fecha) #end
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <marquee width="100%" height="900px" direction="up" behavior="alternate" scrollamount="5" scrolldelay="3" onmouseup="this.stop()" ondblclick="this.start();">
+        <table id="tabla" class="table table-striped " cellspacing="0" border="2" width="100%">
+            <thead>
+                <tr align="center">
+                    <td colspan="8">
+                        <h1>INSTITUTO RESULTADO FINAL</h1>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="8">
+                        <h1><span class="fa fa-optin-monster"> INSTITUTO RESULTADO FINAL <span class="fa fa-optin-monster"></span></h1>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="8">
+                        <h3>Tu mejor opcion!!!</h3>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <th width="10%"><img width="100%" src="../../images/horasdias.png"></th>
+                    #foreach($d in $dias)
+                    <th width="18%">
+                        <h1 align="center"><b>$d.literal</b></h1>
+                        <h1 align="center"><b>$d.fecha</b></h1>
+                    </th>
+                    #set($dia1=$d.fecha) #end
+                </tr>
+            </thead>
+            <tbody>
+                #set($fila=-1) #foreach($h in $horarios) #set($fila=$fila+1)
+                <tr height="100px" style="color: #333;">
+                    <td class="celdahora" align="center" id="f$!{fila}c1"><b>$h</b></td>
+
+                    <td class="celda" align="center" id="f$!{dias[0].ff}${inicios[$fila]}">
+                        <button class="btn btn-success btn-sm" data-toggle="tooltip" title="Asignar horarios" onclick="adicionarReserva('$dias[0].fecha','$horarios[$fila]');" data-fecha="$dias[0].fecha" data-hora="$horarios[$fila]"> <span class="glyphicon glyphicon-plus-sign"></span> </button>
+                    </td>
+                    <td class="celda" align="center" id="f$!{dias[1].ff}${inicios[$fila]}">
+                    </td>
+                    <td class="celda" align="center" id="f$!{dias[2].ff}${inicios[$fila]}">
+
+                    </td>
+                    <td class="celda" align="center" id="f$!{dias[3].ff}${inicios[$fila]}">
+
+                    </td>
+                    <td class="celda" align="center" id="f$!{dias[4].ff}${inicios[$fila]}">
+
+                    </td>
+                </tr>
+                #end
+            </tbody>
+            <tfoot>
+                <tr align="center">
+                    <td colspan="8">
+                        <h1>INSTITUTO RESULTADO FINAL</h1>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="8">
+                        <h1>INSTITUTO RESULTADO FINAL</h1>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="8">
+                        <h1>INSTITUTO RESULTADO FINAL</h1>
+                    </td>
+                </tr>
+
+            </tfoot>
+        </table>
+    </marquee>
+
+    <div id="modalVer" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-widget widget-user">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-aqua-active">
+                            <h3 class="widget-user-username" align="center">INSTITUTO RESULTADO FINAL</h3>
+                            <h5 class="widget-user-desc" align="center">Apoyamos tu futuro</h5>
+                        </div>
+                        <div class="widget-user-image">
+                            <img class="img-circle" src="../../images/RF.png" />
+                        </div>
+                        <div class="box-body">
+
+                            <div class="box-footer">
+                                <div class="border-right">
+                                    <div class="description-block">
+                                        <h4 class="description-header">PERSONA : <b id="persona"></b></h4>
+                                        <h4 class="description-header">HORA : <b id="hora"></b></h4>
+                                        <h4 class="description-header">TIPO : <b id="tema"></b></h4>
+                                    </div>
+                                    <!-- /.description-block -->
+                                    <div class="form-group">
+                                        <label>Tema</label>
+                                        <textarea class="form-control" id="tem_dethorcla" name="tem_dethorcla" rows="5" data-fv-notempty="true"></textarea>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.widget-user -->
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <form id="formulario" method="post" action="../horarioclase/guardarDetalle?cod_horcla=$horario.cod_horcla" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+        data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <div id="modalAdicionar" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Adicionar Reserva</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Reserva por</label>
+                            <select id="cod_per" name="cod_per" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      	<option value=""></option>
+                      	#foreach($p in $personas)
+                      		<option value="$p.cod_per">$p.nom_per $p.priape_per $!{p.segape_per}</option>
+                      	#end
+                      </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Tipo de Reserva</label>
+                                    <select id="pri_dethorcla" name="pri_dethorcla" class="form-control" data-placeholder="Seleccionar..." data-fv-notempty="true">
+                      	<option value=""></option>
+                      	<option value="1">Mensual</option>
+                      	<option value="2">Clase por hora</option>
+                      	<option value="4">Clase Virtual</option>
+                      	<option value="3">Practicos</option>
+                      	
+                      </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Hora</label>
+                                    <input type="text" id="horini" name="horini" class="form-control input-md horas" data-fv-notempty="true">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Hora</label>
+                                    <input type="text" id="horfin" name="horfin" class="form-control input-md horas" data-fv-notempty="true">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Fecha</label>
+                                    <input type="text" id="fec_horcla" name="fec_horcla" class="form-control input-md" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tema</label>
+                            <textarea class="form-control" id="tem_dethorcla" name="tem_dethorcla" rows="5" data-fv-notempty="true"></textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                        <button type="button" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div id="modalAdicionarConfirmacion" class="modal fade">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-chevron-circle-right"></span> Mensaje de Confirmacion</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>Esta seguro de realizar esta transaccion?</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                        <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-ok-sign"></i> Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- jQuery 2.1.4 -->
+    <script src="../../js/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="../../js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../js/icheck.js"></script>
+    <script src="../../js/chosen.js"></script>
+    <!-- 	notificaciones -->
+    <script type="text/javascript" src="../../js/pnotify.js"></script>
+    <script>
+        $(function() {
+            $('select').chosen({
+                no_results_text: "No se encuentra:",
+                width: '100%'
+            });
+            $('button[data-toggle="tooltip"]').tooltip({
+                animated: 'fade',
+                placement: 'bottom'
+            });
+            $.post('../horarioclase/obtenerReservas?cod_ayu=$!{cod_ayu}&fini=$!{dias[0].fecha}&ffin=$!{dias[4].fecha}', function(resp) {
+                if (resp.status == true) {
+                    if (resp.data)
+                        $.each(resp.data, function(index, valor) {
+
+                            $('#f' + valor.ff + valor.horini).attr('rowspan', valor.lapsos);
+                            $('#f' + valor.ff + valor.horini).html('<h1 style="font-size:50px;text-decoration: underline;"><b>' + valor.tipo + '</b></h1><button class="btn btn-danger active btnMostrar" data-id="' + valor.cod_dethorcla + '" data-cod="' + valor.cod_horcla + '" ><h3><b> Ver Detalle </b></h3></button>');
+                            $('#f' + valor.ff + valor.horini).addClass('bg-' + valor.color);
+                            hora = valor.horini.substring(0, 2);
+                            minuto = valor.horini.substring(2, 4);
+                            $('.btnMostrar').click(function() {
+                                $.post('../horarioclase/obtenerDetalle?cod_dethorcla=' + $(this).data('id') + '&cod_horcla=' + $(this).data('cod'), function(result) {
+                                    if (result.status == true) {
+                                        $('#persona').html(result.data.persona)
+                                        switch (result.data.pri_dethorcla) {
+                                            case 1:
+                                                $('#tema').html('MENSUAL');
+                                                break;
+                                            case 2:
+                                                $('#tema').html('CLASE');
+                                                break;
+                                            case 3:
+                                                $('#tema').html('CLASE VIRTUAL');
+                                                break;
+                                            case 4:
+                                                $('#tema').html('PRACTICO');
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $('#hora').html(result.data.horini + ' - ' + result.data.horfin);
+                                        $('#tem_dethorcla').html(result.data.tem_dethorcla);
+                                        $('#modalVer').modal('show');
+                                    } else {
+                                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                                    }
+                                }, 'json');
+                            });
+                            var res = true;
+                            if (minuto == '30') res = false;
+                            for (i = 2; i <= valor.lapsos; i++) {
+                                if (res) {
+                                    res = false;
+                                    $('#f' + valor.ff + '' + hora + '30').remove();
+                                } else {
+                                    res = true;
+                                    num = parseInt(hora) + 1;
+                                    if (num > 9) {
+                                        hora = '' + num;
+                                    } else {
+                                        hora = '0' + num;
+                                    }
+                                    $('#f' + valor.ff + '' + hora + '00').remove();
+                                }
+                            }
+
+                        });
+                }
+            });
+            $('#volver').click(function() {
+                location.href = $(this).data('href');
+            });
+            $('#btnHorario').click(function() {
+
+            });
+            $('#pri_dethorcla').chosen().change(function() {
+                switch (parseInt($(this).val())) {
+                    case 1:
+                        $('#tem_dethorcla').html('Carrera:\nMateria:\nPlan:\nDetalle:');
+                        break;
+                    case 2:
+                        $('#tem_dethorcla').html('Carrera:\nMateria:\nPlan:\nTema:\nNro Estudiantes:');
+                        break;
+                    case 4: //clase virtual
+                        $('#tem_dethorcla').html('Carrera:\nMateria:\nTema:\nDocente:');
+                        break;
+                    case 3:
+                        $('#tem_dethorcla').html('Carrera:\nMateria:\nDocente:\nTiempo:');
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
+
+        function adicionarReserva(fecha, horario) {
+            var hora = horario.split('-');
+            $('#cod_per').val('').trigger('chosen:updated');
+            $('#formulario')[0].reset();
+            $('#horini').val(hora[0]);
+            $('#horfin').val(hora[1]);
+            $('#fec_horcla').val(fecha);
+            $('#modalAdicionar').modal('show');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,662 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../usuario/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Usuario</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per1" name="ci_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per1" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per1" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per1" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                            		<div class="box box-success">
+										<div class="box-header with-border">
+											<h3 class="box-title">Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-success">Seleccionado</span>
+											</div>
+										</div>
+										<div class="box-body no-padding">
+											<div class="row users-list">
+												<div class="col-md-12">
+													<img id="imgAvatar-adicionar" src="#" class="img img-circle center-block" width="190px" style="max-height: 190px;" alt="Avatar seleccionado"> <a
+														class="users-list-name w3-center" href="#" id="labelAvatar-adicionar"></a>
+														<input type="hidden" id="inputAvatar-adicionar" name="fot_per"/>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+                            	</div>
+                            	<div class="col-md-4">
+                            		<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Seleccione Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-danger" th:text="${avatars.size()}+' disponibles'"></span>
+											</div>
+										</div>
+										<div class="box-body">
+											<div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel" >
+							                    <div class="carousel-inner">
+								                      <div th:each="a : ${avatars}" th:class="(${a.code} == 0) ? 'item w3-center active' : 'item w3-center'" data-interval="false">
+								                        <img th:src="@{${a.urlCompleta}}" class="img img-circle center-block" width="190px" style="max-height: 190px;" th:alt="${a.nombre}">
+								                        <div class="carousel-caption text-black" style="padding-bottom: 0px;bottom: 0px;"><a href="#" th:attr="onclick=|setAvatar('${a.urlImg}','adicionar')|"><span class="label label-danger">Seleccionar avatar</span></a></div>
+								                      </div>
+							                    </div>
+							                    <a class="left carousel-control text-" href="#carousel-example-generic" data-slide="prev">
+							                      <span class="fa fa-angle-left text-black"></span>
+							                    </a>
+							                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+							                      <span class="fa fa-angle-right text-black"></span>
+							                    </a>
+							                  </div>
+										</div>
+									</div>
+                            	</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" class="form-control" id="tel_per1" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per1" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="ema_per1" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="radio">
+                                            <label for="masculino"><input type="radio" id="masculino" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label for="femenino"><input type="radio" id="femenino" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Usuario</label>
+                                        <input type="text" class="form-control" name="logDat" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Roles</label>
+                                        <select id="rolesInit" multiple="multiple" data-fv-notempty name="rolesField" class="form-control input-md select-chosen" data-placeholder="Asignar">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="r : ${roles}" th:value="${r.cod_rol}" th:text="${r.nom_rol}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Sucursales</label>
+                                        <select name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../usuario/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+            data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Usuario</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" name="cod_per">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>C.I. - (Ingrese cero si no tiene carnet)</label>
+                                        <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                            		<div class="box box-success">
+										<div class="box-header with-border">
+											<h3 class="box-title">Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-success">Seleccionado</span>
+											</div>
+										</div>
+										<div class="box-body no-padding">
+											<div class="row users-list">
+												<div class="col-md-12">
+													<img id="imgAvatar-modificar" src="#" class="img img-circle center-block" width="190px" style="max-height: 190px;" alt="Avatar seleccionado"> <a
+														class="users-list-name w3-center" href="#" id="labelAvatar-modificar"></a>
+														<input type="hidden" id="inputAvatar-modificar" name="fot_per"/>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+                            	</div>
+                            	<div class="col-md-4">
+                            		<div class="box box-danger">
+										<div class="box-header with-border">
+											<h3 class="box-title">Seleccione Avatar</h3>
+											<div class="box-tools pull-right">
+												<span class="label label-danger" th:text="${avatars.size()}+' disponibles'"></span>
+											</div>
+										</div>
+										<div class="box-body">
+											<div id="carousel-example-generic2" class="carousel slide carousel-fade" data-ride="carousel" >
+							                    <div class="carousel-inner">
+								                      <div th:each="a : ${avatars}" th:class="(${a.code} == 0) ? 'item w3-center active':'item w3-center'" data-interval="false">
+								                        <img th:src="@{${a.urlCompleta}}" class="img img-circle center-block" width="190px" style="max-height: 190px;" th:alt="${a.nombre}">
+								                        <div class="carousel-caption text-black" style="padding-bottom: 0px;bottom: 0px;"><a href="#" th:attr="onclick=|setAvatar('${a.urlImg}','modificar')|"><span class="label label-danger">Seleccionar avatar</span></a></div>
+								                      </div>
+							                    </div>
+							                    <a class="left carousel-control text-" href="#carousel-example-generic2" data-slide="prev">
+							                      <span class="fa fa-angle-left text-black"></span>
+							                    </a>
+							                    <a class="right carousel-control" href="#carousel-example-generic2" data-slide="next">
+							                      <span class="fa fa-angle-right text-black"></span>
+							                    </a>
+							                  </div>
+										</div>
+									</div>
+                            	</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Tel&eacute;fono</label>
+                                        <input type="text" class="form-control" id="tel_per" name="tel_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="form-group">
+                                        <label>Domicilio</label>
+                                        <input type="text" class="form-control" id="dir_per" name="dir_per" data-fv-notempty="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" id="ema_per" name="ema_per" data-fv-emailaddress="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>G&eacute;nero</label>
+                                        <div class="radio">
+                                            <label for="masculino1"><input type="radio" id="masculino1" value="true" name="sex_per" />Masculino</label>
+                                            <label for="femenino1"><input type="radio" id="femenino1" value="false" name="sex_per"/>Femenino</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="modalAsignar" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <form id="formularioAsignar" method="post" action="../usuario/guardarAsignacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Asignaci&oacute;n de datos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per3" name="cod_per" />
+                            <div class="row">
+                            	<div class="col-md-5">
+                            		<img id="imageRol" name="image" class="img-thumbnail img-circle" src="#"> 
+                            	</div>
+                            	<div class="col-md-7">
+                            		<div class="form-group">
+                            			<label>Usuario</label>
+                            			<label id="usuarioLabel3" class="form-control "></label>
+                            		</div>
+                            		<div class="form-group">
+			                            <label>Usuario</label>
+			                            <input type="text" class="form-control" id="log_dat" name="log_dat" data-fv-notempty="true">
+		                            </div>
+		                            <div class="form-group">
+		                            	<label>Roles</label>
+		                            	<select id="roles" multiple="multiple" data-fv-notempty name="roles" class="form-control input-md select-chosen" data-placeholder="Asignar"></select>
+		                            </div>
+		                            <div class="form-group">
+		                            	<label>Sucursales</label>
+		                            	<select name="sucursales" id="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales..."></select>
+		                            </div> 
+                            	</div>
+                            </div>
+                           
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="modalAsignarSucursales" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioAsignarSucursales" method="post" action="../usuario/guardarSucursales" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Asignaci&oacute;n de sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_per" name="cod_per" />
+                            <div class="row">
+                            	<div class="col-md-5">
+                            		<img id="imageSucursal" name="image" class="img-thumbnail img-circle" src="#"> 
+                            	</div>
+                            	<div class="col-md-7">
+                            		<div class="form-group">
+                            			<label>Usuario</label>
+                            			<label id="usuarioLabelSucursal" class="form-control w3-border-0"></label>
+                            		</div>
+		                            <div class="form-group">
+		                                		<label>Seleccionar sucursal o sucursales</label>
+		                                		<select name="sucursales" id="sucursales2" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar">
+		                                		</select>
+		                                	</div>
+                            	</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8">
+                <h1><span class="fa  fa-ellipsis-v"></span> Gestion Usuarios </h1>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="dataTable_wrapper">
+            <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th class="all">Im&aacute;gen</th>
+                    <th class="desktop">Nombre y Apellidos</th>
+                    <th class="none">ID. Usuario</th>
+                    <th class="none">Domicilio</th>
+                    <th class="desktop">Celular</th>
+                    <th class="desktop">Login</th>
+                    <th class="all">Acciones</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+var dataResp = {};
+function setAvatar(avatar, idDestino){
+	let found = dataResp.avatars.find(it => it.urlImg == avatar);
+	$('#imgAvatar-'+idDestino).attr('src',found.urlCompleta);
+	$('#labelAvatar-'+idDestino).html(found.nombre);
+	$('#inputAvatar-'+idDestino).val(found.urlImg);
+}
+function resetAvatar(idDestino){
+	let found = dataResp.avatars.find(it => it.code == 0);
+	$('#imgAvatar-'+idDestino).attr('src',found.urlCompleta);
+	$('#labelAvatar-'+idDestino).html(found.nombre);
+	$('#inputAvatar-'+idDestino).val(found.urlImg);
+}
+    $(document).ready(function() {
+    	$.get('../avatar/listar',function(resp){
+    		if(resp.status){
+    			dataResp.avatars = resp.data;
+    		}
+    	});
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        var tableUsuario = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    resetAvatar('adicionar');
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../usuario/lista"
+            },
+            "ordering": true,
+            "order":[[2,'desc']],
+            "columnDefs":[{targets: [6],className:'text-right'}],
+            "columns": [{
+                "data": "fot_per","name":"fot_per"
+            }, {
+                "data": "nom_per","name":"nom_per"
+            }, {
+                "data": "cod_per","name":"cod_per"
+            }, {
+                "data": "dir_per","name":"dir_per"
+            }, {
+                "data": "tel_per","name":"tel_per"
+            }, {
+                "data": "logDat","name":"ci_per"
+            }, {
+                "data": "ci_per","name":"ci_per"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(0).html('<img class="img-circle img-responsive img-thumbnail" width="32px" src="/avatars/'+data.fot_per+'"  />');
+                $('td', row).eq(1).html(data.nom_per + ' '+(data.priape_per)+ ' ' + data.segape_per);
+                let btnUser = '';
+                if (data.log != null){
+                    btnUser = '<button class="btn btn-xs btn-info asignar" data-id="' + data.cod_per + '"  data-toggle="tooltip" data-placement="top" title="Resignar Datos"><i class="fa  fa-expeditedssl"></i><br/>Datos</button>';
+                } else {
+                   	btnUser = '<button class="btn btn-xs btn-success asignar"  data-toggle="tooltip" data-placement="top" title="Asignar Datos" data-id="' + data.cod_per + '"><i class="fa  fa-user-plus"></i><br/>Datos</button>';
+                }
+                btnUser += '<button class="btn btn-xs btn-warning asignarSucursales"  data-toggle="tooltip" data-placement="top" title="Asignar sucursal" data-id="' + data.cod_per + '"><i class="fa  fa-building"></i><br/>Sucursal</button>';
+                $('td', row).eq(6).html('<div class="btn-group">' + btnUser + '<button style="white-space: normal;" class="btn btn-xs btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_per + '"><i class="fa fa-edit"></i><br/>Editar</button><button class="btn btn-xs btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-remove"></i><br/>Eliminar</button></div>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                	let obj = tableUsuario.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de usuario", ("Cod. usuario: "+ obj.cod_per+", Usuario: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../usuario/eliminar?cod_per='+obj.cod_per, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.activar').click(function() {
+                	let obj = tableUsuario.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de usuario", ("Cod. usuario: "+ obj.cod_per+", Usuario: "+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per?obj.segape_per:'')), function(){
+        				jQuery.post('../usuario/activar?cod_per='+obj.cod_per, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+
+                $('.asignar').click(function() {
+                    $('#formularioAsignar').data('formValidation').resetForm();
+                    $('#formularioAsignar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                        	let dataUser = result.data;
+                        	let dataAcceso = result.datos;
+                            $('#modalAsignar').modal('show');
+                            let found = dataResp.avatars.find(it => it.urlImg == dataUser.fot_per);
+                            $('#imageRol').attr('src',found.urlCompleta);
+                            
+                            if (result.data) {
+                            	$('#formularioAsignar').loadJSON(dataUser);
+                            }
+                            if (result.datos) {
+                                $('#cla1').val(result.datos.cla_dat);
+                                $('#formularioAsignar').loadJSON(result.datos);
+                                $('#claveAnterior').show(500);
+                            } else{
+                            	$('#claveAnterior').hide(500);
+                            	let loginGenerate = dataUser.nom_per.charAt(0)+ dataUser.priape_per+dataUser.cod_per;
+                            	$('#log_dat').val(loginGenerate.toLowerCase());
+                            }
+                                
+                            $('#usuarioLabel3').html(dataUser.nom_per + ' ' + dataUser.priape_per + ' ' + dataUser.segape_per);
+                            $('#roles').html('');
+                            if(result.roles){
+                            	$.each(result.roles, function(i, item) {
+                                    let row = $('<option value="' + item.cod_rol + '" ' + item.tipo + '>' + item.nom_rol + '</option>');
+                                    $('#roles').append(row);
+                                });
+                                	
+                            }
+                            $('#roles').trigger('chosen:updated');
+                            $('#sucursales').html('');
+                            if(result.sucursales){
+                            	result.sucursales.forEach( item => {
+                            		let row = $('<option value="'+item.cod_suc+'" '+item.tipo+'>'+item.nombre+'</option>');
+                            		$('#sucursales').append(row);
+                            	});
+                            }
+                            $('#sucursales').trigger('chosen:updated');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.asignarSucursales').click(function() {
+                    $('#formularioAsignarSucursales').data('formValidation').resetForm();
+                    $('#formularioAsignarSucursales')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status) {
+                            $('#modalAsignarSucursales').modal('show');
+                            let found = dataResp.avatars.find(it => it.urlImg == result.data.fot_per);
+                            $('#imageSucursal').attr('src',found.urlCompleta);
+                            $('#formularioAsignarSucursales').loadJSON(result.data);
+                            $('#usuarioLabelSucursal').html(result.data.nom_per + ' ' + result.data.priape_per + ' ' + result.data.segape_per);
+                            $('#sucursales2').html('');
+                            if(result.sucursales){
+                            	result.sucursales.forEach( item => {
+                            		let row = $('<option value="'+item.cod_suc+'" '+item.tipo+'>'+item.nombre+'</option>');
+                            		$('#sucursales2').append(row);
+                            	});
+                            }
+                            $('#sucursales2').trigger('chosen:updated');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {
+                        if (result.status) {
+                            $('#formularioModificar').loadJSON(result.data);
+                            setAvatar(result.data.fot_per,'modificar');
+                            $('#modalModificar').modal('show');
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+            },
+            "initComplete": function (settings, json) {
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function (e) {
+                    if (e.keyCode == 13) {
+                        tableUsuario.search(this.value).draw();
+                    }
+                });
+            }
+        });
+
+        $('#formularioAsignar').formValidation({locale: 'es_ES'})
+        .on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            var bv = xform.data('formValidation');
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    modalAlert('Invalido', result.msg, 'error');
+                }
+            }, 'json');
+            xform.data('formValidation').resetForm();
+        });
+        $('#formularioAsignarSucursales').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    modalAlert('Invalido', result.msg, 'error');
+                }
+            }, 'json');
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formulario"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', result.msg);
+                    } else {
+                        modalAlert('Invalido', result.msg, 'error');
+                    }
+                });
+            });
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                var formData = new FormData(document.getElementById("formularioModificar"));
+                $.ajax({
+                    url: xform.attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function(result) {
+                    if (result.status) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else {
+                        modalAlert('Invalido', result.msg, 'error');
+                    }
+                });
+            });
+        });
+        $('#ci_per1').blur(function() {
+            let ciPer = $(this).val();
+            if(ciPer && ciPer !== '0') {
+                $.post('../usuario/validar?ci=' + ciPer, function(resp) {
+                    if (resp.status) {
+                        $('#ci_per1').val('');
+                        modalAlert('Carnet Existente', 'Este carnet ya existe', 'error');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</section>

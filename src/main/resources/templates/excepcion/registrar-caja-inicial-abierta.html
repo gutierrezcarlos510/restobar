@@ -1,0 +1,23 @@
+<div class="error-page">
+            <h1 class="headline text-red" > <span style="font-size: 208px;" class="fa fa-warning"></span></h1>
+            <div class="error-content"><br><br>
+              <h3><i class="fa fa-warning text-red"></i> Caja inicial de gestion abierto.</h3>
+              <p>
+                Estimado usuario, para ingresar a la contabilidad debe acabar el arqueo de caja inicial de la empresa.
+              </p>
+              <div class="pull-right">
+                		<button class="btn btn-primary" id="btnIniciarArqueo"> <span class="glyphicon glyphicon-duplicate"></span> Ir a arqueo inicial</button>
+                	</div>
+            </div><!-- /.error-content -->
+          </div><!-- /.error-page -->
+<script type="text/javascript">
+    $(document).ready(function() {
+    	$('#btnIniciarArqueo').click(function(){
+    		alertAdicion('Ir a arqueo inicial de la empresa', 'Esta seguro de ir al arqueo de la empresa?',function(){
+    			$.post('../arqueocaja/gestion', function(resp) {
+                    $("#contenedor").html(resp);
+                });
+    		});
+    	});
+    });
+    </script>

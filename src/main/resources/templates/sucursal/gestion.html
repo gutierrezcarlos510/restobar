@@ -1,0 +1,497 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div id="modalEliminarNotificaciones" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <form id="formularioEliminarNotificaciones" method="post" action="../sucursal/eliminarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Eliminar notificaciones</h4>
+                        </div>
+                        <div class="modal-body">
+                            <section id="eliminarNotificaciones">
+                                <div class="row" id="areaSucursales"></div>
+                            </section>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="modalAdicionarNotificacion" class="modal fade">
+            <div class="modal-dialog" style="min-width: 85%">
+                <form id="formularioAdicionarNotificacion" method="post" action="../sucursal/adicionarNotificacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Adicionar notificacion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_suc">
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-primary" type="button" id="btn2Plantilla1"><i class="fa fa-gears"></i> Act. Sistema</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Sucursal</label>
+                                <span class="w3-input w3-xxlarge" aria-label="nombre"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>T&iacute;tulo</label> <input id="tituloNotificacion" name="tituloNotificacion" minlength="3" maxlength="100" type="text" class="form-control input-lg w3-xxlarge" data-fv-notempty="true" />
+                            </div>
+                            <div class="form-group">
+                                <label>Mensaje</label>
+                                <textarea id="mensajeNotificacion" name="mensajeNotificacion" data-fv-notempty="true" class="form-control w3-xlarge" minlength="3" maxlength="1000" rows="8"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="modalAdicionarNotificaciones" class="modal fade">
+            <div class="modal-dialog" style="min-width: 85%">
+                <form id="formularioAdicionarNotificaciones" method="post" action="../sucursal/adicionarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Adicionar notificaciones</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="cod_suc">
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-primary" type="button" id="btn1Plantilla1"><i class="fa fa-gears"></i> Act. Sistema</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>T&iacute;tulo</label>
+                                <input id="titulo" name="titulo" type="text" class="form-control input-lg w3-xxlarge" minlength="3" maxlength="1000" data-fv-notempty="true" />
+                            </div>
+                            <div class="form-group">
+                                <label>Mensaje</label>
+                                <textarea id="mensaje" name="mensaje" class="form-control w3-xlarge" minlength="3" maxlength="1000" rows="7"  data-fv-notempty="true"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Sucursales</label>
+                                <div class="row">
+                                    <div class="col-md-4" th:each="it : ${sucursales}">
+                                        <label class="w3-xlarge" th:for="'suc-'+${it.cod_suc}" >
+                                            <input type="checkbox" class="w3-check mr-2" th:id="'suc-'+${it.cod_suc}" name="sucursales" th:value="${it.cod_suc}" /> <span th:text="${it.nombre}"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <form id="formulario" method="post" action="../sucursal/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Adicionar Sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" data-fv-notempty="true"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Alias</label> <input name="alias" type="text"
+                                                            placeholder="ingrese alias" class="form-control input-sm"
+                                                            data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefono</label> <input name="telefono"
+                                                               type="text" placeholder="ingrese telefono"
+                                                               class="form-control input-sm" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Direccion</label> <input name="direccion"
+                                                                type="text" placeholder="ingrese direccion"
+                                                                class="form-control input-sm" data-fv-notempty="true">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnAdicionarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../sucursal/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Modificar Sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_suc1" name="cod_suc" />
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="nombre1" name="nombre" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <textarea class="form-control" id="descripcion1" name="descripcion" data-fv-notempty="true"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Alias</label> <input name="alias" type="text"
+                                                            placeholder="ingrese alias" class="form-control input-sm"
+                                                            data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefono</label> <input name="telefono"
+                                                               type="text" placeholder="ingrese telefono"
+                                                               class="form-control input-sm" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Direccion</label> <input name="direccion"
+                                                                type="text" placeholder="ingrese direccion"
+                                                                class="form-control input-sm" data-fv-notempty="true">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
+        <div id="modalEliminar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioEliminar" method="post" action="../sucursal/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Eliminar Sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_suc2" name="cod_suc" />
+                            <p>Desea eliminar a <label id="sucursalLabel"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Eliminar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div id="modalActivar" class="modal fade">
+            <div class="modal-dialog">
+                <form id="formularioActivar" method="post" action="../sucursal/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Activar Sucursal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cod_suc3" name="cod_suc" />
+                            <p>Desea activar a <label id="sucursalLabel2"></label></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Activar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </form>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-md-2">
+                <h1><span class="fa fa-ellipsis-v"></span> Sucursales </h1>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <button class="btn btn-danger" id="btnEliminarNotificaciones"><i class="fa fa-times-circle"></i> | eliminar notificaciones</button>
+                    <button class="btn btn-success" id="btnAdicionarNotificaciones"><i class="fa fa-plus-circle"></i> | adicionar notificaciones</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio"> <input
+                            type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                    </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input
+                        type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="desktop">C&oacute;digo</th>
+                    <th class="all">Nombre</th>
+                    <th class="desktop">Descripci&oacute;n</th>
+                    <th class="desktop">Alias</th>
+                    <th class="desktop">Tel&eacute;fono</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    function ejecutarPlantilla1(idTitulo,idMensaje){
+        let titulo = 'Actualizacion del sistema'
+        let plantilla = 'Estimado usuario.-\n' +
+            'Le informamos que se realizara una actualizacion del sistema.\n' +
+            '\n' +
+            'Hora de inicio: 12:00 PM\n' +
+            'Hora de fin: 12:15 PM\n' +
+            'Gracias por su comprension.';
+        $(idTitulo).val(titulo);
+        $(idMensaje).val(plantilla);
+    }
+    $(document).ready(function() {
+        $('#tabla').dataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../sucursal/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "columnDefs":[{targets: [5],className:'text-right'}],
+            "ordering":true,
+            "order":[[0,'desc']],
+            "columns": [{
+                "data": "cod_suc","name":"cod_suc"
+            }, {
+                "data": "nombre","name":"nombre"
+            }, {
+                "data": "descripcion","name":"descripcion"
+            }, {
+                "data": "alias","name":"alias"
+            }, {
+                "data": "telefono","name":"telefono"
+            }, {
+                "data": "cod_suc","name":"cod_suc"
+            }],
+            "createdRow": function(row, data, index) {
+                if ($('input[name=estado]:checked').val() == 'true') {
+                    let btnGroup = '<div class="btn-group btn-group-xs">';
+                    if(data.estadoNotificacion) {
+                        btnGroup+='<button class="btn btn-danger eliminarNotificacion"  data-toggle="tooltip" data-placement="top" title="Eliminar notificacion"><i class="fa fa-times"></i><i class="fa fa-comment"></i><br>notificacion</button>';
+                    } else {
+                        btnGroup+='<button class="btn btn-success notificar"  data-toggle="tooltip" data-placement="top" title="Registrar notificacion"><i class="fa fa-comment"></i><br>notificacion</button>';
+                    }
+                    btnGroup += '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_suc + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_suc + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+                    btnGroup += '</div>';
+                    $('td', row).eq(5).html(btnGroup);
+                } else {
+                    $('td', row).eq(5).html('<button class="btn btn-primary activar" data-id="' + data.cod_suc + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i>  </button>');
+                }
+
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    $('#formularioEliminar')[0].reset();
+                    $.post('../sucursal/obtener?cod_suc=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalEliminar').modal('show');
+                            $('#formularioEliminar').loadJSON(result.data);
+                            $('#sucursalLabel').html('<button class="btn btn-info"  data-toggle="tooltip" data-placement="top" title="Icono"><i class="' + result.data.ico_pro + '"></i></button> ' + result.data.nombre);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.activar').click(function() {
+                    $('#formularioActivar')[0].reset();
+                    $.post('../sucursal/obtener?cod_suc=' + $(this).data('id'), function(result) {
+                        if (result.status == true) {
+                            $('#modalActivar').modal('show');
+                            $('#formularioActivar').loadJSON(result.data);
+                            $('#sucursalLabel2').html(result.data.nombre);
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+
+                $('.modificar').click(function() {
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $.post('../sucursal/obtener?cod_suc=' + $(this).data('id'), function(result) {
+                        if (result.status) {
+                            $('#formularioModificar').loadJSON(result.data);
+                            $('#modalModificar').modal('show');
+                            var icono;
+                            try {
+                                icono = (result.data.ico_pro).split(' ');
+                                $('#ico_pro1').iconpicker().iconpicker('setIcon', icono[1]);
+                            } catch (e) {
+                                $('#ico_pro1').iconpicker().iconpicker('setIcon', 'glyphicon-remove');
+                            }
+                        } else {
+                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                        }
+                    }, 'json');
+                });
+                $('#btnAdicionarNotificaciones').click(function(){
+                    $('#sucursales').val('').trigger('chosen:updated');
+                    $('#formularioAdicionarNotificaciones')[0].reset();
+                    $('#formularioAdicionarNotificaciones').data('formValidation').resetForm();
+                    $('#modalAdicionarNotificaciones').modal('show');
+                })
+                $('#btn1Plantilla1').click(function(){
+                    ejecutarPlantilla1('#titulo','#mensaje')
+                })
+                $('#btn2Plantilla1').click(function(){
+                    ejecutarPlantilla1('#tituloNotificacion','#mensajeNotificacion')
+                })
+                $('#btnEliminarNotificaciones').click(function(){
+                    $.get('../sucursal/obtenerNotificaciones', function(resp){
+                        if(resp.status) {
+                            $('#areaSucursales').html('');
+                            if(resp.data && resp.data.length > 0) {
+                                resp.data.forEach(it => {
+                                    let row = $('<div class="col-md-4"><label for="suc-'+it.cod_suc+'"><input type="checkbox" class="w3-check mr-2" id="suc-'+it.cod_suc+'" name="sucursales" value="'+it.cod_suc+'" />'+it.xsucursal+'</label></div>');
+                                    $('#areaSucursales:last').append(row)
+                                })
+                            }
+                            $('#modalEliminarNotificaciones').modal('show');
+                        } else {
+                            modalAlert('Consulta fallida', resp.message, false);
+                        }
+                    })
+                });
+                $('.notificar').click(function(){
+                    let row = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    $('#formularioAdicionarNotificacion')[0].reset();
+                    $('#formularioAdicionarNotificacion').loadJSON(row);
+                    $('#modalAdicionarNotificacion').modal('show');
+                });
+                $('.eliminarNotificacion').click(function(){
+                    let row = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    alertEliminacion('Eliminar Notificacion', ('Titulo: '+row.tituloNotificacion), function(){
+                        $.post('../sucursal/eliminarNotificacion?cod_suc='+row.cod_suc, function(resp){
+                            if(resp.status) {
+                                $('#tabla').dataTable().fnDraw();
+                                mostrarMensaje('success',resp.message);
+                            } else {
+                                modalAlert('Transaccion fallida', resp.message, 'error');
+                            }
+                        })
+                    })
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            },
+            "initComplete": function(settings, json){
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e){
+                    if( e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#formulario,#formularioModificar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+            	var xform = $(e.target);
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
+                    if (result.status == true) {
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                    } else {
+                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    }
+                }, 'json');
+            });
+        });
+        $('#formularioEliminar,#formularioActivar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status == true) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
+        });
+        $('#formularioAdicionarNotificacion,#formularioAdicionarNotificaciones,#formularioEliminarNotificaciones').formValidation(
+            {locale: 'es_ES'}).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                if(result.status){
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info',result.msg);
+                }else{
+                    modalAlert('Transaccion fallida', result.msg, 'error');
+                }
+                $('.modal').modal('hide');
+            }, 'json');
+        });
+    });
+</script>
+</section>

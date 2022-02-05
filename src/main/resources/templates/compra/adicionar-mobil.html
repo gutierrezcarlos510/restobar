@@ -1,0 +1,629 @@
+<style type="text/css">
+    .toolbar{
+        position: fixed;bottom: 0;
+        width: 100%;
+        padding-bottom: 0px !important;
+    }
+</style>
+<section xmlns:th="http://www.thymeleaf.org">
+<div id="modalHistorial" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Historial de precios del producto</h4>
+                </div>
+                <div class="modal-body">
+                    	<table class="w3-table-all w3-tiny" id="tablaHistorial">
+                    		<thead>
+                    			<tr>
+                    				<th colspan="3">
+                    					Historial de compra del producto: <b id="nameProductoHistorial"></b>
+                    				</th>
+                    			</tr>
+                    			<tr>
+                    				<th>Compra</th>
+                    				<th>Fecha</th>
+                    				<th class="w3-right-align">Precio</th>
+                    			</tr>
+                    		</thead>
+                    		<tbody></tbody>
+                    	</table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-12 p-0 m-0">
+        <div id="smartwizard">
+            <ul class="nav" style="display: none;">
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-1">
+                        <strong>1</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-2">
+                        <strong>Step 2</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-3">
+                        <strong>Step 3</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#step-4">
+                        <strong>Step 4</strong>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                    <h5 class="w3-center">Registro de compra</h5>
+                    <form id="formulario1" name="formulario1" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                        <div class="form-group">
+                            <label>Proveedor</label>
+                            <select id="proveedor" name="cod_pro" class="form-control select-chosen" data-placeholder="Seleccione..." data-fv-notempty="true">
+                                <option value=""></option>
+                                <option th:each="p : ${proveedores}" th:value="${p.cod_pro}" th:text="${p.nom_emp} +' - '+ ${p.nom_per} +' '+${p.priape_per} +' '+${p.segape_per}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="text" id="fec_com" name="fec_com" class="form-control fec text-right" th:value="${actual}" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true" data-fv-date data-fv-date-format="DD/MM/YYYY"
+                                   data-fv-date-separator="/">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripci&oacute;n</label>
+                            <textarea class="form-control" id="obs_com" name="obs_com" rows="4">Compra de productos</textarea>
+                        </div>
+                    </form>
+                </div>
+                <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                    <h5 class="m-0">Productos</h5>
+                    <form id="formBuscar" name="formBuscar" method="post" action="#" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="inputBuscar"><i class="fa fa-search"></i> Buscar producto</label>
+                                    <div class="input-group">
+                                        <input type="text" id="inputBuscar" autocomplete="off" name="inputBuscar" class="form-control" placeholder="Buscar...">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary" type="submit">
+                                                <span class="glyphicon glyphicon-search"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form id="formulario2" name="formulario2" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                        <table id="tablaSearchProducto" class="table table-striped table-bordered dt-responsive w3-tiny" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="none">C&oacute;digo</th>
+                                <th class="all">Nombre</th>
+                                <th class="desktop">Tipo</th>
+                                <th class="all">Cantidad</th>
+                                <th class="desktop">P. Compra</th>
+                                <th class="desktop">Ganancia</th>
+                                <th class="desktop">P. Venta</th>
+                                <th class="all">Sel</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <p class="text-center" id="productoSeleccionado"></p>
+                        <div class="form-group">
+                            <label>Cantidad</label>
+                            <input type="text" class="form-control text-right" id="can1" name="can1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-integer="true" />
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="text" class="form-control text-right" id="pre1" name="pre1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator="." />
+                        </div>
+                        <div class="alert w3-pale-green" id="areaPrecioUltimaCompra" style="display: none;">
+                            <p id="precioUltimaCompra" class="w3-right-align"></p>
+                            <p class="w3-right-align" >
+                                <a href="#" class="w3-text-black" data-toggle="modal" data-target="#modalHistorial" >Ver historial de compras del producto.</a>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Total</label>
+                            <input type="text" class="form-control text-right" id="tot1" name="tot1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-block btn-lg btn-success" id="adicionar">
+                                <span class="glyphicon glyphicon-plus-sign"></span> Adicionar
+                            </button>
+                        </div>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    </form>
+                </div>
+                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                    <form id="formulario3" name="formulario3" action="../compra/guardar" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                        <h4>Detalle Compra:</h4>
+                        <div class="table-responsive">
+                            <table id="detalles" class="w3-table-all w3-small">
+                                <thead>
+                                <tr>
+                                    <th width="25px">No.</th>
+                                    <th>Producto</th>
+                                    <th width="70px">Cantidad Unid.</th>
+                                    <th width="70px">Precio Unid.</th>
+                                    <th width="70px">Subtotal</th>
+                                    <th width="25px">Descuento</th>
+                                    <th width="70px">Total</th>
+                                    <th width="25px">Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="unit">
+                                    <td colspan="6" class="w3-center">Sin ningun detalle</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                    <h6>Confirmar registro</h6>
+                    <div class="panel panel-primary">
+                        <div class="panel panel-heading">
+                            <h4>Detalle Compra:</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <form id="formulario4" name="formulario4" action="#" method="post">
+                                <table class="w3-table-all w3-small">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="7" class="w3-center">Resumen de compra</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="4" class="w3-right-align"><strong>Subtotal</strong></td>
+                                        <td class="w3-right-align"><b id="subtotal">0.0</b></td>
+                                        <td class="w3-right-align"><b id="subdescuento">0.0</b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="w3-right-align"><strong>Subtotal + descuento</strong></td>
+                                        <td colspan="3" id="total" class="w3-right-align"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="w3-right-align"><strong>Descuento Total</strong></td>
+                                        <td colspan="3">
+                                            <div class="form-group">
+                                                <input type="text" id="descuento" name="des_com" onClick="this.setSelectionRange(0, this.value.length)" class="form-control input-xs text-right" value="0" data-fv-notempty="true">
+                                                <input type="hidden" id="input-total" name="tot_com" value="0">
+                                                <input type="hidden" id="input-subtotal" name="subtotCom" value="0">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="w3-right-align"><strong>TOTAL</strong></td>
+                                        <td colspan="3" id="total-final" class="w3-right-align"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" onclick="$('#formulario3').submit();" id="guardar" class="btn btn-primary btn-block active">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+function alertAdicion(msgTitle, msgText, callBackSuccess){
+	swalWithBootstrapButtons.fire({
+		  title: msgTitle,
+		  text: msgText,
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Si, aceptar',
+		  cancelButtonText: 'No, cancelar!',
+		  reverseButtons: true
+		}).then((result) => {
+		  if (result.isConfirmed) {
+			  callBackSuccess();
+		    
+		  } else if (
+		    /* Read more about handling dismissals below */
+		    result.dismiss === Swal.DismissReason.cancel
+		  ) {
+		    swalWithBootstrapButtons.fire(
+		      'Cancelado',
+		      'Se ha cancelado la adicion del registro',
+		      'error'
+		    )
+		  }
+		})
+}
+function calcularDetalle(xid){
+	let can = $('#can-'+xid).val();
+	let pre = $('#pre-'+xid).val();
+	let des = $('#pro-'+xid).val();
+	if(!can){
+		can = 0;
+	}
+	if(!pre){
+		pre = 0;
+	}
+	if(!des){
+		des = 0;
+		$('#pro-'+xid).val(0);
+	}
+	can = parseFloat(can);
+	pre = parseFloat(pre);
+	let subtot = can*pre;
+	$('#subtot-'+xid).val(subtot.toFixed(2));
+	let tot = subtot - des;
+	$('#tot-'+xid).val(tot.toFixed(2));
+	calc_total();
+}
+function calc_total() {
+    let subtot = 0;
+    let tot = 0;
+    $('.input-subtot').each(function() {
+        subtot += parseFloat($(this).val());
+    });
+    $('.input-tot').each(function() {
+        tot += parseFloat($(this).val());
+    });
+    $("#subtotal").html(subtot.toFixed(2));
+    $('#input-subtotal').val(tot.toFixed(2));
+    let des = 0;
+    $('.input-des').each(function() {
+        des += parseFloat($(this).val());
+    });
+    $("#subdescuento").html(des.toFixed(2));
+    $('#total').html(tot.toFixed(2));
+    let totalPagar = parseFloat(($('#total').text()) - parseFloat($('#descuento').val())).toFixed(2);
+    $('#input-total').val(totalPagar);
+    $('#total-final').html(totalPagar);
+}
+    $(document).ready(function() {
+        var tablaProducto = $('#tablaSearchProducto').DataTable({
+            dom: "<'row'<'col-md-12 w3-small'tr>><'row'<'col-sm-5 w3-tiny'i><'col-sm-7 w3-tiny'p>>",
+            "pageLength":5,
+            "ajax": {
+                "type": "POST",
+                "url": "../producto/lista",
+                "data": function(d) {
+                    d.estado = true;
+                }
+            },
+            "columnDefs":[
+                {targets: [7],className:'text-right'}],
+            "columns": [{
+                "data": "cod_pro"
+            }, {
+                "data": "nom_pro"
+            }, {
+                "data": "nom_tippro"
+            }, {
+                "data": "can_pro"
+            }, {
+                "data": "precom_pro"
+            }, {
+                "data": "gan_pro"
+            }, {
+                "data": "preven_pro"
+            }, {
+                "data": "cod_pro"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(7).html('<a href="#" class="btn btn-xs btn-primary seleccionado" ><i class="fa fa-arrow-circle-right"></i></a>');
+            },
+            "drawCallback": function(settings) {
+                $('.seleccionado').click(function() {
+                    let obj = tablaProducto.row($(this).closest('tr')).data();
+                    let existe = false;
+                    $('#productoSeleccionado').html('');
+                    $('.listaProductos').each(function() {
+                        if(parseInt($(this).val()) == obj.cod_pro){
+                            existe = true;
+                        }
+                    });
+
+                    if(existe){
+                        productSelected = null;
+                        modalAlert('Invalido', 'El producto ya se encuentra en detalle', 'error');
+                    }else{
+                        productSelected = obj;
+                        $('#productoSeleccionado').html(obj.nom_pro);
+                        $('#nameProductoHistorial').html(obj.nom_pro);
+                        $('#tablaHistorial > tbody').html('');
+                        $('#areaPrecioUltimaCompra').hide();
+                        $.get('../compra/obtenerHistorialCompraProducto/'+obj.cod_pro, function(resp){
+                            if(resp.status){
+                                if(resp.data){
+                                    resp.data.forEach(function(det,ind){
+                                        if(ind == 0){
+                                            $('#precioUltimaCompra').html('Precio anterior. Fecha: '+det.xfecha+'. Precio: '+det.preDetcom);
+                                        }
+                                        let row = $('<tr></tr>');
+                                        $('<td>'+det.codCom+'</td>').appendTo(row);
+                                        $('<td>'+det.xfecha+'</td>').appendTo(row);
+                                        $('<td class="w3-right-align">'+det.preDetcom+'</td>').appendTo(row);
+                                        $('#tablaHistorial > tbody:last').append(row);
+                                    })
+                                    $('#areaPrecioUltimaCompra').show(400);
+                                }
+                                setTimeout(function() {
+                                    $('#adicionar').focus(function(){
+                                        $('html, body').animate({
+                                            scrollTop: ($(this).offset().top-480) + 'px'
+                                        }, 800);
+                                    });
+                                    $('#adicionar').focus()
+                                }, 500);
+                                mostrarMensajeMobil('info',resp.msg)
+                            }else{
+                                modalAlert('Error de consulta',resp.msg,'error')
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        $('#formBuscar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            $('#tablaSearchProducto').DataTable().search($('#inputBuscar').val()).draw();
+        });
+        des_detcom = {
+            validators: {
+                notEmpty: {
+                    message: 'ingresar'
+                },
+                numeric: {
+                    message: 'numero'
+                }
+            }
+        }
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '90%'
+        });
+        $(".fec").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+        $('button[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+        });
+        $('#cancelar').click(function() {
+            $.post('../compra/gestion', function(resp) {
+                $('#contenedor').html(resp);
+            });
+        });
+        // Toolbar extra buttons
+        var btnCancel = $('<button></button>').html('<i class="fa fa-times-circle"></i><br/>Salir Compra')
+            .addClass('btn w3-red w3-border-red')
+            .on('click', function(){
+                alertCancelacion('Cancelar compra', 'Esta seguro de cancelar la compra', function () {
+                    $.post('../compra/gestion', function (resp) {
+                        $("#contenedor").html(resp);
+                    });
+                })
+            });
+        // Step show event
+        $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
+            $("#prev-btn").removeClass('disabled');
+            $("#next-btn").removeClass('disabled');
+            if(stepPosition === 'first') {
+                $("#prev-btn").addClass('disabled');
+            } else if(stepPosition === 'last') {
+                $("#next-btn").addClass('disabled');
+            } else {
+                $("#prev-btn").removeClass('disabled');
+                $("#next-btn").removeClass('disabled');
+            }
+        });
+
+        // Smart Wizard
+        $('#smartwizard').smartWizard({
+            selected: 0,
+            theme: 'arrows', // default, arrows, dots, progress
+            //darkMode: true,
+            transition: {
+                animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+            },
+            toolbarSettings: {
+                toolbarPosition: 'bottom', // both bottom
+                toolbarExtraButtons: [btnCancel],
+                toolbarButtonPosition: 'left'
+            },
+            lang: {
+                next: 'Siguiente',
+                previous: 'Volver atras'
+            }
+        });
+
+        // External Button Events
+        $("#reset-btn").on("click", function() {
+            $('#smartwizard').smartWizard("reset");
+            return true;
+        });
+
+        $("#prev-btn").on("click", function() {
+            $('#smartwizard').smartWizard("prev");
+            return true;
+        });
+
+        $("#next-btn").on("click", function() {
+            $('#smartwizard').smartWizard("next");
+            return true;
+        });
+        $('.sw-btn-next').html('<i class="fa fa-arrow-circle-right"></i><br>Siguiente');
+        $('.sw-btn-prev').html('<i class="fa fa-arrow-circle-left"></i><br>Volver atras');
+        $('#smartwizard').smartWizard("goToStep", 0);
+        function enumerarFila() {
+            $('.td-nro').each(function(i) {
+                $(this).html(i + 1);
+            });
+        }
+        
+        $(document).on('click', '.input-remove-row', function() {
+            var tr = $(this).closest('tr');
+            tr.fadeOut(100, function() {
+                tr.remove();
+                enumerarFila();
+                calc_total();
+                if ($('#detalles > tbody>tr').length == 0) {
+                    var row = $('<tr id="unit"></tr>');
+                    $('<td colspan="6" class="w3-align-right">Sin ningun detalle</td>').appendTo(row);
+                    $('#detalles > tbody:last').append(row);
+                }
+            });
+        });
+        $('#formulario1').formValidation({
+            locale: 'es_ES',
+            excluded: ':disabled',
+            fields: {
+                proveedor: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Por favor seleccione un proveedor'
+                        }
+                    }
+                }
+            }
+        }).on('success.field.fv', function(e, data) {
+            var estadoForm1 = $('#formulario1').data('formValidation').isValid();
+            if (estadoForm1 == true)
+                $('#guardar').removeAttr('disabled');
+        }).on('err.field.fv.', function(e, data) {
+            $('#guardar').attr('disabled', 'disabled');
+        });
+        $('#formulario2').formValidation({locale: 'es_ES', excluded: ':disabled'})
+            .on('success.field.fv', '[name="can1"]', function(e, data) {
+                if ($('#pre1').val() != '') {
+                    $('#tot1').val($('#can1').val() * $('#pre1').val());
+                }
+            }).on('success.field.fv', '[name="pre1"]', function(e, data) {
+                if ($('#can1') != '') {
+                    $('#tot1').val(($('#can1').val() * $('#pre1').val()).toFixed(2));
+                }
+            }).on('success.field.fv', '[name="tot1"]', function(e, data) {
+                if ($('#can1') != '') {
+                    $('#pre1').val(($('#tot1').val() / $('#can1').val()).toFixed(2));
+                } else {
+                    if ($('#pre1') != '') {
+                        $('#can1').val(($('#tot1').val() / $('#pre1').val()).toFixed(2));
+                    }
+                }
+            }).on('err.field.fv', function() {
+                $('#tot1').val('');
+            }).on('success.form.fv', function(e) {
+                e.preventDefault();
+                var xform = $(e.target);
+                var bv = xform.data('formValidation');
+                var estado = $('#formulario2').data('formValidation').isValid();
+                if (estado) {
+                    $('#unit').remove();
+                    var row = $('<tr></tr>');
+                    let xcodpro = productSelected.cod_pro;
+                    $('<td class="td-nro"></td>').appendTo(row);
+                    $('<td>' + productSelected.nom_pro + '</td>').appendTo(row);
+                    $('<td><input type="text" name="cantidades" id="can-'+xcodpro+'" class="form-control input-xs text-right" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#can1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                    $('<td><input type="text" name="precios" id="pre-'+xcodpro+'" class="form-control input-xs text-right inputDetalle" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#pre1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                    $('<td><input type="text" name="subtotales" id="subtot-'+xcodpro+'" class="form-control input-xs text-right input-subtot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
+                    $('<td><input type="text" id="pro-' + xcodpro + '" name="descuentos" class="form-control input-xs text-right input-des" onKeyup="calcularDetalle('+xcodpro+')" onClick="this.setSelectionRange(0, this.value.length)" value="0"></td>').appendTo(row);
+                    $('<td><input type="text" name="totales" id="tot-'+xcodpro+'" class="form-control input-xs text-right input-tot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
+                    $('<td class="remove-row w3-center"><button type="button" class="btn btn-xs btn-danger input-remove-row" data-producto="' + xcodpro + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                    $('<input type="hidden" class="listaProductos" name="productos" value="' + xcodpro + '" >').appendTo(row);
+                    $('#detalles > tbody:last').append(row);
+                    enumerarFila();
+                    calc_total();
+                    $('#formulario2')[0].reset();
+                    xform.data('formValidation').resetForm();
+                    $('#formulario3').formValidation('addField', 'descuentos', des_detcom);
+                }
+            });
+        $('#descuento').keyup(function(){
+            calc_total();
+        })
+        $('#formulario3').formValidation({
+            locale: 'es_ES'
+        }).on('success.fv.field', '[name="des_com"]', function() {
+            if (parseFloat($('#descuento').val()) > parseFloat($('#total').text())) {
+                $('#descuento').val('');
+                $('#formulario3').formValidation('revalidateField', 'des_com');
+            } else
+                $('#total-final').html(($('#total').text() - $('#descuento').val()).toFixed(2));
+        }).on('err.field.fv', function() {
+            $('#total-final').html('');
+        }).on('success.fv.field', '[name="descuentos"]', function() {
+            calc_total();
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            var xform = $(e.target);
+            alertAdicion('Confirmacion de registro de compra', 'Esta seguro de realizar la compra', function(){
+            	$('#formulario1').data('formValidation').validate();
+                var estadoForm1 = $('#formulario1').data('formValidation').isValid();
+                if ($('#input-total').val() > 0) {
+                    if (estadoForm1 != null)
+                        if (estadoForm1) {
+                            try {
+                                abrirLoad();
+                                $.post(xform.attr('action'), $('#formulario1').serialize() + '&' + $('#formulario4').serialize()+ '&' + xform.serialize(), function(result) {
+                                    cerrarLoad();
+                                    if (result.status) {
+                                        xform.data('formValidation').resetForm();
+                                        $.post('../compra/gestion', function(respuno) {
+                                            mostrarMensajeMobil('info', 'Se realizo con exito la Transaccion.');
+                                            $('#contenedor').html(respuno);
+                                        });
+                                    } else {
+                                        mostrarMensajeMobil('error', 'No se realizo con exito la transaccion.');
+                                    }
+                                }, 'json');
+                            }catch(err){
+                                console.log('Error al guardar compra');
+                                cerrarLoad();
+                            }finally {
+                                cerrarLoad();
+                            }
+
+                        }
+                } else {
+                    $('#formulario1').data('formValidation').validate();
+                    mostrarMensajeMobil('error', 'Por favor ingrese el detalle.');
+                    mostrarMensajeMobil('error', 'Valide los campos requeridos.');
+                }
+            })
+            
+        });
+        
+
+
+    });
+
+    function stopRKey(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+        if (evt.keyCode == 13) {
+            $('#adicionar').click();
+            return false;
+        }
+    }
+    document.onkeypress = stopRKey;
+</script>
+</section>
