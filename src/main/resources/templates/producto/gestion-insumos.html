@@ -7,7 +7,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Adicionar Producto</h4>
+                            <h4 class="modal-title">Adicionar Insumo</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -15,13 +15,13 @@
                                     <div class="form-group">
                                         <label>Nombre</label>
                                         <div class="input-group">
-                                            <input type="hidden" name="tipoGrupo" value="1">
+                                            <input type="hidden" name="tipoGrupo" value="2" />
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                            <input type="text" class="form-control text-capitalize" name="nombre" autocomplete="off" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Producto</label>
+                                        <label>Tipo de Insumo</label>
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
@@ -43,47 +43,6 @@
                                 <div class="col-md-7">
                                     <div class="form-group">
                                         <input type="file" id="file-add" class="file" name="imgProducto" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row w3-pale-green">
-                                <div class="col-md-4">
-                                    <h4 class="text-center">PRECIO DE VENTA <br> AL P&Uacute;BLICO</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvCaja" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Unidad con descuento</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvUnitDescuento" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Caja con descuento</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvCajaDescuento" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +117,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Modificar Producto</h4>
+                            <h4 class="modal-title">Modificar Insumo</h4>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" />
@@ -167,13 +126,13 @@
                                     <div class="form-group">
                                         <label>Nombre</label>
                                         <div class="input-group">
-                                            <input type="hidden" name="tipoGrupo" value="1">
+                                            <input type="hidden" name="tipoGrupo" value="2" />
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Producto</label>
+                                        <label>Tipo de Insumo</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
@@ -206,47 +165,6 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input type="file" id="file-mod" class="file" name="imgProducto" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row w3-pale-green">
-                                <div class="col-md-4">
-                                    <h4 class="text-center">PRECIO DE VENTA <br> AL P&Uacute;BLICO</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvCaja" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Unidad con descuento</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvUnitDescuento" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Por Caja con descuento</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                            <input type="text" class="form-control" name="pvCajaDescuento" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -319,10 +237,9 @@
         <!-- /.modal -->
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-3">
-                <h1><span class="fa  fa-ellipsis-v"></span> Productos </h1>
+                <h1><span class="fa  fa-ellipsis-v"></span> Insumos </h1>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4">
-
             </div>
             <div class="col-xs-12 col-sm-12 col-md-2">
                 <button class="btn btn-block btn-success" id="btnImprimirInventario"><i class="fa fa-print"></i> Imprimir</button>
@@ -347,10 +264,6 @@
                     <th class="all">Tipo de producto</th>
                     <th class="none">Precio Costo por Unidad</th>
                     <th class="none">Precio Costo por Caja</th>
-                    <th class="none">Precio de Venta al p&uacute;blico por unidad</th>
-                    <th class="none">Precio de Venta al p&uacute;blico por caja</th>
-                    <th class="none">Precio de Venta al p&uacute;blico por unidad con descuento</th>
-                    <th class="none">Precio de Venta al p&uacute;blico por caja con descuento</th>
                     <th class="none">Inventario Minimo en unidad</th>
                     <th class="none">Inventario Minimo en caja</th>
                     <th class="none">Presentacion en unidades</th>
@@ -416,12 +329,12 @@
                 "url": "../producto/listar",
                 "data": function(d) {
                     d.estado = $('input[name=estado]:checked').val();
-                    d.grupo = 1;
+                    d.grupo = 2;
                 }
             },
             "columnDefs":[
             	{targets: [0],className:'text-center'},
-            	{targets: [15],className:'text-right'}],
+            	{targets: [11],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -434,14 +347,6 @@
                 "data": "pcUnit", "name":"pc_unit"
             }, {
                 "data": "pcCaja", "name":"pc_caja"
-            }, {
-                "data": "pvUnit", "name":"pv_unit"
-            }, {
-                "data": "pvCaja", "name":"pv_caja"
-            }, {
-                "data": "pvUnitDescuento", "name":"pv_unit_descuento"
-            }, {
-                "data": "pvCajaDescuento", "name":"pv_caja_descuento"
             }, {
                 "data": "inventarioMinimoUnidad", "name":"inventario_minimo_unidad"
             }, {
@@ -459,14 +364,14 @@
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(15).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    $('td', row).eq(11).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
                 } else
-                    $('td', row).eq(15).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                    $('td', row).eq(11).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertEliminacion("Eliminacion de Producto", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+                	alertEliminacion("Eliminacion de insumo", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
         				jQuery.post('../producto/eliminar?cod_pro='+obj.cod_pro, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
@@ -479,7 +384,7 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de Producto", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+                	alertAdicion("Activacion de Insumo", ("Cod. insumo: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
         				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
@@ -522,9 +427,6 @@
             }
         });
         $('.estadoRadio').click(function() {
-            $('#tabla').dataTable().fnDraw();
-        });
-        $('.grupoRadio').click(function() {
             $('#tabla').dataTable().fnDraw();
         });
         $('#formularioModificar').formValidation({

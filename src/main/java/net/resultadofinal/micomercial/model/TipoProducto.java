@@ -6,7 +6,16 @@ public class TipoProducto {
 	private Integer id;
 	private String nombre,descripcion;
 	private Boolean estado;
-	private List<Producto> productos;
+	private Integer categoriaId;
+	private String xcategoria;
+
+	public String getXcategoria() {
+		return xcategoria;
+	}
+
+	public void setXcategoria(String xcategoria) {
+		this.xcategoria = xcategoria;
+	}
 
 	public Integer getId() {
 		return id;
@@ -40,11 +49,11 @@ public class TipoProducto {
 		this.estado = estado;
 	}
 
-	public List<Producto> getProductos() {
-		return productos;
+	public Integer getCategoriaId() {
+		return categoriaId;
 	}
 
-	public void setProductos(List<Producto> productos) {
-		this.productos = productos;
+	public void setCategoriaId(Integer categoriaId) {
+		this.categoriaId = categoriaId;
 	}
 }

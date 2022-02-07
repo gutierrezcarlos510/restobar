@@ -1,0 +1,322 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form id="formulario" method="post" action="../producto/guardar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Adicionar Plato</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipo de Plato</label>
+                                        <input type="hidden" name="tipoGrupo" value="3" />
+                                        <input type="hidden" name="unidadPorCaja" value="1" />
+                                        <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Precio al p&uacute;blico</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                            <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <input type="file" id="file-add" class="file" name="imgProducto" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="formularioModificar" method="post" action="../producto/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade" data-backdrop="static" >
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modificar Plato</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" />
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="tipoGrupo" value="3" />
+                                        <input type="hidden" name="unidadPorCaja" value="1" />
+                                        <label>Tipo de Plato</label>
+                                        <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Precio al p&uacute;blico</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                            <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <img id="imgActual" src="#" class="img-thumbnail" alt="">
+                                        </div>
+                                        <div class="panel-footer">
+                                            <h6 class="text-center">Imagen Actual</h6>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="file" id="file-mod" class="file" name="imgProducto" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" id="btnModificarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3">
+                <h1><span class="fa  fa-ellipsis-v"></span> Platos </h1>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2">
+                <button class="btn btn-block btn-success" id="btnImprimirInventario"><i class="fa fa-print"></i> Imprimir</button>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3">
+                <div class="btn-group btn-group-justified padding-top-sm">
+                    <label class="btn btn-primary active estadoRadio"> <input
+                            type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                    </label> <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos"> <input
+                        type="radio" name="estado" value="false"> Inactivos
+                </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="all">C&oacute;digo</th>
+                    <th class="all">Nombre</th>
+                    <th class="all">Tipo</th>
+                    <th class="none">Precio de Venta al p&uacute;blico</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $('#file-add').fileinput({
+            theme: 'fas',
+            language: 'es',
+            uploadUrl: '#',
+            showUpload: false,
+            allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+            maxImageWidth: 200,
+            maxImageHeight: 150,
+            resizePreference: 'height',
+            maxFileCount: 1,
+            resizeImage: true
+        });
+        $('#file-mod').fileinput({
+            theme: 'fas',
+            language: 'es',
+            uploadUrl: '#',
+            showUpload: false,
+            allowedFileExtensions: ["jpg", "jpeg", "png", "gif"],
+            maxImageWidth: 200,
+            maxImageHeight: 150,
+            resizePreference: 'height',
+            maxFileCount: 1,
+            resizeImage: true
+        });
+        $('.select-chosen').chosen({
+            no_results_text: "No se encuentra:",
+            width: '100%'
+        });
+        $('#btnImprimirInventario').click(function() {
+            $("#frameReportes").attr("src", "../producto/verInventario");
+            $("#reportes").modal('show');
+        })
+        var tablaPlato = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    $('#formulario')[0].reset();
+                    $('#formulario').data('formValidation').resetForm();
+                    $('.select-chosen').val('').trigger('chosen:updated');
+                    $('#modalAdicionar').modal('show');
+                }
+            }],
+            "ajax": {
+                "type": "POST",
+                "url": "../producto/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                    d.grupo = 3;
+                }
+            },
+            "columnDefs":[
+            	{targets: [0],className:'text-center'},
+            	{targets: [4],className:'text-right'}],
+            "ordering":true,
+            "order":[[0,'desc']],
+            "columns": [{
+                "data": "id", "name":"id"
+            }, {
+                "data": "nombre", "name":"nombre"
+            }, {
+                "data": "xtipo", "name":"xtipo"
+            }, {
+                "data": "pvUnit", "name":"pv_unit"
+            }, {
+                "data": "id", "name":"id"
+            }],
+            "createdRow": function(row, data, index) {
+                if (data.estado) {
+                    $('td', row).eq(4).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                } else
+                    $('td', row).eq(4).html('<button class="btn btn-sm btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+            },
+            "drawCallback": function(settings) {
+                $('.eliminar').click(function() {
+                    let obj = tablaPlato.row($(this).closest('tr')).data();
+                	alertEliminacion("Eliminacion de Plato", ("Cod. plato: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+        				jQuery.post('../producto/eliminar?cod_pro='+obj.cod_pro, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de eliminacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.activar').click(function() {
+                	let obj = tablaPlato.row($(this).closest('tr')).data();
+                	alertAdicion("Activacion de Plato", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+        				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
+        					if(resp.status){
+        						$('#tabla').dataTable().fnDraw('page');
+        						mostrarMensaje('success', resp.msg);
+        					}else{
+        						modalAlert('Error de activacion', resp.msg,'error');
+        					}
+        				});
+        			});
+                });
+                $('.modificar').click(function() {
+                	let obj = tablaPlato.row($(this).closest('tr')).data();
+                    $('#formularioModificar').data('formValidation').resetForm();
+                    $('#formularioModificar')[0].reset();
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#tipoId2').val(obj.tipoId).trigger('chosen:updated');
+                    $('#imgActual').attr('src','/producto/'+obj.foto);
+                    $('#modalModificar').modal('show');
+                });
+                $('.imprimir').click(function() {
+                    $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            },
+            "initComplete": function(settings, json){
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e) {
+                    if(e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw();
+        });
+        $('.grupoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw();
+        });
+        $('#formularioModificar').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let $form = $(e.target);
+            let formData = new FormData(document.getElementById("formularioModificar"));
+            $.ajax({
+                url: $form.attr("action"), type: "post", dataType: "json", data: formData, cache: false, contentType: false, processData: false
+            }).done(function(result) {
+                finishTransaction(result, function(){
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw();
+                })
+            });
+        });
+        $('#formulario').formValidation({
+            excluded: [':disabled']
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let $form = $(e.target);
+            let formData = new FormData(document.getElementById("formulario"));
+            $.ajax({
+                url: $form.attr("action"), type: "post", dataType: "json", data: formData, cache: false, contentType: false, processData: false
+            }).done(function(result) {
+                finishTransaction(result, function(){
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw();
+                })
+            });
+        });
+    });
+</script>
+</section>

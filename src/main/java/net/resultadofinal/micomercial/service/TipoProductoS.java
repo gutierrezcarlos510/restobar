@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface TipoProductoS {
+
 	DataTableResults<TipoProducto> listado(HttpServletRequest request, boolean estado);
-	List<TipoProducto> listAll();
+	List<TipoProducto> listAll(Integer tipo);
 	TipoProducto obtener(Integer cod_tippro);
 	DataResponse adicionar(TipoProducto t);
 	DataResponse modificar(TipoProducto t);

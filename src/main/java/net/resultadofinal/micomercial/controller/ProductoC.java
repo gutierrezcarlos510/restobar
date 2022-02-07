@@ -38,11 +38,28 @@ public class ProductoC {
 	private DataSource datasource;
 	private static final Logger logger = LoggerFactory.getLogger(ProductoC.class);
 	private static final String ENTITY = "producto";
+
 	@RequestMapping("gestion")
 	public String gestion(Model model){
-		model.addAttribute("tipos",tipoproductoS.listAll());
+		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
 		return "producto/gestion";
+	}
+	@RequestMapping("gestionInsumos")
+	public String gestionInsumos(Model model){
+		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.INSUMO));
+		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		return "producto/gestion-insumos";
+	}
+	@RequestMapping("gestionPlatos")
+	public String gestionPlatos(Model model){
+		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.PLATO));
+		return "producto/gestion-platos";
+	}
+	@RequestMapping("gestionBebidasPreparadas")
+	public String gestionBebidasPreparadas(Model model){
+		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA_PREPARADA));
+		return "producto/gestion-bebidas-preparadas";
 	}
 	@RequestMapping("gestionInventario")
 	public String gestionInventario(){
@@ -80,8 +97,23 @@ public class ProductoC {
 	}
 	@RequestMapping("actualizar")
 	public @ResponseBody
-    DataResponse actualizar(Producto p){
+    DataResponse actualizar(Producto p, MultipartFile imgProducto){
 		try {
+			String nombreArchivo = "";
+			if (Utils.existeArchivo(imgProducto)) {
+				Producto productoDb = productoS.obtener(p.getId());
+				if(!productoDb.getFoto().equals(MyConstant.PRODUCTO_DEFAULT)) {
+					Utils.eliminarArchivo(MyConstant.Archivo.RUTA_PRODUCTO, productoDb.getFoto());
+				}
+				nombreArchivo = MyConstant.FORMAT_IMG_PRODUCTO + p.getId() + Utils.getExtensionFile(imgProducto);
+				Utils.eliminarArchivo(MyConstant.Archivo.RUTA_PRODUCTO, nombreArchivo);
+				if (!Utils.SubirArchivo(imgProducto, MyConstant.Archivo.RUTA_PRODUCTO, nombreArchivo)) {
+					nombreArchivo = MyConstant.PRODUCTO_DEFAULT;
+				}
+			} else {
+				nombreArchivo = MyConstant.PRODUCTO_DEFAULT;
+			}
+			p.setFoto(nombreArchivo);
 			return productoS.modificar(p);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());

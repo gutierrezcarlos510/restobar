@@ -90,10 +90,15 @@ public class UsuarioImpl extends DbConeccion implements UsuarioS {
 	}
 	public Persona iniciarSesion(String login, String password){
 		try {
-			Persona persona = db.queryForObject("select * from persona_iniciar_sesion(?,?)",new BeanPropertyRowMapper<Persona>(Persona.class),login,password);
-			persona.setRoles(rolS.listarPorUsuario(persona.getCod_per()));
-			persona.setDato(datoS.obtener(persona.getCod_per()));
-			return persona;
+			List<Persona> lista = db.query("select * from persona_iniciar_sesion(?,?)",new BeanPropertyRowMapper<Persona>(Persona.class),login,password);
+			if(UtilClass.isNotNullEmpty(lista)) {
+				Persona persona = lista.get(0);
+				persona.setRoles(rolS.listarPorUsuario(persona.getCod_per()));
+				persona.setDato(datoS.obtener(persona.getCod_per()));
+				return persona;
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			logger.error("Error al iniciar sesion:"+e.toString());
 			return null;

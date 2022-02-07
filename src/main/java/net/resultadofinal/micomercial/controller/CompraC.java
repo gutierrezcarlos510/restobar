@@ -86,7 +86,7 @@ public class CompraC {
 	@RequestMapping("adicionar")
 	public String adicionar(Model model,Boolean isMobil) {
 		model.addAttribute("proveedores", proveedorS.listAll());
-		model.addAttribute("tipos", tipoProductoS.listAll());
+		model.addAttribute("tipos", tipoProductoS.listAll(-1));
 		model.addAttribute("actual", new Fechas().obtenerFechaActual("dd/MM/yyyy"));
 		if(isMobil!=null && isMobil){
 			return "compra/adicionar-mobil";

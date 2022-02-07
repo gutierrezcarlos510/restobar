@@ -1,9 +1,8 @@
 package net.resultadofinal.micomercial.controller;
 
-import net.resultadofinal.micomercial.model.TipoProducto;
+import net.resultadofinal.micomercial.model.Categoria;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.CategoriaS;
-import net.resultadofinal.micomercial.service.TipoProductoS;
 import net.resultadofinal.micomercial.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,24 +13,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/tipoproducto/*")
-public class TipoProductoC {
+@RequestMapping("/categoria/*")
+public class CategoriaC {
 	
 	@Autowired
-	private TipoProductoS tipoS;
-	@Autowired
 	private CategoriaS categoriaS;
-
 	@RequestMapping("gestion")
-	public String gestion(Model model){
-		model.addAttribute("categorias", categoriaS.listAll());
-		return "tipoproducto/gestion";
+	public String gestion(){
+		return "categoria/gestion";
 	}
 	@RequestMapping("listar")
 	public @ResponseBody
-	DataTableResults<TipoProducto> listar(HttpServletRequest request, boolean estado) {
+	DataTableResults<Categoria> listar(HttpServletRequest request, boolean estado) {
 		try {
-			return tipoS.listado(request, estado);
+			return categoriaS.listado(request, estado);
 		} catch (Exception ex) {
 			System.out.println("error lista sucursales: "+ex.toString());
 			return null;
@@ -39,18 +34,18 @@ public class TipoProductoC {
 	}
 	@RequestMapping("guardar")
 	public @ResponseBody
-    DataResponse guardar(TipoProducto obj){
+    DataResponse guardar(Categoria obj){
 		try {
-			return tipoS.adicionar(obj);
+			return categoriaS.adicionar(obj);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
 	@RequestMapping("actualizar")
 	public @ResponseBody
-    DataResponse actualizar(TipoProducto obj){
+    DataResponse actualizar(Categoria obj){
 		try {
-			return tipoS.modificar(obj);
+			return categoriaS.modificar(obj);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -59,7 +54,7 @@ public class TipoProductoC {
 	public @ResponseBody
     DataResponse eliminar(Integer id){
 		try {
-			return tipoS.darEstado(id,false);
+			return categoriaS.darEstado(id,false);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -68,7 +63,7 @@ public class TipoProductoC {
 	public @ResponseBody
     DataResponse activar(HttpServletRequest request, Model model, Integer id){
 		try {
-			return tipoS.darEstado(id,true);
+			return categoriaS.darEstado(id,true);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -77,7 +72,7 @@ public class TipoProductoC {
 	public @ResponseBody
     DataResponse obtener(Integer id){
 		try {
-			TipoProducto obj = tipoS.obtener(id);
+			Categoria obj = categoriaS.obtener(id);
 			boolean exist = obj != null;
 			return new DataResponse(exist, obj, "Se realizo con exito la consulta");
 		} catch (Exception e) {

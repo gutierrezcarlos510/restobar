@@ -1,6 +1,6 @@
 package net.resultadofinal.micomercial.service;
 
-import net.resultadofinal.micomercial.model.TipoProducto;
+import net.resultadofinal.micomercial.model.Categoria;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -17,76 +17,80 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Service
-public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
-	
+public class CategoriaImpl extends DbConeccion implements CategoriaS {
+
 	private JdbcTemplate db;
 	@Autowired
-	public TipoProductoImpl(DataSource dataSource) {
+	public CategoriaImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
 	}
-	private static final Logger logger = LoggerFactory.getLogger(TipoProductoImpl.class);
-	private static final String ENTITY = "tipo de producto";
-
+	private static final Logger logger = LoggerFactory.getLogger(CategoriaImpl.class);
+	private static final String ENTITY = "categoria";
 	private String sqlString;
 
 	@Autowired
 	private UtilDataTableS utilDataTableS;
-	public DataTableResults<TipoProducto> listado(HttpServletRequest request, boolean estado) {
+	@Override
+	public DataTableResults<Categoria> listado(HttpServletRequest request, boolean estado) {
 		try {
-			SqlBuilder sqlBuilder = new SqlBuilder("tipo_producto tp");
-			sqlBuilder.setSelect("tp.*,c.nombre as xcategoria");
-			sqlBuilder.addJoin("categoria c on c.id = tp.categoria_id");
-			sqlBuilder.setWhere("tp.estado=:xestado");
+			SqlBuilder sqlBuilder = new SqlBuilder("categoria c");
+			sqlBuilder.setSelect("c.*,case c.tipo when 1 then 'Bebida' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida en preparacion' end xtipo");
+			sqlBuilder.setWhere("c.estado=:xestado");
 			sqlBuilder.addParameter("xestado",estado);
-			return utilDataTableS.list(request, TipoProducto.class, sqlBuilder);
+			return utilDataTableS.list(request, Categoria.class, sqlBuilder);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	public List<TipoProducto> listAll(Integer tipo) {
+	@Override
+	public List<Categoria> listAll() {
 		try {
-			sqlString = "select tp.* from tipo_producto tp inner join categoria c on c.id = tp.categoria_id and (c.tipo = ? or ?=0) where tp.estado = true;";
-			return db.query(sqlString, BeanPropertyRowMapper.newInstance(TipoProducto.class), tipo, tipo);
+			sqlString = "select c.*,case c.tipo when 1 then 'Bebida' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida en preparacion' end xtipo from categoria c where c.estado = true;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Categoria.class));
 		} catch(Exception ex) {
 			return null;
 		}
 	}
-	public TipoProducto obtener(Integer id){
+	@Override
+	public Categoria obtener(Integer id){
 		try {
-			List<TipoProducto> lista = db.query("select tp.*,c.nombre as xcategoria from tipo_producto tp inner join categoria c on c.id = tp.categoria_id where tp.id=?", BeanPropertyRowMapper.newInstance(TipoProducto.class), id);
+			List<Categoria> lista = db.query("select c.*,case c.tipo when 1 then 'Bebida' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida en preparacion' end xtipo from categoria c where c,id=?", BeanPropertyRowMapper.newInstance(Categoria.class), id);
 			return UtilClass.getFirst(lista);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;
 		}
 	}
+	@Override
 	@Transactional
-	public DataResponse adicionar(TipoProducto obj){
+	public DataResponse adicionar(Categoria obj){
 		try {
-			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from tipo_producto", Integer.class);
-			sqlString = "insert into tipo_producto(id,nombre,descripcion,estado,categoria_id) values(?,?,?,true,?)";
-			boolean isSave = db.update(sqlString, id, obj.getNombre(), obj.getDescripcion(), obj.getCategoriaId()) > 0;
+			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from categoria", Integer.class);
+			sqlString = "insert into categoria(id,nombre,estado,tipo) values(?,?,true,?)";
+			boolean isSave = db.update(sqlString, id, obj.getNombre(),obj.getTipo()) > 0;
 			return new DataResponse(isSave, isSave ? id : null, Utils.getSuccessFailedAdd(ENTITY, isSave));
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorAdd(ENTITY, e.getMessage()));
 		}
 	}
+	@Override
 	@Transactional
-	public DataResponse modificar(TipoProducto t){
+	public DataResponse modificar(Categoria t){
 		try {
-			sqlString = "update tipo_producto set nombre=?, descripcion=?,categoria_id=? where id=?";
-			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getDescripcion(), t.getCategoriaId(), t.getId()) > 0;
+			sqlString = "update categoria set nombre=?,tipo=? where id=?";
+			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getTipo(), t.getId()) > 0;
 			return new DataResponse(isUpdate, Utils.getSuccessFailedMod(ENTITY, isUpdate));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorMod(ENTITY, e.getMessage()));
 		}
 	}
+	@Override
 	@Transactional
-	public DataResponse darEstado(Integer id,boolean est){
+	public DataResponse darEstado(Integer id, boolean est){
 		try {
-			boolean isUpdate = db.update("update tipo_producto set estado = ? where id = ?;",est, id) > 0;
+			boolean isUpdate = db.update("update categoria set estado = ? where id = ?;",est, id) > 0;
 			if(est) {
 				return new DataResponse(isUpdate, Utils.getSuccessFailedAct(ENTITY, isUpdate));
 			} else {

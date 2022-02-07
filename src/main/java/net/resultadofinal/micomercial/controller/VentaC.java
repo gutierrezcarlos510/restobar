@@ -88,7 +88,7 @@ public class VentaC {
 	@RequestMapping("adicionar")
 	public String adicionar(Model model,Boolean isMobil){
 		model.addAttribute("clientes",clienteS.listAll());
-		model.addAttribute("tipos",tipoProductoS.listAll());
+		model.addAttribute("tipos",tipoProductoS.listAll(-1));
 		model.addAttribute("cuentas",cuentaContableS.listarBancos(true));
 		if(isMobil != null && isMobil){
 			return "venta/adicionar-mobil";
