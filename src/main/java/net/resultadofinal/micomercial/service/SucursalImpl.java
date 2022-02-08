@@ -3,6 +3,7 @@ package net.resultadofinal.micomercial.service;
 import net.resultadofinal.micomercial.model.*;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
+import net.resultadofinal.micomercial.util.DataResponse;
 import net.resultadofinal.micomercial.util.DbConeccion;
 import net.resultadofinal.micomercial.util.UtilDataTableS;
 import net.resultadofinal.micomercial.util.Utils;
@@ -59,19 +60,21 @@ public class SucursalImpl extends DbConeccion implements SucursalS {
 		}
 	}
 	@Transactional
-	public Integer adicionar(Sucursal s){
+	public DataResponse adicionar(Sucursal s){
 		try {
 			sqlString = "insert into sucursal(cod_suc,nombre,descripcion,telefono,direccion,estado,alias) values((select coalesce(max(cod_suc),0)+1 from sucursal),?,?,?,?,true,?);";
-			return db.queryForObject("select sucursal_adicionar(?,?)",Integer.class,s.getNombre(),s.getDescripcion(),s.getTelefono(), s.getDireccion(), s.getAlias());
+			boolean save = db.update(sqlString,s.getNombre(),s.getDescripcion(),s.getTelefono(), s.getDireccion(), s.getAlias()) > 0;
+			return Utils.getResponseDataAdd(ENTITY, save);
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorAdd(ENTITY, ""));
 		}
 	}
 	@Transactional
-	public Boolean modificar(Sucursal s){
+	public DataResponse modificar(Sucursal s){
 		try {
-			return db.queryForObject("update sucursal set nombre=?,descripcion=?,telefono=?,direccion=?,alias=? where cod_suc=?;",Boolean.class,s.getNombre(),s.getDescripcion(),s.getTelefono(),s.getDireccion(),s.getAlias(),s.getCod_suc());
+			boolean update = db.update("update sucursal set nombre=?,descripcion=?,telefono=?,direccion=?,alias=? where cod_suc=?;",s.getNombre(),s.getDescripcion(),s.getTelefono(),s.getDireccion(),s.getAlias(),s.getCod_suc()) > 0;
+			return Utils.getResponseDataMod(ENTITY, update);
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorMod(ENTITY, ""));

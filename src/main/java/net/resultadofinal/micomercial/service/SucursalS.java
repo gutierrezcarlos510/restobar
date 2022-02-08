@@ -5,6 +5,7 @@ import net.resultadofinal.micomercial.model.GeneralWrap;
 import net.resultadofinal.micomercial.model.NotificacionSucursalWrap;
 import net.resultadofinal.micomercial.model.Sucursal;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
+import net.resultadofinal.micomercial.util.DataResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.Map;
 
 public interface SucursalS {
 	Sucursal obtener(Integer cod_suc);
-	Integer adicionar(Sucursal s);
-	Boolean modificar(Sucursal s);
+	DataResponse adicionar(Sucursal s);
+	DataResponse modificar(Sucursal s);
 	Boolean darEstado(Integer cod_suc,Boolean estado);
 	Sucursal getSucursalNow(List<GeneralWrap> generalWrapList, General general);
 	List<Sucursal> obtenerPorUsuario(Long codUsu);

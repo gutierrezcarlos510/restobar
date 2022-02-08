@@ -44,27 +44,25 @@ public class SucursalC {
 
 	@RequestMapping("guardar")
 	public @ResponseBody
-    DataResponse guardar(HttpServletRequest request, Model model, Sucursal s)throws IOException{
+    DataResponse guardar( Sucursal s)throws IOException{
 		try {
-			boolean status =  sucursalS.adicionar(s)>0;
-			return new DataResponse(status, Utils.getSuccessFailedAdd(ENTITY, status));
+			return sucursalS.adicionar(s);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
 	@RequestMapping("actualizar")
 	public @ResponseBody
-    DataResponse actualizar(HttpServletRequest request, Model model, Sucursal s)throws IOException{
+    DataResponse actualizar(Sucursal s)throws IOException{
 		try {
-			boolean status =  sucursalS.modificar(s);
-			return new DataResponse(status, Utils.getSuccessFailedMod(ENTITY, status));
+			return sucursalS.modificar(s);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
 	@RequestMapping("eliminar")
 	public @ResponseBody
-    DataResponse eliminar(HttpServletRequest request, Model model, Integer cod_suc)throws IOException{
+    DataResponse eliminar(Integer cod_suc)throws IOException{
 		try {
 			boolean status =  sucursalS.darEstado(cod_suc, false);
 			return new DataResponse(status, Utils.getSuccessFailedEli(ENTITY, status));

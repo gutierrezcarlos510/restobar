@@ -451,7 +451,7 @@
             alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status == true) {
+                    if (result.status) {
                         xform.data('formValidation').resetForm();
                         $('.modal').modal('hide');
                         $('#tabla').dataTable().fnDraw('page');
