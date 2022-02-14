@@ -113,7 +113,66 @@
                 </div>
             </div>
         </form>
+        <form id="formularioIngredientes" method="post" action="../producto/adicionarIngredientes"  data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalIngredientes" class="modal fade" data-backdrop="static" >
+                <div class="modal-dialog" style="width: 90%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Ingredientes del plato</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="productoId" />
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Nombre del Plato</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <input type="text" class="form-control text-capitalize w3-xlarge" name="nombre" data-fv-notempty="true" readonly/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <table id="tablaInsumo" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th class="all">C&oacute;digo</th>
+                                                <th class="all">Nombre</th>
+                                                <th class="all">Tipo</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div>
+                                        <table class="w3-table-all" id="tablaIngredientes">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Ingrediente</th>
+                                                <th>Tipo</th>
+                                                <th>Cantidad</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <!-- /.modal -->
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-3">
@@ -223,7 +282,16 @@
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(4).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    let buttons = '<div class="btn-group btn-group-xs">';
+                    if(data.hasIngredients) {
+                        buttons += '<button class="btn btn-success btn-sm detalles"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-list"></i><br>ingredientes</button>';
+                    } else {
+                        buttons += '<button class="btn w3-red btn-sm detalles"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-list"></i><br>ingredientes</button>';
+                    }
+                    buttons += '<button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar</button>';
+                    buttons += '<button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+                    buttons += '</div>';
+                    $('td', row).eq(4).html(buttons);
                 } else
                     $('td', row).eq(4).html('<button class="btn btn-sm btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
@@ -263,6 +331,51 @@
                     $('#imgActual').attr('src','/producto/'+obj.foto);
                     $('#modalModificar').modal('show');
                 });
+                $('.detalles').click(function() {
+                    let obj = tablaPlato.row($(this).closest('tr')).data();
+                    $('#formularioIngredientes').data('formValidation').resetForm();
+                    $('#formularioIngredientes')[0].reset();
+                    obj.productoId = obj.id;
+                    $('#formularioIngredientes').loadJSON(obj);
+                    $('#tablaIngredientes > tbody').html('');
+                    $.post('../producto/obtenerIngredientes',{'productoId': obj.id}, function(resp){
+                        if(resp.status) {
+                            if(resp.data && resp.data.length > 0) {
+                                resp.data.forEach(it => {
+                                    let row = $('<tr></tr>');
+                                    $('<td>'+it.productoId+' <input type="hidden" name="productos" value="'+it.ingredienteId+'" /><input type="hidden" name="id" value="'+it.id+'"></td>').appendTo(row);
+                                    $('<td>'+it.xproducto+'</td>').appendTo(row);
+                                    $('<td>'+it.xtipo+'</td>').appendTo(row);
+                                    $('<td><input type="text" class="form-control form-control-sm" style="width: 40px;" name="cantidades" value="'+it.cantidad+'" /></td>').appendTo(row);
+                                    $('<td><button class="btn btn-sm btn-danger eliminarDetalle" type="button" data-id="'+it.id+'" data-productoId="'+it.productoId+'"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                                    $('.eliminarDetalle').off('click');
+                                    $('.eliminarDetalle').off('click', function(){
+                                        let tr = $(this).closest('tr');
+                                        let req = {
+                                            'productoId' : $(this).data('productoId'),
+                                            'id' : $(this).data('id')
+                                        }
+                                        $('../producto/eliminarIngrediente', req, function(){
+                                            if(resp.status) {
+                                                tr.fadeOut(100, function() {
+                                                    tr.remove();
+                                                });
+                                            } else {
+                                                modalAlert('Error de transaccion', resp.msg, 'error');
+                                            }
+                                        })
+
+                                    });
+                                    $('#tablaIngredientes > tbody:last').append(row);
+                                });
+                            }
+                            $('#modalIngredientes').modal('show');
+                        } else {
+                            modalAlert('Error de transaccion', resp.msg, 'error');
+                        }
+                    })
+
+                });
                 $('.imprimir').click(function() {
                     $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
                     $("#reportes").modal('show');
@@ -277,6 +390,65 @@
                 $('#tabla_filter input').bind('keyup', function(e) {
                     if(e.keyCode == 13) {
                         $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        var tablaInsumo = $('#tablaInsumo').DataTable({
+            buttons: [],
+            "ajax": {
+                "type": "POST",
+                "url": "../producto/listar",
+                "data": function(d) {
+                    d.estado = true;
+                    d.grupo = 2;
+                }
+            },
+            "columnDefs":[
+                {targets: [0],className:'text-center'},
+                {targets: [3],className:'text-right'}],
+            "ordering":true,
+            "order":[[0,'desc']],
+            "columns": [{
+                "data": "id", "name":"id"
+            }, {
+                "data": "nombre", "name":"nombre"
+            }, {
+                "data": "xtipo", "name":"xtipo"
+            }, {
+                "data": "id", "name":"id"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(3).html('<button class="btn btn-sm btn-primary seleccionar" type="button" data-toggle="tooltip" data-placement="top" title="seleccionar"><i class="glyphicon glyphicon-plus-sign"></i><br/>seleccionar</button>');
+            },
+            "drawCallback": function(settings) {
+                $('.seleccionar').click(function() {
+                    let obj = tablaInsumo.row($(this).closest('tr')).data();
+                    let row = $('<tr></tr>');
+                    $('<td>'+obj.id+' <input type="hidden" name="productos" value="'+obj.id+'" /></td>').appendTo(row);
+                    $('<td>'+obj.nombre+'</td>').appendTo(row);
+                    $('<td>'+obj.xtipo+'</td>').appendTo(row);
+                    $('<td><input type="text" class="form-control form-control-sm" style="width: 40px;" name="cantidades" value="1" /></td>').appendTo(row);
+                    $('<td><button class="btn btn-sm btn-danger eliminarDetalleNuevo" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                    $('.eliminarDetalleNuevo').off('click');
+                    $('.eliminarDetalleNuevo').off('click', function(){
+                        let tr = $(this).closest('tr');
+                        tr.fadeOut(100, function() {
+                            tr.remove();
+                        });
+                    });
+                    $('#tablaIngredientes > tbody:last').append(row);
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+            },
+            "initComplete": function(settings, json){
+                $('#tablaInsumo_filter input').unbind();
+                $('#tablaInsumo_filter input').bind('keyup', function(e) {
+                    if(e.keyCode == 13) {
+                        $('#tablaInsumo').DataTable().search(this.value).draw();
                     }
                 })
             }
@@ -316,6 +488,22 @@
                     $('#tabla').dataTable().fnDraw();
                 })
             });
+        });
+        $('#formularioEliminarDetalle, #formularioIngredientes').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let xform = $(e.target);
+            $.post(xform.attr('action'), xform.serialize(), function(result) {
+                if (result.status) {
+                    xform.data('formValidation').resetForm();
+                    $('.modal').modal('hide');
+                    $('#tabla').dataTable().fnDraw('page');
+                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
         });
     });
 </script>

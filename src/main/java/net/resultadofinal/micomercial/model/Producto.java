@@ -5,11 +5,37 @@ import java.math.BigDecimal;
 public class Producto {
 	private Long id;
 	private String nombre, foto;
-	private Integer tipoId, tipoGrupo;
+	private Integer tipoId, tipoGrupo, medidaId;
 	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento;
 	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
 	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra;
+	private String xmedida;
+	private Boolean hasIngredients;
+
+	public Boolean getHasIngredients() {
+		return hasIngredients;
+	}
+
+	public void setHasIngredients(Boolean hasIngredients) {
+		this.hasIngredients = hasIngredients;
+	}
+
+	public Integer getMedidaId() {
+		return medidaId;
+	}
+
+	public void setMedidaId(Integer medidaId) {
+		this.medidaId = medidaId;
+	}
+
+	public String getXmedida() {
+		return xmedida;
+	}
+
+	public void setXmedida(String xmedida) {
+		this.xmedida = xmedida;
+	}
 
 	public String getXtipoCompra() {
 		return xtipoCompra;

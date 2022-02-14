@@ -7,7 +7,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Adicionar Producto</h4>
+                            <h4 class="modal-title">Adicionar Bebida</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -25,6 +25,13 @@
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Medida para cantidad en inventario</label>
+                                        <select id="medidaId1" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -158,7 +165,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Modificar Producto</h4>
+                            <h4 class="modal-title">Modificar Bebida</h4>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" />
@@ -177,6 +184,13 @@
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Medida para cantidad en inventario</label>
+                                        <select id="medidaId2" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -319,7 +333,7 @@
         <!-- /.modal -->
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-3">
-                <h1><span class="fa  fa-ellipsis-v"></span> Productos </h1>
+                <h1><span class="fa  fa-ellipsis-v"></span> Bebidas </h1>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4">
 
@@ -357,6 +371,7 @@
                     <th class="none">Presentacion en cajas</th>
                     <th class="none">Tipo de Compra por defecto</th>
                     <th class="none">Grupo</th>
+                    <th class="none">Medida para inventario de cantidad</th>
                     <th class="all">Acciones</th>
                 </tr>
             </thead>
@@ -421,7 +436,7 @@
             },
             "columnDefs":[
             	{targets: [0],className:'text-center'},
-            	{targets: [15],className:'text-right'}],
+            	{targets: [16],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -455,13 +470,15 @@
             }, {
                 "data": "xgrupo", "name":"xgrupo"
             }, {
+                "data": "xmedida", "name":"xmedida"
+            }, {
                 "data": "id", "name":"id"
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(15).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    $('td', row).eq(16).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
                 } else
-                    $('td', row).eq(15).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                    $('td', row).eq(16).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
@@ -479,7 +496,7 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de Producto", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+                	alertAdicion("Activacion de bebida", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
         				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
@@ -496,8 +513,8 @@
                     $('#formularioModificar')[0].reset();
                     $('#formularioModificar').loadJSON(obj);
                     $('#tipoId2').val(obj.tipoId).trigger('chosen:updated');
-                    $('#tipoGrupo2').val(obj.tipoGrupo).trigger('chosen:updated');
                     $('#tipoCompra2').val(obj.tipoCompra).trigger('chosen:updated');
+                    $('#medidaId2').val(obj.medidaId).trigger('chosen:updated');
                     $('#presentacionUnidadId2').val(obj.presentacionUnidadId).trigger('chosen:updated');
                     $('#presentacionCajaId2').val(obj.presentacionCajaId).trigger('chosen:updated');
                     $('#imgActual').attr('src','/producto/'+obj.foto);
