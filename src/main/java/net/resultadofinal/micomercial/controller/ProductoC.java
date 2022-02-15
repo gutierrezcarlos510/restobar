@@ -1,7 +1,9 @@
 package net.resultadofinal.micomercial.controller;
 
+import net.resultadofinal.micomercial.model.Ingrediente;
 import net.resultadofinal.micomercial.model.Producto;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
+import net.resultadofinal.micomercial.service.CaracteristicaS;
 import net.resultadofinal.micomercial.service.PresentacionS;
 import net.resultadofinal.micomercial.service.ProductoS;
 import net.resultadofinal.micomercial.service.TipoProductoS;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -35,6 +38,8 @@ public class ProductoC {
 	@Autowired
 	private PresentacionS presentacionS;
 	@Autowired
+	private CaracteristicaS caracteristicaS;
+	@Autowired
 	private DataSource datasource;
 	private static final Logger logger = LoggerFactory.getLogger(ProductoC.class);
 	private static final String ENTITY = "producto";
@@ -43,6 +48,7 @@ public class ProductoC {
 	public String gestion(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion";
 	}
 	@RequestMapping("gestionInsumos")
@@ -146,7 +152,6 @@ public class ProductoC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
-
 	@RequestMapping("verCatalogo")
 	public void verInventario(HttpServletResponse response){
 		try {
@@ -158,6 +163,42 @@ public class ProductoC {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("error al inventario="+e.toString());
+		}
+	}
+	@RequestMapping("obtenerIngredientes")
+	public @ResponseBody
+	DataResponse obtenerIngredientes(Long productoId){
+		try {
+			return new DataResponse(true, productoS.obtenerIngredientesPorProducto(productoId), Utils.successGet(ENTITY));
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("adicionarIngredientes")
+	public @ResponseBody
+	DataResponse adicionarIngredientes(Long productoId, Long ingredientes[], Integer cantidades[]){
+		try {
+			return productoS.adicionarIngredientes(productoId, ingredientes, cantidades);
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("modificarIngredientes")
+	public @ResponseBody
+	DataResponse modificarIngredientes(Long productoId, Long ingredientes[], Integer cantidades[]){
+		try {
+			return productoS.modificarIngredientes(productoId, ingredientes, cantidades);
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("eliminarIngrediente")
+	public @ResponseBody
+	DataResponse eliminarIngrediente(Long productoId, Short id){
+		try {
+			return productoS.eliminarIngrediente(productoId, id);
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
 		}
 	}
 }
