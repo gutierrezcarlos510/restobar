@@ -102,7 +102,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	}
 	@Transactional
 	public void adicionarIngrediente(Short id, Long productoId, Integer cantidad,Long ingrediente) {
-		db.update("insert into ingrediente(id,productoId,cantidad,ingrediente_id) values(?,?,?,?);", id, productoId, cantidad, ingrediente);
+		db.update("insert into ingrediente(id,producto_id,cantidad,ingrediente_id) values(?,?,?,?);", id, productoId, cantidad, ingrediente);
 	}
 	@Transactional
 	public DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[]) {
@@ -136,7 +136,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	public List<Ingrediente> obtenerIngredientesPorProducto(Long productoId) {
 		try {
 			sqlString = "select i.*,p.nombre xproducto,tp.nombre xtipo, c.alias xmedida from ingrediente i " +
-					"inner join producto p on p.id = i.producto_id inner join caracteristica c on c.id= p.medida_id " +
+					"inner join producto p on p.id = i.ingrediente_id inner join caracteristica c on c.id= p.medida_id " +
 					"inner join tipo_producto tp on tp.id = p.tipo_id  where i.producto_id = ? ";
 			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Ingrediente.class), productoId);
 		} catch (Exception e) {

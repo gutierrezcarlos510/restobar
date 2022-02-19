@@ -176,9 +176,9 @@ public class ProductoC {
 	}
 	@RequestMapping("adicionarIngredientes")
 	public @ResponseBody
-	DataResponse adicionarIngredientes(Long productoId, Long ingredientes[], Integer cantidades[]){
+	DataResponse adicionarIngredientes(Long productoId, Long productos[], Integer cantidades[]){
 		try {
-			return productoS.adicionarIngredientes(productoId, ingredientes, cantidades);
+			return productoS.adicionarIngredientes(productoId, productos, cantidades);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
