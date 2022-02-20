@@ -15,8 +15,8 @@ public interface ProductoS {
 	DataResponse adicionar(Producto p);
 	DataResponse modificar(Producto p);
 	DataResponse darEstado(Long id,boolean est);
-	DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[]);
-	DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[]);
+	DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[],Integer cantidadPlatos);
+	DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[],Integer cantidadPlatos);
 	DataResponse eliminarIngrediente(Long productoId, Short id);
 	List<Ingrediente> obtenerIngredientesPorProducto(Long productoId);
 }

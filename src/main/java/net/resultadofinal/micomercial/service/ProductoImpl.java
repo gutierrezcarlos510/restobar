@@ -105,22 +105,25 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 		db.update("insert into ingrediente(id,producto_id,cantidad,ingrediente_id) values(?,?,?,?);", id, productoId, cantidad, ingrediente);
 	}
 	@Transactional
-	public DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[]) {
+	public DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[], Integer cantidadPlatos) {
 		try {
+			db.update("delete from ingrediente where producto_id = ?", producto);
 			if(ingredientes != null && ingredientes.length > 0) {
 				for (short i = 1; i <= ingredientes.length; i++) {
 					adicionarIngrediente(i, producto, cantidades[i-1],ingredientes[i-1]);
 				}
+				db.update("update producto set cantidad_platos = ? where id = ?", cantidadPlatos, producto);
 			}
 			return new DataResponse(true, Utils.successGet("Ingredientes"));
 		} catch (Exception ex) {
 			throw new RuntimeException(Utils.errorAdd("Ingrediente", ex.getMessage()));
 		}
 	}
-	public DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[]) {
+	@Transactional
+	public DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[], Integer cantidadPlatos) {
 		try {
 			db.update("delete from ingrediente where producto_id = ?", producto);
-			return adicionarIngredientes(producto, ingredientes, cantidades);
+			return adicionarIngredientes(producto, ingredientes, cantidades, cantidadPlatos);
 		} catch (Exception e) {
 			throw new RuntimeException(Utils.errorMod("Ingrediente", e.getMessage()));
 		}

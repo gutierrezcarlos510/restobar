@@ -23,6 +23,7 @@
                                         <label>Tipo de Plato</label>
                                         <input type="hidden" name="tipoGrupo" value="3" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
+                                        <input type="hidden" id="medidaId" name="medidaId" value="0" />
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
@@ -53,7 +54,7 @@
         </form>
         <form id="formularioModificar" method="post" action="../producto/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalModificar" class="modal fade" data-backdrop="static" >
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog" style="width: 80%">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -61,8 +62,11 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" />
+                            <input type="hidden" name="medidaId" />
+                            <input type="hidden" name="tipoGrupo" value="3" />
+                            <input type="hidden" name="unidadPorCaja" value="1" />
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Nombre</label>
                                         <div class="input-group">
@@ -71,8 +75,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" name="tipoGrupo" value="3" />
-                                        <input type="hidden" name="unidadPorCaja" value="1" />
                                         <label>Tipo de Plato</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
@@ -96,9 +98,8 @@
                                             <h6 class="text-center">Imagen Actual</h6>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="form-group">
                                         <input type="file" id="file-mod" class="file" name="imgProducto" />
                                     </div>
@@ -148,6 +149,13 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div>
+                                        <h3>RECETA</h3>
+                                        <div class="form-group row">
+                                            <label class="col-md-9 text-right">Cantidad de platos disponibles con la receta:</label>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                            </div>
+                                        </div>
                                         <table class="w3-table-all" id="tablaIngredientes">
                                             <thead>
                                             <tr>
@@ -217,7 +225,6 @@
         listaIngrediente: []
     }
     function existeIngrediente(id){
-        console.log('ingresaa')
         let existeItem = false;
         if(dataResp.listaIngrediente && dataResp.listaIngrediente.length > 0) {
             dataResp.listaIngrediente.forEach(it => {
@@ -268,6 +275,7 @@
                 action: function(e, dt, node, config) {
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
+                    $('#medidaId').val(0);
                     $('.select-chosen').val('').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
@@ -370,7 +378,6 @@
                                     $('#tablaIngredientes > tbody:last').append(row);
                                     $('.eliminarDetalle').off('click');
                                     $('.eliminarDetalle').on('click', function(){
-                                        console.log('xentra');
                                         let productoId = $(this).data('productoid');
                                         let tr = $(this).closest('tr');
                                         productoId = parseInt(productoId);
@@ -397,7 +404,6 @@
                             modalAlert('Error de transaccion', resp.msg, 'error');
                         }
                     })
-
                 });
                 $('.imprimir').click(function() {
                     $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
@@ -459,12 +465,12 @@
                     $('<td>'+obj.xtipo+'</td>').appendTo(row);
                     $('<td><input type="text" class="form-control input-xs" style="width: 40px;" name="cantidades" value="1" /></td>').appendTo(row);
                     $('<td>'+obj.xmedida+'</td>').appendTo(row);
-                    $('<td><button class="btn btn-xs btn-danger eliminarDetalleNuevo" data-id="'+obj.id+'" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                    $('<td><button class="btn btn-xs btn-danger eliminarDetalleNuevo" data-productoid="'+obj.id+'" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
                     $('#tablaIngredientes > tbody:last').append(row);
                     $('.eliminarDetalleNuevo').off('click');
                     $('.eliminarDetalleNuevo').on('click', function(){
                         let tr = $(this).closest('tr');
-                        let xid = parseInt($(this).data('id'));
+                        let xid = parseInt($(this).data('productoid'));
                         dataResp.listaIngrediente = dataResp.listaIngrediente.filter(it=> it.id !== xid);
                         tr.fadeOut(100, function() {
                             tr.remove();
@@ -534,7 +540,7 @@
                     $('#tabla').dataTable().fnDraw('page');
                     mostrarMensaje('info', 'Se realizo con exito la Transaccion');
                 } else {
-                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    modalAlert('Error de transaccion', result.msg, 'error');
                 }
             }, 'json');
         });

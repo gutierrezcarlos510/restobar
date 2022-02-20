@@ -5,13 +5,21 @@ import java.math.BigDecimal;
 public class Producto {
 	private Long id;
 	private String nombre, foto;
-	private Integer tipoId, tipoGrupo, medidaId;
+	private Integer tipoId, tipoGrupo, medidaId, cantidadPlatos;
 	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento;
 	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
 	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra;
 	private String xmedida;
 	private Boolean hasIngredients;
+
+	public Integer getCantidadPlatos() {
+		return cantidadPlatos;
+	}
+
+	public void setCantidadPlatos(Integer cantidadPlatos) {
+		this.cantidadPlatos = cantidadPlatos;
+	}
 
 	public Boolean getHasIngredients() {
 		return hasIngredients;
