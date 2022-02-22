@@ -25,6 +25,30 @@
                                 <label>Descripcion</label>
                                 <textarea class="form-control" name="descripcion" data-fv-notempty="true"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label>Producto Preparado</label>
+                                <div class="radio">
+                                    <label for="preparadoSi"><input type="radio" id="preparadoSi" name="esPreparado" value="true" data-fv-notempty="true"/>Si, es preparado.</label>
+                                    <label for="preparadoNo"><input type="radio" id="preparadoNo" name="esPreparado" value="false" data-fv-notempty="true"/>No, ya viene preparado de f&aacute;brica</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Es comerciable</label>
+                                <div class="radio">
+                                    <label for="comerciableSi"><input type="radio" id="comerciableSi" name="esComerciable" value="true" data-fv-notempty="true"/>Si, es comerciable.</label>
+                                    <label for="comerciableNo"><input type="radio" id="comerciableNo" name="esComerciable" value="false" data-fv-notempty="true"/>No, no es comerciable, es un insumo o para la empresa</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Area Destino a mostrar cuando se realice una comanda</label>
+                                <select name="areaDestino" class="form-control" data-fv-notempty="true" >
+                                    <option value="">Seleccionar</option>
+                                    <option value="0">Ninguno</option>
+                                    <option value="1">Area de cocina CHEF</option>
+                                    <option value="2">Area de parrilladas - Parrillero</option>
+                                    <option value="3">Area de bebidas - Barra Bartman</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
@@ -58,6 +82,30 @@
                             <div class="form-group">
                                 <label>Descripcion</label>
                                 <textarea class="form-control"  name="descripcion" data-fv-notempty="true"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Producto Preparado</label>
+                                <div class="radio">
+                                    <label for="preparadoSi2"><input type="radio" id="preparadoSi2" name="esPreparado" value="true" data-fv-notempty="true"/>Si, es preparado.</label>
+                                    <label for="preparadoNo2"><input type="radio" id="preparadoNo2" name="esPreparado" value="false" data-fv-notempty="true"/>No, ya viene preparado de f&aacute;brica</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Es comerciable</label>
+                                <div class="radio">
+                                    <label for="comerciableSi2"><input type="radio" id="comerciableSi2" name="esComerciable" value="true" data-fv-notempty="true"/>Si, es comerciable.</label>
+                                    <label for="comerciableNo2"><input type="radio" id="comerciableNo2" name="esComerciable" value="false" data-fv-notempty="true"/>No, no es comerciable, es un insumo o para la empresa</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Area Destino a mostrar cuando se realice una comanda</label>
+                                <select name="areaDestino" class="form-control" data-fv-notempty="true" >
+                                    <option value="">Seleccionar</option>
+                                    <option value="0">Ninguno</option>
+                                    <option value="1">Area de cocina CHEF</option>
+                                    <option value="2">Area de parrilladas - Parrillero</option>
+                                    <option value="3">Area de bebidas - Barra Bartman</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
