@@ -30,21 +30,10 @@ public class CaracteristicaImpl extends DbConeccion implements CaracteristicaS {
 	@Override
 	public List<Caracteristica> listAll(short tipo) {
 		try {
-			sqlString = "select c.* from caracteristica c where c.estado = true and (c.tipo = ? or ? = 0);";
-			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Caracteristica.class), new Object[]{tipo, tipo});
+			sqlString = "select c.* from caracteristica c where c.estado = true and c.tipo = ?;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Caracteristica.class), new Object[]{tipo});
 		} catch(Exception ex) {
 			return null;
 		}
 	}
-	@Override
-	public Caracteristica obtener(Integer id){
-		try {
-			List<Caracteristica> lista = db.query("select c.* from caracteristica c where c.id=?", BeanPropertyRowMapper.newInstance(Caracteristica.class), id);
-			return UtilClass.getFirst(lista);
-		} catch (Exception e) {
-			logger.error(Utils.errorGet(ENTITY, e.toString()));
-			return null;
-		}
-	}
-
 }

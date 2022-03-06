@@ -48,13 +48,13 @@ public class ProductoC {
 	public String gestion(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
-		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion";
 	}
 	@RequestMapping("gestionInsumos")
 	public String gestionInsumos(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.INSUMO));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion-insumos";
 	}
 	@RequestMapping("gestionPlatos")

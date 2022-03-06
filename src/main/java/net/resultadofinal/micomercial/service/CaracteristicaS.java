@@ -7,5 +7,4 @@ import java.util.List;
 public interface CaracteristicaS {
     List<Caracteristica> listAll(short tipo);
 
-    Caracteristica obtener(Integer id);
 }
