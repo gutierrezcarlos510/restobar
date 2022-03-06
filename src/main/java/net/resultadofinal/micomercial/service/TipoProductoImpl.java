@@ -64,8 +64,8 @@ public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
 	public DataResponse adicionar(TipoProducto obj){
 		try {
 			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from tipo_producto", Integer.class);
-			sqlString = "insert into tipo_producto(id,nombre,descripcion,estado,categoria_id) values(?,?,?,true,?)";
-			boolean isSave = db.update(sqlString, id, obj.getNombre(), obj.getDescripcion(), obj.getCategoriaId()) > 0;
+			sqlString = "insert into tipo_producto(id,nombre,descripcion,estado,categoria_id,es_preparado,es_comerciable,area_destino) values(?,?,?,true,?,?,?,?)";
+			boolean isSave = db.update(sqlString, id, obj.getNombre(), obj.getDescripcion(), obj.getCategoriaId(), obj.getEsPreparado(), obj.getEsComerciable(), obj.getAreaDestino()) > 0;
 			return new DataResponse(isSave, isSave ? id : null, Utils.getSuccessFailedAdd(ENTITY, isSave));
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
@@ -75,8 +75,8 @@ public class TipoProductoImpl extends DbConeccion implements TipoProductoS {
 	@Transactional
 	public DataResponse modificar(TipoProducto t){
 		try {
-			sqlString = "update tipo_producto set nombre=?, descripcion=?,categoria_id=? where id=?";
-			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getDescripcion(), t.getCategoriaId(), t.getId()) > 0;
+			sqlString = "update tipo_producto set nombre=?, descripcion=?,categoria_id=?, es_preparado = ?, es_comerciable = ?, area_destino=? where id=?";
+			boolean isUpdate = db.update(sqlString, t.getNombre(), t.getDescripcion(), t.getCategoriaId(), t.getEsPreparado(), t.getEsComerciable(), t.getAreaDestino(), t.getId()) > 0;
 			return new DataResponse(isUpdate, Utils.getSuccessFailedMod(ENTITY, isUpdate));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));

@@ -48,13 +48,13 @@ public class ProductoC {
 	public String gestion(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
-		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion";
 	}
 	@RequestMapping("gestionInsumos")
 	public String gestionInsumos(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.INSUMO));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion-insumos";
 	}
 	@RequestMapping("gestionPlatos")
@@ -65,6 +65,7 @@ public class ProductoC {
 	@RequestMapping("gestionBebidasPreparadas")
 	public String gestionBebidasPreparadas(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA_PREPARADA));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion-bebidas-preparadas";
 	}
 	@RequestMapping("gestionInventario")
@@ -176,18 +177,9 @@ public class ProductoC {
 	}
 	@RequestMapping("adicionarIngredientes")
 	public @ResponseBody
-	DataResponse adicionarIngredientes(Long productoId, Long ingredientes[], Integer cantidades[]){
+	DataResponse adicionarIngredientes(Long productoId, Long productos[], Integer cantidades[], Integer cantidadPlatos){
 		try {
-			return productoS.adicionarIngredientes(productoId, ingredientes, cantidades);
-		} catch (Exception e) {
-			return new DataResponse(false, e.getMessage());
-		}
-	}
-	@RequestMapping("modificarIngredientes")
-	public @ResponseBody
-	DataResponse modificarIngredientes(Long productoId, Long ingredientes[], Integer cantidades[]){
-		try {
-			return productoS.modificarIngredientes(productoId, ingredientes, cantidades);
+			return productoS.adicionarIngredientes(productoId, productos, cantidades, cantidadPlatos);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}

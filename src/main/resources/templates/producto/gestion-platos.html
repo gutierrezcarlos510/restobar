@@ -23,6 +23,7 @@
                                         <label>Tipo de Plato</label>
                                         <input type="hidden" name="tipoGrupo" value="3" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
+                                        <input type="hidden" id="medidaId" name="medidaId" value="0" />
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
@@ -53,7 +54,7 @@
         </form>
         <form id="formularioModificar" method="post" action="../producto/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalModificar" class="modal fade" data-backdrop="static" >
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog" style="width: 80%">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -61,8 +62,11 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" />
+                            <input type="hidden" name="medidaId" />
+                            <input type="hidden" name="tipoGrupo" value="3" />
+                            <input type="hidden" name="unidadPorCaja" value="1" />
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Nombre</label>
                                         <div class="input-group">
@@ -71,8 +75,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" name="tipoGrupo" value="3" />
-                                        <input type="hidden" name="unidadPorCaja" value="1" />
                                         <label>Tipo de Plato</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
@@ -96,9 +98,8 @@
                                             <h6 class="text-center">Imagen Actual</h6>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="form-group">
                                         <input type="file" id="file-mod" class="file" name="imgProducto" />
                                     </div>
@@ -148,6 +149,13 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div>
+                                        <h3>RECETA</h3>
+                                        <div class="form-group row">
+                                            <label class="col-md-9 text-right">Cantidad de platos disponibles con la receta:</label>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                            </div>
+                                        </div>
                                         <table class="w3-table-all" id="tablaIngredientes">
                                             <thead>
                                             <tr>
@@ -155,6 +163,7 @@
                                                 <th>Ingrediente</th>
                                                 <th>Tipo</th>
                                                 <th>Cantidad</th>
+                                                <th>Medida</th>
                                                 <th></th>
                                             </tr>
                                             </thead>
@@ -212,6 +221,20 @@
 </div>
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
+    var dataResp = {
+        listaIngrediente: []
+    }
+    function existeIngrediente(id){
+        let existeItem = false;
+        if(dataResp.listaIngrediente && dataResp.listaIngrediente.length > 0) {
+            dataResp.listaIngrediente.forEach(it => {
+                if(it.id === id || it.ingredienteId === id) {
+                   existeItem = true;
+                }
+            })
+        }
+        return existeItem;
+    }
     $(document).ready(function() {
         $('#file-add').fileinput({
             theme: 'fas',
@@ -252,6 +275,7 @@
                 action: function(e, dt, node, config) {
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
+                    $('#medidaId').val(0);
                     $('.select-chosen').val('').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
@@ -286,7 +310,7 @@
                     if(data.hasIngredients) {
                         buttons += '<button class="btn btn-success btn-sm detalles"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-list"></i><br>ingredientes</button>';
                     } else {
-                        buttons += '<button class="btn w3-red btn-sm detalles"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-list"></i><br>ingredientes</button>';
+                        buttons += '<button class="btn w3-orange btn-sm detalles"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-list"></i><br>ingredientes</button>';
                     }
                     buttons += '<button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar</button>';
                     buttons += '<button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
@@ -338,24 +362,31 @@
                     obj.productoId = obj.id;
                     $('#formularioIngredientes').loadJSON(obj);
                     $('#tablaIngredientes > tbody').html('');
+                    dataResp.listaIngrediente = [];
                     $.post('../producto/obtenerIngredientes',{'productoId': obj.id}, function(resp){
                         if(resp.status) {
                             if(resp.data && resp.data.length > 0) {
+                                dataResp.listaIngrediente = resp.data;
                                 resp.data.forEach(it => {
                                     let row = $('<tr></tr>');
                                     $('<td>'+it.productoId+' <input type="hidden" name="productos" value="'+it.ingredienteId+'" /><input type="hidden" name="id" value="'+it.id+'"></td>').appendTo(row);
                                     $('<td>'+it.xproducto+'</td>').appendTo(row);
                                     $('<td>'+it.xtipo+'</td>').appendTo(row);
-                                    $('<td><input type="text" class="form-control form-control-sm" style="width: 40px;" name="cantidades" value="'+it.cantidad+'" /></td>').appendTo(row);
-                                    $('<td><button class="btn btn-sm btn-danger eliminarDetalle" type="button" data-id="'+it.id+'" data-productoId="'+it.productoId+'"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                                    $('<td><input type="text" class="form-control input-xs" style="width: 40px;" name="cantidades" value="'+it.cantidad+'" /></td>').appendTo(row);
+                                    $('<td>'+it.xmedida+'</td>').appendTo(row);
+                                    $('<td><button class="btn btn-xs btn-danger eliminarDetalle" type="button" data-id="'+it.id+'" data-productoid="'+it.productoId+'"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                                    $('#tablaIngredientes > tbody:last').append(row);
                                     $('.eliminarDetalle').off('click');
-                                    $('.eliminarDetalle').off('click', function(){
+                                    $('.eliminarDetalle').on('click', function(){
+                                        let productoId = $(this).data('productoid');
                                         let tr = $(this).closest('tr');
+                                        productoId = parseInt(productoId);
                                         let req = {
-                                            'productoId' : $(this).data('productoId'),
+                                            'productoId' : productoId,
                                             'id' : $(this).data('id')
                                         }
-                                        $('../producto/eliminarIngrediente', req, function(){
+                                        dataResp.listaIngrediente = dataResp.listaIngrediente.filter(it => it.id !== productoId);
+                                        $.post('../producto/eliminarIngrediente', req, function(){
                                             if(resp.status) {
                                                 tr.fadeOut(100, function() {
                                                     tr.remove();
@@ -366,7 +397,6 @@
                                         })
 
                                     });
-                                    $('#tablaIngredientes > tbody:last').append(row);
                                 });
                             }
                             $('#modalIngredientes').modal('show');
@@ -374,7 +404,6 @@
                             modalAlert('Error de transaccion', resp.msg, 'error');
                         }
                     })
-
                 });
                 $('.imprimir').click(function() {
                     $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
@@ -419,25 +448,35 @@
                 "data": "id", "name":"id"
             }],
             "createdRow": function(row, data, index) {
-                $('td', row).eq(3).html('<button class="btn btn-sm btn-primary seleccionar" type="button" data-toggle="tooltip" data-placement="top" title="seleccionar"><i class="glyphicon glyphicon-plus-sign"></i><br/>seleccionar</button>');
+                $('td', row).eq(3).html('<button class="btn btn-sm btn-primary seleccionar" type="button" data-toggle="tooltip" data-placement="top" title="seleccionar">seleccionar</button>');
             },
             "drawCallback": function(settings) {
                 $('.seleccionar').click(function() {
                     let obj = tablaInsumo.row($(this).closest('tr')).data();
+                    if(existeIngrediente(obj.id)) {
+                        modalAlert('Producto Existente', 'El producto ya se encuentre en el detalle', 'info');
+                        return ;
+                    } else {
+                        dataResp.listaIngrediente.push(obj);
+                    }
                     let row = $('<tr></tr>');
                     $('<td>'+obj.id+' <input type="hidden" name="productos" value="'+obj.id+'" /></td>').appendTo(row);
                     $('<td>'+obj.nombre+'</td>').appendTo(row);
                     $('<td>'+obj.xtipo+'</td>').appendTo(row);
-                    $('<td><input type="text" class="form-control form-control-sm" style="width: 40px;" name="cantidades" value="1" /></td>').appendTo(row);
-                    $('<td><button class="btn btn-sm btn-danger eliminarDetalleNuevo" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                    $('<td><input type="text" class="form-control input-xs" style="width: 40px;" name="cantidades" value="1" /></td>').appendTo(row);
+                    $('<td>'+obj.xmedida+'</td>').appendTo(row);
+                    $('<td><button class="btn btn-xs btn-danger eliminarDetalleNuevo" data-productoid="'+obj.id+'" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
+                    $('#tablaIngredientes > tbody:last').append(row);
                     $('.eliminarDetalleNuevo').off('click');
-                    $('.eliminarDetalleNuevo').off('click', function(){
+                    $('.eliminarDetalleNuevo').on('click', function(){
                         let tr = $(this).closest('tr');
+                        let xid = parseInt($(this).data('productoid'));
+                        dataResp.listaIngrediente = dataResp.listaIngrediente.filter(it=> it.id !== xid);
                         tr.fadeOut(100, function() {
                             tr.remove();
                         });
                     });
-                    $('#tablaIngredientes > tbody:last').append(row);
+
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',
@@ -501,7 +540,7 @@
                     $('#tabla').dataTable().fnDraw('page');
                     mostrarMensaje('info', 'Se realizo con exito la Transaccion');
                 } else {
-                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                    modalAlert('Error de transaccion', result.msg, 'error');
                 }
             }, 'json');
         });

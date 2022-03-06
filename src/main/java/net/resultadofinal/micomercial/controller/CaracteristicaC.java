@@ -14,14 +14,13 @@ public class CaracteristicaC {
 	
 	@Autowired
 	private CaracteristicaS caracteristicaS;
+	private static short MEDIDA = 1;
 
-	@RequestMapping("obtener")
+	@RequestMapping("listarMedidas")
 	public @ResponseBody
-    DataResponse obtener(Integer id){
+    DataResponse listarMedidas(){
 		try {
-			Caracteristica obj = caracteristicaS.obtener(id);
-			boolean exist = obj != null;
-			return new DataResponse(exist, obj, "Se realizo con exito la consulta");
+			return new DataResponse(true, caracteristicaS.listAll(MEDIDA), "Se realizo con exito la consulta");
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}

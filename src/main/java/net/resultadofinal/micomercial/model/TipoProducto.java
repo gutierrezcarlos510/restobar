@@ -1,13 +1,36 @@
 package net.resultadofinal.micomercial.model;
 
-import java.util.List;
-
 public class TipoProducto {
 	private Integer id;
 	private String nombre,descripcion;
-	private Boolean estado;
+	private Boolean estado, esPreparado, esComerciable;
 	private Integer categoriaId;
 	private String xcategoria;
+	private Short areaDestino;
+
+	public Boolean getEsComerciable() {
+		return esComerciable;
+	}
+
+	public void setEsComerciable(Boolean esComerciable) {
+		this.esComerciable = esComerciable;
+	}
+
+	public Short getAreaDestino() {
+		return areaDestino;
+	}
+
+	public void setAreaDestino(Short areaDestino) {
+		this.areaDestino = areaDestino;
+	}
+
+	public Boolean getEsPreparado() {
+		return esPreparado;
+	}
+
+	public void setEsPreparado(Boolean esPreparado) {
+		this.esPreparado = esPreparado;
+	}
 
 	public String getXcategoria() {
 		return xcategoria;
