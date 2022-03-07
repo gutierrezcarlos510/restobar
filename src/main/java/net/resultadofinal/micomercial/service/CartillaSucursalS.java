@@ -1,10 +1,12 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.CartillaSucursal;
+import net.resultadofinal.micomercial.model.DetalleCartillaSucursal;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.util.DataResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CartillaSucursalS {
@@ -12,9 +14,11 @@ public interface CartillaSucursalS {
 
     CartillaSucursal obtener(Integer id);
 
-    DataResponse adicionar(CartillaSucursal obj);
+    List<DetalleCartillaSucursal> obtenerDetalles(Integer id);
 
-    DataResponse modificar(CartillaSucursal obj);
+    DataResponse adicionar(CartillaSucursal obj,Integer tipos[], BigDecimal precios[]);
+
+    DataResponse modificar(CartillaSucursal obj,Integer tipos[], BigDecimal precios[]);
 
     DataResponse darEstado(Integer id, Boolean estado);
 

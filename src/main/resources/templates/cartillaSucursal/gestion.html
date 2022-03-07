@@ -7,54 +7,68 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Adicionar Cartilla Sucursal</h4>
+                            <h4 class="modal-title">Registro Cartilla Sucursal</h4>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" id="id" />
+                            <input type="hidden" name="id" />
                             <div class="form-group">
                                 <label>Nombre</label>
                                 <input type="text" class="form-control" name="nombre" data-fv-notempty="true">
                             </div>
                             <div class="form-group">
                                 <label>Esta Compuesto (Combo)</label>
-                                <div class="radio">
-                                    <label for="estaCompuestoSi">
-                                        <input type="radio" id="estaCompuestoSi" class="radio-inline" name="estaCompuesto" value="true" />
+                                <div>
+                                    <label for="estaCompuestoSi" class="w3-medium">
+                                        <input type="radio" id="estaCompuestoSi" class="radio-inline estaCompuestoRadio" name="estaCompuesto" value="true" /> Si
                                     </label>
-                                    <label for="estaCompuestoNo">
-                                        <input type="radio" id="estaCompuestoNo" class="radio-inline" name="estaCompuesto" value="false" />
+                                    <label for="estaCompuestoNo" class="w3-medium">
+                                        <input type="radio" id="estaCompuestoNo" class="radio-inline estaCompuestoRadio" name="estaCompuesto" value="false" />
+                                         No
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Total</label>
-                                <input type="number" class="form-control" name="total" data-fv-notempty="true">
-                            </div>
-                            <div class="form-group">
-                                <label>Tipo Producto</label>
-                                <select id="tipo1" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar...">
-                                    <option value="">Seleccionar</option>
-                                    <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Precio</label>
-                                <input type="number" class="form-control" name="precio">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label>Tipo Producto</label>
+                                        <select id="tipo1" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar...">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Precio</label>
+                                        <input type="number" class="form-control" id="precio" name="precio" />
+                                    </div>
+                                </div>
                             </div>
                             <div class="text-center">
                                 <button class="btn btn-success" type="button" id="btnDetalle">Adicionar Detalle</button>
                             </div>
                             <div>
-                                <table id="tablaDetalle" class="w3-table">
+                                <br/>
+                                <table id="tablaDetalle" class="w3-table-all">
                                     <thead>
                                     <tr>
+                                        <th class="w3-center" colspan="3">Detalle de Combo</th>
+                                    </tr>
+                                    <tr>
                                         <th>Tipo</th>
-                                        <th>Precio</th>
-                                        <th><span class="fa fa-remove"></span></th>
+                                        <th width="30px">Precio</th>
+                                        <th width="10px">Eli.</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-md-4">Total</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control text-right" id="total" name="total" data-fv-notempty="true"/>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -65,44 +79,9 @@
                 </div>
             </div>
         </form>
-        <form id="formularioModificar" method="post" action="../cartillaSucursal/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalModificar" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Modificar Categoria</h4>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="id" />
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" name="nombre" data-fv-notempty="true">
-                            </div>
-                            <div class="form-group">
-                                <label>Tipo</label>
-                                <select id="tipo2" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Bebida</option>
-                                    <option value="2">Insumo</option>
-                                    <option value="3">Plato</option>
-                                    <option value="4">Bebida preparada</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <!-- /.modal -->
         <div class="row">
             <div class="col-md-8">
-                <h1><span class="fa  fa-ellipsis-v"></span> Categorias</h1>
+                <h1><span class="fa  fa-ellipsis-v"></span> Catalogo de Sucursal</h1>
             </div>
             <div class="col-md-4">
                 <div class="btn-group btn-group-justified">
@@ -122,7 +101,8 @@
                 <tr>
                     <th class="none">C&oacute;digo</th>
                     <th class="all">Nombre</th>
-                    <th class="all">Tipo</th>
+                    <th class="desktop">Es Compuesto</th>
+                    <th class="desktop">Total</th>
                     <th class="all">Accion</th>
                 </tr>
             </thead>
@@ -133,17 +113,64 @@
 </div>
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
+    var dataReq = {
+        sizeDetails : 0
+    }
+    function calcularDetalle(){
+        let total = 0;
+        $('.preciosInput').each(function (){
+
+            let valor = $(this).val();
+            if(valor) {
+                valor = parseFloat($(this).val());;
+            } else {
+                valor = 0;
+            }
+            total += valor;
+        })
+        $('#total').val(total.toFixed(2).replaceAll(',','.'));
+    }
     $(document).ready(function() {
         $('.select-chosen').chosen({
             no_results_text: "No se encuentra:",
             width: '100%'
         });
+        $('.estaCompuestoRadio').change(function(){
+            let value = $(this).val();
+            if(value === 'true'){
+                $('#tablaDetalle > tbody').html('');
+                dataReq.sizeDetails = 0;
+                calcularDetalle();
+            }
+        })
         $('#btnDetalle').click(function(){
            let obj = $('#formulario').formToJSON();
+           let estaCompuesto = $('input[name=estaCompuesto]:checked').val() === 'true';
+           if(!estaCompuesto) {
+               if(dataReq.sizeDetails >= 1) {
+                   modalAlert('Invalido', 'No se puede ingresar mas de un detalle si no esta Compuesto', 'error');
+                   return;
+               }
+           }
            if(obj.tipo && obj.precio) {
+               let tipoText = $('#tipo1 option:selected').html();
                let tr = $('<tr></tr>');
-               $('<td><input type="hidden" class="input-xs" name="tipos" value="'+obj.tipo+'"/>'+obj.tipo<+'</td>');
-               $('<td><input type="text" class="input-xs " name="precios" value="'+obj.precio+'"/>'+obj.tipo<+'</td>');
+               $('<td>'+tipoText+'<input type="hidden" class="input-xs" name="tipos" value="'+obj.tipo+'"/></td>').appendTo(tr);
+               $('<td><input type="text" class="form-control-sm preciosInput" name="precios" onkeyup="calcularDetalle()" value="'+obj.precio+'"/></td>').appendTo(tr);
+               $('<td class="text-danger"><span class="fa fa-remove btnRemoveDetail"></span></td>').appendTo(tr);
+               $('#tablaDetalle > tbody:last').append(tr);
+               $('.btnRemoveDetail').off();
+               $('.btnRemoveDetail').on('click',function(){
+                   let tr = $(this).closest('tr');
+                   tr.fadeOut(100, function() {
+                       tr.remove();
+                       dataReq.sizeDetails--;
+                   });
+               });
+               dataReq.sizeDetails++;
+               calcularDetalle();
+               $('#tipo1').val('').trigger('chosen:updated');
+               $('#precio').val('')
            }
         });
         $('#tabla').DataTable({
@@ -153,6 +180,9 @@
                 action: function(e, dt, node, config) {
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
+                    $('#tablaDetalle > tbody').html('');
+                    dataReq.sizeDetails = 0;
+                    $('input[type=hidden]').val('');
                     $('#modalAdicionar').modal('show');
                 }
             }],
@@ -163,7 +193,7 @@
                     d.estado = $('input[name=estado]:checked').val();
                 }
             },
-            "columnDefs":[{targets: [3],className:'text-right'}],
+            "columnDefs":[{targets: [4],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -173,19 +203,22 @@
             }, {
                 "data": "estaCompuesto","name":"esta_compuesto"
             }, {
+                "data": "total","name":"total"
+            }, {
                 "data": "id","name":"id"
             }],
             "createdRow": function(row, data, index) {
+                $('td', row).eq(2).html(data.estaCompuesto ? 'Si':'No');
                 if (data.estado) {
-                    $('td', row).eq(3).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                    $('td', row).eq(4).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
                 } else {
-                    $('td', row).eq(3).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
+                    $('td', row).eq(4).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
                 }
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    alertEliminacion('Eliminar Categoria', 'Esta seguro de eliminar el Categoria '+ obj.nombre, function(){
+                    alertEliminacion('Eliminar Detalle', 'Esta seguro de eliminar: '+ obj.nombre, function(){
                         $.post('../cartillaSucursal/eliminar',{'id':obj.id }, function(resp){
                             finishTransaction(resp, function(){
                                 $('.modal').modal('hide');
@@ -196,7 +229,7 @@
                 });
                 $('.activar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    alertActivacion('Activar Categoria', 'Esta seguro de activar el Categoria '+ obj.nombre, function(){
+                    alertActivacion('Activar Detalle', 'Esta seguro de activar: '+ obj.nombre, function(){
                         $.post('../cartillaSucursal/activar',{'id':obj.id }, function(resp){
                             finishTransaction(resp, function(){
                                 $('.modal').modal('hide');
@@ -207,11 +240,34 @@
                 });
                 $('.modificar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    $('#formularioModificar').data('formValidation').resetForm();
-                    $('#formularioModificar')[0].reset();
-                    $('#formularioModificar').loadJSON(obj);
-                    $('#tipo2').val(obj.tipo).trigger('chosen:updated');
-                    $('#modalModificar').modal('show');
+                    $('#formulario').data('formValidation').resetForm();
+                    $('#formulario')[0].reset();
+                    $('#formulario').loadJSON(obj);
+                    dataReq.sizeDetails = 0;
+                    $('#tablaDetalle > tbody').html('');
+                    $.post('../cartillaSucursal/obtenerDetalles?id='+obj.id, function(resp){
+                        if(resp.status) {
+                            resp.data.forEach(it=>{
+                                dataReq.sizeDetails++;
+                                let tr = $('<tr></tr>');
+                                $('<td>'+it.xtipoProducto+'<input type="hidden" class="input-xs" name="tipos" value="'+it.tipoProductoId+'"/></td>').appendTo(tr);
+                                $('<td><input type="text" class="form-control-sm preciosInput" onkeyup="calcularDetalle()" name="precios" value="'+it.precio+'"/></td>').appendTo(tr);
+                                $('<td class="text-danger"><span class="fa fa-remove btnRemoveDetail"></span></td>').appendTo(tr);
+                                $('#tablaDetalle > tbody:last').append(tr);
+                                $('.btnRemoveDetail').off();
+                                $('.btnRemoveDetail').on('click',function(){
+                                    let tr = $(this).closest('tr');
+                                    tr.fadeOut(100, function() {
+                                        tr.remove();
+                                        dataReq.sizeDetails--;
+                                    });
+                                });
+                                dataReq.sizeDetails++;
+                                calcularDetalle();
+                            });
+                        }
+                    })
+                    $('#modalAdicionar').modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',
@@ -230,10 +286,14 @@
         $('.estadoRadio').click(function() {
             $('#tabla').dataTable().fnDraw('page');
         });
-        $('#formulario,#formularioModificar').formValidation({
+        $('#formulario').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
+            if(dataReq.sizeDetails <=0) {
+                modalAlert('Invalido','Ingrese Detalle del Combo','error');
+                return;
+            }
             alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {

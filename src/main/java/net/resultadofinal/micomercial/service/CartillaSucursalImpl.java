@@ -1,6 +1,7 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.CartillaSucursal;
+import net.resultadofinal.micomercial.model.DetalleCartillaSucursal;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -52,25 +54,46 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 			return null;
 		}
 	}
+	public List<DetalleCartillaSucursal> obtenerDetalles(Integer id){
+		try {
+			return db.query("select dcs.*,tp.nombre as xtipo_producto from detalle_cartilla_sucursal dcs inner join tipo_producto tp on dcs.tipo_producto_id = tp.id where cartilla_sucursal_id=? order by id asc", BeanPropertyRowMapper.newInstance(DetalleCartillaSucursal.class), id);
+		} catch (Exception e) {
+			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			return null;
+		}
+	}
 	
 	@Override
-	public DataResponse adicionar(CartillaSucursal obj){
+	public DataResponse adicionar(CartillaSucursal obj,Integer tipos[], BigDecimal precios[]){
 		try {
-			Integer id = db.queryForObject("select coalesce(max(id),0)+1 from cartilla_sucursal", Integer.class);
-			sqlString = "insert into cartilla_sucursal(id,nombre,total,cod_suc,esta_compuesto,estado) values(?,?,?,?,?,true)";
-			boolean save = db.update(sqlString, id, obj.getNombre(),obj.getTotal(),obj.getCodSuc(),obj.isEstaCompuesto()) > 0;
-			return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
+			if(tipos != null && tipos.length > 0) {
+				Integer id = db.queryForObject("select coalesce(max(id),0)+1 from cartilla_sucursal", Integer.class);
+				sqlString = "insert into cartilla_sucursal(id,nombre,total,cod_suc,esta_compuesto,estado) values(?,?,?,?,?,true)";
+				boolean save = db.update(sqlString, id, obj.getNombre(),obj.getTotal(),obj.getCodSuc(),obj.isEstaCompuesto()) > 0;
+				adicionarDetalles(id, tipos, precios);
+				return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
+			} else {
+				return new DataResponse(false, "No se encontro detalles de la cartilla");
+			}
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorAdd(ENTITY, e.getMessage()));
 		}
 	}
+	public void adicionarDetalles(Integer id, Integer tipos[], BigDecimal precios[]){
+		for (int i = 0; i < tipos.length; i++) {
+			sqlString = "insert into detalle_cartilla_sucursal(cartilla_sucursal_id,id,tipo_producto_id,precio) values(?,?,?,?);";
+			db.update(sqlString, id,(i+1),tipos[i],precios[i]);
+		}
+	}
 	
 	@Override
-	public DataResponse modificar(CartillaSucursal obj){
+	public DataResponse modificar(CartillaSucursal obj, Integer tipos[], BigDecimal precios[]){
 		try {
 			sqlString = "update cartilla_sucursal set nombre=?,total=?,esta_compuesto=? where id=?";
 			boolean update = db.update(sqlString, obj.getNombre(), obj.getTotal(),obj.isEstaCompuesto(), obj.getId()) > 0;
+			db.update("delete from detalle_cartilla_sucursal where cartilla_sucursal_id = ?", obj.getId());
+			adicionarDetalles(obj.getId(), tipos, precios);
 			return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
