@@ -10,19 +10,51 @@
                             <h4 class="modal-title">Adicionar Cartilla Sucursal</h4>
                         </div>
                         <div class="modal-body">
+                            <input type="hidden" id="id" />
                             <div class="form-group">
                                 <label>Nombre</label>
                                 <input type="text" class="form-control" name="nombre" data-fv-notempty="true">
                             </div>
                             <div class="form-group">
-                                <label>Tipo</label>
-                                <select id="tipo1" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                <label>Esta Compuesto (Combo)</label>
+                                <div class="radio">
+                                    <label for="estaCompuestoSi">
+                                        <input type="radio" id="estaCompuestoSi" class="radio-inline" name="estaCompuesto" value="true" />
+                                    </label>
+                                    <label for="estaCompuestoNo">
+                                        <input type="radio" id="estaCompuestoNo" class="radio-inline" name="estaCompuesto" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Total</label>
+                                <input type="number" class="form-control" name="total" data-fv-notempty="true">
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo Producto</label>
+                                <select id="tipo1" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar...">
                                     <option value="">Seleccionar</option>
-                                    <option value="1">Bebida</option>
-                                    <option value="2">Insumo</option>
-                                    <option value="3">Plato</option>
-                                    <option value="4">Bebida preparada</option>
+                                    <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input type="number" class="form-control" name="precio">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-success" type="button" id="btnDetalle">Adicionar Detalle</button>
+                            </div>
+                            <div>
+                                <table id="tablaDetalle" class="w3-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Precio</th>
+                                        <th><span class="fa fa-remove"></span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -106,6 +138,14 @@
             no_results_text: "No se encuentra:",
             width: '100%'
         });
+        $('#btnDetalle').click(function(){
+           let obj = $('#formulario').formToJSON();
+           if(obj.tipo && obj.precio) {
+               let tr = $('<tr></tr>');
+               $('<td><input type="hidden" class="input-xs" name="tipos" value="'+obj.tipo+'"/>'+obj.tipo<+'</td>');
+               $('<td><input type="text" class="input-xs " name="precios" value="'+obj.precio+'"/>'+obj.tipo<+'</td>');
+           }
+        });
         $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
@@ -131,7 +171,7 @@
             }, {
                 "data": "nombre","name":"nombre"
             }, {
-                "data": "xtipo","name":"xtipo"
+                "data": "estaCompuesto","name":"esta_compuesto"
             }, {
                 "data": "id","name":"id"
             }],

@@ -4,10 +4,12 @@ import net.resultadofinal.micomercial.model.CartillaSucursal;
 import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.CartillaSucursalS;
+import net.resultadofinal.micomercial.service.TipoProductoS;
 import net.resultadofinal.micomercial.util.DataResponse;
 import net.resultadofinal.micomercial.util.MyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,8 +21,11 @@ public class CartillaSucursalC {
 	
 	@Autowired
 	private CartillaSucursalS cartillaSucursalS;
+	@Autowired
+	private TipoProductoS tipoProductoS;
 	@RequestMapping("gestion")
-	public String gestion(){
+	public String gestion(Model model){
+		model.addAttribute("tipos", tipoProductoS.listAll(0));
 		return "cartillaSucursal/gestion";
 	}
 	@RequestMapping("listar")
