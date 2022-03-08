@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursalS {
@@ -90,11 +91,15 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 	@Override
 	public DataResponse modificar(CartillaSucursal obj, Integer tipos[], BigDecimal precios[]){
 		try {
-			sqlString = "update cartilla_sucursal set nombre=?,total=?,esta_compuesto=? where id=?";
-			boolean update = db.update(sqlString, obj.getNombre(), obj.getTotal(),obj.isEstaCompuesto(), obj.getId()) > 0;
-			db.update("delete from detalle_cartilla_sucursal where cartilla_sucursal_id = ?", obj.getId());
-			adicionarDetalles(obj.getId(), tipos, precios);
-			return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
+			if(tipos != null && tipos.length > 0) {
+				sqlString = "update cartilla_sucursal set nombre=?,total=?,esta_compuesto=? where id=?";
+				boolean update = db.update(sqlString, obj.getNombre(), obj.getTotal(), obj.isEstaCompuesto(), obj.getId()) > 0;
+				db.update("delete from detalle_cartilla_sucursal where cartilla_sucursal_id = ?", obj.getId());
+				adicionarDetalles(obj.getId(), tipos, precios);
+				return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
+			} else {
+				return new DataResponse(false, "No se encontro detalles de la cartilla");
+			}
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorMod(ENTITY, ""));
@@ -114,6 +119,26 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 	}
 	@Override
 	public List<CartillaSucursal> listarPorSucursal(Integer sucursalId) {
-		return db.query("select * from cartilla_sucursal where cod_suc = ?", BeanPropertyRowMapper.newInstance(CartillaSucursal.class), sucursalId);
+		try {
+			List<CartillaSucursal> lista = db.query("select * from cartilla_sucursal where cod_suc = ?", BeanPropertyRowMapper.newInstance(CartillaSucursal.class), sucursalId);
+			if(lista != null && !lista.isEmpty()) {
+				sqlString = "select dcs.*,tp.nombre as xtipo_producto from detalle_cartilla_sucursal dcs inner join tipo_producto tp on dcs.tipo_producto_id = tp.id where dcs.cartilla_sucursal_id=?";
+				List<DetalleCartillaSucursal> detalles = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaSucursal.class), sucursalId);
+				if(detalles != null && !detalles.isEmpty()) {
+					for (CartillaSucursal det: lista) {
+						List<DetalleCartillaSucursal> subdetalle = detalles.stream().filter(it -> it.getCartillaSucursalId() == det.getId()).collect(Collectors.toList());
+						det.setDetalles(subdetalle);
+					}
+					return lista;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 }

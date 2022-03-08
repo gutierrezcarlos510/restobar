@@ -50,6 +50,20 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			return null;
 		}
 	}
+	public DataTableResults<Producto> listaPorTipo(HttpServletRequest request, boolean estado, Integer tipo) {
+		try {
+			SqlBuilder sqlBuilder = new SqlBuilder("producto p");
+			sqlBuilder.setSelect("p.*,tp.nombre as xtipo");
+			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and tp.id=:xtipo");
+			sqlBuilder.setWhere("p.estado=:xestado ");
+			sqlBuilder.addParameter("xestado",estado);
+			sqlBuilder.addParameter("xtipo",tipo);
+			return utilDataTableS.list(request, Producto.class, sqlBuilder);
+		} catch (Exception e) {
+			logger.error("Error al listar productos: "+e.toString());
+			return null;
+		}
+	}
 	public Producto obtener(Long id){
 		try {
 			List<Producto> lista = db.query("select * from producto where id=?", BeanPropertyRowMapper.newInstance(Producto.class), id);

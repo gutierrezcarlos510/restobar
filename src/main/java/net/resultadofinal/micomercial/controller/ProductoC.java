@@ -83,6 +83,16 @@ public class ProductoC {
 			return null;
 		}
 	}
+	@RequestMapping("listarPorTipoProducto")
+	public @ResponseBody
+	DataTableResults<Producto> listarPorTipoProducto(HttpServletRequest request, boolean estado, Integer tipo) {
+		try {
+			return productoS.listaPorTipo(request, estado, tipo);
+		} catch (Exception ex) {
+			logger.error("error lista productos: "+ex.toString());
+			return null;
+		}
+	}
 	@RequestMapping("guardar")
 	public @ResponseBody DataResponse guardar(Producto p, MultipartFile imgProducto){
 		try {

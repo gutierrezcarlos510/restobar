@@ -1,12 +1,22 @@
 package net.resultadofinal.micomercial.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class CartillaSucursal {
     private Integer id,codSuc;
     private String nombre;
     private BigDecimal total;
     private boolean estado,estaCompuesto;
+    private List<DetalleCartillaSucursal> detalles;
+
+    public List<DetalleCartillaSucursal> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleCartillaSucursal> detalles) {
+        this.detalles = detalles;
+    }
 
     public Integer getId() {
         return id;
