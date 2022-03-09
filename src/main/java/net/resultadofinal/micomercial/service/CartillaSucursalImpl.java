@@ -2,6 +2,8 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.CartillaSucursal;
 import net.resultadofinal.micomercial.model.DetalleCartillaSucursal;
+import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
+import net.resultadofinal.micomercial.model.form.DetalleCartillaForm;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -118,16 +120,16 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 		}
 	}
 	@Override
-	public List<CartillaSucursal> listarPorSucursal(Integer sucursalId) {
+	public List<CartillaSucursalForm> listarPorSucursal(Integer sucursalId) {
 		try {
-			List<CartillaSucursal> lista = db.query("select * from cartilla_sucursal where cod_suc = ?", BeanPropertyRowMapper.newInstance(CartillaSucursal.class), sucursalId);
+			List<CartillaSucursalForm> lista = db.query("select * from cartilla_sucursal where cod_suc = ?", BeanPropertyRowMapper.newInstance(CartillaSucursalForm.class), sucursalId);
 			if(lista != null && !lista.isEmpty()) {
-				sqlString = "select dcs.*,tp.nombre as xtipo_producto from detalle_cartilla_sucursal dcs inner join tipo_producto tp on dcs.tipo_producto_id = tp.id where dcs.cartilla_sucursal_id=?";
-				List<DetalleCartillaSucursal> detalles = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaSucursal.class), sucursalId);
+				sqlString = "select dcs.cartilla_sucursal_id,dcs.id,dcs.tipo_producto_id,dcs.precio,tp.nombre as xtipo_producto from detalle_cartilla_sucursal dcs inner join cartilla_sucursal cs on cs.estado=true and cs.id = dcs.cartilla_sucursal_id  and cs.cod_suc = ? inner join tipo_producto tp on dcs.tipo_producto_id = tp.id";
+				List<DetalleCartillaForm> detalles = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), sucursalId);
 				if(detalles != null && !detalles.isEmpty()) {
-					for (CartillaSucursal det: lista) {
-						List<DetalleCartillaSucursal> subdetalle = detalles.stream().filter(it -> it.getCartillaSucursalId() == det.getId()).collect(Collectors.toList());
-						det.setDetalles(subdetalle);
+					for (CartillaSucursalForm det: lista) {
+						List<DetalleCartillaForm> subdetalle = detalles.stream().filter(it -> it.getCartillaSucursalId() == det.getId()).collect(Collectors.toList());
+						det.setDetalleCartillaList(subdetalle);
 					}
 					return lista;
 				} else {

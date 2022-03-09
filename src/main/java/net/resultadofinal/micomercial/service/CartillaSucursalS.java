@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.CartillaSucursal;
 import net.resultadofinal.micomercial.model.DetalleCartillaSucursal;
+import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.util.DataResponse;
 
@@ -22,5 +23,5 @@ public interface CartillaSucursalS {
 
     DataResponse darEstado(Integer id, Boolean estado);
 
-    List<CartillaSucursal> listarPorSucursal(Integer sucursalId);
+    List<CartillaSucursalForm> listarPorSucursal(Integer sucursalId);
 }

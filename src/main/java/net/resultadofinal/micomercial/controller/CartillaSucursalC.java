@@ -3,6 +3,7 @@ package net.resultadofinal.micomercial.controller;
 import net.resultadofinal.micomercial.model.CartillaSucursal;
 import net.resultadofinal.micomercial.model.DetalleCartillaSucursal;
 import net.resultadofinal.micomercial.model.General;
+import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.CartillaSucursalS;
 import net.resultadofinal.micomercial.service.TipoProductoS;
@@ -102,7 +103,7 @@ public class CartillaSucursalC {
 	DataResponse listarPorSucursal(HttpServletRequest request){
 		try {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
-			List<CartillaSucursal> obj = cartillaSucursalS.listarPorSucursal(gestion.getCod_suc());
+			List<CartillaSucursalForm> obj = cartillaSucursalS.listarPorSucursal(gestion.getCod_suc());
 			boolean exist = obj != null;
 			return new DataResponse(exist, obj, "Se realizo con exito la consulta");
 		} catch (Exception e) {
