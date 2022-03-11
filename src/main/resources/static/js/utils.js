@@ -70,6 +70,22 @@ var UtilBrowser = {
     }
 }
 var UtilDate = {
+    formaDateLiteral: function(valueFecha){
+        if(valueFecha) {
+            let fecha = moment(valueFecha).format('LLL');
+            return fecha.substring(0,fecha.length-6);
+        } else {
+            return '';
+        }
+    },
+    formatTimestampLiteral: function(valueFecha){
+        if(valueFecha) {
+            let fecha = moment(valueFecha).format('LLLL');
+            return fecha;
+        } else {
+            return '';
+        }
+    },
     formatDate:function(valueFecha, format){
         if(valueFecha && format){
             return moment(valueFecha).format(format);

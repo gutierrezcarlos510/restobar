@@ -58,7 +58,7 @@
                     d.estado = $('input[name=estado]:checked').val();
                 }
             },
-            "columnDefs":[{targets: [4],className:'text-right'}],
+            "columnDefs":[{targets: [5],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -75,9 +75,15 @@
                 "data": "id","name":"id"
             }],
             "createdRow": function(row, data, index) {
+                $('td', row).eq(2).html(UtilDate.formatTimestampLiteral(data.finicio));
+                $('td', row).eq(3).html(UtilDate.formatTimestampLiteral(data.ffin));
                 $('td', row).eq(4).html(data.estadoCartilla ? '<span class="label-success">Activo</span>':'<span class="label-danger">Finalizado</span>');
                 if (data.estado) {
-                    $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                    if(data.estadoCartilla) {
+                        $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                    } else {
+                        $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                    }
                 } else {
                     $('td', row).eq(5).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
                 }

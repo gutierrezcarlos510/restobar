@@ -126,7 +126,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	public DataResponse modificar(CartillaDiariaForm obj){
 		try {
 			if(obj != null && UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
-				sqlString = "update cartilla_diaria set finicio=now(),usuario_id=? where id=?";
+				sqlString = "update cartilla_diaria set usuario_id=? where id=?";
 				boolean update = db.update(sqlString, obj.getUsuarioId(), obj.getId()) > 0;
 				db.update("delete from detalle_cartilla_diaria where cartilla_diaria_id = ?", obj.getId());
 				adicionarDetalles(obj);
@@ -162,7 +162,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 				sqlString = "select distinct cs.* from detalle_cartilla_diaria dcd inner join cartilla_sucursal cs on cs.id = dcd.cartilla_sucursal_id where dcd.cartilla_diaria_id = ?";
 				List<CartillaSucursalForm> cartillaSucursalList = db.query(sqlString, BeanPropertyRowMapper.newInstance(CartillaSucursalForm.class), cartillaDiariaId);
 				if(UtilClass.isNotNullEmpty(cartillaSucursalList)) {
-					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
+					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
 					sqlString = "select dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";

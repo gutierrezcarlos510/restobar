@@ -9,6 +9,23 @@ public class DetalleCartillaForm {
     private BigDecimal precio;
     private String xtipoProducto;
     private List<ProductoCartillaForm> productos;
+    private boolean esPreparado, esComerciable;
+
+    public boolean isEsPreparado() {
+        return esPreparado;
+    }
+
+    public void setEsPreparado(boolean esPreparado) {
+        this.esPreparado = esPreparado;
+    }
+
+    public boolean isEsComerciable() {
+        return esComerciable;
+    }
+
+    public void setEsComerciable(boolean esComerciable) {
+        this.esComerciable = esComerciable;
+    }
 
     public Integer getCartillaSucursalId() {
         return cartillaSucursalId;
