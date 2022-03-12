@@ -3,12 +3,38 @@ package net.resultadofinal.micomercial.model.form;
 import java.math.BigDecimal;
 
 public class ProductoCartillaForm {
+    private Short id;
+    private Long cartillaDiariaId;
     private Integer cartillaSucursalId;
     private Short detalleCartillaSucursalId;
     private Long productoId;
     private String xproducto;
     private BigDecimal precioIndividual, precioCompuesto;
-    private Integer cantidad;
+    private Integer cantidad, cantidadModificar;
+
+    public Integer getCantidadModificar() {
+        return cantidadModificar;
+    }
+
+    public void setCantidadModificar(Integer cantidadModificar) {
+        this.cantidadModificar = cantidadModificar;
+    }
+
+    public Long getCartillaDiariaId() {
+        return cartillaDiariaId;
+    }
+
+    public void setCartillaDiariaId(Long cartillaDiariaId) {
+        this.cartillaDiariaId = cartillaDiariaId;
+    }
+
+    public Short getId() {
+        return id;
+    }
+
+    public void setId(Short id) {
+        this.id = id;
+    }
 
     public Integer getCartillaSucursalId() {
         return cartillaSucursalId;

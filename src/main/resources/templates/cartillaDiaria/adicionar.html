@@ -134,7 +134,8 @@
                             $('<div class="col-md-2">Bs. '+ item.precioIndividual +'</div>').appendTo(row);
                             if(subdet.esPreparado) {
                                 if(item.cantidadModificar && item.cantidadModificar !== 0) {
-                                    $('<div class="col-md-2 text-center">'+item.cantidad+(item.cantidadModificar>0 ?' + '+item.cantidadModificar:' - '+(-1 * item.cantidadModificar))+'</div>').appendTo(row);
+                                    let total = item.cantidadModificar + item.cantidad;
+                                    $('<div class="col-md-2 text-center">'+item.cantidad+(item.cantidadModificar>0 ?' + '+item.cantidadModificar:' - '+(-1 * item.cantidadModificar)) + ' = '+total+'</div>').appendTo(row);
                                 } else {
                                     $('<div class="col-md-2 text-center">'+item.cantidad+'</div>').appendTo(row);
                                 }
@@ -301,7 +302,6 @@
                                     subdet.productos.forEach(item => {
                                         if(item.productoId === parseInt(dataForm.productoId)){
                                             item.precioIndividual = parseFloat(dataForm.precioIndividual);
-
                                             let productoCreado = obtenerProductoCreado(parseInt(dataForm.cartillaSucursalId),parseInt(dataForm.detalleCartillaSucursalId),parseInt(dataForm.productoId));
                                             item.cantidad = parseInt(dataForm.cantidad);
                                             if(productoCreado) {
@@ -317,7 +317,7 @@
                                         productoId: parseInt(dataForm.productoId),
                                         xproducto: dataForm.xproducto,
                                         precioIndividual: parseFloat(dataForm.precioIndividual),
-                                        precioCompuesto: parseFloat(dataForm.precioCompuesto),
+                                        precioCompuesto: dataForm.precioCompuesto ? parseFloat(dataForm.precioCompuesto):null,
                                         cantidad : parseInt(dataForm.cantidad)
                                     });
                                 }
@@ -337,9 +337,11 @@
     }
     $(document).ready(function() {
         $('#btnCancelar').click(function(){
-            $.post('../cartillaDiaria/gestion',function(resp){
-                $('#contenedor').html(resp);
-            })
+            alertCancelacion('Salir de formulario','Esta seguro de salir del formulario?', function(){
+                $.post('../cartillaDiaria/gestion',function(resp){
+                    $('#contenedor').html(resp);
+                })
+            });
         });
 
         $('.select-chosen').chosen({

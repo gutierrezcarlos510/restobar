@@ -99,15 +99,23 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	@Override
 	public void adicionarDetalles(CartillaDiariaForm obj){
 		if(UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
+			sqlString = "select coalesce(max(id),0)+1 from detalle_cartilla_diaria where cartilla_diaria_id=?";
+			int i= db.queryForObject(sqlString, Integer.class, obj.getId());
 			sqlString = "insert into detalle_cartilla_diaria(cartilla_diaria_id,id,cartilla_sucursal_id,detalle_cartilla_sucursal_id,producto_id,precio_individual,precio_compuesto,cantidad) values(?,?,?,?,?,?,?,?);";
-			int i= 1;
+
 			for (CartillaSucursalForm det: obj.getCartillaSucursalFormList()) {
 				if (UtilClass.isNotNullEmpty(det.getDetalleCartillaList())) {
 					for(DetalleCartillaForm subdet: det.getDetalleCartillaList()) {
 						if (UtilClass.isNotNullEmpty(subdet.getProductos())) {
 							for(ProductoCartillaForm item : subdet.getProductos()) {
-								db.update(sqlString, obj.getId(),i,det.getId(),subdet.getId(),item.getProductoId(),item.getPrecioIndividual(),item.getPrecioCompuesto(),item.getCantidad());
-								i++;
+								if(item.getCartillaDiariaId() != null && item.getId() != null) { // Modificar
+									if(item.getCantidadModificar() != null) {
+										db.update("update detalle_cartilla_diaria set cantidad=?+cantidad where id=? and cartilla_diaria_id=?",item.getCantidadModificar(),item.getId(), item.getCartillaDiariaId());
+									}
+								} else { // Adicionar
+									db.update(sqlString, obj.getId(),i,det.getId(),subdet.getId(),item.getProductoId(),item.getPrecioIndividual(),item.getPrecioCompuesto(),item.getCantidad());
+									i++;
+								}
 							}
 						} else {
 							throw new RuntimeException("Lista Productos nula");
@@ -128,13 +136,12 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 			if(obj != null && UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
 				sqlString = "update cartilla_diaria set usuario_id=? where id=?";
 				boolean update = db.update(sqlString, obj.getUsuarioId(), obj.getId()) > 0;
-				db.update("delete from detalle_cartilla_diaria where cartilla_diaria_id = ?", obj.getId());
+//				db.update("delete from detalle_cartilla_diaria where cartilla_diaria_id = ?", obj.getId());
 				adicionarDetalles(obj);
 				return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 			} else {
 				return new DataResponse(false, "No se encontro detalles de la cartilla");
 			}
-
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorMod(ENTITY, ""));
@@ -165,16 +172,19 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
-					sqlString = "select dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";
+					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";
 					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), cartillaDiariaId);
 					if(UtilClass.isNotNullEmpty(productoList)) {
 						for(ProductoCartillaForm pro: productoList) {
 							for (DetalleCartillaForm det: detalleCartillaFormList) {
 								if(det.getId() == pro.getDetalleCartillaSucursalId() && det.getCartillaSucursalId() == pro.getCartillaSucursalId()) {
 									if(det.getProductos()!= null) {
-										det.getProductos().add(pro);;
+										det.getProductos().add(pro);
+
 									} else {
-										det.setProductos(Arrays.asList(pro));
+										List<ProductoCartillaForm> aux = new ArrayList<>();
+										aux.add(pro);
+										det.setProductos(aux);
 									}
 									break;
 								}
