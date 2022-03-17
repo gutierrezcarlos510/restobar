@@ -4,8 +4,6 @@ import net.resultadofinal.micomercial.mappers.CompraMapper;
 import net.resultadofinal.micomercial.mappers.DetallecompraMapper;
 import net.resultadofinal.micomercial.model.Compra;
 import net.resultadofinal.micomercial.model.DetalleCompra;
-import net.resultadofinal.micomercial.model.contable.AsientoContable;
-import net.resultadofinal.micomercial.model.contable.UtilAsientoContable;
 import net.resultadofinal.micomercial.model.wrap.HistorialCompraProducto;
 import net.resultadofinal.micomercial.util.DbConeccion;
 import net.resultadofinal.micomercial.util.Fechas;
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +25,6 @@ import java.util.List;
 public class CompraImpl extends DbConeccion implements CompraS {
 	
 	private JdbcTemplate db;
-	@Autowired
-	private CuentaContableS cuentaContableS;
-	@Autowired
-	private AsientoContableS asientoS;
 	@Autowired
 	public CompraImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
@@ -89,7 +81,6 @@ public class CompraImpl extends DbConeccion implements CompraS {
 			logger.info("adicionar header: "+c.getCod_per()+" | "+c.getCod_pro()+" | "+fecha+" | "+c.getObs_com()+" | "+c.getSubtotCom()+" | "+c.getTot_com()+" | "+c.getDes_com()+" | "+c.getGes_gen()+" | "+c.getCod_suc());
 			logger.info("adicionar detalles: "+codPro+" | "+preDetcom+" | "+canDetcom+" | "+desDetcom+" | "+subtotDetcom+" | "+totDetcom);
 			Long codCompra = db.queryForObject("select compra_adicionar(?,?,?,?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\');",Long.class,c.getCod_per(),c.getCod_pro(),fecha,c.getObs_com(),c.getSubtotCom(),c.getTot_com(),c.getDes_com(),c.getGes_gen(),c.getCod_suc());
-			registroAsientoContable(c, descuentos, codCompra);
 			return true;
 		} catch (Exception e) {
 			logger.error("error al adicionarCompra="+e.toString());
@@ -105,26 +96,7 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		}
 		return des;
 	}
-	private void registroAsientoContable(Compra c, Float descuentos[], Long codCompra) {
-		UtilAsientoContable utilAsiento = new UtilAsientoContable();
-		AsientoContable asiento = new AsientoContable();
-		Float totalDescuentoDetalle = sumatoriaDescuentoDetalle(descuentos);
-		asiento.setGesGen(c.getGes_gen());
-		asiento.setCodSuc(c.getCod_suc());
-		asiento.setCreatedBy(c.getUsuario());
-		asiento.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		asiento.setFecha(java.sql.Date.valueOf(LocalDate.now()));
-		asiento.setConcepto("Registro de compra realizada #"+codCompra);
-		if (c.getDes_com() != null && (c.getDes_com()+totalDescuentoDetalle) > 0f) {
-			utilAsiento.addDetalle(cuentaContableS.obtenerCuentaCompra(), (c.getTot_com()+(c.getDes_com()+totalDescuentoDetalle)), true);
-			utilAsiento.addDetalle(1, c.getTot_com(), false);//Por el momento la cuenta de donde se descontara sera: Caja
-			utilAsiento.addDetalle(cuentaContableS.obtenerCuentaDescuentoPorCompra(),(totalDescuentoDetalle+c.getDes_com()), false);// Agregamos un detalle para el descuento de la compra
-		} else {// Si no se encuentra el descuento de la compra, se registra en base al detalle de arqueo
-			utilAsiento.addTransactionSimple(cuentaContableS.obtenerCuentaCompra(),cuentaContableS.obtenerCuentaCajaDiaria(), c.getSubtotCom());
-		}
-		asientoS.adicionar(asiento, utilAsiento.getVectorCuenta(), utilAsiento.getVectorDebe(),
-				utilAsiento.getVectorHaber());
-	}
+
 	public Boolean eliminar(Long cod_com,Boolean est){
 		try {
 			logger.info("eliminar: "+cod_com+"  "+est);

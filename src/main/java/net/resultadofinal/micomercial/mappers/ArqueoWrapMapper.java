@@ -11,15 +11,15 @@ public class ArqueoWrapMapper implements RowMapper<ArqueoWrap> {
 	@Override
 	public ArqueoWrap mapRow(ResultSet rs, int ind) throws SQLException {
 		ArqueoWrap obj = new ArqueoWrap();
-		obj.setCodArqcaj(rs.getLong("cod_arqcaj"));
-		obj.setTingresos(rs.getFloat("tingresos"));
-		obj.setTegresos(rs.getFloat("tegresos"));
-		obj.setTbanco(rs.getFloat("tbanco"));
-		obj.setMontoReal(rs.getFloat("monto_real"));
+		obj.setId(rs.getLong("id"));
+		obj.setTingresos(rs.getBigDecimal("tingresos"));
+		obj.setTegresos(rs.getBigDecimal("tegresos"));
+		obj.setTbanco(rs.getBigDecimal("tbanco"));
+		obj.setMontoReal(rs.getBigDecimal("monto_real"));
 		obj.setEsActivo(rs.getBoolean("es_activo"));
 		obj.setXusuario(rs.getString("xusuario"));
-		obj.setFinicio(rs.getString("finicio"));
-		obj.setFfinal(rs.getString("ffinal"));
+		obj.setFinicio(rs.getTimestamp("finicio"));
+		obj.setFfinal(rs.getTimestamp("ffinal"));
 		return obj;
 	}
 

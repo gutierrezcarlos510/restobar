@@ -14,7 +14,6 @@ import java.util.Map;
 public interface ArqueoCajaS {
 	DataTableResults<ArqueoCaja> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion);
 	DataTableResults<DetalleArqueo> listadoDetalles(HttpServletRequest request, boolean estado,Long arqueo);
-	Map<String, Object> obtener(Long cod);
 	ArqueoCaja arqueocaja_verificar_sesion_actual(Long cod, Integer sucursal);
 	List<DetalleArqueo> obtenerDetallexArqueoCaja(Long cod);
 	Map<String, Object> obtenerDetalle(Integer cod_detarq, Long cod_arqcaj);
@@ -25,10 +24,7 @@ public interface ArqueoCajaS {
 	Float obtenertotal(Long cod);
 	Integer adicionarDetalle(DetalleArqueo d);
 	ArqueoTotal obtenerTotal(Long codArqCaj);
-	boolean existeArqueInicialGestion(int gestion, int sucursal);
-	ArqueoCaja obtenerArqueoInicial(int gestion, int sucursal);
 	boolean eliminarDetalle(Long codArqcaj, Integer codDetArq);
-	Boolean cerrarCajaInicial(ArqueoCaja ac);
 	boolean registrarArqueoAsiento(Long codArqueo, Long codAsiento);
 	ArqueoCaja obtenerCaja(Long codArq);
 	List<DetalleArqueo> obtenerDetallexArqueoCajaAgrupado(Long cod);

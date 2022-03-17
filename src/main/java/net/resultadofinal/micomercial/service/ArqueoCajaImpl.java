@@ -1,11 +1,9 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.mappers.ArqueoWrapMapper;
-import net.resultadofinal.micomercial.mappers.DetallearqueoMapper;
 import net.resultadofinal.micomercial.model.ArqueoCaja;
 import net.resultadofinal.micomercial.model.ArqueoTotal;
 import net.resultadofinal.micomercial.model.DetalleArqueo;
-import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.wrap.ArqueoWrap;
 import net.resultadofinal.micomercial.model.wrap.CompraVentaWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
@@ -21,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -44,17 +43,14 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	private UtilDataTableS utilDataTableS;
 	public DataTableResults<ArqueoCaja> listado(HttpServletRequest request, boolean estado,Long xuser, int xgestion) {
 		try {
-			SqlBuilder sqlBuilder = new SqlBuilder("arqueocaja ac");
-			sqlBuilder.setSelect("cod_arqcaj,del_arqcaj,cusini_arqcaj,fini_arqcaj,monini_arqcaj,ffin_arqcaj,monfin_arqcaj,");
-			sqlBuilder.setSelectConcat("est_arqcaj,monrea_arqcaj,ges_gen,des_arqcaj,cusfin_arqcaj,cod_suc,cod_asiento,");
-			sqlBuilder.setSelectConcat("cast(concat(p1.nom_per,' ',p1.priape_per,' ',p1.segape_per) as varchar(100)) delegado,");
-			sqlBuilder.setSelectConcat("cast(concat(p2.nom_per,' ',p2.priape_per,' ',p2.segape_per) as varchar(100)) custodio_inicial,");
-			sqlBuilder.setSelectConcat("cast(concat(p3.nom_per,' ',p3.priape_per,' ',p3.segape_per) as varchar(100)) custodio_final,");
-			sqlBuilder.setSelectConcat("cast(to_char(fini_arqcaj,'dd/MM/yyyy hh:mm') as varchar(25)) fechai,cast(to_char(ffin_arqcaj,'dd/MM/yyyy hh:mm') as varchar(25)) fechaf");
-			sqlBuilder.addJoin("persona p1 on p1.cod_per=ac.del_arqcaj");
-			sqlBuilder.addJoin("persona p2 on p2.cod_per=ac.cusini_arqcaj");
-			sqlBuilder.addLeftJoin("persona p3 on p3.cod_per=ac.cusfin_arqcaj");
-			sqlBuilder.setWhere("ac.est_arqcaj=:xestado and (ac.cusini_arqcaj=:xuser or :xuser=-1) and ac.ges_gen=:xgestion");
+			SqlBuilder sqlBuilder = new SqlBuilder("arqueo ac");
+			sqlBuilder.setSelect("ac.*cast(concat(p1.nom_per,' ',p1.priape_per,' ',p1.segape_per) as varchar(100)) xdelegado,");
+			sqlBuilder.setSelectConcat("cast(concat(p2.nom_per,' ',p2.priape_per,' ',p2.segape_per) as varchar(100)) xcustodio_inicial,");
+			sqlBuilder.setSelectConcat("cast(concat(p3.nom_per,' ',p3.priape_per,' ',p3.segape_per) as varchar(100)) xcustodio_final");
+			sqlBuilder.addJoin("persona p1 on p1.cod_per=ac.delegado_id");
+			sqlBuilder.addJoin("persona p2 on p2.cod_per=ac.custodio_inicial_id");
+			sqlBuilder.addLeftJoin("persona p3 on p3.cod_per=ac.custodio_final_id");
+			sqlBuilder.setWhere("ac.estado=:xestado and (ac.custodio_inicial_id=:xuser or :xuser=-1) and ac.gestion=:xgestion");
 			sqlBuilder.addParameter("xestado",estado);
 			sqlBuilder.addParameter("xuser",xuser);
 			sqlBuilder.addParameter("xgestion",xgestion);
@@ -65,35 +61,29 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public DataTableResults<DetalleArqueo> listadoDetalles(HttpServletRequest request, boolean estado,Long arqueo) {
 		try {
-			SqlBuilder sqlBuilder = new SqlBuilder("detallearqueo");
-			sqlBuilder.setSelect("*,cast(to_char(fec_detarq,'dd/MM/yyyy hh:mm:ss') as varchar(25)) fecha");
-			sqlBuilder.setWhere("est_detarq=:xestado and cod_arqcaj= :xcod");
+			SqlBuilder sqlBuilder = new SqlBuilder("detalle_arqueo da");
+			sqlBuilder.setSelect("da.*");
+			sqlBuilder.setWhere("da.estado=:xestado and da.arqueo_id= :xcod");
 			sqlBuilder.addParameter("xestado", estado);
 			sqlBuilder.addParameter("xcod", arqueo);
 			return utilDataTableS.list(request, DetalleArqueo.class, sqlBuilder);
 		} catch (Exception e) {
-			return null;
-		}
-	}
-	public Map<String, Object> obtener(Long cod){
-		try {
-			sqlString = "select * from arqueocaja_obtener(?)";
-			sqlString += asObjectAdd(asArqueoCaja,"delegado varchar(100),custodio_inicial varchar(100),custodio_final varchar(100),fechai varchar(25),fechaf varchar(25)");
-			Map<String, Object> arqueocaja=db.queryForMap(sqlString,cod);
-			arqueocaja.put("detalles", obtenerDetallexArqueoCaja(cod));
-			arqueocaja.put("total", obtenertotal(cod));
-			return arqueocaja;
-		} catch (Exception e) {
-			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			e.printStackTrace();
 			return null;
 		}
 	}
 	@Override
-	public ArqueoCaja obtenerCaja(Long codArq) {
+	public ArqueoCaja obtenerCaja(Long id) {
 		try {
-			sqlString = "select * from arqueocaja_obtener(?)";
-			sqlString += asObjectAdd(asArqueoCaja,"delegado varchar(100),custodio_inicial varchar(100),custodio_final varchar(100),fechai varchar(25),fechaf varchar(25)");
-			List<ArqueoCaja> arqueoList = db.query(sqlString, new BeanPropertyRowMapper<ArqueoCaja>(ArqueoCaja.class), codArq);
+			SqlBuilder sqlBuilder = new SqlBuilder("arqueo a");
+			sqlBuilder.setSelect("a.*,cast(concat(p1.nom_per,' ',p1.priape_per,' ',p1.segape_per) as varchar(100)) xdelegado,");
+			sqlBuilder.setSelectConcat("cast(concat(p2.nom_per,' ',p2.priape_per,' ',p2.segape_per) as varchar(100)) custodio_inicial,");
+			sqlBuilder.setSelectConcat("cast(concat(p3.nom_per,' ',p3.priape_per,' ',p3.segape_per) as varchar(100)) custodio_final");
+			sqlBuilder.addJoin("persona p1 on p1.cod_per=ac.delegado_id");
+			sqlBuilder.addJoin("persona p2 on p2.cod_per=ac.custodio_inicial_id");
+			sqlBuilder.addLeftJoin("persona p3 on p3.cod_per=ac.custodio_final_id");
+			sqlBuilder.setWhere("id=?");
+			List<ArqueoCaja> arqueoList = db.query(sqlBuilder.generate(), new BeanPropertyRowMapper<ArqueoCaja>(ArqueoCaja.class), id);
 			return UtilClass.isNotNullEmpty(arqueoList)?arqueoList.get(0):null;
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
@@ -105,7 +95,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 			String sql = "select * from arqueocaja_verificar_sesion_actual(?,?)"+asObjectAdd(asArqueoCaja,"delegado varchar(100),custodio_inicial varchar(100),custodio_final varchar(100),fechai varchar(25),fechaf varchar(25)");
 			ArqueoCaja arqueoCaja=db.queryForObject(sql,new BeanPropertyRowMapper<ArqueoCaja>(ArqueoCaja.class),codPer,sucursal);
 			if(arqueoCaja!=null)
-			arqueoCaja.setDetalles(obtenerDetallexArqueoCaja(arqueoCaja.getCod_arqcaj()));
+			arqueoCaja.setDetalles(obtenerDetallexArqueoCaja(arqueoCaja.getId()));
 			return arqueoCaja;
 		} catch (Exception e) {
 			logger.error(Utils.errorGet("verificacion actual de "+ENTITY, e.toString()));
@@ -124,7 +114,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	@Override
 	public List<DetalleArqueo> obtenerDetallexArqueoCajaAgrupado(Long cod){
 		try {
-			sqlString = "select tip_detarq,cod_subcuenta,sum(mon_detarq) mon_detarq from detallearqueo where cod_arqcaj = ? and est_detarq =true group by tip_detarq,cod_subcuenta";
+			sqlString = "select tipo,subcuenta_id,sum(monto) monto from detallearqueo where arqueo_id = ? and estado =true group by tipo,subcuenta_id";
 			return db.query(sqlString,new BeanPropertyRowMapper<DetalleArqueo>(DetalleArqueo.class),cod);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet("detalles agrupados de "+ENTITY, e.toString()));
@@ -137,7 +127,8 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Long iniciar(ArqueoCaja ac){
 		try {
-			return db.queryForObject("select arqueocaja_iniciar(?,?,?,?,?,?);",Long.class,ac.getDel_arqcaj(),ac.getCusini_arqcaj(),ac.getMonini_arqcaj(),ac.getGes_gen(),ac.getDes_arqcaj(),ac.getCod_suc());
+			return db.queryForObject("select arqueocaja_iniciar(?,?,?,?,?,?);",Long.class,ac.getDelegadoId(),ac.getCustodioInicialId(),ac.getMontoInicial(),
+					ac.getGestion(),ac.getDescripcion(),ac.getSucursalId());
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd("iniciar "+ENTITY, e.toString()));
 			return -1L;
@@ -145,8 +136,9 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Boolean modificar(ArqueoCaja ac){
 		try {
-			logger.info("modificar: "+ac.getDel_arqcaj()+" | "+ac.getCusini_arqcaj()+" | "+ac.getMonini_arqcaj()+" | "+ac.getGes_gen()+" | "+ac.getDes_arqcaj()+" | "+ac.getCod_arqcaj()+" | "+ac.getCod_suc());
-			return db.queryForObject("select arqueocaja_modificar(?,?,?,?,?,?,?);",Boolean.class,ac.getDel_arqcaj(),ac.getCusini_arqcaj(),ac.getMonini_arqcaj(),ac.getGes_gen(),ac.getDes_arqcaj(),ac.getCod_arqcaj(),ac.getCod_suc());
+//			logger.info("modificar: "+ac.getDel_arqcaj()+" | "+ac.getCusini_arqcaj()+" | "+ac.getMonini_arqcaj()+" | "+ac.getGes_gen()+" | "+ac.getDes_arqcaj()+" | "+ac.getCod_arqcaj()+" | "+ac.getCod_suc());
+			return db.queryForObject("select arqueocaja_modificar(?,?,?,?,?,?,?);",Boolean.class,ac.getDelegadoId(),ac.getCustodioInicialId(),
+					ac.getMontoInicial(),ac.getGestion(),ac.getDescripcion(),ac.getId(),ac.getSucursalId());
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));
 			return false;
@@ -154,8 +146,9 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Boolean cerrar(ArqueoCaja ac){
 		try {
-			logger.info("cerrar: "+ac.getCusfin_arqcaj()+" | "+ac.getMonfin_arqcaj()+" | "+ac.getDes_arqcaj()+" | "+ac.getMonrea_arqcaj()+" | "+ac.getCod_arqcaj());
-			return db.queryForObject("select arqueocaja_cerrar(?,?,?,?,?);",Boolean.class,ac.getCusfin_arqcaj(),ac.getMonfin_arqcaj(),ac.getDes_arqcaj(),ac.getMonrea_arqcaj(),ac.getCod_arqcaj());
+//			logger.info("cerrar: "+ac.getCusfin_arqcaj()+" | "+ac.getMonfin_arqcaj()+" | "+ac.getDes_arqcaj()+" | "+ac.getMonrea_arqcaj()+" | "+ac.getCod_arqcaj());
+			return db.queryForObject("select arqueocaja_cerrar(?,?,?,?,?);",Boolean.class,ac.getCustodioFinalId(),ac.getMontoFinal(),
+					ac.getDescripcion(),ac.getMontoReal(),ac.getId());
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd("cerrar "+ENTITY, e.toString()));
 			return false;
@@ -163,7 +156,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Boolean darEstado(Long cod,Boolean est,Long cod_per){
 		try {
-			logger.info("darEstado: "+cod+" | "+est+" | "+cod_per);
+//			logger.info("darEstado: "+cod+" | "+est+" | "+cod_per);
 			return db.queryForObject("select arqueocaja_darestado(?,?,?);",Boolean.class,cod,est,cod_per);
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
@@ -179,8 +172,9 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Integer adicionarDetalle(DetalleArqueo d){
 		try {
-			logger.info("adicionarDetalle: "+d.getCod_arqcaj()+" | "+d.getTip_detarq()+" | "+d.getDes_detarq()+" | "+d.getMon_detarq()+" | "+d.getCodSubcuenta());
-			return db.queryForObject("select detallearqueo_adicionar(?,?,?,?,?);",Integer.class,d.getCod_arqcaj(),d.getTip_detarq(),d.getDes_detarq(),d.getMon_detarq(),d.getCodSubcuenta());
+//			logger.info("adicionarDetalle: "+d.getCod_arqcaj()+" | "+d.getTip_detarq()+" | "+d.getDes_detarq()+" | "+d.getMon_detarq()+" | "+d.getCodSubcuenta());
+			return db.queryForObject("select detallearqueo_adicionar(?,?,?,?,?);",Integer.class,d.getId(),d.getTipo(),
+					d.getDescripcion(),d.getMonto(),d.getSubcuentaId());
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd("detalles de "+ENTITY, e.toString()));
 			return -1;
@@ -194,36 +188,11 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 					"(select coalesce(sum(mon_detarq),0) from detallearqueo d where d.cod_arqcaj=a.cod_arqcaj and d.tip_detarq=1) tegresos," + 
 					"(select coalesce(sum(mon_detarq),0) from detallearqueo d where d.cod_arqcaj=a.cod_arqcaj and d.tip_detarq=8) tventas," + 
 					"(select coalesce(sum(mon_detarq),0) from detallearqueo d where d.cod_arqcaj=a.cod_arqcaj and d.tip_detarq=4) tcompras " + 
-					"from arqueocaja a where a.cod_arqcaj = ?;";
+					"from arqueo a where a.cod_arqcaj = ?;";
 			return db.queryForObject(sqlString, new BeanPropertyRowMapper<ArqueoTotal>(ArqueoTotal.class), codArqCaj);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet("total de "+ENTITY, e.toString()));
 			return null;
-		}
-	}
-	@Override
-	public ArqueoCaja obtenerArqueoInicial(int gestion, int sucursal) {
-		try {
-			logger.info("obtenerArqueoInicial: "+ gestion+" | "+sucursal);
-			sqlString = "select a.*,(p1.nom_per||' '||p1.priape_per||' '||p1.segape_per) ::varchar(100) delegado,(p2.nom_per||' '||p2.priape_per||' '||p2.segape_per)::varchar(100) custodio_inicial," +
-					"(p3.nom_per||' '||p3.priape_per||' '||p3.segape_per)::varchar(100) custodio_final,to_char(fini_arqcaj,'dd/MM/yyyy hh:mm')::varchar(25) fechai," +
-					"to_char(ffin_arqcaj,'dd/MM/yyyy hh:mm')::varchar(25) fechaf from arqueocaja a " +
-					"inner join persona p1 on p1.cod_per=a.del_arqcaj inner join persona p2 on p2.cod_per=a.cusini_arqcaj left join persona p3 on p3.cod_per=a.cusfin_arqcaj " +
-					"where a.cod_suc = ? and a.ges_gen = ? and a.est_arqcaj = true order by a.cod_arqcaj asc limit 1;";
-			return db.queryForObject(sqlString,mapperToArqueoCaja(),sucursal, gestion);
-		}catch (Exception e) {
-			logger.error(Utils.errorGet("inicio de "+ENTITY, e.toString()));
-			return null;
-		}
-	}
-	@Override
-	public boolean existeArqueInicialGestion(int gestion, int sucursal) {
-		General gestionAnterior = generalS.existeGestionAnterior(gestion, sucursal);
-		if(gestionAnterior != null) {//Existe una gestion anterior recuperar almacen compras, prestamos bancarios 
-			return true;
-		}else {
-			ArqueoCaja arqueoInicial = obtenerArqueoInicial(gestion, sucursal);
-			return arqueoInicial !=null;
 		}
 	}
 	@Override
@@ -243,14 +212,14 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 			List<DetalleArqueo> lista = obtenerDetallexArqueoCaja(codArqcaj);
 			if(lista != null) {//Existe datos
 				int cuentas[]=new int[lista.size()];
-				float debes[]=new float[lista.size()];
-				float haberes[]=new float[lista.size()];
+				BigDecimal debes[]=new BigDecimal[lista.size()];
+				BigDecimal haberes[]=new BigDecimal[lista.size()];
 				int ind=0;
 				for (DetalleArqueo det : lista) {
-					if(det.getCodSubcuenta()!=null) {
-						cuentas[ind]=det.getCodSubcuenta();
-						debes[ind]=det.getTip_detarq()==1?det.getMon_detarq():0f;
-						haberes[ind]=det.getTip_detarq()==0?det.getMon_detarq():0f;
+					if(det.getSubcuentaId()!=null) {
+						cuentas[ind]=det.getSubcuentaId();
+						debes[ind] = det.getTipo() == (short)1?det.getMonto():new BigDecimal(0);
+						haberes[ind]=det.getTipo()==(short)0?det.getMonto():new BigDecimal(0);
 						ind++;
 					}
 				}
@@ -265,21 +234,10 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 		}
 	}
 	@Override
-	@Transactional
-	public Boolean cerrarCajaInicial(ArqueoCaja ac){
-		try {
-			logger.info("cerrarCajaInicial: "+ac.getCusfin_arqcaj()+" | "+ac.getMonfin_arqcaj()+" | "+ac.getDes_arqcaj()+" | "+ac.getMonrea_arqcaj()+" | "+ac.getCod_arqcaj()+" | "+ac.getCodAsiento());
-			return db.queryForObject("select arqueocaja_cerrar_caja_inicial(?,?,?,?,?,?);",Boolean.class,ac.getCusfin_arqcaj(),ac.getMonfin_arqcaj(),ac.getDes_arqcaj(),ac.getMonrea_arqcaj(),ac.getCod_arqcaj(),ac.getCodAsiento());
-		} catch (Exception e) {
-			logger.error(Utils.errorAdd("cierre de "+ENTITY, e.toString()));
-			throw new RuntimeException("error al cerrar ArqueoCaja Inicial="+e.toString());
-		}
-	}
-	@Override
 	public boolean registrarArqueoAsiento(Long codArqueo,Long codAsiento) {
 		try {
-			logger.info("registrarArqueoAsiento: "+codArqueo+" | "+codAsiento);
-			db.update("update arqueocaja set cod_asiento=? where cod_arqcaj=?",codAsiento,codArqueo);
+//			logger.info("registrarArqueoAsiento: "+codArqueo+" | "+codAsiento);
+			db.update("update arqueo set cod_asiento=? where id=?",codAsiento,codArqueo);
 			return true;
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
@@ -346,7 +304,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	@Override
 	public ArqueoCaja obtenerUltimaCajaPorUsuario(Long codUsuario, Integer sucursal){
 		try {
-			String sql = "SELECT ac.* FROM arqueocaja ac where ac.cod_arqcaj = (select coalesce(max(a2.cod_arqcaj),0) from arqueocaja a2 where a2.del_arqcaj = ? and a2.cod_suc = ? and a2.est_arqcaj=true);";
+			String sql = "SELECT ac.* FROM arqueo ac where ac.cod_arqcaj = (select coalesce(max(a2.cod_arqcaj),0) from arqueocaja a2 where a2.del_arqcaj = ? and a2.cod_suc = ? and a2.est_arqcaj=true);";
 			List<ArqueoCaja> arqueoList = db.query(sql, new BeanPropertyRowMapper<ArqueoCaja>(ArqueoCaja.class),codUsuario, sucursal);
 			return UtilClass.isNotNullEmpty(arqueoList)?arqueoList.get(0):null;
 		} catch (Exception e) {
@@ -356,7 +314,7 @@ public class ArqueoCajaImpl extends DbConeccion implements ArqueoCajaS {
 	}
 	public Boolean rehabilitarArqueo(Long cod){
 		try {
-			db.update("update arqueocaja set (cusfin_arqcaj,ffin_arqcaj,monfin_arqcaj)=(null,null,null) where cod_arqcaj=?;",cod);
+			db.update("update arqueo set (cusfin_arqcaj,ffin_arqcaj,monfin_arqcaj)=(null,null,null) where cod_arqcaj=?;",cod);
 			return true;
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));

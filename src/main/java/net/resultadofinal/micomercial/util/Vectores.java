@@ -1,5 +1,7 @@
 package net.resultadofinal.micomercial.util;
 
+import java.math.BigDecimal;
+
 public class Vectores {
 	public String convertir_Int_a_String(Integer vec[]){
 		String cad="{";
@@ -29,6 +31,13 @@ public class Vectores {
 			cad+=vec[i]+",";
 		} 
 				
+		return cad.substring(0, cad.length()-1)+"}";
+	}
+	public String convertirBigDecimalString(BigDecimal vec[]){
+		String cad="{";
+		if(vec.length==0)return "{}";
+		for (int i = 0; i < vec.length; i++)
+			cad+=vec[i].toString()+",";
 		return cad.substring(0, cad.length()-1)+"}";
 	}
 }

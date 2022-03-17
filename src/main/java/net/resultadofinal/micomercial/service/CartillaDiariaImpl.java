@@ -1,5 +1,6 @@
 package net.resultadofinal.micomercial.service;
 
+import net.resultadofinal.micomercial.enumeration.HistoricoE;
 import net.resultadofinal.micomercial.model.CartillaDiaria;
 import net.resultadofinal.micomercial.model.DetalleCartillaDiaria;
 import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -33,6 +35,8 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	public CartillaDiariaImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
 	}
+	@Autowired
+	private AlmacenS almacenS;
 	private static final Logger logger = LoggerFactory.getLogger(CartillaDiariaImpl.class);
 	private static final String ENTITY = "CartillaDiaria";
 	private String sqlString;
@@ -110,10 +114,13 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 							for(ProductoCartillaForm item : subdet.getProductos()) {
 								if(item.getCartillaDiariaId() != null && item.getId() != null) { // Modificar
 									if(item.getCantidadModificar() != null) {
-										db.update("update detalle_cartilla_diaria set cantidad=?+cantidad where id=? and cartilla_diaria_id=?",item.getCantidadModificar(),item.getId(), item.getCartillaDiariaId());
+										db.update("update detalle_cartilla_diaria set cantidad=?+cantidad where id=? and cartilla_diaria_id=?",
+												item.getCantidadModificar(),item.getId(), item.getCartillaDiariaId());
+										almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidadModificar(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
 									}
 								} else { // Adicionar
 									db.update(sqlString, obj.getId(),i,det.getId(),subdet.getId(),item.getProductoId(),item.getPrecioIndividual(),item.getPrecioCompuesto(),item.getCantidad());
+									almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidad(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
 									i++;
 								}
 							}
@@ -150,8 +157,12 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	
 	
 	@Override
+	@Transactional
 	public DataResponse darEstado(Integer id, Boolean estado) {
 		try {
+//			if(!estado) { // Se va a Eliminar, FALTA PROCESAR
+//
+//			}
 			sqlString = "update cartilla_diaria set estado = ? where id=?";
 			boolean update = db.update(sqlString, estado, id) > 0;
 			return estado ? Utils.getResponseDataAct(ENTITY, update) : Utils.getResponseDataEli(ENTITY, update);

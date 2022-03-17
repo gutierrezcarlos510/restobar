@@ -11,20 +11,20 @@ public class ArqueocajaMapper implements RowMapper<ArqueoCaja> {
 	@Override
 	public ArqueoCaja mapRow(ResultSet rs, int rowNum)throws SQLException{
 		ArqueoCaja arqueocaja = new ArqueoCaja();
-		arqueocaja.setCod_arqcaj(rs.getLong("cod_arqcaj")); 
-		arqueocaja.setDel_arqcaj(rs.getLong("del_arqcaj")); 
-		arqueocaja.setCusini_arqcaj(rs.getLong("cusini_arqcaj")); 
-		arqueocaja.setFini_arqcaj(rs.getString("fini_arqcaj")); 
-		arqueocaja.setMonini_arqcaj(rs.getFloat("monini_arqcaj")); 
-		arqueocaja.setFfin_arqcaj(rs.getString("ffin_arqcaj")); 
-		arqueocaja.setMonfin_arqcaj(rs.getFloat("monfin_arqcaj")); 
-		arqueocaja.setEst_arqcaj(rs.getBoolean("est_arqcaj")); 
-		arqueocaja.setMonrea_arqcaj(rs.getFloat("monrea_arqcaj")); 
-		arqueocaja.setGes_gen(rs.getInt("ges_gen")); 
-		arqueocaja.setDes_arqcaj(rs.getString("des_arqcaj")); 
-		arqueocaja.setCusfin_arqcaj(rs.getLong("cusfin_arqcaj")); 
-		arqueocaja.setCod_suc(rs.getInt("cod_suc")); 
-		arqueocaja.setCodAsiento(rs.getLong("cod_asiento")); 
+		arqueocaja.setId(rs.getLong("id"));
+		arqueocaja.setDelegadoId(rs.getLong("delegado_id"));
+		arqueocaja.setCustodioInicialId(rs.getLong("custodio_inicial_id"));
+		arqueocaja.setFinicio(rs.getTimestamp("finicio"));
+		arqueocaja.setMontoInicial(rs.getBigDecimal("monto_inicial"));
+		arqueocaja.setFfin(rs.getTimestamp("ffin"));
+		arqueocaja.setMontoFinal(rs.getBigDecimal("monto_final"));
+		arqueocaja.setEstado(rs.getBoolean("estado"));
+		arqueocaja.setMontoReal(rs.getBigDecimal("monto_real"));
+		arqueocaja.setGestion(rs.getInt("gestion"));
+		arqueocaja.setDescripcion(rs.getString("descripcion"));
+		arqueocaja.setCustodioFinalId(rs.getLong("custodio_final_id"));
+		arqueocaja.setSucursalId(rs.getInt("sucursal_id"));
+		arqueocaja.setAsientoId(rs.getLong("asiento_id"));
 		return arqueocaja;
 }
 }

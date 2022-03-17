@@ -122,7 +122,7 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 	@Override
 	public List<CartillaSucursalForm> listarPorSucursal(Integer sucursalId) {
 		try {
-			List<CartillaSucursalForm> lista = db.query("select * from cartilla_sucursal where cod_suc = ?", BeanPropertyRowMapper.newInstance(CartillaSucursalForm.class), sucursalId);
+			List<CartillaSucursalForm> lista = db.query("select * from cartilla_sucursal where cod_suc = ? and estado=true;", BeanPropertyRowMapper.newInstance(CartillaSucursalForm.class), sucursalId);
 			if(lista != null && !lista.isEmpty()) {
 				sqlString = "select dcs.cartilla_sucursal_id,dcs.id,dcs.tipo_producto_id,es_preparado,es_comerciable,dcs.precio,tp.nombre as xtipo_producto from detalle_cartilla_sucursal dcs inner join cartilla_sucursal cs on cs.estado=true and cs.id = dcs.cartilla_sucursal_id  and cs.cod_suc = ? inner join tipo_producto tp on dcs.tipo_producto_id = tp.id";
 				List<DetalleCartillaForm> detalles = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), sucursalId);

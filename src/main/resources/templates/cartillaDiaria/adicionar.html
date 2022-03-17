@@ -78,15 +78,17 @@
     }
     function obtenerProductoCreado(cartillaId, detalleCartillaId,productoId){
         let productFound = null;
-        dataReq.cartillaDiaria.cartillaSucursalFormList.forEach(det => {
-            if(det.id === cartillaId) {
-                det.detalleCartillaList.forEach(subdet => {
-                    if (subdet.id === detalleCartillaId) {
-                        productFound = subdet.productos.find(it => it.productoId === productoId);
-                    }
-                });
-            }
-        });
+        if(dataReq.cartillaDiaria.cartillaSucursalFormList && dataReq.cartillaDiaria.cartillaSucursalFormList.length > 0) {
+            dataReq.cartillaDiaria.cartillaSucursalFormList.forEach(det => {
+                if(det.id === cartillaId) {
+                    det.detalleCartillaList.forEach(subdet => {
+                        if (subdet.id === detalleCartillaId) {
+                            productFound = subdet.productos.find(it => it.productoId === productoId);
+                        }
+                    });
+                }
+            });
+        }
         return productFound;
     }
     function eliminarCategoria(id){

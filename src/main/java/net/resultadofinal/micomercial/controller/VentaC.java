@@ -35,8 +35,6 @@ public class VentaC {
 	@Autowired
 	private TipoProductoS tipoProductoS;
 	@Autowired
-	private CuentaContableS cuentaContableS;
-	@Autowired
 	private DataSource datasource;
 	@RequestMapping("gestion")
 	public String gestion(HttpServletRequest request,Model model){
@@ -89,7 +87,6 @@ public class VentaC {
 	public String adicionar(Model model,Boolean isMobil){
 		model.addAttribute("clientes",clienteS.listAll());
 		model.addAttribute("tipos",tipoProductoS.listAll(-1));
-		model.addAttribute("cuentas",cuentaContableS.listarBancos(true));
 		if(isMobil != null && isMobil){
 			return "venta/adicionar-mobil";
 		} else {

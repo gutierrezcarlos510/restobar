@@ -92,7 +92,7 @@
                 $('.eliminar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
                     alertEliminacion('Eliminar Detalle', 'Esta seguro de eliminar: '+ obj.nombre, function(){
-                        $.post('../cartillaSucursal/eliminar',{'id':obj.id }, function(resp){
+                        $.post('../cartillaDiaria/eliminar',{'id':obj.id }, function(resp){
                             finishTransaction(resp, function(){
                                 $('.modal').modal('hide');
                                 $('#tabla').dataTable().fnDraw('page');

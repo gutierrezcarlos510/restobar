@@ -2,115 +2,129 @@ package net.resultadofinal.micomercial.model;
 
 import net.resultadofinal.micomercial.util.TableRow;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 public class DetalleArqueo extends TableRow {
-	private Integer cod_detarq,tip_detarq,codSubcuenta;
-	private Long cod_arqcaj;
-	private String des_detarq,fec_detarq,fecha;
-	private Float mon_detarq;
-	private Boolean est_detarq;
-	public String getFecha() {
+	private Integer id,subcuentaId;
+	private Short tipo;
+	private Long arqueoId;
+	private String descripcion;
+	private Timestamp fecha;
+	private BigDecimal monto;
+	private Boolean estado;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getSubcuentaId() {
+		return subcuentaId;
+	}
+
+	public void setSubcuentaId(Integer subcuentaId) {
+		this.subcuentaId = subcuentaId;
+	}
+
+	public void setTipo(Short tipo) {
+		this.tipo = tipo;
+	}
+	public Short getTipo() {
+		return tipo;
+	}
+	public Long getArqueoId() {
+		return arqueoId;
+	}
+
+	public void setArqueoId(Long arqueoId) {
+		this.arqueoId = arqueoId;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Timestamp getFecha() {
 		return fecha;
 	}
-	public void setFecha(String fecha) {
+
+	public void setFecha(Timestamp fecha) {
 		this.fecha = fecha;
 	}
-	public Integer getCodSubcuenta() {
-		return codSubcuenta;
+
+	public BigDecimal getMonto() {
+		return monto;
 	}
-	public void setCodSubcuenta(Integer codSubcuenta) {
-		this.codSubcuenta = codSubcuenta;
+
+	public void setMonto(BigDecimal monto) {
+		this.monto = monto;
 	}
-	public Long getCod_arqcaj() {
-		return cod_arqcaj;
+
+	public Boolean getEstado() {
+		return estado;
 	}
-	public void setCod_arqcaj(Long cod_arqcaj) {
-		this.cod_arqcaj = cod_arqcaj;
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
 	}
-	public Integer getCod_detarq() {
-		return cod_detarq;
-	}
-	public void setCod_detarq(Integer cod_detarq) {
-		this.cod_detarq = cod_detarq;
-	}
-	public Integer getTip_detarq() {
-		return tip_detarq;
-	}
-	public void setTip_detarq(Integer tip_detarq) {
-		this.tip_detarq = tip_detarq;
-	}
-	public String getDes_detarq() {
-		return des_detarq;
-	}
-	public void setDes_detarq(String des_detarq) {
-		this.des_detarq = des_detarq;
-	}
-	public String getFec_detarq() {
-		return fec_detarq;
-	}
-	public void setFec_detarq(String fec_detarq) {
-		this.fec_detarq = fec_detarq;
-	}
-	public Float getMon_detarq() {
-		return mon_detarq;
-	}
-	public void setMon_detarq(Float mon_detarq) {
-		this.mon_detarq = mon_detarq;
-	}
-	public Boolean getEst_detarq() {
-		return est_detarq;
-	}
-	public void setEst_detarq(Boolean est_detarq) {
-		this.est_detarq = est_detarq;
-	}
-	public String getTipo() {
-		if(tip_detarq!=null) {
-			if(tip_detarq == 1)
+
+	public String getXtipo() {
+		if(tipo!=null) {
+			if(tipo == 1)
 				return "Egreso de caja";
-			if(tip_detarq == 2)
+			if(tipo == 2)
 				return "Pago ayudante x inscripcion";
-			if(tip_detarq == 3)
+			if(tipo == 3)
 				return "Pago ayudante x prestacion";
-			if(tip_detarq == 4)
+			if(tipo == 4)
 				return "Compra";
-			if(tip_detarq == 5)
+			if(tipo == 5)
 				return "Ingreso a caja";
-			if(tip_detarq == 6)
+			if(tipo == 6)
 				return "Ingreso de incripcion";
-			if(tip_detarq == 7)
+			if(tipo == 7)
 				return "Ingreso de prestacion";
-			if(tip_detarq == 8)
+			if(tipo == 8)
 				return "Venta";
-			if(tip_detarq == 9)
+			if(tipo == 9)
 				return "Caja General";
-			if(tip_detarq == 10)
+			if(tipo == 10)
 				return "Banco General";
-			if(tip_detarq == 11)
+			if(tipo == 11)
 				return "Muebles de oficina";
-			if(tip_detarq == 12)
+			if(tipo == 12)
 				return "Inmuebles o propiedades";
-			if(tip_detarq == 13)
+			if(tipo == 13)
 				return "Otros activos";
-			if(tip_detarq == 14)
+			if(tipo == 14)
 				return "Prestamos bancarios";
-			if(tip_detarq == 15)
+			if(tipo == 15)
 				return "Otros pasivos";
-			if(tip_detarq == 16)
+			if(tipo == 16)
 				return "Ingreso general";
-			if(tip_detarq == 17)
+			if(tipo == 17)
 				return "Egreso general";
-			if(tip_detarq == 18)
+			if(tipo == 18)
 				return "Descuento por venta";
-			if(tip_detarq == 19)
+			if(tipo == 19)
 				return "Descuento por compra";
-			if(tip_detarq == 20)
+			if(tipo == 20)
 				return "Venta con pago bancario";
-			if(tip_detarq == 21)
+			if(tipo == 21)
 				return "Devolucion por incumplimiento de prestacion";
-			if(tip_detarq == 22)
+			if(tipo == 22)
 				return "Pago prestacion de servicio con banco";
-			if(tip_detarq == 23)
+			if(tipo == 23)
 				return "Ingreso por multas cobradas";
-			if(tip_detarq == 24)
+			if(tipo == 24)
 				return "Devolucion con deposito bancario";
 			return "";
 		}else {

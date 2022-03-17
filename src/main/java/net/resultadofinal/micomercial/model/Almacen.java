@@ -3,6 +3,15 @@ package net.resultadofinal.micomercial.model;
 public class Almacen {
     private Long productoId;
     private Integer sucursalId, cantidad;
+    private String xproducto;
+
+    public String getXproducto() {
+        return xproducto;
+    }
+
+    public void setXproducto(String xproducto) {
+        this.xproducto = xproducto;
+    }
 
     public Long getProductoId() {
         return productoId;
