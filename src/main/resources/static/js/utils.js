@@ -70,7 +70,7 @@ var UtilBrowser = {
     }
 }
 var UtilDate = {
-    formaDateLiteral: function(valueFecha){
+    formatDateLiteral: function(valueFecha){
         if(valueFecha) {
             let fecha = moment(valueFecha).format('LLL');
             return fecha.substring(0,fecha.length-6);

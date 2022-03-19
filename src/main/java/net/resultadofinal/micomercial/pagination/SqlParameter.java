@@ -26,6 +26,10 @@ public class SqlParameter {
 		this.etiqueta = etiqueta;
 		this.value = value.toString();
 	}
+	public SqlParameter(String etiqueta, Short value) {
+		this.etiqueta = etiqueta;
+		this.value = value.toString();
+	}
 	private String etiqueta;
 	private String value;
 	public String getEtiqueta() {

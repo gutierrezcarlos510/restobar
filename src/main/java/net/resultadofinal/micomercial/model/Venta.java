@@ -1,130 +1,169 @@
 package net.resultadofinal.micomercial.model;
 
-import net.resultadofinal.micomercial.util.TableRow;
-
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-public class Venta extends TableRow {
-	private Long codVen,codPer,codCli,codArqcaj;
-	private Integer gesGen,codDetarq,tipVen,codSuc;
-	private String fecVen,obsVen;
-	private Float totVen,desVen,subtotVen;
-	private Boolean estVen;
-	private String usuario,cliente,fecha;
+public class Venta  {
+	private Long id,usuarioId,clienteId,arqueoId;
+	private Integer gestion,detalleArqueoId,sucursalId;
+	private Short tipo;
+	private String obs;
+	private Date fecha;
+	private BigDecimal total,descuento,subtotal;
+	private Boolean estado;
+	private String xusuario,xcliente;
 	private List<DetalleVenta> detalles;
-	private Integer codSubcuenta;
-	public Long getCodVen() {
-		return codVen;
+
+	public Long getId() {
+		return id;
 	}
-	public void setCodVen(Long codVen) {
-		this.codVen = codVen;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public Long getCodPer() {
-		return codPer;
+
+	public Long getUsuarioId() {
+		return usuarioId;
 	}
-	public void setCodPer(Long codPer) {
-		this.codPer = codPer;
+
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
 	}
-	public Long getCodCli() {
-		return codCli;
+
+	public Long getClienteId() {
+		return clienteId;
 	}
-	public void setCodCli(Long codCli) {
-		this.codCli = codCli;
+
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
 	}
-	public Long getCodArqcaj() {
-		return codArqcaj;
+
+	public Long getArqueoId() {
+		return arqueoId;
 	}
-	public void setCodArqcaj(Long codArqcaj) {
-		this.codArqcaj = codArqcaj;
+
+	public void setArqueoId(Long arqueoId) {
+		this.arqueoId = arqueoId;
 	}
-	public Integer getGesGen() {
-		return gesGen;
+
+	public Integer getGestion() {
+		return gestion;
 	}
-	public void setGesGen(Integer gesGen) {
-		this.gesGen = gesGen;
+
+	public void setGestion(Integer gestion) {
+		this.gestion = gestion;
 	}
-	public Integer getCodDetarq() {
-		return codDetarq;
+
+	public Integer getDetalleArqueoId() {
+		return detalleArqueoId;
 	}
-	public void setCodDetarq(Integer codDetarq) {
-		this.codDetarq = codDetarq;
+
+	public void setDetalleArqueoId(Integer detalleArqueoId) {
+		this.detalleArqueoId = detalleArqueoId;
 	}
-	public Integer getTipVen() {
-		return tipVen;
+
+	public Integer getSucursalId() {
+		return sucursalId;
 	}
-	public void setTipVen(Integer tipVen) {
-		this.tipVen = tipVen;
+
+	public void setSucursalId(Integer sucursalId) {
+		this.sucursalId = sucursalId;
 	}
-	public Integer getCodSuc() {
-		return codSuc;
-	}
-	public void setCodSuc(Integer codSuc) {
-		this.codSuc = codSuc;
-	}
-	public String getFecVen() {
-		return fecVen;
-	}
-	public void setFecVen(String fecVen) {
-		this.fecVen = fecVen;
-	}
-	public String getObsVen() {
-		return obsVen;
-	}
-	public void setObsVen(String obsVen) {
-		this.obsVen = obsVen;
-	}
-	public Float getTotVen() {
-		return totVen;
-	}
-	public void setTotVen(Float totVen) {
-		this.totVen = totVen;
-	}
-	public Float getDesVen() {
-		return desVen;
-	}
-	public void setDesVen(Float desVen) {
-		this.desVen = desVen;
-	}
-	public Float getSubtotVen() {
-		return subtotVen;
-	}
-	public void setSubtotVen(Float subtotVen) {
-		this.subtotVen = subtotVen;
-	}
-	public Boolean getEstVen() {
-		return estVen;
-	}
-	public void setEstVen(Boolean estVen) {
-		this.estVen = estVen;
-	}
-	public String getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-	public String getCliente() {
-		return cliente;
-	}
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
-	}
-	public String getFecha() {
+
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setFecha(String fecha) {
+
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+
+	public String getXusuario() {
+		return xusuario;
+	}
+
+	public void setXusuario(String xusuario) {
+		this.xusuario = xusuario;
+	}
+
+	public String getXcliente() {
+		return xcliente;
+	}
+
+	public void setXcliente(String xcliente) {
+		this.xcliente = xcliente;
+	}
+
 	public List<DetalleVenta> getDetalles() {
 		return detalles;
 	}
+
 	public void setDetalles(List<DetalleVenta> detalles) {
 		this.detalles = detalles;
 	}
-	public Integer getCodSubcuenta() {
-		return codSubcuenta;
+
+	public BigDecimal getTotal() {
+		return total;
 	}
-	public void setCodSubcuenta(Integer codSubcuenta) {
-		this.codSubcuenta = codSubcuenta;
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
+
+	public BigDecimal getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public Short getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Short tipo) {
+		this.tipo = tipo;
+	}
+	public String getXtipo(){
+		if(tipo != null) {
+			switch (tipo) {
+				case 1:
+					return "Activo";
+				case 2:
+					return "Finalizado";
+				case 3:
+					return "Revertido";
+				default:
+					return "";
+			}
+		} else {
+			return "";
+		}
 	}
 }

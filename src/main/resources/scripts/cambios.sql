@@ -414,4 +414,178 @@ END
 $function$
 ;
 
+CREATE OR REPLACE FUNCTION public.arqueocaja_iniciar(del bigint, cusini bigint, monini real, ges integer, des character varying, suc integer)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod bigint;
+BEGIN
+	cod:=(select coalesce(max(id),0)+1 from arqueo);
+	insert into arqueo(id,delegado_id,custodio_inicial_id,finicio,monto_inicial ,gestion,descripcion,sucursal_id)
+	values(cod,del,cusini,now(),monini,ges,des,suc);
+	RETURN cod;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+				RETURN -1;
+END
+$function$
+;
 
+CREATE OR REPLACE FUNCTION public.arqueocaja_obtenertotal(cod bigint)
+ RETURNS numeric
+ LANGUAGE plpgsql
+AS $function$
+declare inicial numeric(10,2):=0;
+ingresos numeric(10,2):=0;
+egresos numeric(10,2):=0;
+BEGIN
+	ingresos:=(select coalesce(sum(monto),0)
+from detalle_arqueo
+where estado=true and arqueo_id=cod and tipo in (5,6,7,8,9,10,13,16));
+  egresos:=(select coalesce(sum(monto),0) from detalle_arqueo
+ where estado=true and arqueo_id=cod and tipo in (1,2,3,4,14,15,17,21));
+	inicial:=(select monto_inicial from arqueo where id=cod)+ingresos-egresos;
+	return inicial ;
+END$function$
+;
+
+
+
+
+CREATE OR REPLACE FUNCTION public.venta_adicionar(p_usuario bigint, p_cliente bigint, p_obs character varying,
+p_tot numeric(10,2), p_des numeric(10,2), p_gestion integer, p_suc integer, p_subtot numeric(10,2),
+productos bigint[], precios numeric(10,2)[], cantidades integer[], descuentos numeric(10,2)[],
+subtotales numeric(10,2)[], totales numeric(10,2)[],compuestos boolean[])
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+DECLARE v_cod bigint;
+v_indice int:=1;
+v_tam int:=array_length(productos,1);
+v_arqueo bigint;
+v_detalle_arqueo int2;
+v_monto numeric(10,2):=0;
+v_tipo_detalle_arqueo int2:=8;
+BEGIN
+	while v_indice<=tam
+	loop
+		v_monto := v_monto+descuentos[v_indice];
+		v_indice := v_indice+1;
+	end loop;
+	v_cod:=(select coalesce(max(id),0)+1 from venta);
+	v_arqueo:=(select coalesce(max(id),0) from arqueo where ac.delegado_id=p_usuario and ac.sucursal_id = p_suc and ac.custodio_final_id is null and ac.estado=true);
+	if(v_arqueo = 0) then
+		return -2;
+	end if;
+	v_detalle_arqueo:=(select detalle_arqueo_adicionar(v_arqueo, v_tipo_detalle_arqueo,'Por ingreso de venta.',p_tot));
+	insert into venta(id,usuario_id,cliente_id,fecha,obs,subtotal,total,descuento ,gestion ,arqueo_id ,detalle_arqueo_id ,sucursal_id)
+	values(v_cod,p_usuario,p_cliente,now(),obs,p_subtot,p_tot,p_des,gestion,v_arqueo,v_detalle_arqueo);
+	v_indice:=1;
+	while v_indice<=tam
+	loop
+		insert into detalle_venta(venta_id,id,producto_id,precio,cantidad,descuento,subtotal,total,es_compuesto)
+	values(v_cod,v_indice,productos[v_indice],precios[v_indice],cantidades[indice],descuentos[v_indice],subtotales[v_indice],totales[v_indice],compuestos[v_indice]);
+		update almacen set cantidad=cantidad-cantidades[v_indice] where producto_id=productos[v_indice] and sucursal_id = p_suc;
+		v_indice=v_indice+1;
+	end loop;
+	RETURN v_cod;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+	RETURN -1;
+END
+$function$
+;
+
+
+
+
+CREATE OR REPLACE FUNCTION public.detalle_arqueo_adicionar(p_arqueo bigint, p_tipo int2, p_descripcion character varying, p_monto numeric(10,2))
+ RETURNS int2
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod int2;
+BEGIN
+		cod:=(select COALESCE(max(id),0)+1 from detalle_arqueo where arqueo_id=p_arqueo);
+		insert into detalle_arqueo(arqueo_id, id,tipo,descripcion,monto,fecha) values(p_arqueo,cod,p_tipo,p_descripcion,p_monto,now());
+	RETURN cod;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+	RETURN -1;
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.venta_eliminar(cod bigint)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE v_producto int8;
+DECLARE v_cantidad int4;
+DECLARE v_sucursal int4;
+DECLARE v_cursor1 CURSOR FOR select producto_id,cantidad,v.sucursal from detalle_venta dv inner join venta v on v.id = dv.venta_id where venta_id =cod ;
+DECLARE v_arqueo int8;
+DECLARE v_detalle_arqueo int2;
+BEGIN
+	v_arqueo = (select arqueo_id from venta where id = cod);
+	v_detalle_arqueo = (select detalle_arqueo_id from venta where id = cod);
+	update detalle_arqueo set estado=false where arqueo_id=v_arqueo and id = v_detalle_arqueo;
+	OPEN v_cursor1;
+		loop
+		FETCH v_cursor1 INTO v_producto,v_cantidad,v_sucursal;
+			EXIT WHEN NOT FOUND;
+				update almacen set cantidad=cantidad+v_cantidad where producto_id=codigo and sucursal_id=v_sucursal;
+		end loop;
+		close v_cursor1;
+		update venta set est_ven=est where cod_ven=cod;
+		RETURN TRUE;
+END
+$function$
+;
+
+
+CREATE OR REPLACE FUNCTION public.compra_adicionar(cod_usuario bigint, cod_proveedor bigint, fec date, obs character varying,
+subtot numeric(10,2), tot numeric(10,2), des numeric(10,2), gestion integer, suc integer,
+productos int8[], precios numeric(10,2)[], cantidades integer[], descuentos numeric(10,2)[], subtotales numeric(10,2)[], totales numeric(10,2)[])
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod int8;
+indice int:=1;
+tam int:=array_length(productos,1);
+cant_inicial int4;
+cant_final int4;
+monto float:=0;
+BEGIN
+	cod:=(select coalesce(max(cod_com),0)+1 from compra);
+	insert into compra(cod_com,cod_per,cod_pro,fec_com,obs_com,subtot_com,tot_com,des_com,ges_gen,cod_suc) values(cod,cod_usuario,cod_proveedor,fec,obs,subtot,tot,des,gestion,suc);
+	while indice<=tam
+	loop
+		insert into detallecompra(cod_com,cod_detcom,cod_pro,pre_detcom,can_detcom,des_detcom,subtot_detcom ,tot_detcom) values(cod,indice,productos[indice],precios[indice],cantidades[indice],descuentos[indice],subtotales[indice],totales[indice]);
+
+		if exists (select * from almacen where producto_id=productos[indice] and sucursal_id=suc) then
+			cant_inicial := (select cantidad from almacen where producto_id=productos[indice] and sucursal_id=suc);
+			cant_final := cant_inicial + cantidades[indice];
+			update almacen set cantidad=cantidad+cantidades[indice] where producto_id=productos[indice] and sucursal_id = suc;
+		insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+			VALUES(productos[indice], suc, now(),cod_usuario ,cant_inicial , cantidades[indice], cant_final, 1, 'Ingreso por compra de productos por sistema');
+		else
+			cant_inicial := 0;
+			cant_final := cantidades[indice];
+			insert into almacen(producto_id, sucursal_id, cantidad) values(productos[indice],suc, cantidades[i]);
+			insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+			VALUES(productos[indice], suc, now(),cod_usuario ,cant_inicial , cantidades[indice], cant_final, 1, 'Compra de productos por sistema, Primer registro.');
+		end if;
+
+		indice=indice+1;
+	end loop;
+	RETURN cod;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+	RETURN -1;
+END
+$function$
+;

@@ -1,67 +1,84 @@
 package net.resultadofinal.micomercial.model;
 
+import java.math.BigDecimal;
+
 public class DetalleVenta {
-	private Long codVen;
-	private Integer codDetven;
-	private Integer codPro;
-	private Float preDetven;
-	private Integer canDetven;
-	private Float desDetven;
-	private Float subtotDetven;
-	private Float totDetven;
-	private String producto;
-	public String getProducto() {
-		return producto;
+	private Long ventaId;
+	private Short id;
+	private Long productoId;
+	private Integer cantidad;
+	private BigDecimal precio,descuento,subtotal,total;
+	private String xproducto;
+
+	public Long getVentaId() {
+		return ventaId;
 	}
-	public void setProducto(String producto) {
-		this.producto = producto;
+
+	public void setVentaId(Long ventaId) {
+		this.ventaId = ventaId;
 	}
-	public Long getCodVen() {
-		return codVen;
+
+	public Short getId() {
+		return id;
 	}
-	public void setCodVen(Long codVen) {
-		this.codVen = codVen;
+
+	public void setId(Short id) {
+		this.id = id;
 	}
-	public Integer getCodDetven() {
-		return codDetven;
+
+	public Long getProductoId() {
+		return productoId;
 	}
-	public void setCodDetven(Integer codDetven) {
-		this.codDetven = codDetven;
+
+	public void setProductoId(Long productoId) {
+		this.productoId = productoId;
 	}
-	public Integer getCodPro() {
-		return codPro;
+
+	public Integer getCantidad() {
+		return cantidad;
 	}
-	public void setCodPro(Integer codPro) {
-		this.codPro = codPro;
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
 	}
-	public Float getPreDetven() {
-		return preDetven;
+
+	public BigDecimal getPrecio() {
+		return precio;
 	}
-	public void setPreDetven(Float preDetven) {
-		this.preDetven = preDetven;
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
 	}
-	public Integer getCanDetven() {
-		return canDetven;
+
+	public BigDecimal getDescuento() {
+		return descuento;
 	}
-	public void setCanDetven(Integer canDetven) {
-		this.canDetven = canDetven;
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
 	}
-	public Float getDesDetven() {
-		return desDetven;
+
+	public BigDecimal getSubtotal() {
+		return subtotal;
 	}
-	public void setDesDetven(Float desDetven) {
-		this.desDetven = desDetven;
+
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
 	}
-	public Float getSubtotDetven() {
-		return subtotDetven;
+
+	public BigDecimal getTotal() {
+		return total;
 	}
-	public void setSubtotDetven(Float subtotDetven) {
-		this.subtotDetven = subtotDetven;
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
-	public Float getTotDetven() {
-		return totDetven;
+
+	public String getXproducto() {
+		return xproducto;
 	}
-	public void setTotDetven(Float totDetven) {
-		this.totDetven = totDetven;
+
+	public void setXproducto(String xproducto) {
+		this.xproducto = xproducto;
 	}
 }

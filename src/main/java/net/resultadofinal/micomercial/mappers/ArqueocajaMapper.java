@@ -1,16 +1,16 @@
 // ENTITY_java.vm
 package net.resultadofinal.micomercial.mappers;
 
-import net.resultadofinal.micomercial.model.ArqueoCaja;
+import net.resultadofinal.micomercial.model.Arqueo;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ArqueocajaMapper implements RowMapper<ArqueoCaja> {
+public class ArqueocajaMapper implements RowMapper<Arqueo> {
 	@Override
-	public ArqueoCaja mapRow(ResultSet rs, int rowNum)throws SQLException{
-		ArqueoCaja arqueocaja = new ArqueoCaja();
+	public Arqueo mapRow(ResultSet rs, int rowNum)throws SQLException{
+		Arqueo arqueocaja = new Arqueo();
 		arqueocaja.setId(rs.getLong("id"));
 		arqueocaja.setDelegadoId(rs.getLong("delegado_id"));
 		arqueocaja.setCustodioInicialId(rs.getLong("custodio_inicial_id"));

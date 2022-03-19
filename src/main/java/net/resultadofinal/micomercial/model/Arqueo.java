@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ArqueoCaja {
+public class Arqueo {
 	private Long id,delegadoId,custodioInicialId,custodioFinalId,asientoId;
 	private Integer gestion,sucursalId;
 	private String descripcion,xdelegado,xcustodioInicial,xcustodioFinal;

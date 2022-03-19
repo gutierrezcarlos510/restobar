@@ -19,7 +19,7 @@ public class ArqueoWrapMapper implements RowMapper<ArqueoWrap> {
 		obj.setEsActivo(rs.getBoolean("es_activo"));
 		obj.setXusuario(rs.getString("xusuario"));
 		obj.setFinicio(rs.getTimestamp("finicio"));
-		obj.setFfinal(rs.getTimestamp("ffinal"));
+		obj.setFfin(rs.getTimestamp("ffin"));
 		return obj;
 	}
 

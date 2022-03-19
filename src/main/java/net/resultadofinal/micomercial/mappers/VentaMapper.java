@@ -11,30 +11,22 @@ public class VentaMapper implements RowMapper<Venta> {
 	@Override
 	public Venta mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Venta venta = new Venta();
-		venta.setCodVen(rs.getLong("cod_ven"));
-		venta.setCodPer(rs.getLong("cod_per"));
-		venta.setCodCli(rs.getLong("cod_cli"));
-		venta.setFecVen(rs.getString("fec_ven"));
-		venta.setObsVen(rs.getString("obs_ven"));
-		venta.setTotVen(rs.getFloat("tot_ven"));
-		venta.setDesVen(rs.getFloat("des_ven"));
-		venta.setGesGen(rs.getInt("ges_gen"));
-		venta.setEstVen(rs.getBoolean("est_ven"));
-		venta.setCodArqcaj(rs.getLong("cod_arqcaj"));
-		venta.setCodDetarq(rs.getInt("cod_detarq"));
-		venta.setTipVen(rs.getInt("tip_ven"));
-		venta.setCodSuc(rs.getInt("cod_suc"));
-		venta.setSubtotVen(rs.getFloat("subtot_ven"));
-		venta.setUsuario(rs.getString("usuario"));
-		venta.setCliente(rs.getString("cliente"));
-		venta.setFecha(rs.getString("fecha"));
-		venta.setCodSubcuenta(rs.getInt("cod_subcuenta"));
-		if(venta.hasColumn(rs, "rn")) {
-			venta.setRn(rs.getLong("rn"));
-		}
-		if(venta.hasColumn(rs, "tot")) {
-			venta.setTot(rs.getInt("tot"));
-		}
+		venta.setId(rs.getLong("id"));
+		venta.setUsuarioId(rs.getLong("usuario_id"));
+		venta.setClienteId(rs.getLong("cliente_id"));
+		venta.setFecha(rs.getDate("fecha"));
+		venta.setObs(rs.getString("obs"));
+		venta.setTotal(rs.getBigDecimal("total"));
+		venta.setDescuento(rs.getBigDecimal("descuento"));
+		venta.setGestion(rs.getInt("gestion"));
+		venta.setEstado(rs.getBoolean("estado"));
+		venta.setArqueoId(rs.getLong("arqueo_id"));
+		venta.setDetalleArqueoId(rs.getInt("detalle_arqueo_id"));
+		venta.setTipo(rs.getShort("tipo"));
+		venta.setSucursalId(rs.getInt("sucursal_id"));
+		venta.setSubtotal(rs.getBigDecimal("subtotal"));
+		venta.setXusuario(rs.getString("xusuario"));
+		venta.setXcliente(rs.getString("xcliente"));
 		return venta;
 	}
 }

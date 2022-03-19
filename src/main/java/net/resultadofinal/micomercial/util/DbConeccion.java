@@ -9,7 +9,7 @@ public class DbConeccion {
 	public String asRol=" as (cod_rol integer,nom_rol character varying(100),des_rol character varying(1000),est_rol boolean)";
 	public String asTipoProducto=" as (cod_tippro integer,nom_tippro character varying(100),des_tippro character varying(250),est_tippro boolean)";
 	public String asProducto=" as (nom_tippro character varying(100),cod_pro integer,nom_pro character varying(100) ,precom_pro real,preven_pro real,gan_pro real,can_pro integer,est_pro boolean,cod_tippro integer)";
-	public String asCompra=" as (cod_com bigint ,cod_per bigint,cod_pro bigint,fec_com date,obs_com character varying(500),tot_com real,est_com boolean,des_com real,ges_gen integer,cod_arqcaj bigint,cod_detarq integer,cod_suc integer,subtot_com real)";
+	public String asCompra=" as (cod_com bigint ,cod_per bigint,cod_pro bigint,fec_com date,obs_com character varying(500),tot_com numeric(10,2),est_com boolean,des_com numeric(10,2),ges_gen integer,cod_arqcaj bigint,cod_detarq integer,cod_suc integer,subtot_com numeric(10,2))";
 	public String asDetalleCompra=" as (cod_com bigint,cod_detcom integer,cod_pro integer,pre_detcom real,can_detcom integer,des_detcom real)";
 	public String asEmpresa=" as (cod_emp integer,nom_emp character varying(100),dir_emp character varying(100),tel_emp character varying(50),ema_emp character varying(50),est_emp boolean)";
 	public String asProveedor=" as (cod_pro bigint,cod_emp integer,est_pro boolean)";

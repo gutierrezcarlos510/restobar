@@ -17,7 +17,7 @@
 										<legend class="scheduler-border custom-bolder">Resumen de Caja</legend>
                                     <dl class="dl-horizontal h3" id="dataCajaResumen">
                                         <dt>Cod. Caja</dt>
-                                        <dd aria-label="codArqcaj"></dd>
+                                        <dd aria-label="id"></dd>
                                         <dt>Usuario</dt>
                                         <dd aria-label="xusuario"></dd>
                                         <dt>Fecha</dt>
@@ -27,11 +27,11 @@
 	                            <div class="form-group">
 	                                <label>Monto real en caja</label>
 	                                <input type="text" class="form-control text-right" id="monrea_arqcaj" name="monrea_arqcaj" data-fv-notempty="true" data-fv-numeric="true">
-	                                <input type="hidden" name="monfin_arqcaj" id="monfin_arqcaj" />
+	                                <input type="hidden" name="montoFinal" id="montoFinal" />
 	                            </div>
 	                            <div class="form-group">
 	                                <label>Descripcion</label>
-	                                <textarea class="form-control" id="des_arqcaj" name="des_arqcaj" rows="5" placeholder="Ingrese una descripci&oacute;n del cierre de caja" data-fv-notempty="true"></textarea>
+	                                <textarea class="form-control" id="descripcion" name="descripcion" rows="5" placeholder="Ingrese una descripci&oacute;n del cierre de caja" data-fv-notempty="true"></textarea>
 	                            </div>
 	                            <div class="from-group text-right">
 	                            	<div class="form-check">
@@ -60,7 +60,7 @@
                             <h4 class="modal-title">Iniciar Caja Independiente</h4>
                         </div>
                         <div class="modal-body">
-                        <input type="hidden" name="monini_arqcaj" value="0" />
+                        <input type="hidden" name="montoInicial" value="0" />
                             <div class="form-group">
                                 <label>Descripcion</label>
                                 <textarea class="form-control" data-fv-notempty="true">Apertura de caja independiente, por falta de gerente.</textarea>
@@ -181,14 +181,14 @@
             $('#dataCajaResumen').loadJSON(dataArqueo);
             $('#formularioCerrar').loadJSON(dataArqueo);
             $('#monfin_arqcaj').val(dataArqueo.totalSistema);
-            $('#cod_arqcaj').val(dataArqueo.codArqcaj);
+            $('#cod_arqcaj').val(dataArqueo.id);
             $('#modalCerrar').modal('show');
         });
 
         $('#checkObservacion').click(function(){
     		if($("#checkObservacion").is(':checked')){
-    			$("#des_arqcaj").val($("#checkObservacion").val());  // checked
-    			$('#formularioCerrar').data('formValidation').enableFieldValidators('des_arqcaj',true).revalidateField('des_arqcaj');
+    			$("#descripcion").val($("#checkObservacion").val());  // checked
+    			$('#formularioCerrar').data('formValidation').enableFieldValidators('descripcion',true).revalidateField('descripcion');
     		}
     	});
         $('#formulario').formValidation({

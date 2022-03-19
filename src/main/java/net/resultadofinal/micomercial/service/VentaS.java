@@ -2,16 +2,26 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.DetalleVenta;
 import net.resultadofinal.micomercial.model.Venta;
+import net.resultadofinal.micomercial.pagination.DataTableResults;
+import net.resultadofinal.micomercial.util.DataResponse;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface VentaS {
-	List<Venta> listar(int start, boolean estado, String search, int length, Long cod_per, String fini, String ffin, Integer gestion, Integer sucursal);
-	Venta obtener(Long cod_ven);
-	List<DetalleVenta> obtenerDetalle(Long cod_ven);
-	Boolean adicionar(Venta v, Integer productos[], Integer cantidades[], Float precios[], Float descuentos[], Float subtotales[], Float totales[]);
-	Boolean adicionarVentaSimple(Integer cod_pro,Long cod_per,Integer gestion,Float precio, Integer cod_suc);
-	Boolean adicionarVentaSimpleManual(Integer cod_pro,Long cod_per,Integer gestion,Float precio,Integer cant,Float total, Integer cod_suc);
-	Boolean eliminar(Long cod_ven,Boolean est);
-	Venta obtenerPorArqueoCaja(Long codArqcaj, Integer codDet);
+    DataTableResults<Venta> listado(HttpServletRequest request, boolean estado, Long xuser, int xsucursal,Short tipo);
+
+    Venta obtener(Long codVen);
+
+    List<DetalleVenta> obtenerDetalle(Long ventaId);
+
+    @Transactional
+    DataResponse adicionar(Venta v, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]);
+
+    @Transactional
+    Boolean eliminar(Long ventaId);
+
+    Venta obtenerPorArqueoCaja(Long arqueoId, Integer detalleArqueoId);
 }

@@ -10,13 +10,13 @@
                             <h4 class="modal-title">Finalizar Caja</h4>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" id="cod_arqcaj1" name="cod_arqcaj" />
+                            <input type="hidden" name="id" />
                             <div class="form-group">
                                 <label class="control-label col-md-4">Monto Final</label>
                                 <div class="col-md-8">
                                     <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="text" class="form-control text-right" id="monfin_arqcaj" name="monfin_arqcaj" data-fv-notempty="true" data-fv-numeric="true" readonly="readonly">
+                                    <input type="text" class="form-control text-right" name="totalSistema" data-fv-notempty="true" data-fv-numeric="true" readonly="readonly">
                                     </div>
                                 </div>
                             </div>
@@ -25,14 +25,14 @@
                                 <div class="col-md-8">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                        <input type="text" class="form-control text-right" id="monrea_arqcaj" name="monrea_arqcaj" data-fv-notempty="true" data-fv-numeric="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        <input type="text" class="form-control text-right" name="montoReal" data-fv-notempty="true" data-fv-numeric="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-4">Descripcion</label>
                                 <div class="col-md-8">
-                                <textarea class="form-control" id="des_arqcaj1" name="des_arqcaj" data-fv-notempty="true"></textarea>
+                                <textarea class="form-control" name="descripcion" data-fv-notempty="true"></textarea>
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Descripcion</label>
-                                <textarea class="form-control" id="descripcion1" name="descripcion" data-fv-notempty="true">Apertura de caja, sin novedad.</textarea>
+                                <textarea class="form-control" name="descripcion" data-fv-notempty="true">Apertura de caja, sin novedad.</textarea>
                             </div>
 
                         </div>
@@ -167,9 +167,8 @@
             <thead>
                 <tr>
                     <th class="all">C&oacute;digo</th>
-                    <th class="desktop">Fecha</th>
+                    <th class="desktop">F. Inicio</th>
                     <th class="desktop">Usuario Cajero</th>
-                    <th class="none">Fecha de inicio</th>
                     <th class="none">Fecha de fin</th>
                     <th class="none">Gesti&oacute;n</th>
                     <th class="none">Observaciones</th>
@@ -194,7 +193,7 @@
                 text: 'Adicionar',
                 className: "btn-primary btn-block active",
                 action: function(e, dt, node, config) {
-                    $('#del_arqcaj').val('').trigger('chosen:updated');
+                    $('#delegadoId').val('').trigger('chosen:updated');
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
                     $('#modalAdicionar').modal('show');
@@ -212,7 +211,7 @@
             },
             "ordering":true,
             "order": [[0,'desc']],
-            "columnDefs": [{targets:8, className:'text-right'}],
+            "columnDefs": [{targets:7, className:'text-right'}],
             "columns": [{
                 "data": "id","name":"id"
             }, {
@@ -220,20 +219,19 @@
             }, {
                 "data": "xdelegado","name":"xdelegado"
             }, {
-                "data": "finicio","name":"finicio"
-            }, {
                 "data": "ffin","name":"ffin"
             }, {
                 "data": "gestion","name":"gestion"
             }, {
                 "data": "descripcion","name":"descripcion"
             }, {
-                "data": "id","name":"id"
+                "data": "estado","name":"estado"
             }, {
                 "data": "id","name":"id"
             }],
             "createdRow": function(row, data, index) {
                 // $('td', row).eq(4).html(data.tot_arqcaj - data.des_arqcaj);
+                $('td', row).eq(1).html(UtilDate.formatTimestampLiteral(data.finicio));
                 let btnAux = '';
                 let xestado = '';
                 if (!data.custodioFinalId) {
@@ -244,23 +242,24 @@
                     btnAux += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button>';
                 } else {
                 	xestado = '<span class="label label-success">Finalizado</span>';
-                    btnAux+= '<button class="btn bg-aqua-gradient rehabilitar"  data-toggle="tooltip" data-placement="top" title="Rehabilitar asiento"><i class="glyphicon glyphicon-heart"></i><br>Rehabilitar</button>';
+                    btnAux += '<button class="btn bg-aqua-gradient rehabilitar"  data-toggle="tooltip" data-placement="top" title="Rehabilitar asiento"><i class="glyphicon glyphicon-heart"></i><br>Rehabilitar</button>';
                 }
                 if(UtilBrowser.isMobil()){
                     xestado += '<p class="padding-top-md">'+data.xdelegado+'</p><p>'+data.finicio+'</p>';
                 }
-                $('td', row).eq(7).html(xestado);
-                if ($('input[name=estado]:checked').val() == 'true') {
-                    btnAux += '<button class="btn bg-purple ventas"  data-toggle="tooltip" data-placement="top" title="Imprimir ventas"><i class="fa fa-shopping-cart"></i><br>ventas</button><button class="btn btn-info btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.cod_arqcaj + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
-                    $('td', row).eq(8).html('<div class="btn-group '+(UtilBrowser.isMobil()?'btn-group-vertical':'')+' btn-group-xs">' + btnAux + '</div>');
-                } else
-                    $('td', row).eq(8).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>');
+                $('td', row).eq(6).html(xestado);
+                if (data.estado) {
+                    btnAux += '<button class="btn bg-purple ventas"  data-toggle="tooltip" data-placement="top" title="Imprimir ventas"><i class="fa fa-shopping-cart"></i><br>ventas</button><button class="btn btn-info btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
+                    $('td', row).eq(7).html('<div class="btn-group '+(UtilBrowser.isMobil()?'btn-group-vertical':'')+' btn-group-xs">' + btnAux + '</div>');
+                } else {
+                    $('td', row).eq(7).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>');
+                }
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = tablaArqueo.row($(this).closest('tr')).data();
                     alertEliminacion('Eliminar Arqueo', 'Esta seguro de eliminar el arqueo de: '+obj.id +' - '+ obj.xdelegado, function(){
-                        $.post('../arqueocaja/eliminar',{'cod_arqcaj':obj.cod_arqcaj }, function(resp){
+                        $.post('../arqueocaja/eliminar',{'arqueoId':obj.id }, function(resp){
                             finishTransaction(resp, function(){
                                 $('.modal').modal('hide');
                                 $('#tabla').dataTable().fnDraw('');
@@ -270,8 +269,8 @@
                 });
                 $('.rehabilitar').click(function() {
                     let obj = tablaArqueo.row($(this).closest('tr')).data();
-                    alertAdicion('Rehabilitar Caja', 'Esta seguro de habilitar la caja: '+obj.id,function(){
-                        $.post('../arqueocaja/rehabilitar', {'cod':cod}, function(result) {
+                    alertAdicion('Rehabilitar Caja', 'Esta seguro de habilitar la caja: '+obj.id +' - '+ obj.xdelegado,function(){
+                        $.post('../arqueocaja/rehabilitar', {'arqueoId':obj.id}, function(result) {
                             if (result.status) {
                                 $('#tabla').dataTable().fnDraw('page');
                                 mostrarMensaje('info', 'Se realizo con exito la Transaccion');
@@ -282,31 +281,27 @@
                     });
                 });
                 $('.modificar').click(function() {
+                    let obj = tablaArqueo.row($(this).closest('tr')).data();
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
-                    $.post('../arqueocaja/obtener?cod_arqcaj=' + $(this).data('id'), function(result) {
-                        if (result.status == true) {
-                            $('#cusini_arqcaj1').val(result.data.cusini_arqcaj).trigger('chosen:updated');
-                            $('#del_arqcaj1').val(result.data.del_arqcaj).trigger('chosen:updated');
-                            $('#formularioModificar').loadJSON(result.data);
-                            $('#modalModificar').modal('show');
-                        } else {
-                            mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                        }
-                    }, 'json');
+                    $('#formularioModificar').loadJSON(obj);
+                    $('#custodioInicialId1').val(obj.custodioInicialId).trigger('chosen:updated');
+                    $('#delegadoId1').val(obj.delegadoId).trigger('chosen:updated');
+                    $('#modalModificar').modal('show');
                 });
                 $('.revisar').click(function() {
-                    $.post('../arqueocaja/gestion_detalle?cod_arqcaj=' + $(this).data('id'), function(result) {
+                    let obj = tablaArqueo.row($(this).closest('tr')).data();
+                    $.post('../arqueocaja/gestion_detalle?arqueoId=' + obj.id, function(result) {
                         $('#contenedor').html(result);
                     });
                 });
                 $('.cerrar').click(function() {
+                    let obj = tablaArqueo.row($(this).closest('tr')).data();
                     $('#formularioCerrar').data('formValidation').resetForm();
                     $('#formularioCerrar')[0].reset();
-                    $.post('../arqueocaja/obtener?cod_arqcaj=' + $(this).data('id'), function(result) {
+                    $.post('../arqueocaja/obtenerResumen?arqueoId=' + obj.id, function(result) {
                         if (result.status) {
                             $('#formularioCerrar').loadJSON(result.data);
-                            $('#monfin_arqcaj').val(result.data.total);
                             $('#modalCerrar').modal('show');
                         } else {
                             mostrarMensaje('error', 'No se realizo con exito la Transaccion');
@@ -314,15 +309,13 @@
                     }, 'json');
                 });
                 $('.imprimir').click(function() {
-                	abrirLoad();
-                    $("#frameReportes").attr("src", "../arqueocaja/ver?cod_arqcaj=" + $(this).data('id'));
-                    cerrarLoad();
+                    let obj = tablaArqueo.row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../arqueocaja/ver?arqueoId=" + obj.id);
                     $("#reportes").modal('show');
                 });
                 $('.ventas').click(function() {
-                	abrirLoad();
-                    $("#frameReportes").attr("src", "../arqueocaja/ver_informe_venta?cod_arqcaj=" + $(this).data('id'));
-                    cerrarLoad();
+                    let obj = tablaArqueo.row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../arqueocaja/ver_informe_venta?arqueoId=" + obj.id);
                     $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({

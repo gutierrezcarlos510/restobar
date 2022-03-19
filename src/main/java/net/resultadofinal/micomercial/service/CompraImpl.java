@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -67,22 +68,27 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		}
 	}
 	@Transactional
-	public Boolean adicionar(Compra c, Integer productos[], Integer cantidades[], Float precios[], Float descuentos[], Float subtotales[], Float totales[]){
+	public Boolean adicionar(Compra c, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]){
 		try {
-			Fechas f=new Fechas();
-			Date fecha=f.convertirStringDate(c.getFec_com(), "dd/MM/yyyy");
 			Vectores v=new Vectores();
-			String codPro=v.convertir_Int_a_String(productos);
-			String preDetcom=v.convertir_float_a_String(precios);
+			String codPro=v.convertir_Long_a_String(productos);
+			String preDetcom=v.convertirBigDecimalString(precios);
 			String canDetcom=v.convertir_Int_a_String(cantidades);
-			String desDetcom=v.convertir_float_a_String(descuentos);
-			String subtotDetcom=v.convertir_float_a_String(subtotales);
-			String totDetcom=v.convertir_float_a_String(totales);
-			logger.info("adicionar header: "+c.getCod_per()+" | "+c.getCod_pro()+" | "+fecha+" | "+c.getObs_com()+" | "+c.getSubtotCom()+" | "+c.getTot_com()+" | "+c.getDes_com()+" | "+c.getGes_gen()+" | "+c.getCod_suc());
-			logger.info("adicionar detalles: "+codPro+" | "+preDetcom+" | "+canDetcom+" | "+desDetcom+" | "+subtotDetcom+" | "+totDetcom);
-			Long codCompra = db.queryForObject("select compra_adicionar(?,?,?,?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\');",Long.class,c.getCod_per(),c.getCod_pro(),fecha,c.getObs_com(),c.getSubtotCom(),c.getTot_com(),c.getDes_com(),c.getGes_gen(),c.getCod_suc());
-			return true;
+			String desDetcom=v.convertirBigDecimalString(descuentos);
+			String subtotDetcom=v.convertirBigDecimalString(subtotales);
+			String totDetcom=v.convertirBigDecimalString(totales);
+//			logger.info("adicionar header: "+c.getCod_per()+" | "+c.getCod_pro()+" | "+fecha+" | "+c.getObs_com()+" | "+c.getSubtotCom()+" | "+c.getTot_com()+" | "+c.getDes_com()+" | "+c.getGes_gen()+" | "+c.getCod_suc());
+//			logger.info("adicionar detalles: "+codPro+" | "+preDetcom+" | "+canDetcom+" | "+desDetcom+" | "+subtotDetcom+" | "+totDetcom);
+			sqlString = "select compra_adicionar(?,?,to_date(?,'DD/MM/YYYY'),?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\');";
+			Long codCompra = db.queryForObject(sqlString,Long.class, c.getCod_per(),c.getCod_pro(),c.getFecha(),c.getObs_com(),c.getSubtotCom(),
+					c.getTot_com(),c.getDes_com(),c.getGes_gen(),c.getCod_suc());
+			if(codCompra > 0) {
+				return true;
+			} else {
+				throw new RuntimeException("error al guardar la compra");
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("error al adicionarCompra="+e.toString());
 			return false;
 		}
@@ -97,10 +103,10 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		return des;
 	}
 
-	public Boolean eliminar(Long cod_com,Boolean est){
+	public Boolean eliminar(Long cod_com,Long user){
 		try {
-			logger.info("eliminar: "+cod_com+"  "+est);
-			return db.queryForObject("select compra_eliminar(?,?);",Boolean.class,cod_com,est);
+//			logger.info("eliminar: "+cod_com+"  "+est);
+			return db.queryForObject("select compra_eliminar(?,?);",Boolean.class,cod_com,user);
 		} catch (Exception e) {
 			logger.error("error al eliminar compra="+e.toString());
 			return false;
@@ -123,10 +129,10 @@ public class CompraImpl extends DbConeccion implements CompraS {
 	@Override
 	public List<HistorialCompraProducto> obtenerHistorialCompraProducto(Integer codpro){
 		try {
-			String sqlString = "select to_char(c.fec_com,'DD/MM/YY') xfecha,c.cod_com ,d.pre_detcom from detallecompra d " + 
+			String sqlString = "select to_char(c.fec_com,'DD/MM/YY') xfecha,c.cod_com ,d.pre_detcom from detalle_compra d " +
 					"inner join compra c ON d.cod_com = c.cod_com " + 
 					"where d.cod_pro =? " + 
-					"order by c.fec_com desc";
+					"order by c.fec_com desc limit 10";
 			return db.query(sqlString, new BeanPropertyRowMapper<HistorialCompraProducto>(HistorialCompraProducto.class),codpro);
 		} catch (Exception e) {			
 			throw new RuntimeException("No se logro obtener el historial de las compras del producto");

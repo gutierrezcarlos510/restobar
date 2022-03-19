@@ -26,10 +26,6 @@
                     	<input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
                     </div>
                     <div class="form-group">
-                    	<label>Correo Electronico</label>
-                    	<input type="email" class="form-control" id="ema_per" name="ema_per">
-                    </div>
-                    <div class="form-group">
                     	<label>Genero</label>
                     	<div class="radio">
                     		<label for="masculino"><input type="radio" id="masculino" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
@@ -59,7 +55,7 @@
                     		<div class="col-md-10">
                     		<div class="form-group">
                             	<label>Cliente</label>
-                                <select id="cliente" name="codCli" class="form-control input-lg" data-placeholder="Seleccione..." data-fv-notempty="true">
+                                <select id="clienteId" name="clienteId" class="form-control input-lg" data-placeholder="Seleccione..." data-fv-notempty="true">
 								<option value=""></option>
 								<option th:each="c : ${clientes}" th:value="${c.cod_cli}" th:selected="(${c.cod_cli}==0)" th:text="${c.nom_per} +' '+${c.priape_per} +' '+${c.segape_per}"></option>
 							</select>
@@ -75,25 +71,7 @@
                     	</div>
                     	<div class="col-md-3">
                     		<label class="control-label">Descripci&oacute;n</label>
-                    		<textarea class="form-control" id="obsVen" name="obsVen">Por venta de productos</textarea>
-                    	</div>
-                    	<div class="col-md-2">
-                    		<div class="form-group">
-		                    	<label>Forma de pago</label>
-		                    	<div class="radio">
-		                    		<label for="ventaEfectivo"><input type="radio" id="ventaEfectivo" class="campoFormaPago" name="formapago" value="0" data-fv-notempty="true" checked="checked"/>En efectivo</label>
-		                    		<label for="ventaBanco"><input type="radio"  id="ventaBanco" class="campoFormaPago" name="formapago" value="1" data-fv-notempty="true"/>Deposito bancario</label>
-		                    	</div>
-		                    </div>
-                    	</div>
-                    	<div class="col-md-3">
-                    		<div class="form-group" style="display: none" id="areaSubcuenta">
-		                    	<label for="codSubcuenta">Deposito bancario</label>
-		                    	<select name="codSubcuenta" id="codSubcuenta" class="form-control select-chosen">
-		                    		<option value="">Seleccionar</option>
-		                    		<option th:each="c : ${cuentas}" th:value="${c.codSubcuenta}" th:text="${c.nombre}"></option>
-		                    	</select>
-		                    </div>
+                    		<textarea class="form-control" id="obs" name="obs">Por venta de productos</textarea>
                     	</div>
                     </div>
                 </form>
@@ -103,17 +81,6 @@
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-body">
-                    <form id="formulario4" name="formulario4" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-                    <div class="form-group">
-                        <label class="col-md-8 control-label">Ingresar c&oacute;digo de barra</label>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
-                                <input type="text" autocomplete="off" class="form-control text-right" id="barcode" name="barcode" data-fv-notempty="true">
-                            </div>
-                        </div>
-                    </div>
-                    </form>
                 <label class="control-label"><a class="text-primary" href="#" id="btnModalProducto">&gt;&gt;&gt; Seleccionar producto &lt;&lt;&lt;</a></label>
                     <form id="formulario2" name="formulario2" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="form-group">
@@ -179,7 +146,7 @@
                                 <tr>
                                     <td class="w3-right-align" colspan="3">Subtotal</td>
                                     <td>
-                                    <input type="text" id="subtotal" class="form-control input-xs text-right" name="subtotal" value="0" readonly="readonly">
+                                    <input type="text" id="subtotal" class="form-control input-xs text-right" name="subtotalDetalle" value="0" readonly="readonly">
                                     </td>
                                     <td>
                                     <input type="text" id="subdescuento" class="form-control input-xs text-right" name="subdescuento" value="0" readonly="readonly">
@@ -189,7 +156,7 @@
                                 <tr class="w3-right-align">
                                     <td colspan="3"  class="w3-right-align">Total + descuento</td>
                                     <td colspan="4">
-                                    <input type="text" id="subtotal-descuento" class="form-control input-xs text-right" readonly="readonly" name="subtotVen" value="0">
+                                    <input type="text" id="subtotal-descuento" class="form-control input-xs text-right" readonly="readonly" name="subtotal" value="0">
                                     </td>
                                 </tr>
                                 <tr  class="w3-right-align">

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +98,8 @@ public class CompraC {
 
 	@RequestMapping("guardar")
 	public @ResponseBody
-    DataResponse guardar(HttpServletRequest request, Model model, Compra c, Integer productos[],
-                         Integer cantidades[], Float precios[], Float descuentos[], Float subtotales[], Float totales[])
+    DataResponse guardar(HttpServletRequest request, Compra c, Long productos[],
+						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[])
 			throws IOException {
 		try {
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
@@ -125,7 +126,8 @@ public class CompraC {
     DataResponse eliminar(HttpServletRequest request, Model model, Long cod_com)
 			throws IOException {
 		try {
-			boolean status = compraS.eliminar(cod_com, false);
+			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			boolean status = compraS.eliminar(cod_com, usuario.getCod_per());
 			return new DataResponse(status, status ? "Se realizo con exito la eliminacion de la compra"
 					: "No se logro realizar la elimnacion de la compra");
 		} catch (Exception e) {

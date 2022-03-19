@@ -45,7 +45,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="control-label">Fecha:</label>
-                            <input type="text" id="fec_com" name="fec_com" class="form-control fec text-right" th:value="${actual}" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true" data-fv-date data-fv-date-format="DD/MM/YYYY"
+                            <input type="text" id="fec_com" name="fecha" class="form-control fec text-right" th:value="${actual}" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true" data-fv-date data-fv-date-format="DD/MM/YYYY"
                                    data-fv-date-separator="/">
                         </div>
                     </div>
@@ -65,7 +65,16 @@
             <div class="panel-body form-horizontal">
                 <form id="formBuscar" name="formBuscar" method="post" action="#" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="btn-group btn-group-justified padding-top-sm">
+                                <label class="btn btn-sm btn-primary active tipoRadio"> <input
+                                        type="radio" name="tipoRadio" value="1" title="Mostrar productos" checked> Productos
+                                </label> <label class="btn btn-sm btn-danger tipoRadio" title="Mostrar insumos"> <input
+                                    type="radio" name="tipoRadio" value="2"> Insumos
+                            </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" id="inputBuscar" autocomplete="off" name="inputBuscar" class="form-control" placeholder="Buscar producto...">
@@ -85,11 +94,9 @@
                         <tr>
                             <th class="all">C&oacute;digo</th>
                             <th class="all">Nombre</th>
-                            <th class="none">Tipo</th>
-                            <th class="none">Cantidad</th>
-                            <th class="none">P. Compra</th>
-                            <th class="none">Ganancia</th>
-                            <th class="none">P. Venta</th>
+                            <th class="all">Tipo de producto</th>
+                            <th class="none">Precio Costo por Unidad</th>
+                            <th class="none">Precio Costo por Caja</th>
                             <th class="all">Sel</th>
                         </tr>
                         </thead>
@@ -213,7 +220,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="none">
 function alertAdicion(msgTitle, msgText, callBackSuccess){
 	swalWithBootstrapButtons.fire({
 		  title: msgTitle,
@@ -289,32 +296,31 @@ function calcularTotal() {
             "pagingType": "simple",
             "ajax": {
                 "type": "POST",
-                "url": "../producto/lista",
+                "url": "../producto/listar",
                 "data": function(d) {
                     d.estado = true;
+                    d.grupo = $('input[name=tipoRadio]:checked').val();
                 }
             },
+            "ordering":true,
+            "order":[[0,'desc']],
             "columnDefs":[
-                {targets: [7],className:'text-right'}],
+                {targets: [5],className:'text-right'}],
             "columns": [{
-                "data": "cod_pro"
+                "data": "id", "name":"id"
             }, {
-                "data": "nom_pro"
+                "data": "nombre", "name":"nombre"
             }, {
-                "data": "nom_tippro"
+                "data": "xtipo", "name":"xtipo"
             }, {
-                "data": "can_pro"
+                "data": "pcUnit", "name":"pc_unit"
             }, {
-                "data": "precom_pro"
+                "data": "pcCaja", "name":"pc_caja"
             }, {
-                "data": "gan_pro"
-            }, {
-                "data": "preven_pro"
-            }, {
-                "data": "cod_pro"
+                "data": "id", "name":"id"
             }],
             "createdRow": function(row, data, index) {
-                $('td', row).eq(7).html('<a href="#" class="btn btn-xs btn-primary seleccionado" ><i class="fa fa-arrow-circle-right"></i></a>');
+                $('td', row).eq(5).html('<a href="#" class="btn btn-xs btn-primary seleccionado" ><i class="fa fa-arrow-circle-right"></i></a>');
             },
             "drawCallback": function(settings) {
                 $('.seleccionado').click(function() {
@@ -322,7 +328,7 @@ function calcularTotal() {
                     let existe = false;
                     $('#productoSeleccionado').html('');
                     $('.listaProductos').each(function() {
-                        if(parseInt($(this).val()) == obj.cod_pro){
+                        if(parseInt($(this).val()) == obj.id){
                             existe = true;
                         }
                     });
@@ -332,12 +338,12 @@ function calcularTotal() {
                         modalAlert('Invalido', 'El producto ya se encuentra en detalle', 'error');
                     }else{
                         productSelected = obj;
-                        $('#productoSeleccionado').html(obj.nom_pro);
-                        $('#nameProductoHistorial').html(obj.nom_pro);
+                        $('#productoSeleccionado').html(obj.nombre);
+                        $('#nameProductoHistorial').html(obj.nombre);
                         $('#tablaHistorial > tbody').html('');
                         $('#areaPrecioUltimaCompra').hide();
                         $('#precioUltimaCompra').html('No se tiene historial de precios del producto');
-                        $.get('../compra/obtenerHistorialCompraProducto/'+obj.cod_pro, function(resp){
+                        $.get('../compra/obtenerHistorialCompraProducto/'+obj.id, function(resp){
                             if(resp.status){
                                 if(resp.data){
                                     resp.data.forEach(function(det,ind){
@@ -362,6 +368,9 @@ function calcularTotal() {
                     }
                 });
             }
+        });
+        $('.tipoRadio').click(function() {
+            $('#tablaSearchProducto').dataTable().fnDraw();
         });
         $('#formBuscar').formValidation({
             locale: 'es_ES'
@@ -461,9 +470,9 @@ function calcularTotal() {
                 if (estado) {
                     $('#unit').remove();
                     var row = $('<tr></tr>');
-                    let xcodpro = productSelected.cod_pro;
+                    let xcodpro = productSelected.id;
                     $('<td class="td-nro"></td>').appendTo(row);
-                    $('<td>' + productSelected.nom_pro + '</td>').appendTo(row);
+                    $('<td>' + productSelected.nombre + '</td>').appendTo(row);
                     $('<td><input type="text" name="cantidades" id="can-'+xcodpro+'" class="form-control input-xs text-right" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#can1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
                     $('<td><input type="text" name="precios" id="pre-'+xcodpro+'" class="form-control input-xs text-right inputDetalle" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#pre1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
                     $('<td><input type="text" name="subtotales" id="subtot-'+xcodpro+'" class="form-control input-xs text-right input-subtot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
@@ -525,14 +534,5 @@ function calcularTotal() {
 
     });
 
-    // function stopRKey(evt) {
-    //     var evt = (evt) ? evt : ((event) ? event : null);
-    //     var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-    //     if (evt.keyCode == 13) {
-    //         $('#adicionar').click();
-    //         return false;
-    //     }
-    // }
-    // document.onkeypress = stopRKey;
 </script>
 </section>

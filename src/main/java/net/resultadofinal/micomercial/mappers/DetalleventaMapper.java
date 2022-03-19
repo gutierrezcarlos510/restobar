@@ -1,4 +1,3 @@
-// ENTITY_java.vm
 package net.resultadofinal.micomercial.mappers;
 
 import net.resultadofinal.micomercial.model.DetalleVenta;
@@ -11,15 +10,14 @@ public class DetalleventaMapper implements RowMapper<DetalleVenta> {
 	@Override
 	public DetalleVenta mapRow(ResultSet rs, int rowNum) throws SQLException {
 		DetalleVenta detalleventa = new DetalleVenta();
-		detalleventa.setCodVen(rs.getLong("cod_ven"));
-		detalleventa.setCodDetven(rs.getInt("cod_detven"));
-		detalleventa.setCodPro(rs.getInt("cod_pro"));
-		detalleventa.setPreDetven(rs.getFloat("pre_detven"));
-		detalleventa.setCanDetven(rs.getInt("can_detven"));
-		detalleventa.setDesDetven(rs.getFloat("des_detven"));
-		detalleventa.setSubtotDetven(rs.getFloat("subtot_detven"));
-		detalleventa.setTotDetven(rs.getFloat("tot_detven"));
-		detalleventa.setProducto(rs.getString("producto"));
+		detalleventa.setVentaId(rs.getLong("venta_id"));
+		detalleventa.setId(rs.getShort("id"));
+		detalleventa.setProductoId(rs.getLong("producto_id"));
+		detalleventa.setPrecio(rs.getBigDecimal("precio"));
+		detalleventa.setCantidad(rs.getInt("cantidad"));
+		detalleventa.setDescuento(rs.getBigDecimal("descuento"));
+		detalleventa.setSubtotal(rs.getBigDecimal("subtotal"));
+		detalleventa.setTotal(rs.getBigDecimal("total"));
 		return detalleventa;
 	}
 }

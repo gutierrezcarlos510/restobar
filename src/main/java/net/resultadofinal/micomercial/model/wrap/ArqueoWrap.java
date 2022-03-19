@@ -7,7 +7,7 @@ public class ArqueoWrap {
 	private Long id;
 	private BigDecimal tingresos, tegresos, montoReal,tbanco;
 	private String xusuario;
-	private Timestamp finicio,ffinal;
+	private Timestamp finicio,ffin;
 	private Boolean esActivo;
 
 	public Long getId() {
@@ -66,12 +66,12 @@ public class ArqueoWrap {
 		this.finicio = finicio;
 	}
 
-	public Timestamp getFfinal() {
-		return ffinal;
+	public Timestamp getFfin() {
+		return ffin;
 	}
 
-	public void setFfinal(Timestamp ffinal) {
-		this.ffinal = ffinal;
+	public void setFfin(Timestamp ffin) {
+		this.ffin = ffin;
 	}
 
 	public Boolean getEsActivo() {

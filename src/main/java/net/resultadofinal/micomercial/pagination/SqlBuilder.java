@@ -69,6 +69,9 @@ public class SqlBuilder {
 	public void addParameter(String etiqueta,Boolean value) {
 		parameters.add(new SqlParameter(etiqueta,value));
 	}
+	public void addParameter(String etiqueta,Short value) {
+		parameters.add(new SqlParameter(etiqueta,value));
+	}
 	public String getSelect() {
 		return select;
 	}

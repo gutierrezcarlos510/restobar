@@ -10,16 +10,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-md">
-                <label class="col-xs-5 control-label">Fecha Inicio</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="fini" name="fini">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3  padding-top-md">
-                <label class="col-xs-5 control-label">Fecha Fin</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="ffin" name="ffin">
+            <div class="col-xs-12 col-sm-12 col-md-6 padding-top-md">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary tipoRadio" title="Comandas generales">
+                        <span class="fa fa-users"></span><br>
+                        <input type="radio" name="tipoVenta" value="0" checked> Todas
+                    </label>
+                    <label class="btn btn-warning active tipoRadio">
+                        <span class="fa fa-user-plus"></span><br>
+                        <input type="radio" name="tipoVenta" value="1"  title="Comanda Activas"> Comanda Activa
+                    </label>
+                    <label class="btn btn-success tipoRadio" title="Comanda Finalizada">
+                        <span class="fa fa-user"></span> <span class="fa fa-dollar"></span><br>
+                        <input type="radio" name="tipoVenta" value="2"> Comanda Finalizada
+                    </label>
+                    <label class="btn btn-danger tipoRadio" title="Comanda Revertida">
+                        <span class="fa fa-user-times"></span><br>
+                        <input type="radio" name="tipoVenta" value="3"> Comanda Revertida
+                    </label>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-3 padding-top-md">
@@ -52,24 +60,21 @@
                     <th class="all">Fecha</th>
                     <th class="desktop">Cliente</th>
                     <th class="desktop">Usuario</th>
-                    <th class="none">C&oacute;digo de arqueo</th>
-                    <th class="none">C&oacute;digo de detalle</th>
-                    <th class="none">Fecha y hora</th>
-                    <th class="none">Subtotal</th>
+                    <th class="desktop">Estado</th>
                     <th class="desktop">Total</th>
-                    <th class="none">Observaci&oacute;n</th>
                     <th class="all">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
     <!-- /.box-body -->
 </div>
 <!-- /.box -->
-<script>
+<script type="text/javascript" th:inline="none">
+    var dataReq = {
+        stateColor : ['','warning','success','primary']
+    }
     $(document).ready(function() {
         $('.select-chosen').chosen({
             no_results_text: "No se encuentra:",
@@ -98,45 +103,40 @@
                 "url": "../venta/lista",
                 "data": function(d) {
                     d.estado = $('input[name=estado]:checked').val();
-                    d.fini = $('#fini').val();
-                    d.ffin = $('#ffin').val();
                     d.usuario = $('input[name=usuario]:checked').val();
+                    d.tipo = $('input[name=tipoVenta]:checked').val();
                 }
             },
-            "columnDefs":[{targets: [10],className:'text-right'}],
+            "ordering":true,
+            "order": [[0,'desc']],
+            "columnDefs":[{targets: [6],className:'text-right'}],
             "columns": [{
-                "data": "codVen"
+                "data": "id","name": "id"
             }, {
-                "data": "fecha"
+                "data": "fecha","name": "fecha"
             }, {
-                "data": "cliente"
+                "data": "xcliente","name": "xcliente"
             }, {
-                "data": "usuario"
+                "data": "xusuario","name": "xusuario"
             }, {
-                "data": "codArqcaj"
+                "data": "tipo","name": "tipo"
             }, {
-                "data": "codDetarq"
+                "data": "total","name": "total"
             }, {
-                "data": "fecVen"
-            }, {
-                "data": "subtotVen"
-            }, {
-                "data": "totVen"
-            }, {
-                "data": "obsVen"
-            }, {
-                "data": "codVen"
+                "data": "id","name": "id"
             }],
             "createdRow": function(row, data, index) {
-                if ($('input[name=estado]:checked').val() == 'true') {
-                    $('td', row).eq(10).html('<div class="btn-group btn-group-xs"><button class="btn btn-success btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button><button class="btn btn-danger eliminar btn-sm"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                $('td', row).eq(1).html(UtilDate.formatDate(data.fecha,'DD/MM/YYYY'));
+                $('td', row).eq(4).html('<span class="label label-'+dataReq.stateColor[data.tipo]+'">'+data.xtipo+'</span>');
+                if (data.estado) {
+                    $('td', row).eq(6).html('<div class="btn-group btn-group-xs"><button class="btn btn-success btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button><button class="btn btn-danger eliminar btn-sm"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
                 } else
-                    $('td', row).eq(10).html('<button class="btn btn-success imprimir" data-id="' + data.codVen + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
+                    $('td', row).eq(6).html('<button class="btn btn-success imprimir" data-id="' + data.codVen + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
             },
             "drawCallback": function(settings) {
                 $('.imprimir').click(function() {
                 	abrirLoad();
-                    $("#frameReportes").attr("src", "../venta/ver?codVen=" + $(this).data('id'));
+                    $("#frameReportes").attr("src", "../venta/ver?id=" + $(this).data('id'));
                     cerrarLoad();
                     $("#reportes").modal('show');
                 });
@@ -149,10 +149,10 @@
         });
         $('#tabla tbody').on('click', 'tr td button.eliminar', function() {
 			let obj = tablaVenta.row($(this).closest('tr')).data();
-			alertEliminacion("Eliminacion de venta", ("Cod. venta: "+ obj.codVen+", en Fecha: "+obj.fecha+", para el Cliente: "+obj.cliente), function(){
-				jQuery.post('../venta/eliminar?codVen='+obj.codVen, function(resp){
+			alertEliminacion("Eliminacion de venta", ("Cod. venta: "+ obj.id+", en Fecha: "+UtilDate.formatDateLiteral(obj.fecha)+", para el Cliente: "+obj.xcliente), function(){
+				jQuery.post('../venta/eliminar?id='+obj.id, function(resp){
 					if(resp.status){
-						$('#tabla').dataTable().fnDraw('page');
+						$('#tabla').dataTable().fnDraw('');
 						mostrarMensaje('success', resp.msg);
 					}else{
 						mostrarMensaje('error', resp.msg);
@@ -161,23 +161,13 @@
 			});
 		});
         $('.estadoRadio').click(function() {
-            $('#tabla').dataTable().fnDraw('page');
+            $('#tabla').dataTable().fnDraw('');
         });
         $('.usuarioRadio').click(function() {
-            $('#tabla').dataTable().fnDraw('page');
+            $('#tabla').dataTable().fnDraw('');
         });
-
-        function isDate(cad) {
-            var d = new Date(cad.substring(3, 5) + '/' + cad.substring(0, 2) + '/' + cad.substring(6, 10));
-            return !isNaN(d.valueOf());
-        }
-        $('#fini').keyup(function() {
-            if (isDate($('#fini').val()))
-                $('#tabla').dataTable().fnDraw('page');
-        });
-        $('#ffin').keyup(function() {
-            if (isDate($('#ffin').val()))
-                $('#tabla').dataTable().fnDraw('page');
+        $('.tipoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('');
         });
         $('#formularioEliminar').formValidation({
             locale: 'es_ES'
@@ -185,10 +175,10 @@
             e.preventDefault();
             var xform = $(e.target);
             $.post(xform.attr('action'), xform.serialize(), function(result) {
-                if (result.status == true) {
+                if (result.status) {
                     xform.data('formValidation').resetForm();
                     $('.modal').modal('hide');
-                    $('#tabla').dataTable().fnDraw('page');
+                    $('#tabla').dataTable().fnDraw('');
                     mostrarMensaje('info', 'Se realizo con exito la Transaccion');
                 } else {
                     mostrarMensaje('error', 'No se realizo con exito la Transaccion');
