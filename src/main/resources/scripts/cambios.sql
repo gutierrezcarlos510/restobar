@@ -588,4 +588,38 @@ BEGIN
 	RETURN -1;
 END
 $function$
+;CREATE OR REPLACE FUNCTION public.compra_eliminar(cod bigint, cod_usuario bigint)
+ RETURNS int2
+ LANGUAGE plpgsql
+AS $function$
+DECLARE codigo int8;
+DECLARE v_cantidad int4;
+declare suc int4;
+declare cant_inicial int4;
+declare cant_final int4;
+DECLARE v_cursor CURSOR FOR select dc.cod_pro,dc.can_detcom ,c.cod_suc from detalle_compra dc inner join compra c on dc.cod_com = c.cod_com where c.cod_com=cod ;
+DECLARE sql_result record;
+BEGIN
+	OPEN v_cursor;
+		loop
+		FETCH v_cursor INTO codigo,v_cantidad,suc;
+			EXIT WHEN NOT FOUND;
+			cant_inicial := (select cantidad from almacen where producto_id=codigo and sucursal_id=suc);
+			cant_final := cant_inicial - v_cantidad ;
+			if (cant_final < 0) then
+				return -2;
+			end if;
+				update almacen set cantidad = cant_final where producto_id=codigo and sucursal_id=suc;
+				insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+			VALUES(codigo, suc, now(),cod_usuario ,cant_inicial , v_cantidad, cant_final, 2, 'Reversion de la compra');
+		end loop;
+		close v_cursor;
+		update compra set est_com=false where cod_com=cod;
+		RETURN 1;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+	RETURN -1;
+END
+$function$
 ;

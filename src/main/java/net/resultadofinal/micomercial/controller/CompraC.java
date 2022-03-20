@@ -129,10 +129,10 @@ public class CompraC {
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			boolean status = compraS.eliminar(cod_com, usuario.getCod_per());
 			return new DataResponse(status, status ? "Se realizo con exito la eliminacion de la compra"
-					: "No se logro realizar la elimnacion de la compra");
+					: "No se logro realizar la eliminacion de la compra");
 		} catch (Exception e) {
 			logger.error("eliminar la compra: " + e.getMessage());
-			return new DataResponse(false, "error de la eliminacion de la compra: " + e.toString());
+			return new DataResponse(false, e.getMessage());
 		}
 
 	}

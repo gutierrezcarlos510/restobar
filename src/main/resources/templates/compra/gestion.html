@@ -3,18 +3,6 @@
     <div class="box-header with-border">
         <h1><span class="fa  fa-ellipsis-v"></span> Gesti&oacute;n Compras </h1>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-sm">
-                <label class="col-xs-5 control-label">Fecha Inicio</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="fini" name="fini">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-sm padding-bottom-sm">
-                <label class="col-xs-5 control-label">Fecha Fin</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="ffin" name="ffin">
-                </div>
-            </div>
             <div class="col-md-3">
                 <div class="btn-group btn-group-justified">
                     <label class="btn btn-primary active usuarioRadio">
@@ -81,8 +69,8 @@
                 "url": "../compra/lista",
                 "data": function(d) {
                     d.estado = $('input[name=estado]:checked').val();
-                    d.fini = $('#fini').val();
-                    d.ffin = $('#ffin').val();
+                    d.fini = '';
+                    d.ffin = '';
                     d.usuario = $('input[name=usuario]:checked').val();
                 }
             },
@@ -119,14 +107,10 @@
                     let xcod = $(this).data('id');
                     alertEliminacion('Confirmar eliminacion de compra', 'Esta seguro de eliminar la compra: '+xcod, function(){
                     	$.post('../compra/eliminar', {'cod_com':xcod}, function(result) {
-                            if (result.status == true) {
-                                xform.data('formValidation').resetForm();
+                            finishTransaction(result, function(){
                                 $('.modal').modal('hide');
                                 $('#tabla').dataTable().fnDraw('page');
-                                mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                            } else {
-                                mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                            }
+                            })
                         }, 'json');
                     });
                 });
@@ -154,13 +138,5 @@
             var d = new Date(cad.substring(3, 5) + '/' + cad.substring(0, 2) + '/' + cad.substring(6, 10));
             return !isNaN(d.valueOf());
         }
-        $('#fini').keyup(function() {
-            if (isDate($('#fini').val()))
-                $('#tabla').dataTable().fnDraw('page');
-        });
-        $('#ffin').keyup(function() {
-            if (isDate($('#ffin').val()))
-                $('#tabla').dataTable().fnDraw('page');
-        });
     });
 </script>

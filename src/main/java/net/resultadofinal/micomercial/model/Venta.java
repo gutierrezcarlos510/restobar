@@ -13,6 +13,7 @@ public class Venta  {
 	private BigDecimal total,descuento,subtotal;
 	private Boolean estado;
 	private String xusuario,xcliente;
+	private Short mesaId, cantidadPersonas, formaPagoId;
 	private List<DetalleVenta> detalles;
 
 	public Long getId() {
@@ -150,6 +151,31 @@ public class Venta  {
 	public void setTipo(Short tipo) {
 		this.tipo = tipo;
 	}
+
+	public Short getMesaId() {
+		return mesaId;
+	}
+
+	public void setMesaId(Short mesaId) {
+		this.mesaId = mesaId;
+	}
+
+	public Short getCantidadPersonas() {
+		return cantidadPersonas;
+	}
+
+	public void setCantidadPersonas(Short cantidadPersonas) {
+		this.cantidadPersonas = cantidadPersonas;
+	}
+
+	public Short getFormaPagoId() {
+		return formaPagoId;
+	}
+
+	public void setFormaPagoId(Short formaPagoId) {
+		this.formaPagoId = formaPagoId;
+	}
+
 	public String getXtipo(){
 		if(tipo != null) {
 			switch (tipo) {

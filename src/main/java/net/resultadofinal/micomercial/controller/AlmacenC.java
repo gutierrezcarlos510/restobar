@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.Almacen;
 import net.resultadofinal.micomercial.model.General;
+import net.resultadofinal.micomercial.model.wrap.AlmacenVenta;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.AlmacenS;
 import net.resultadofinal.micomercial.util.MyConstant;
@@ -29,7 +30,18 @@ public class AlmacenC {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			return almacenS.listado(request, gestion.getCod_suc());
 		} catch (Exception ex) {
-			System.out.println("error lista sucursales: "+ex.toString());
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	@RequestMapping("listarProducto")
+	public @ResponseBody
+	DataTableResults<AlmacenVenta> listarProducto(HttpServletRequest request) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return almacenS.listaProducto(request, gestion.getCod_suc());
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}

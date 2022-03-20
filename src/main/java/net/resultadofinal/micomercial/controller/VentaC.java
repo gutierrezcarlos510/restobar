@@ -80,18 +80,7 @@ public class VentaC {
 	}
 	@RequestMapping("adicionar")
 	public String adicionar(Model model,Boolean isMobil){
-		model.addAttribute("clientes",clienteS.listAll());
-		model.addAttribute("tipos",tipoProductoS.listAll(-1));
-		if(isMobil != null && isMobil){
-			return "venta/adicionar-mobil";
-		} else {
-			if(MyConstant.VENTA_CON_SELECT){
-//				model.addAttribute("productos",tipoProductoS.listarAgrupadoConProductos());
-				return "venta/adicionar-select";
-			}else{
-				return "venta/adicionar";
-			}
-		}
+		return "venta/adicionar-comanda";
 	}
 	@RequestMapping("guardar")
 	public @ResponseBody

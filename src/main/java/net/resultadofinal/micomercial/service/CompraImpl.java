@@ -106,10 +106,19 @@ public class CompraImpl extends DbConeccion implements CompraS {
 	public Boolean eliminar(Long cod_com,Long user){
 		try {
 //			logger.info("eliminar: "+cod_com+"  "+est);
-			return db.queryForObject("select compra_eliminar(?,?);",Boolean.class,cod_com,user);
+			Short res = db.queryForObject("select compra_eliminar(?,?);",Short.class,cod_com,user);
+			if(res > 0) {
+				return true;
+			} else {
+				if(res == -2) {
+					throw new RuntimeException("No se puede eliminar, ya que parte de los productos de almacen, no estan completos.");
+				} else {
+					throw new RuntimeException("Error al realizar la eliminacion de la compra");
+				}
+			}
 		} catch (Exception e) {
 			logger.error("error al eliminar compra="+e.toString());
-			return false;
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 	@Override

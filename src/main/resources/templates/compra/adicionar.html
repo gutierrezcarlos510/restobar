@@ -35,8 +35,8 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label>Proveedor</label>
-                            <select id="proveedor" name="cod_pro" class="form-control input-lg" data-placeholder="Seleccione..." data-fv-notempty="true">
+                            <label class="control-label">Proveedor</label>
+                            <select id="proveedor" name="cod_pro" class="form-control" data-placeholder="Seleccione..." data-fv-notempty="true">
                                 <option value=""></option>
                                 <option th:each="p : ${proveedores}" th:value="${p.cod_pro}" th:text="${p.nom_emp} +' - '+ ${p.nom_per} +' '+${p.priape_per} +' '+${p.segape_per}"></option>
                             </select>
@@ -394,7 +394,7 @@ function calcularTotal() {
         });
         $('select').chosen({
             no_results_text: "No se encuentra:",
-            width: '90%'
+            width: '100%'
         });
         $(".fec").inputmask("dd/mm/yyyy", {
             "placeholder": "dd/mm/yyyy"
