@@ -90,10 +90,8 @@
                     <button type="button" class="btn btn-sm btn-success form-control" title="Adicionar Cliente" id="adicionarCliente"> <span class="glyphicon glyphicon-plus"></span> Cliente Nuevo</button>
                 </div>
                 <br>
-                <div class="form-group">
-                    <label>Mesa</label>
-                    <input type="text" class="form-control" name="mesaId">
-                </div>
+                <h4 class="content-header">Mesa</h4>
+                <div class="row" id="areaMesa"></div>
                 <div class="form-group">
                     <label>Mesero</label>
                     <input type="text" class="usuarioId">
@@ -113,7 +111,55 @@
             <h5>Productos</h5>
             <div class="row">
                 <div class="col-md-3">
-                    Detalle
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Detalle</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="w3-table-all">
+                                <thead>
+                                    <tr>
+                                        <th>Detalle</th>
+                                        <th width="20px">Cant.</th>
+                                        <th width="20px">Precio</th>
+                                        <th width="20px">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Almuerzo</td>
+                                        <td class="w3-center">15</td>
+                                        <td class="w3-center">5</td>
+                                        <td class="w3-center">75</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pique a lo Macho</td>
+                                        <td class="w3-center">15</td>
+                                        <td class="w3-center">5</td>
+                                        <td class="w3-center">75</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Almuerzo</td>
+                                        <td class="w3-center">15</td>
+                                        <td class="w3-center">5</td>
+                                        <td class="w3-center">75</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Almuerzo</td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">5</td>
+                                        <td class="text-center">75</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Almuerzo</td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">5</td>
+                                        <td class="text-center">75</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9">
                     <div class="nav-tabs-custom">
@@ -126,651 +172,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">
-                                <div class="row platos-list plato-list-in-box">
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 item">
-                                        <div class="plato-img">
-                                            <img src="/producto/producto-4.jpg" alt="Product Image">
-                                        </div>
-                                        <div class="plato-info">
-                                            <a href="#" class="plato-title">Bs.50 <span class="label label-warning pull-right">Cant. 45</span></a>
-                                            <span class="plato-description">Sopa de Pollo</span>
-                                            <span class="plato-description">
-                                                <input type="text" class="w3-medium" style="width: 50%;" name="can" />
-                                                <button class="btn btn-xs btn-danger"><span class="fa fa-minus"></span></button>
-                                                <button class="btn btn-xs btn-success"><span class="fa fa-plus"></span></button>
-                                            </span>
-                                            <span class="plato-description">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Unid.
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="tipoVenta" checked> Caja
-                                                    </label>
-                                                    <span class="pull-right">
-                                                        <button class="btn btn-xs btn-primary">OK</button>
-                                                    </span>
-                                                </div>
-
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div class="row platos-list plato-list-in-box" id="areaProducto">
                                     <div class="col-md-3 item">
                                         <div class="plato-img">
                                             <img src="/producto/producto-4.jpg" alt="Product Image">
@@ -930,7 +332,9 @@
     var dataReq = {
         venta: {},
         detalleVenta: [],
-        productSelected : {}
+        productSelected : {},
+        mesaList:[],
+        productoList:[]
     }
     var productSelected = {};
 	function calcularCambio(){
@@ -945,6 +349,102 @@
     	let cambio = totalPagado - total;
     	$('#totalCambio').val(cambio);
 	}
+    function imageExists(image_url){
+        let http = new XMLHttpRequest();
+        http.open('HEAD', image_url, false);
+        http.send();
+        return http.status != 404;
+
+    }
+    function btnMinProducto(productoId){
+	    let can = $('#cantidad-'+productoId).val();
+	    if(can) {
+	        can = parseInt(can);
+	        can--;
+        } else {
+	        can = 0;
+        }
+	    if(can < 0) {
+	        can = 0;
+        }
+        $('#cantidad-'+productoId).val(can);
+    }
+    function btnMaxProducto(productoId){
+        let can = $('#cantidad-'+productoId).val();
+        let found = dataReq.productoList.find(it => it.productoId === productoId);
+        if(can) {
+            can = parseInt(can);
+            can++;
+        } else {
+            can = 1;
+        }
+        if(can > found.cantidad) {
+            can = found.cantidad;
+        }
+        $('#cantidad-'+productoId).val(can);
+    }
+    function radioTipoVentaProducto(productoId, tipo){
+        let found = dataReq.productoList.find(it => it.productoId === productoId);
+	    if(tipo === 1) {
+	        $('#precio-'+productoId).html(found.pvUnit);
+	        $('#cant-'+productoId).html('Cant. '+found.cantidad);
+        } else {
+	        let can = parseInt(found.cantidad / found.unidadPorCaja);
+            $('#precio-'+productoId).html(found.pvCaja);
+            $('#cant-'+productoId).html('Cant. '+can);
+        }
+    }
+	function init(){
+	    $('#areaMesa').html('');
+        $('#areaProducto').html('');
+	    $.post('../venta/initParam', function(resp){
+	        if(resp.status) {
+	            dataReq.mesaList = resp.data.mesas;
+	            dataReq.productoList = resp.data.productos;
+	            if(resp.data.mesas && resp.data.mesas.length > 0) {
+	                resp.data.mesas.forEach(it => {
+	                    let divCol = $('<div class="col-md-2"></div>');
+	                    let divInfoBox = $('<div class="info-box"></div>');
+	                    $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+	                    let divContent = $('<div class="info-box-content"></div>');
+	                    $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
+                        $('<span class="info-box-text">'+it.nombre+'</span>').appendTo(divContent);
+                        $('<span class="info-box-more">Cantidad: '+it.cantidad+' </span>').appendTo(divContent);
+                        divInfoBox.append(divContent);
+                        divCol.append(divInfoBox);
+                        $('#areaMesa').append(divCol);
+                    })
+                }
+	            if(resp.data.productos && resp.data.productos.length > 0) {
+	                resp.data.productos.forEach(it => {
+	                    let div1 = $('<div class="col-md-4 item" id="areaProducto-'+it.productoId+'"></div>');
+	                    if(imageExists('/producto/'+it.foto)) {
+                            $('<div class="plato-img"><img src="/producto/'+it.foto+'" alt="Product Image"></div>').appendTo(div1);
+                        } else {
+                            $('<div class="plato-img"><img src="/producto/notimage.png" alt="Product Image"></div>').appendTo(div1);
+                        }
+	                    let div2 = $('<div class="plato-info"></div>');
+	                    $('<a href="#" class="plato-title">Bs. <span id="precio-'+it.productoId+'">'+it.pvUnit+'</span> <span class="label label-warning pull-right" id="cant-'+it.productoId+'">Cant. '+it.cantidad+'</span></a>').appendTo(div2);
+	                    $('<span class="plato-description">'+it.xproducto+'</span>').appendTo(div2);
+	                    div1.append(div2);
+	                    let div3 = $('<span class="plato-description"></span>');
+                        $('<input type="text" class="w3-medium" style="width: 50%;" id="cantidad-'+it.productoId+'" name="can"/><input type="hidden" name="productoId" value="'+it.productoId+'"/>').appendTo(div3);
+                        $('<button onclick="btnMinProducto('+it.productoId+')" class="btn btn-xs btn-danger" style="margin-left: 10px;margin-right: 5px;"><span class="fa fa-minus"></span></button>').appendTo(div3);
+                        $('<button onclick="btnMaxProducto('+it.productoId+')" class="btn btn-xs btn-success" style="margin-left: 5px;margin-right: 10px;"><span class="fa fa-plus"></span></button>').appendTo(div3);
+                        let div4 = $('<span class="plato-description"></span>');
+                        let div5 = $('<div class="radio"></div>');
+                        $('<label style="margin-right: 10px;"><input type="radio" onchange="radioTipoVentaProducto('+it.productoId+',1)" name="tipoVenta-'+it.productoId+'" value="1" checked> Unidad </label>').appendTo(div5);
+                        $('<label><input type="radio" onchange="radioTipoVentaProducto('+it.productoId+',2)" name="tipoVenta-'+it.productoId+'" value="2" > Caja</label>').appendTo(div5);
+                        $('<span class="pull-right"><button onclick="btnAdicionarProducto('+it.productoId+')" class="btn btn-xs btn-primary">OK</button></span>').appendTo(div5);
+                        div4.append(div5);
+                        div1.append(div3);
+                        div1.append(div4);
+                        $('#areaProducto').append(div1);
+                    });
+                }
+            }
+        })
+    }
     $(document).ready(function() {
         var tablaProducto = $('#tablaSearchProducto').DataTable({
             dom: "<'row'<'col-md-12 w3-small'tr>><'row'<'col-sm-5 w3-tiny'i><'col-sm-7 w3-tiny'p>>",
@@ -1319,6 +819,7 @@
                 }, 'json');
             })
         });
+        init();
     });
 
     function buscarCodigo() {

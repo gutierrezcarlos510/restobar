@@ -2,10 +2,7 @@ package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.*;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
-import net.resultadofinal.micomercial.service.ArqueoS;
-import net.resultadofinal.micomercial.service.ClienteS;
-import net.resultadofinal.micomercial.service.TipoProductoS;
-import net.resultadofinal.micomercial.service.VentaS;
+import net.resultadofinal.micomercial.service.*;
 import net.resultadofinal.micomercial.util.DataResponse;
 import net.resultadofinal.micomercial.util.GeneradorReportes;
 import net.resultadofinal.micomercial.util.MyConstant;
@@ -38,9 +35,24 @@ public class VentaC {
 	@Autowired
 	private ClienteS clienteS;
 	@Autowired
-	private TipoProductoS tipoProductoS;
+	private AlmacenS almacenS;
+	@Autowired
+	private MesaS mesaS;
 	@Autowired
 	private DataSource datasource;
+	@RequestMapping("initParam")
+	public @ResponseBody DataResponse initParam(HttpServletRequest request){
+		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+		if(gestion != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("mesas", mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc()));
+			map.put("productos", almacenS.listarProductos(gestion.getCod_suc()));
+			return new DataResponse(true, map, "Se realizo con exito.");
+		} else {
+			return new DataResponse(false, "Error al recuperar informacion");
+		}
+
+	}
 	@RequestMapping("gestion")
 	public String gestion(HttpServletRequest request){
 		try {

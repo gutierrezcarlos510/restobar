@@ -58,7 +58,7 @@ public class AlmacenImpl extends DbConeccion implements AlmacenS {
 	}
 	public List<AlmacenVenta> listarProductos(Integer sucursalId) {
 		try {
-			sqlString = "select a.*,p.nombre as xproducto,p.unidad_por_caja,p.pv_unit,p.pv_caja,p.pv_caja_descuento,p.pv_unit_descuento from almacen a inner join producto p on p.id = a.producto_id and p.estado = true where a.cantidad >=0 and a.sucursal_id =?;";
+			sqlString = "select a.*,p.nombre as xproducto,p.unidad_por_caja,p.pv_unit,p.pv_caja,p.pv_caja_descuento,p.pv_unit_descuento,p.foto from almacen a inner join producto p on p.id = a.producto_id and p.tipo_grupo=1 and p.estado = true where a.cantidad >=0 and a.sucursal_id =?;";
 			return db.query(sqlString, BeanPropertyRowMapper.newInstance(AlmacenVenta.class), sucursalId);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -69,7 +69,7 @@ public class AlmacenImpl extends DbConeccion implements AlmacenS {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("almacen a");
 			sqlBuilder.setSelect("a.*,p.nombre as xproducto,p.unidad_por_caja,p.pv_unit,p.pv_caja,p.pv_caja_descuento,p.pv_unit_descuento");
-			sqlBuilder.addJoin("producto p on p.id = a.producto_id and p.estado = true");
+			sqlBuilder.addJoin("producto p on p.id = a.producto_id and p.tipo_grupo=1 and p.estado = true");
 			sqlBuilder.setWhere("a.cantidad >=0 and a.sucursal_id = :xsucursal");
 			sqlBuilder.addParameter("xsucursal",sucursal);
 			return utilDataTableS.list(request, AlmacenVenta.class, sqlBuilder);

@@ -130,9 +130,10 @@ public class MesaImpl extends DbConeccion implements MesaS {
 	}
 	public List<Mesa> listarMesasLibresPorSucursal(Integer sucursalId) {
 		try {
-			sqlString = "select * from mesa m where m.sucursal_id = 1 and m.id not in (select v.id from venta v where v.estado = true and v.tipo =1) order by m.orden";
+			sqlString = "select * from mesa m where m.sucursal_id = ? and m.id not in (select v.id from venta v where v.estado = true and v.tipo =1) order by m.orden";
 			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Mesa.class), sucursalId);
 		} catch(Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}

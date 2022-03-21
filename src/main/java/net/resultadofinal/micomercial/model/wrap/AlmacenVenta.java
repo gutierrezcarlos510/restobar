@@ -5,9 +5,17 @@ import java.math.BigDecimal;
 public class AlmacenVenta {
     private Long productoId;
     private Integer sucursalId, cantidad;
-    private String xproducto;
+    private String xproducto,foto;
     private Integer unidadPorCaja;
     private BigDecimal pvUnitDescuento, pvCajaDescuento, pvUnit, pvCaja;
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 
     public Long getProductoId() {
         return productoId;
