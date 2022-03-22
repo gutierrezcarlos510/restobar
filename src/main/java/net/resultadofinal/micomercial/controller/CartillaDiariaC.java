@@ -118,4 +118,13 @@ public class CartillaDiariaC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
+	@RequestMapping("obtenerCartillaActivaSucursal")
+	public DataResponse obtenerCartillaActivaSucursal(HttpServletRequest request) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return new DataResponse(true, cartillaDiariaS.obtenerCartillaActivaSucursal(gestion.getCod_suc()), "Se realizo con exito la consulta");
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
 }

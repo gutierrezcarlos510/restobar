@@ -41,7 +41,7 @@ public class UtilDataTableImpl implements UtilDataTableS {
 		Long tam = db.queryForObject(sql.generateCount(), Long.class);
 		Long tamFiltered = db.queryForObject(AppUtil.buildCountQuery(sql.generate(""),pagination), Long.class);
 		String paginatedQuery = AppUtil.buildPaginatedQuery(sql.generate(""), pagination);
-		System.out.println("paginateQUERY->"+paginatedQuery);
+//		System.out.println("paginateQUERY->"+paginatedQuery);
 		List<T> dataList = db.query(paginatedQuery, new BeanPropertyRowMapper<>(clazz));
 		DataTableResults<T> dataTableResult = new DataTableResults<T>();
 		dataTableResult.setDraw(dataTableInRQ.getDraw());

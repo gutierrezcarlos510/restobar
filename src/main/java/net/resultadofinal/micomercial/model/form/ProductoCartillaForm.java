@@ -8,9 +8,17 @@ public class ProductoCartillaForm {
     private Integer cartillaSucursalId;
     private Short detalleCartillaSucursalId;
     private Long productoId;
-    private String xproducto;
+    private String xproducto, foto;
     private BigDecimal precioIndividual, precioCompuesto;
     private Integer cantidad, cantidadModificar;
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 
     public Integer getCantidadModificar() {
         return cantidadModificar;

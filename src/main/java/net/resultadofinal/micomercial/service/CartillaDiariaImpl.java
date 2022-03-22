@@ -183,7 +183,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
-					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";
+					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";
 					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), cartillaDiariaId);
 					if(UtilClass.isNotNullEmpty(productoList)) {
 						for(ProductoCartillaForm pro: productoList) {
@@ -227,6 +227,20 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 		} catch (Exception ex) {
 			System.out.println("Exception founded:"+ex.toString());
 			throw new RuntimeException("Error al obtener");
+		}
+	}
+	public CartillaDiariaForm obtenerCartillaActivaSucursal(Integer sucursalId) {
+		try {
+			sqlString = "select coalesce(max(id),0) from cartilla_diaria cd where estado_cartilla = true and estado = true and cd.cod_suc = ?;";
+			Long id = db.queryForObject(sqlString, Long.class, sucursalId);
+			if(id == 0) {
+				return null;
+			} else {
+				return obtenerCartillaDiariaForm(id);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
 		}
 	}
 }

@@ -27,4 +27,6 @@ public interface CartillaDiariaS {
     DataResponse darEstado(Integer id, Boolean estado);
 
     CartillaDiariaForm obtenerCartillaDiariaForm (Long cartillaDiariaId);
+
+    CartillaDiariaForm obtenerCartillaActivaSucursal(Integer sucursalId);
 }

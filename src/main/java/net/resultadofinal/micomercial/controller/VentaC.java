@@ -33,13 +33,16 @@ public class VentaC {
 	@Autowired
 	private VentaS ventaS;
 	@Autowired
-	private ClienteS clienteS;
+	private CartillaDiariaS cartillaDiariaS;
 	@Autowired
 	private AlmacenS almacenS;
 	@Autowired
 	private MesaS mesaS;
 	@Autowired
+	private UsuarioS usuarioS;
+	@Autowired
 	private DataSource datasource;
+	private static final int ROL_MESERO = 4;
 	@RequestMapping("initParam")
 	public @ResponseBody DataResponse initParam(HttpServletRequest request){
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
@@ -47,6 +50,7 @@ public class VentaC {
 			Map<String, Object> map = new HashMap<>();
 			map.put("mesas", mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc()));
 			map.put("productos", almacenS.listarProductos(gestion.getCod_suc()));
+			map.put("cartillaDiariaList", cartillaDiariaS.obtenerCartillaActivaSucursal(gestion.getCod_suc()));
 			return new DataResponse(true, map, "Se realizo con exito.");
 		} else {
 			return new DataResponse(false, "Error al recuperar informacion");
@@ -92,6 +96,7 @@ public class VentaC {
 	}
 	@RequestMapping("adicionar")
 	public String adicionar(Model model,Boolean isMobil){
+		model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
 		return "venta/adicionar-comanda";
 	}
 	@RequestMapping("guardar")

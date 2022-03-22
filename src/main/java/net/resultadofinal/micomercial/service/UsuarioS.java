@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface UsuarioS {
 	List<Persona> listarUsuariosSistema();
+	List<Persona> listarUsuariosPorRol(Integer rolId);
 	List<GeneralWrap> obtenerSucursales(Long cod_per);
 	void eliminarSucursales(Long cod_per);
 	void adicionarSucursales(Long cod_per, List<Integer> sucursales);

@@ -2599,6 +2599,7 @@ a:focus {
 }
 .platos-list .plato-img {
   float: left;
+  margin-right: 15px;
 }
 .products-list .product-img img {
   width: 50px;

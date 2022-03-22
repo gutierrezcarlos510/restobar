@@ -48,6 +48,15 @@ public class UsuarioImpl extends DbConeccion implements UsuarioS {
 			return null;
 		}
 	}
+	public List<Persona> listarUsuariosPorRol(Integer rolId){
+		try {
+			sqlString = "select p.* from persona p join usurol ur on ur.cod_per = p.cod_per and ur.cod_rol=? where p.est_per";
+			return db.query(sqlString, new BeanPropertyRowMapper<Persona>(Persona.class), rolId);
+		} catch (Exception e) {
+			logger.error("Error al listar usuarios del sistema:"+e.toString());
+			return null;
+		}
+	}
 	
 	public List<GeneralWrap> obtenerSucursales(Long cod_per){
 		try {
