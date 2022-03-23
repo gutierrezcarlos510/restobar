@@ -55,6 +55,7 @@ public class ClienteC {
 			boolean status = cod_pro>0;
 			Data.put("cod_cli", cod_pro);
 			Data.put("cliente", cli.toString());
+			Data.put("xcliente", clienteS.obtener(cod_pro));
 			Data.put("status", status);
 			Data.put("msg", Utils.getSuccessFailedAdd(ENTITY, status));
 		} catch (Exception e) {

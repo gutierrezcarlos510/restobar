@@ -55,7 +55,7 @@
         </div>
     </div>
 </form>
-    <form id="formularioCompuesto" method="post" action="#" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+    <form id="formularioCompuesto" method="post" action="#" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
         <div id="modalCompuesto" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -64,17 +64,57 @@
                         <h4 class="modal-title">Registrar</h4>
                     </div>
                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 text-right">
+                                Cantidad solicitada
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                        <input type="text" class="form-control text-right" autocomplete="off" name="cantidadCompuesto" id="cantidadCompuesto" data-fv-integer="true" data-fv-notempty="true" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
                         <div id="contenidoCartilla"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-                        <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                        <button type="submit" id="btnSubmitSubdetalle" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-    <!-- panel preview -->
+    <div id="modalGestionCliente" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Clientes del sistema</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tablaCliente" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="none">C&oacute;digo de cliente</th>
+                            <th class="desktop">Telefono celular</th>
+                            <th class="all">Nombre y Apellidos</th>
+                            <th width="200px" class="all">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div id="smartwizard">
     <ul class="nav" style="display: none;">
         <li class="nav-item">
@@ -108,7 +148,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <input type="hidden" name="usuarioId" />
                                     <label>Mesero</label>
@@ -118,7 +158,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Cliente</label>
+                                    <a href="#" class="form-control" id="btnCliente"><i class="fa fa-user-secret"></i> <span id="xcliente">Cliente Incognito</span></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <button type="button" class="btn btn-sm btn-success form-control" title="Adicionar Cliente" id="adicionarCliente"> <span class="glyphicon glyphicon-plus"></span> Cliente Nuevo</button>
                             </div>
                         </div>
@@ -164,22 +210,56 @@
             </div>
         </div>
         <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-            <form id="formulario3" name="formulario3" action="../venta/guardar" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <form id="formulario3" name="formulario3" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                 <div class="panel panel-primary">
-
                     <div class="panel-body">
+                        <div class="row" id="areaResumenVenta">
+                            <div class="col-md-6">
+                                <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                        <h3><span aria-label="xcliente">Carlos Franz Gutierrez</span></h3>
+                                        <p>Cliente</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer" onclick="volverPasoInicial()">Modificar <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                        <h3><span aria-label="xmesa">Mesa 4</span></h3>
+                                        <p>No. personas: <span aria-label="xcantidadPersonas">5</span></p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-street-view"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer" onclick="volverPasoInicial()">Modificar <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                        <h3><span aria-label="xmesero">CGutierrez</span></h3>
+                                        <p>Mesero</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer" onclick="volverPasoInicial()">Modificar <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
-                            <table id="detalles" class="w3-table-all w3-tiny">
+                            <table id="areaResumenDetalleVenta" class="w3-table-all w3-large">
                                 <thead>
                                 <tr>
-                                    <th width="300px">Producto</th>
+                                    <th width="50%">Producto</th>
                                     <th>Cantidad</th>
 
                                     <th> Precio </th>
-                                    <th>Subtotal</th>
-                                    <th>Descuento</th>
                                     <th>Total</th>
-                                    <th width="25px">Eliminar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -187,11 +267,11 @@
                                     <td colspan="7" class="w3-center">Sin ningun detalle</td>
                                 </tr>
                                 </tbody>
-                                <tfoot>
-
-                                </tfoot>
                             </table>
                         </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar Comanda</button>
                     </div>
                 </div>
             </form>
@@ -281,23 +361,18 @@
     var dataReq = {
         venta: {},
         detalleVenta: [],
+        detalleVentaCompuesto: [],
         productSelected : {},
         mesaList:[],
         productoList:[],
-        cartillaDiariaList: []
+        cartillaDiariaList: [],
+        detalleAux : {
+            subdetalleAux: []
+        }
     }
-	function calcularCambio(){
-		let totalPagado = $('#totalPagado').val();
-    	if(!totalPagado){
-    		totalPagado = 0;
-    	}
-    	let total = $('#total').val();
-    	if(!total){
-    		total = 0;
-    	}
-    	let cambio = totalPagado - total;
-    	$('#totalCambio').val(cambio);
-	}
+    function volverPasoInicial() {
+        $('#smartwizard').smartWizard("goToStep", 0);
+    }
     function imageExists(image_url){
         let http = new XMLHttpRequest();
         http.open('HEAD', image_url, false);
@@ -348,17 +423,12 @@
     }
     function btnMaxPlato(productoId){
         let can = $('#cantidadPlato-'+productoId).val();
-        // let found = dataReq.productoList.find(it => it.productoId === productoId);
         if(can) {
             can = parseInt(can);
             can++;
         } else {
             can = 1;
         }
-        // if(can > found.cantidad) {
-        //     can = found.cantidad;
-        //     modalAlert('No existe la cantidad',(found.xproducto+', cantidad actual: '+found.cantidad),'error');
-        // }
         $('#cantidadPlato-'+productoId).val(can);
     }
     function radioTipoVentaProducto(productoId, tipo){
@@ -512,35 +582,106 @@
             $('<td class="w3-center" colspan="5">Sin detalles</td>').appendTo(row);
             $('<td class="w3-right-align custom-bolder" colspan="3">'+UtilNumeros.roundMoney(total)+'</td>').appendTo(row);
         }
+	    if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+	        dataReq.detalleVentaCompuesto.forEach(it => {
+	            total += it.totalVenta;
+                let row = $('<tr></tr>');
+                $('<td>'+it.nombre+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
+                $('#tablaDetalleVenta > tbody:last').append(row);
+            })
+        }
         let row = $('<tr></tr>');
         $('<td colspan="3" style="padding-top: 50px">SON: '+numeroALetras(total)+'</td>').appendTo(row);
         $('<td class="w3-right-align custom-bolder" colspan="3" style="padding-top: 50px">'+UtilNumeros.roundMoney(total)+'</td>').appendTo(row);
         $('#tablaDetalleVenta > tfoot').append(row);
     }
     function btnAdicionarCompuesto(id){
-        dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(det => {
-            if(det.id === id) {
-                let row = $('<div class="row"></div>');
-                $('<div class="col-md-6"><span class="custom-bolder h4">'+ det.nombre +'</span> <span class="custom-bolder h5 text-muted">Bs. '+ det.total +'</span></div>').appendTo(row);
-                $('<div class="col-md-2 custom-bolder">Cantidad</div>').appendTo(row);
-                $('<div class="col-md-4 custom-bolder text-center">Acciones</div>').appendTo(row);
-                det.detalleCartillaList.forEach(subdet => {
-                    $('<div class="col-md-12 custom-bolder padding-left-lg">'+ subdet.xtipoProducto +'</div>').appendTo(row);
-                    if(subdet.productos && subdet.productos.length > 0) {
-                        subdet.productos.forEach(item => {
-                            $('<div class="col-md-6 padding-left-xl margin-top-lg">' + item.xproducto + '</div>').appendTo(row);
-                            $('<div class="col-md-2 margin-top-lg"><input type="text" size="8" class="w3-tiny" name="detalleCantidadCompuesta" /></div>').appendTo(row);
-                            $('<div class="col-md-4 margin-top-lg text-center"><button class="btn btn-xs btn-danger" style="margin-right: 15px;" onclick="disminuirSubdetalle('+item.cartillaDiariaId+','+item.cartillaSucursalId+','+item.id+')" type="button"><i class="fa fa-minus"></i></button><button class="btn btn-xs btn-success" onclick="disminuirSubdetalle('+item.cartillaDiariaId+','+item.cartillaSucursalId+','+item.id+')" type="button"><i class="fa fa-plus"></i></button></div>').appendTo(row);
-                        })
-                    } else {
-                        $('<div class="text-center">Sin detalles</div>')
-                    }
-                });
-                $('<div class="col-md-12"><hr/></div>').appendTo(row);
-                $('#contenidoCartilla').append(row);
-            }
-        });
+        $('#formularioCompuesto').data('formValidation').resetForm();
+        $('#formularioCompuesto')[0].reset();
+        $('#cantidadCompuesto').val('')
+        $('#contenidoCartilla').html('');
+        let existeDetalleVenta = dataReq.detalleVentaCompuesto.find(it => it.id === id);
+        dataReq.detalleAux = null;
+        if(existeDetalleVenta) {
+            $('#cantidadCompuesto').val(existeDetalleVenta.cantidadVenta);
+            dataReq.detalleAux = existeDetalleVenta;
+        } else {
+            dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(det => {
+                if(det.id === id) {
+                    dataReq.detalleAux = det
+                }
+            });
+        }
+        if(dataReq.detalleAux) {
+            let row = $('<div class="row"></div>');
+            $('<div class="col-md-6"><span class="custom-bolder h4">'+ dataReq.detalleAux.nombre +'</span> <span class="custom-bolder h5 text-muted">Bs. '+ dataReq.detalleAux.total +'</span></div>').appendTo(row);
+            $('<div class="col-md-2 custom-bolder">Cantidad</div>').appendTo(row);
+            $('<div class="col-md-4 custom-bolder text-center">Acciones</div>').appendTo(row);
+            dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+                $('<div class="col-md-12 custom-bolder padding-left-lg">'+ subdet.xtipoProducto +'</div>').appendTo(row);
+                if(subdet.productos && subdet.productos.length > 0) {
+                    subdet.productos.forEach(item => {
+                        if(!item.cantidadVenta) {
+                            item.cantidadVenta = 0;
+                        }
+                        $('<div class="col-md-6 padding-left-xl margin-top-lg">' + item.xproducto + '</div>').appendTo(row);
+                        $('<div class="col-md-2 margin-top-lg"><input type="text" size="8" disabled class="w3-tiny" id="detalleCantidadCompuesta-'+item.id+'" name="detalleCantidadCompuesta" value="'+item.cantidadVenta+'" /></div>').appendTo(row);
+                        $('<div class="col-md-4 margin-top-lg text-center"><button class="btn btn-xs btn-danger" style="margin-right: 15px;" onclick="disminuirSubdetalle('+item.cartillaDiariaId+','+item.cartillaSucursalId+','+item.id+')" type="button"><i class="fa fa-minus"></i></button><button class="btn btn-xs btn-success" onclick="aumentarSubdetalle('+item.cartillaDiariaId+','+item.cartillaSucursalId+','+item.id+')" type="button"><i class="fa fa-plus"></i></button></div>').appendTo(row);
+                    })
+                } else {
+                    $('<div class="text-center">Sin detalles</div>')
+                }
+            });
+            $('<div class="col-md-12"><hr/></div>').appendTo(row);
+            $('#contenidoCartilla').append(row);
+        }
         $('#modalCompuesto').modal('show');
+    }
+    function disminuirSubdetalle(cartillaDiariaId,cartillaSucursalId,detalleCartillaId){
+        dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+            subdet.productos.forEach(item => {
+                if(item.cartillaDiariaId === cartillaDiariaId && item.cartillaSucursalId === cartillaSucursalId
+                && item.id === detalleCartillaId) {
+                    if(!item.cantidadVenta) {
+                        item.cantidadVenta = 0;
+                    }
+                    // Verificar quno sobre pase el stock disponible
+                    if(item.cantidadVenta <=0) {
+                        $('#detalleCantidadCompuesta-'+detalleCartillaId).val(item.cantidadVenta);
+                        return;
+                    }
+                    item.cantidadVenta--;
+                    $('#detalleCantidadCompuesta-'+detalleCartillaId).val(item.cantidadVenta);
+                }
+            })
+        })
+    }
+    function aumentarSubdetalle(cartillaDiariaId,cartillaSucursalId,detalleCartillaId){
+        dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+            subdet.productos.forEach(item => {
+                if(item.cartillaDiariaId === cartillaDiariaId && item.cartillaSucursalId === cartillaSucursalId
+                    && item.id === detalleCartillaId) {
+                    if(!item.cantidadVenta) {
+                        item.cantidadVenta = 0;
+                    }
+                    // Verificar quno sobre pase el stock disponible
+                    if(item.cantidadVenta >= item.cantidad) {
+                        modalAlert('Cantidad limite', 'No se puede cuenta con mas unidades del producto.','error');
+                        return;
+                    }
+                    item.cantidadVenta++;
+                    $('#detalleCantidadCompuesta-'+detalleCartillaId).val(item.cantidadVenta);
+                }
+            })
+        })
+    }
+    function seleccionarMesa(id){
+        let mesaSelected = dataReq.mesaList.find(it => it.id === id);
+        dataReq.venta.mesa = mesaSelected;
     }
 	function init(){
 	    $('#areaMesa').html('');
@@ -554,7 +695,7 @@
 	                resp.data.mesas.forEach(it => {
 	                    let divCol = $('<div class="col-md-2"></div>');
 	                    let divInfoBox = $('<div class="info-box"></div>');
-	                    $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+	                    $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
 	                    let divContent = $('<div class="info-box-content"></div>');
 	                    $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
                         $('<span class="info-box-text">'+it.nombre+'</span>').appendTo(divContent);
@@ -597,12 +738,7 @@
                         $('#tabCartilla').append($('<li><a href="#tab_'+it.id+'" data-toggle="tab">'+it.nombre+'</a></li>'));
                         let divContent = $('<div class="tab-pane" id="tab_'+it.id+'"></div>');
                         if(it.estaCompuesto) {
-                            let formCompuesto = $('<div class="row"></div>');
-                            $('<div class="col-md-4">'+it.nombre+'</div>').appendTo(formCompuesto);
-                            $('<div class="col-md-2"><div class="form-group"><input type="text" placeholder="Cantidad" class="form-control" name="cantidadCompuesto-'+it.id+'"></div></div>').appendTo(formCompuesto);
-                            $('<div class="col-md-2"><button class="btn btn-success btn-block" type="button" onclick="btnAdicionarCompuesto('+it.id+')"> Adicionar</button></div>').appendTo(formCompuesto);
-                            formCompuesto.appendTo(divContent);
-                            $('<h3>'+it.nombre+'</h3>').appendTo(divContent);
+                            $('<h3>'+it.nombre+' <button class="btn btn-success" type="button" onclick="btnAdicionarCompuesto('+it.id+')"> <i class="fa fa-plus"></i> Registrar '+it.nombre+'</button></h3>').appendTo(divContent);
                             it.detalleCartillaList.forEach(itDetalleCartilla => {
                                 $('<h3>'+itDetalleCartilla.xtipoProducto+'</h3>').appendTo(divContent);
                                 let divRow = $('<div class="row platos-list plato-list-in-box"></div>');
@@ -648,9 +784,6 @@
         return div1;
     }
     $(document).ready(function() {
-        $('#totalPagado').keyup(function(){
-        	calcularCambio();
-        });
         // Toolbar extra buttons
         const btnCancel = $('<button></button>').html('<i class="fa fa-times-circle"></i><br/>Salir Venta')
             .addClass('btn w3-red w3-border-red')
@@ -712,6 +845,42 @@
         $('.sw-btn-next').html('<i class="fa fa-arrow-circle-right"></i><br>Siguiente');
         $('.sw-btn-prev').html('<i class="fa fa-arrow-circle-left"></i><br>Volver atras');
         $('#smartwizard').smartWizard("goToStep", 0);
+        $("#smartwizard").on("stepContent", function(e, anchorObject, stepIndex, stepDirection) {
+            console.log(stepIndex);
+            if(stepIndex === 2) {
+                console.log('Ingresa')
+                //Renderizar resumen de comanda
+                if(dataReq.venta) {
+                    $('#areaResumenVenta').loadJSON({
+                        'xmesa': dataReq.venta.mesa.nombre,
+                        'xcantidadPersonas': dataReq.venta.mesa.cantidad,
+                        'xmesero': dataReq.venta.user.xuser,
+                        'xcliente': dataReq.venta.cliente.nom_per + ' '+ dataReq.venta.cliente.priape_per + ' '+(dataReq.venta.cliente.segape_per||''),
+                    });
+                }
+                $('#areaResumenDetalleVenta > tbody').html('');
+                if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
+                    dataReq.detalleVenta.forEach(it => {
+                        let row = $('<tr></tr>');
+                        $('<td>'+it.xproducto+'</td>').appendTo(row);
+                        $('<td>'+it.cantidad+'</td>').appendTo(row);
+                        $('<td>'+it.precio+'</td>').appendTo(row);
+                        $('<td>'+it.total+'</td>').appendTo(row);
+                        $('#areaResumenDetalleVenta > tbody:last').append(row);
+                    });
+                }
+                if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+                    dataReq.detalleVentaCompuesto.forEach(it => {
+                        let row = $('<tr></tr>');
+                        $('<td>'+it.nombre+'</td>').appendTo(row);
+                        $('<td>'+it.cantidadVenta+'</td>').appendTo(row);
+                        $('<td>'+it.precioVenta+'</td>').appendTo(row);
+                        $('<td>'+it.totalVenta+'</td>').appendTo(row);
+                        $('#areaResumenDetalleVenta > tbody:last').append(row);
+                    });
+                }
+            }
+        });
         $('#formulario1').formValidation({
             locale: 'es_ES',
             excluded: ':disabled',
@@ -798,11 +967,6 @@
             $('#codigo').val(0);
             $('#modalCliente').modal('show');
         });
-        $('#obtenerProducto').click(function() {
-            $('#formularioBarCode').data('formValidation').resetForm();
-            $('#formularioBarCode')[0].reset();
-            $('#modalBarCode').modal('show');
-        });
         $('#formularioCliente').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
@@ -810,16 +974,11 @@
             var xform = $(e.target);
             alertAdicion('Registro de cliente', 'Esta seguro de registrar este cliente?', function(){
             	$.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status == true) {
+                    if (result.status) {
                         xform.data('formValidation').resetForm();
-                        $('#cliente').append($('<option>', {
-                            value: result.codCli,
-                            text: result.cliente
-                        }));
-                        $('#cliente option[value=' + result.codCli + ']').attr('selected', 'selected');
-                        $('#cliente').trigger('chosen:updated');
+                        dataReq.venta.cliente = result.xcliente;
+                        $('#xcliente').html(result.cliente);
                         $('.modal').modal('hide');
-
                         mostrarMensaje('info', 'Se realizo con exito la Transaccion');
                     } else {
                         mostrarMensaje('error', 'No se realizo con exito la Transaccion');
@@ -827,27 +986,113 @@
                 }, 'json');
             })
         });
+        $('#formularioCompuesto').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let statusModal = true;
+            let cantidad = parseInt($('#cantidadCompuesto').val());
+            if(cantidad <= 0) {
+                modalAlert('Ingrese una cantidad correcta', 'La cantidad no es correcta', 'info');
+                statusModal = false;
+                return;
+            }
+            dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+                let cantidadTipo = 0;
+                subdet.productos.forEach(item => {
+                    if(item.cantidadVenta && item.cantidadVenta > 0) {
+                        cantidadTipo += item.cantidadVenta;
+                    }
+                })
+                if(cantidadTipo !== cantidad) {
+                    if(cantidadTipo > cantidad) {
+                        modalAlert(subdet.xtipoProducto, 'La cantidad excede a lo solicitado', 'error');
+                        $('#btnSubmitSubdetalle').removeClass('disabled').removeAttr('disabled');
+                        statusModal = false;
+                        return;
+                    }
+                    if(cantidadTipo < cantidad) {
+                        modalAlert(subdet.xtipoProducto, 'La cantidad es menor a lo solicitado', 'error');
+                        $('#btnSubmitSubdetalle').removeClass('disabled').removeAttr('disabled');
+                        statusModal = false;
+                        return;
+                    }
+                }
+            });
+            if(statusModal) {
+                //Si todo esta bien, se procede al resguardo
+                dataReq.detalleAux.cantidadVenta = cantidad;
+                dataReq.detalleAux.precioVenta = dataReq.detalleAux.total;
+                dataReq.detalleAux.totalVenta = cantidad * dataReq.detalleAux.total;
+                dataReq.detalleAux.tipoVenta = 1;//unidad
+                dataReq.detalleAux.xtipoVenta = 'Unid.';//unidad
+                let existeDetalle = false;
+                dataReq.detalleVentaCompuesto.forEach(it => {
+                    if(it.id === dataReq.detalleAux.id) {
+                        it = dataReq.detalleAux;
+                        existeDetalle = true;
+                    }
+                })
+                if(!existeDetalle) {
+                    dataReq.detalleVentaCompuesto.push(dataReq.detalleAux);
+                }
+                $('#modalCompuesto').modal('hide');
+                renderDetalleVenta();
+            }
+
+        });
+        $('#usuarioId').change(function(){
+            let user = $('#usuarioId option:selected').val();
+            let xuser = $('#usuarioId option:selected').html();
+            dataReq.venta.user = {'userId':user,'xuser':xuser};
+        });
+        var tableCliente = $('#tablaCliente').DataTable({
+            buttons: [],
+            "ajax": {
+                "type": "POST",
+                "url": "../cliente/listar",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                }
+            },
+            "ordering": true,
+            "order": [[0,'desc']],
+            "columns": [{
+                "data": "cod_cli"
+            }, {
+                "data": "tel_per"
+            }, {
+                "data": "cod_cli"
+            }, {
+                "data": "cod_cli"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
+                $('td', row).eq(3).html('<a href="#" class="seleccionarCliente"> &laquo; Seleccionar &raquo; </a>');
+            },
+            "drawCallback": function(settings) {
+                $('.seleccionarCliente').click(function() {
+                    let obj = tableCliente.row($(this).closest('tr')).data();
+                    dataReq.venta.cliente = obj;
+                    $('#xcliente').html(obj.nom_per + ' ' + obj.priape_per + ' ' + obj.segape_per||'');
+                    $('#modalGestionCliente').modal('hide');
+                });
+            }
+            ,"initComplete": function(settings, json) {
+                $('#tablaCliente_filter input').unbind();
+                $('#tablaCliente_filter input').bind('keyup', function(e) {
+                    if ( e.keyCode == 13) {
+                        $('#tablaCliente').DataTable().search(this.value).draw();
+                    }
+                })
+            }
+        });
+        $('#btnCliente').click(function(){
+            $('#modalGestionCliente').modal('show');
+        })
         init();
     });
 
-    function buscarCodigo() {
-        if ($('#barcode').val() != '')
-            $.post('../producto/obtenerxcodigo?barcode=' + $('#barcode').val(), function(resp) {
-                if (resp.status) {
-                    if (resp.data.can_pro > 0) {
-                        $('#can1').val(1);
-                        $('#pre1').val(resp.data.preven_pro);
-                        $('#tot1').val(resp.data.preven_pro);
-                        $('#adicionar').click();
-                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                    } else
-                        mostrarMensaje('info', 'Se acabo la cantidad de este producto.');
-                } else {
-                    mostrarMensaje('error', 'No se encontro producto con este numero de codigo.');
-                }
-                $('#barcode').val('');
-            }, 'json');
-    }
     function calculoTotal() {
         let subtot = 0;
         let des = 0;
@@ -868,7 +1113,7 @@
         let descuentoTotal = parseFloat($('#descuento').val());
         let totalGeneral = tot - descuentoTotal;
         $('#total').val(totalGeneral.toFixed(2));
-        calcularCambio();
+
     }
 
     function calcularSubtotal(valor) {
