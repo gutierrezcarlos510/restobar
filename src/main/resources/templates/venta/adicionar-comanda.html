@@ -152,7 +152,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <input type="hidden" name="usuarioId" />
                                     <label>Mesero</label>
@@ -162,13 +162,24 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Cantidad de personas</label>
+                                    <input type="text" class="form-control" id="cantidadPersonas" name="cantidadPersonas" >
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <br>
+                                <button class="btn btn-danger" type="button" style="margin-right: 15px;" onclick="disminuirPersonas()"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-success" type="button" onclick="aumentarPersonas()"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cliente</label>
                                     <a href="#" class="form-control" id="btnCliente"><i class="fa fa-user-secret"></i> <span id="xcliente">Cliente Incognito</span></a>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button type="button" class="btn btn-sm btn-success form-control" title="Adicionar Cliente" id="adicionarCliente"> <span class="glyphicon glyphicon-plus"></span> Cliente Nuevo</button>
                             </div>
                         </div>
@@ -214,7 +225,7 @@
             </div>
         </div>
         <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-            <form id="formulario3" name="formulario3" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <form id="formulario3" name="formulario3" action="../venta/guardarComanda" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <div class="row" id="areaResumenVenta">
@@ -380,6 +391,9 @@
         </div>
     </div>
 </div>
+</section>
+
+
 <script type="text/javascript" th:inline="none">
     var dataReq = {
         venta: {},
@@ -403,16 +417,40 @@
         return http.status != 404;
 
     }
-    function btnMinProducto(productoId){
-	    let can = $('#cantidad-'+productoId).val();
-	    if(can) {
-	        can = parseInt(can);
-	        can--;
+    function disminuirPersonas(){
+        let can = $('#cantidadPersonas').val();
+        if(can) {
+            can = parseInt(can);
+            can--;
         } else {
-	        can = 0;
+            can = 0;
         }
-	    if(can < 0) {
-	        can = 0;
+        if(can < 0) {
+            can = 0;
+        }
+        $('#cantidadPersonas').val(can);
+    }
+    function aumentarPersonas(){
+        let can = $('#cantidadPersonas').val();
+        if(can) {
+            can = parseInt(can);
+            can++;
+        } else {
+            can = 1;
+        }
+
+        $('#cantidadPersonas').val(can);
+    }
+    function btnMinProducto(productoId){
+        let can = $('#cantidad-'+productoId).val();
+        if(can) {
+            can = parseInt(can);
+            can--;
+        } else {
+            can = 0;
+        }
+        if(can < 0) {
+            can = 0;
         }
         $('#cantidad-'+productoId).val(can);
     }
@@ -470,11 +508,11 @@
     }
     function radioTipoVentaProducto(productoId, tipo){
         let found = dataReq.productoList.find(it => it.productoId === productoId);
-	    if(tipo === 1) {
-	        $('#precio-'+productoId).html(found.pvUnit);
-	        $('#cant-'+productoId).html('Cant. '+found.cantidad);
+        if(tipo === 1) {
+            $('#precio-'+productoId).html(found.pvUnit);
+            $('#cant-'+productoId).html('Cant. '+found.cantidad);
         } else {
-	        let can = parseInt(found.cantidad / found.unidadPorCaja);
+            let can = parseInt(found.cantidad / found.unidadPorCaja);
             $('#precio-'+productoId).html(found.pvCaja);
             $('#cant-'+productoId).html('Cant. '+can);
         }
@@ -618,29 +656,29 @@
         });
     }
     function renderDetalleVenta(){
-	    $('#tablaDetalleVenta >tbody').html('');
+        $('#tablaDetalleVenta >tbody').html('');
         $('#tablaDetalleVenta >tfoot').html('');
         let total = 0;
-	    if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
-	        dataReq.detalleVenta.forEach(it => {
-	            total += it.total;
-	            let row = $('<tr></tr>');
-	            $('<td>'+it.xproducto+'</td>').appendTo(row);
-	            $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
-	            $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
-	            $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
-	            $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
+        if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
+            dataReq.detalleVenta.forEach(it => {
+                total += it.total;
+                let row = $('<tr></tr>');
+                $('<td>'+it.xproducto+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
                 $('<td class="w3-center text-danger"><a href="#" onclick="eliminarDetalleVenta('+it.productoId+','+it.cartillaDiariaId+','+it.detalleCartillaDiariaId+')"><i class="fa fa-times"></i></a></td>').appendTo(row);
-	            $('#tablaDetalleVenta > tbody:last').append(row);
+                $('#tablaDetalleVenta > tbody:last').append(row);
             });
         } else {
             let row = $('<tr></tr>');
             $('<td class="w3-center" colspan="5">Sin detalles</td>').appendTo(row);
             $('<td class="w3-right-align custom-bolder" colspan="3">'+UtilNumeros.roundMoney(total)+'</td>').appendTo(row);
         }
-	    if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
-	        dataReq.detalleVentaCompuesto.forEach(it => {
-	            total += it.totalVenta;
+        if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+            dataReq.detalleVentaCompuesto.forEach(it => {
+                total += it.totalVenta;
                 let row = $('<tr></tr>');
                 $('<td>'+it.nombre+'</td>').appendTo(row);
                 $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
@@ -702,7 +740,7 @@
         dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
             subdet.productos.forEach(item => {
                 if(item.cartillaDiariaId === cartillaDiariaId && item.cartillaSucursalId === cartillaSucursalId
-                && item.id === detalleCartillaId) {
+                    && item.id === detalleCartillaId) {
                     if(!item.cantidadVenta) {
                         item.cantidadVenta = 0;
                     }
@@ -740,22 +778,22 @@
         let mesaSelected = dataReq.mesaList.find(it => it.id === id);
         dataReq.venta.mesa = mesaSelected;
     }
-	function init(){
-	    $('#areaMesa').html('');
+    function init(){
+        $('#areaMesa').html('');
         $('#areaProducto').html('');
-	    $.post('../venta/initParam', function(resp){
-	        if(resp.status) {
+        $.post('../venta/initParam', function(resp){
+            if(resp.status) {
                 dataReq.venta.cliente = resp.data.cliente;
-	            dataReq.mesaList = resp.data.mesas;
-	            dataReq.productoList = resp.data.productos;
-	            dataReq.cartillaDiariaList = resp.data.cartillaDiariaList;
-	            if(resp.data.mesas && resp.data.mesas.length > 0) {
-	                resp.data.mesas.forEach(it => {
-	                    let divCol = $('<div class="col-md-2"></div>');
-	                    let divInfoBox = $('<div class="info-box"></div>');
-	                    $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
-	                    let divContent = $('<div class="info-box-content"></div>');
-	                    $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
+                dataReq.mesaList = resp.data.mesas;
+                dataReq.productoList = resp.data.productos;
+                dataReq.cartillaDiariaList = resp.data.cartillaDiariaList;
+                if(resp.data.mesas && resp.data.mesas.length > 0) {
+                    resp.data.mesas.forEach(it => {
+                        let divCol = $('<div class="col-md-2"></div>');
+                        let divInfoBox = $('<div class="info-box"></div>');
+                        $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+                        let divContent = $('<div class="info-box-content"></div>');
+                        $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
                         $('<span class="info-box-text">'+it.nombre+'</span>').appendTo(divContent);
                         $('<span class="info-box-more">Cantidad: '+it.cantidad+' </span>').appendTo(divContent);
                         divInfoBox.append(divContent);
@@ -763,19 +801,19 @@
                         $('#areaMesa').append(divCol);
                     })
                 }
-	            if(resp.data.productos && resp.data.productos.length > 0) {
-	                resp.data.productos.forEach(it => {
-	                    let div1 = $('<div class="col-md-4 item" id="areaProducto-'+it.productoId+'"></div>');
-	                    if(imageExists('/producto/'+it.foto)) {
+                if(resp.data.productos && resp.data.productos.length > 0) {
+                    resp.data.productos.forEach(it => {
+                        let div1 = $('<div class="col-md-4 item" id="areaProducto-'+it.productoId+'"></div>');
+                        if(imageExists('/producto/'+it.foto)) {
                             $('<div class="plato-img"><img src="/producto/'+it.foto+'" alt="Product Image"></div>').appendTo(div1);
                         } else {
                             $('<div class="plato-img"><img src="/producto/notimage.png" alt="Product Image"></div>').appendTo(div1);
                         }
-	                    let div2 = $('<div class="plato-info"></div>');
-	                    $('<a href="#" class="plato-title">Bs. <span id="precio-'+it.productoId+'">'+it.pvUnit+'</span> <span class="label label-warning pull-right w3-small" id="cant-'+it.productoId+'">Stock: '+it.cantidad+'</span></a>').appendTo(div2);
-	                    $('<span class="plato-description">'+it.xproducto+'</span>').appendTo(div2);
-	                    div1.append(div2);
-	                    let div3 = $('<span class="plato-description"></span>');
+                        let div2 = $('<div class="plato-info"></div>');
+                        $('<a href="#" class="plato-title">Bs. <span id="precio-'+it.productoId+'">'+it.pvUnit+'</span> <span class="label label-warning pull-right w3-small" id="cant-'+it.productoId+'">Stock: '+it.cantidad+'</span></a>').appendTo(div2);
+                        $('<span class="plato-description">'+it.xproducto+'</span>').appendTo(div2);
+                        div1.append(div2);
+                        let div3 = $('<span class="plato-description"></span>');
                         $('<input type="text" class="w3-medium" style="width: 50%;" id="cantidad-'+it.productoId+'" name="can"/><input type="hidden" name="productoId" value="'+it.productoId+'"/>').appendTo(div3);
                         $('<button onclick="btnMinProducto('+it.productoId+')" class="btn btn-xs btn-danger" style="margin-left: 10px;margin-right: 5px;"><span class="fa fa-minus"></span></button>').appendTo(div3);
                         $('<button onclick="btnMaxProducto('+it.productoId+')" class="btn btn-xs btn-success" style="margin-left: 5px;margin-right: 10px;"><span class="fa fa-plus"></span></button>').appendTo(div3);
@@ -790,7 +828,7 @@
                         $('#areaProducto').append(div1);
                     });
                 }
-	            if(resp.data.cartillaDiariaList) {
+                if(resp.data.cartillaDiariaList) {
                     let auxCartilla = resp.data.cartillaDiariaList.cartillaSucursalFormList;
                     auxCartilla.forEach(it => {
                         $('#tabCartilla').append($('<li><a href="#tab_'+it.id+'" data-toggle="tab">'+it.nombre+'</a></li>'));
@@ -815,7 +853,7 @@
                         $('#tabContentCartilla').append(divContent);
                     })
                 } else {
-	                modalAlert('Sin cartilla de preparaciones', 'Contactarse con administracion', 'info');
+                    modalAlert('Sin cartilla de preparaciones', 'Contactarse con administracion', 'info');
                 }
             }
         })
@@ -1054,62 +1092,124 @@
         });
         $('#formulario3').formValidation({
             locale: 'es_ES'
-        }).on('success.fv.field', '[name="desVen"]', function() {
-        	calculoTotal();
-        }).on('success.fv.field', '[name="descuentos"]', function() {
-            calculoTotal();
-        }).on('success.fv.field', function() {
-            var estadoForm3 = $('#formulario3').data('formValidation').isValid();
-            if (estadoForm3) {
-                calculoTotal();
-            }
-        }).on('err.field.fv', function(e) {
-            e.preventDefault();
-            var xform = $(e.target);
-            $('#total-final').html('');
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-            let xform = $(e.target);
-            let formapago = parseInt($('input[name=formapago]:checked').val());
-            if(formapago == 1){
-            	let codSubcuenta = $('#codSubcuenta option:selected').val();
-            	if(codSubcuenta == ''){
-            		modalAlert('Validacion incorrecta', 'Seleccione una cuenta bancaria, si la forma de pago es por deposito bancario','error');
-            		return;
-            	}
+
+            let obsGeneral = $('#obsGeneral').val();
+            if(!obsGeneral) {
+                obsGeneral = '';
             }
-            alertAdicion('Confirmacion de registro de venta', 'Esta seguro de realizar esta venta?', function(){
-            	$('#formulario1').data('formValidation').validate();
-                var estadoForm1 = $('#formulario1').data('formValidation').isValid();
-                if ($('#total').val() > 0) {
-                    if (estadoForm1 != null)
-                        if (estadoForm1) {
-                            try {
-                                abrirLoad();
-                                $.post(xform.attr('action'), $('#formulario1').serialize() + '&' + $('#formulario4').serialize() + '&' + xform.serialize(), function(result) {
-                                    cerrarLoad();
-                                    if (result.status) {
-                                        xform.data('formValidation').resetForm();
-                                        $.post('../venta/gestion', function(respuno) {
-                                            mostrarMensaje('info', 'Se realizo con exito la Transaccion.');
-                                            $('#contenedor').html(respuno);
-                                        });
-                                    } else {
-                                        mostrarMensaje('error', 'No se realizo con exito la transaccion.');
-                                    }
-                                }, 'json');
-                            } catch (e) {
-                                console.log('Error al adicionar venta: ',e);
-                                cerrarLoad();
-                            } finally {
-                                cerrarLoad();
+            dataReq.venta.obs = obsGeneral;
+            let totalVenta = 0;
+            $('#areaDetalleInfo > tbody').html('');
+            if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
+                dataReq.detalleVenta.forEach(it => {
+                    totalVenta += it.total;
+                });
+            }
+            if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+                dataReq.detalleVentaCompuesto.forEach(it => {
+                    totalVenta += it.totalVenta;
+                });
+            }
+            dataReq.venta.subtotal = totalVenta;
+            calcularTotal();
+            if(totalVenta <= 0) {
+                modalAlert('Ingrese detalle de venta', 'Revisar Paso 2', 'error');
+                return;
+            }
+            let cantidadPersonas = $('#cantidadPersonas').val();
+            if(!cantidadPersonas) {
+                modalAlert('Se requiere ingresar la cantidad de personas', 'Revisar Paso 1', 'error');
+                return;
+            }
+            if(!dataReq.venta.user) {
+                modalAlert('Se requiere mesero que atiende la comanda', 'Revisar Paso 1', 'error');
+                return;
+            }
+            if(!dataReq.venta.cliente) {
+                modalAlert('Se requiere seleccionar un cliente', 'Revisar Paso 1', 'error');
+            }
+            if(!dataReq.venta.mesa) {
+                modalAlert('Se requiere seleccionar una mesa', 'Revisar Paso 1', 'error');
+            }
+            let ventaForm = {
+                clienteId: dataReq.venta.cliente.cod_per,
+                usuarioId: dataReq.venta.user.userId,
+                mesaId:dataReq.venta.mesa.id,
+                obs:dataReq.venta.obs,
+                subtotal:dataReq.venta.subtotal,
+                descuento:dataReq.venta.descuento,
+                total:dataReq.venta.total,
+                totalPagado:dataReq.venta.totalPagado,
+                totalCambio:dataReq.venta.totalCambio,
+                cantidadPersonas: cantidadPersonas,
+                tipo: 1, //1= comanda pendiente, 2 = comanda finalizada
+                detalleVenta: [],
+                detalleVentaCompuesto: []
+            }
+            if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
+                dataReq.detalleVenta.forEach( it => {
+                    ventaForm.detalleVenta.push({
+                        productoId:it.productoId,
+                        cantidad: it.cantidad,
+                        cantidadUnitaria: it.cantidadUnitaria,
+                        precio: it.precio,
+                        total: it.total,
+                        tipoVenta: it.tipoVenta,//1=unidad, 2= caja
+                        cartillaDiariaId: (it.cartillaDiariaId ? it.cartillaDiariaId : null),
+                        detalleCartillaDiariaId: (it.detalleCartillaDiariaId ? it.detalleCartillaDiariaId : null),
+                        esCompuesto: (it.esCompuesto ? it.esCompuesto : false)
+                    });
+                });
+            }
+            if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+                dataReq.detalleVentaCompuesto.forEach( it => {
+                    it.detalleCartillaList. forEach(item => {
+                        item.productos.forEach(subitem => {
+                            if(subitem.cantidadVenta && subitem.cantidadVenta > 0) {
+                                ventaForm.detalleVentaCompuesto.push({
+                                    productoId:subitem.productoId,
+                                    cantidad: subitem.cantidadVenta,
+                                    cantidadUnitaria: subitem.cantidadVenta,
+                                    precio: subitem.precioCompuesto,
+                                    total: (subitem.cantidadVenta * subitem.precioCompuesto),
+                                    tipoVenta: 1,//1=unidad, 2= caja
+                                    cartillaDiariaId: (subitem.cartillaDiariaId ? subitem.cartillaDiariaId : null),
+                                    detalleCartillaDiariaId: (subitem.detalleCartillaDiariaId ? subitem.detalleCartillaDiariaId : null),
+                                    esCompuesto: true
+                                });
                             }
-                        }
-                } else {
-                    $('#formulario1').data('formValidation').validate();
-                    mostrarMensaje('error', 'Valide los campos requeridos.');
-                    mostrarMensaje('error', 'Por favor ingrese el detalle.');
-                }
+                        })
+                    })
+
+                });
+            }
+            alertAdicion('Registro de comanda', 'Esta seguro de realizar esta comanda?', function(){
+                $.ajax({
+                    url: '../venta/guardarComanda',
+                    type: "post", dataType: "json",
+                    data: JSON.stringify(ventaForm), cache: false,
+                    contentType: 'application/json',
+                    processData: false,
+                    beforeSend: function( xhr ) {
+                        abrirLoad();
+                    }
+                }).done(function(result) {
+                    cerrarLoad();
+                    if(result.status) {
+                        mostrarMensaje('info', result.msg);
+                        $.post('../venta/gestion', function(resp){
+                            $('#contenedor').html(resp);
+                        })
+                    } else {
+                        modalAlert('Error de transaccion', result.msg, 'error')
+                    }
+                }).fail(function(jqXHR, textStatus) {
+                    console.log('Request failed:', textStatus);
+                }).always(function() {
+                    cerrarLoad();
+                });;
             });
         });
         $('#adicionarCliente').click(function() {
@@ -1124,7 +1224,7 @@
             e.preventDefault();
             var xform = $(e.target);
             alertAdicion('Registro de cliente', 'Esta seguro de registrar este cliente?', function(){
-            	$.post(xform.attr('action'), xform.serialize(), function(result) {
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
                     if (result.status) {
                         xform.data('formValidation').resetForm();
                         dataReq.venta.cliente = result.xcliente;
@@ -1245,4 +1345,3 @@
         init();
     });
 </script>
-</section>

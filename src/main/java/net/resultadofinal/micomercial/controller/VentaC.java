@@ -1,6 +1,7 @@
 package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.*;
+import net.resultadofinal.micomercial.model.form.VentaForm;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.*;
 import net.resultadofinal.micomercial.util.DataResponse;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -127,11 +129,32 @@ public class VentaC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
+	@RequestMapping("guardarComanda")
+	public @ResponseBody
+	DataResponse guardarComanda(HttpServletRequest request, @RequestBody VentaForm obj){
+		try {
+			Persona usuario=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			if(usuario != null && gestion != null) {
+				obj.setCreatedBy(usuario.getCod_per());
+				obj.setSucursalId(gestion.getCod_suc());
+				obj.setGestion(gestion.getGes_gen());
+				return ventaS.guardarComanda(obj);
+			} else {
+				logger.error("Sesion expirada al ingresar a ventas");
+				return new DataResponse(false, "Sesion expirada al adicionar ventas");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new DataResponse(false, e.getMessage());
+		}
+	}
 	@RequestMapping("eliminar")
 	public @ResponseBody
-    DataResponse eliminar(Long id){
+    DataResponse eliminar(HttpServletRequest request, Long id){
 		try {
-			boolean status = ventaS.eliminar(id);
+			Persona usuario=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			boolean status = ventaS.eliminar(id, usuario.getCod_per());
 			return new DataResponse(status, status ? "Se realizo con exito la eliminacion de la venta":"No se logro realizar la eliminacion de la venta");
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());

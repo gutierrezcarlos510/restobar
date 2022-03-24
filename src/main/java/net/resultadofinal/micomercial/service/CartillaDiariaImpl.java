@@ -183,15 +183,14 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
-					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id where dcd.cartilla_diaria_id = ?";
-					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), cartillaDiariaId);
+					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id inner join almacen a on a.producto_id = p.id and a.sucursal_id = ? where dcd.cartilla_diaria_id = ?";
+					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), obj.getCodSuc(),cartillaDiariaId);
 					if(UtilClass.isNotNullEmpty(productoList)) {
 						for(ProductoCartillaForm pro: productoList) {
 							for (DetalleCartillaForm det: detalleCartillaFormList) {
 								if(det.getId() == pro.getDetalleCartillaSucursalId() && det.getCartillaSucursalId() == pro.getCartillaSucursalId()) {
 									if(det.getProductos()!= null) {
 										det.getProductos().add(pro);
-
 									} else {
 										List<ProductoCartillaForm> aux = new ArrayList<>();
 										aux.add(pro);

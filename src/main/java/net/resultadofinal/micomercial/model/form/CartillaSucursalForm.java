@@ -8,6 +8,16 @@ public class CartillaSucursalForm {
     private String nombre;
     private BigDecimal total;
     private boolean estaCompuesto;
+    private Integer codSuc;
+
+    public Integer getCodSuc() {
+        return codSuc;
+    }
+
+    public void setCodSuc(Integer codSuc) {
+        this.codSuc = codSuc;
+    }
+
     private List<DetalleCartillaForm> detalleCartillaList;
 
     public Integer getId() {

@@ -4,6 +4,8 @@ import net.resultadofinal.micomercial.mappers.DetalleventaMapper;
 import net.resultadofinal.micomercial.mappers.VentaMapper;
 import net.resultadofinal.micomercial.model.DetalleVenta;
 import net.resultadofinal.micomercial.model.Venta;
+import net.resultadofinal.micomercial.model.form.DetalleVentaForm;
+import net.resultadofinal.micomercial.model.form.VentaForm;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -25,11 +27,14 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	
 	private JdbcTemplate db;
 	@Autowired
+	private AlmacenS almacenS;
+	@Autowired
 	public VentaImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
 	}
 	private static final Logger logger = LoggerFactory.getLogger(VentaImpl.class);
 	private static final String ENTITY = "venta";
+	private static final short VENTA_PRODUCTO = 3;
 	private String sqlString;
 	@Autowired
 	private UtilDataTableS utilDataTableS;
@@ -107,11 +112,51 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			throw new RuntimeException(Utils.errorAdd(ENTITY, ""));
 		}
 	}
+	@Transactional
+	public DataResponse guardarComanda(VentaForm obj) {
+		try {
+			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta where sucursal_id =?", Long.class, obj.getSucursalId());
+			sqlString = "insert into venta(id, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
+					"VALUES(?, ?, ?, now(), ?, ?, ?, ?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
+			boolean saveVenta = db.update(sqlString,ventaId, obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
+					obj.getTipo(), obj.getSucursalId(),obj.getSubtotal(),obj.getMesaId(), obj.getCantidadPersonas(),obj.getFormaPagoId(),obj.getTotalPagado(),obj.getTotalCambio(),obj.getCreatedBy())>0;
+			if(saveVenta) {
+				sqlString ="INSERT INTO detalle_venta(venta_id, id, producto_id, precio, cantidad, descuento, subtotal, total, cartilla_diaria_id, detalle_cartilla_diaria_id, es_compuesto, tipo_venta, cantidad_unitaria) " +
+						"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				short detalleId = 1;
+				if(obj.getDetalleVenta() != null && !obj.getDetalleVenta().isEmpty()) {
+					for (DetalleVentaForm det: obj.getDetalleVenta()) {
+						adicionarDetalleComanda(ventaId, detalleId, det, obj.getSucursalId(), obj.getUsuarioId());
+						detalleId++;
+					}
+				}
+				if(obj.getDetalleVentaCompuesto() != null && !obj.getDetalleVentaCompuesto().isEmpty()) {
+					for (DetalleVentaForm det: obj.getDetalleVentaCompuesto()) {
+						adicionarDetalleComanda(ventaId, detalleId, det, obj.getSucursalId(), obj.getUsuarioId());
+						detalleId++;
+					}
+				}
+				if(detalleId <= 1) {
+					throw new RuntimeException("no se encontro detalles de la comanda para guardar");
+				}
+				return new DataResponse(true, "Registro de comanda exitosa");
+			} else {
+				return new DataResponse(false, "Error al guardar la venta");
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException(Utils.errorAdd(ENTITY, ex.getMessage()));
+		}
+	}
+	public void adicionarDetalleComanda(Long ventaId, short detalleId, DetalleVentaForm det, Integer sucursalId, Long userId) {
+		db.update(sqlString, ventaId, detalleId, det.getProductoId(), det.getPrecio(), det.getCantidad(), 0, 0, det.getTotal(), det.getCartillaDiariaId(),
+				det.getDetalleCartillaDiariaId(), det.getEsCompuesto() == null ? false : det.getEsCompuesto(), det.getTipoVenta() == null ? 1: det.getTipoVenta(), det.getCantidadUnitaria());
+		almacenS.registrarAlmacen(det.getProductoId(), sucursalId, det.getCantidad(), userId, VENTA_PRODUCTO, "Disminucion por comanda");
+	}
 	@Override
 	@Transactional
-	public Boolean eliminar(Long ventaId){
+	public Boolean eliminar(Long ventaId, Long userId){
 		try {
-			return db.queryForObject("select venta_eliminar(?,?);",Boolean.class,ventaId,false);
+			return db.queryForObject("select venta_eliminar(?,?);",Boolean.class,ventaId,userId);
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorEli(ENTITY, ""));
