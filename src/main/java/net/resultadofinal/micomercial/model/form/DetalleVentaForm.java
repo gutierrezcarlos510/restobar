@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class DetalleVentaForm {
     private Short id;
+    private Long ventaId;
     private Long productoId;
     private Integer cantidad, cantidadUnitaria;
     private BigDecimal precio, total;
@@ -12,6 +13,14 @@ public class DetalleVentaForm {
     private Integer cartillaSucursalId;
     private Short detalleCartillaSucursalId, detalleCartillaDiariaId;
     private Boolean esCompuesto;
+
+    public Long getVentaId() {
+        return ventaId;
+    }
+
+    public void setVentaId(Long ventaId) {
+        this.ventaId = ventaId;
+    }
 
     public Short getId() {
         return id;

@@ -170,6 +170,25 @@ public class VentaC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
+	@RequestMapping("actualizarComanda")
+	public @ResponseBody
+	DataResponse actualizarComanda(HttpServletRequest request, @RequestBody VentaForm obj){
+		try {
+			Persona usuario=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			if(usuario != null && gestion != null) {
+				obj.setCreatedBy(usuario.getCod_per());
+				obj.setSucursalId(gestion.getCod_suc());
+				return ventaS.actualizarComanda(obj);
+			} else {
+				logger.error("Sesion expirada al ingresar a ventas");
+				return new DataResponse(false, "Sesion expirada al adicionar ventas");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new DataResponse(false, e.getMessage());
+		}
+	}
 	@RequestMapping("eliminar")
 	public @ResponseBody
     DataResponse eliminar(HttpServletRequest request, Long id){

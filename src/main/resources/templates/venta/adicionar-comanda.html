@@ -644,9 +644,9 @@
         alertEliminacion('Eliminar Detalle Venta', productoFound.xproducto, function(){
             dataReq.detalleVenta = dataReq.detalleVenta.filter( it => it.productoId !== productoId);
             if(cartillaDiariaId && detalleCartillaDiariaId) {
-                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.cartillaDiariaId === cartillaDiariaId && it.detalleCartillaDiariaId === detalleCartillaDiariaId);
+                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.cartillaDiariaId !== cartillaDiariaId && it.detalleCartillaDiariaId !== detalleCartillaDiariaId);
             } else {
-                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.productoId === productoId);
+                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.productoId !== productoId);
             }
             renderDetalleVenta();
         });
@@ -875,7 +875,7 @@
                                 resp.data.cartillaDiariaList.cartillaSucursalFormList.forEach(item => {
                                     item.detalleCartillaList.forEach(subitem => {
                                         subitem.productos.forEach(pro => {
-                                            if(pro.cartillaDiariaId === it.cartillaDiariaId && pro.detalleCartillaDiariaId === it.detalleCartillaDiariaId) {
+                                            if(pro.cartillaDiariaId === it.cartillaDiariaId && pro.id === it.detalleCartillaDiariaId) {
                                                 dataReq.detalleVenta.push({
                                                     'productoId': pro.productoId,
                                                     'xproducto':pro.xproducto,
@@ -886,7 +886,7 @@
                                                     'cantidadUnitaria': it.cantidadUnitaria,
                                                     'xtipoVenta': it.tipoVenta === 1 ? 'Unid.': 'Caja',
                                                     'cartillaDiariaId':pro.cartillaDiariaId,
-                                                    'detalleCartillaDiariaId':pro.detalleCartillaDiariaId
+                                                    'detalleCartillaDiariaId':it.detalleCartillaDiariaId
                                                 });
                                             }
                                         })
@@ -909,7 +909,6 @@
                             }
                         });
                     }
-                    console.log('detalleCompuesto')
                     if(resp.data.venta.detalleVentaCompuesto && resp.data.venta.detalleVentaCompuesto.length > 0) {
                         dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(item => {
                             if(item.estaCompuesto && item.estaCompuesto === true) {

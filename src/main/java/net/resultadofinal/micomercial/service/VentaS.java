@@ -27,4 +27,6 @@ public interface VentaS {
     Venta obtenerPorArqueoCaja(Long arqueoId, Integer detalleArqueoId);
     @Transactional
     DataResponse guardarComanda(VentaForm obj);
+    @Transactional
+    DataResponse actualizarComanda(VentaForm obj);
 }
