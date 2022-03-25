@@ -15,7 +15,7 @@ public interface VentaS {
     DataTableResults<Venta> listado(HttpServletRequest request, boolean estado, Long xuser, int xsucursal,Short tipo);
 
     Venta obtener(Long codVen);
-
+    VentaForm obtenerVentaForm(Long codVen);
     List<DetalleVenta> obtenerDetalle(Long ventaId);
 
     @Transactional

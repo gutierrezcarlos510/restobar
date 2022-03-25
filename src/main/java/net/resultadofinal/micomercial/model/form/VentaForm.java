@@ -5,11 +5,27 @@ import java.util.List;
 
 public class VentaForm {
     private Long id, clienteId, usuarioId, createdBy,numero;
-    private Integer mesaId, sucursalId,gestion;
-    private String obs;
+    private Integer sucursalId,gestion;
+    private String obs, xusuario;
     private BigDecimal subtotal, descuento, total, totalPagado, totalCambio;
     private List<DetalleVentaForm> detalleVenta, detalleVentaCompuesto;
-    private Short formaPagoId, cantidadPersonas, tipo;
+    private Short formaPagoId, cantidadPersonas, tipo, mesaId;
+
+    public Short getMesaId() {
+        return mesaId;
+    }
+
+    public void setMesaId(Short mesaId) {
+        this.mesaId = mesaId;
+    }
+
+    public String getXusuario() {
+        return xusuario;
+    }
+
+    public void setXusuario(String xusuario) {
+        this.xusuario = xusuario;
+    }
 
     public Long getNumero() {
         return numero;
@@ -90,15 +106,6 @@ public class VentaForm {
     public void setUsuarioId(Long usuarioId) {
         this.usuarioId = usuarioId;
     }
-
-    public Integer getMesaId() {
-        return mesaId;
-    }
-
-    public void setMesaId(Integer mesaId) {
-        this.mesaId = mesaId;
-    }
-
     public String getObs() {
         return obs;
     }

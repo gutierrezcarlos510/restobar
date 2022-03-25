@@ -128,10 +128,15 @@
             "createdRow": function(row, data, index) {
                 $('td', row).eq(1).html(UtilDate.formatDate(data.fecha,'DD/MM/YYYY'));
                 $('td', row).eq(4).html('<span class="label label-'+dataReq.stateColor[data.tipo]+'">'+data.xtipo+'</span>');
+                let acciones = '<button class="btn btn-success btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
+                acciones += '<button class="btn btn-danger eliminar btn-sm"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button>';
+                if(data.tipo === 1) {
+                    acciones += '<button class="btn btn-primary modificar btn-sm"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="glyphicon glyphicon-edit"></i><br>modificar</button>';
+                }
                 if (data.estado) {
-                    $('td', row).eq(6).html('<div class="btn-group btn-group-xs"><button class="btn btn-success btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button><button class="btn btn-danger eliminar btn-sm"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.codVen + '"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                    $('td', row).eq(6).html('<div class="btn-group btn-group-xs">'+acciones+'</div>');
                 } else
-                    $('td', row).eq(6).html('<button class="btn btn-success imprimir" data-id="' + data.codVen + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
+                    $('td', row).eq(6).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
             },
             "drawCallback": function(settings) {
                 $('.imprimir').click(function() {
@@ -160,6 +165,17 @@
 				});
 			});
 		});
+        $('#tabla tbody').on('click', 'tr td button.modificar', function() {
+            let obj = tablaVenta.row($(this).closest('tr')).data();
+            abrirLoad();
+            $.post('../venta/adicionar?isMobil=',{'isMobil':UtilBrowser.isMobil(),'ventaId':obj.id}, function(resp) {
+                $('#contenedor').html(resp);
+            }).fail(function(){
+                cerrarLoad();
+            }).always(function(){
+                cerrarLoad();
+            });
+        });
         $('.estadoRadio').click(function() {
             $('#tabla').dataTable().fnDraw('');
         });

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,14 +52,33 @@ public class VentaC {
 	private static final int ROL_MESERO = 4;
 	private static final long CLIENTE_INCOGNITO = 0;
 	@RequestMapping("initParam")
-	public @ResponseBody DataResponse initParam(HttpServletRequest request){
+	public @ResponseBody DataResponse initParam(HttpServletRequest request, Long ventaId){
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if(gestion != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("mesas", mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc()));
+
 			map.put("productos", almacenS.listarProductos(gestion.getCod_suc()));
 			map.put("cartillaDiariaList", cartillaDiariaS.obtenerCartillaActivaSucursal(gestion.getCod_suc()));
-			map.put("cliente", clienteS.obtener(CLIENTE_INCOGNITO));
+
+			if(ventaId > 0) {
+				VentaForm v = ventaS.obtenerVentaForm(ventaId);
+				List<Mesa> mesas = mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc());
+				Mesa mesaVenta = mesaS.obtener(v.getMesaId());
+				if(mesas != null && !mesas.isEmpty()) {
+					mesas.add(mesaVenta);
+				} else {
+					if(mesas != null) {
+						mesas = new ArrayList<>();
+					}
+					mesas.add(mesaVenta);
+				}
+				map.put("mesas",mesas);
+				map.put("venta", v);
+				map.put("cliente", clienteS.obtener(v.getClienteId()));
+			} else {
+				map.put("mesas", mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc()));
+				map.put("cliente", clienteS.obtener(CLIENTE_INCOGNITO));
+			}
 			return new DataResponse(true, map, "Se realizo con exito.");
 		} else {
 			return new DataResponse(false, "Error al recuperar informacion");
@@ -103,9 +123,10 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("adicionar")
-	public String adicionar(Model model,Boolean isMobil){
+	public String adicionar(Model model,Boolean isMobil, Long ventaId){
 		model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
 		model.addAttribute("formas", formaPagoS.listAll());
+		model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
 		return "venta/adicionar-comanda";
 	}
 	@RequestMapping("guardar")

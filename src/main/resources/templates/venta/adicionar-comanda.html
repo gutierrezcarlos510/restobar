@@ -393,7 +393,9 @@
 </div>
 </section>
 
-
+<script th:inline="javascript">
+    var ventaId = /*[[${ventaId}]]*/ 0;
+</script>
 <script type="text/javascript" th:inline="none">
     var dataReq = {
         venta: {},
@@ -405,7 +407,8 @@
         cartillaDiariaList: [],
         detalleAux : {
             subdetalleAux: []
-        }
+        },
+        isUpdate : false
     }
     function volverPasoInicial() {
         $('#smartwizard').smartWizard("goToStep", 0);
@@ -781,7 +784,7 @@
     function init(){
         $('#areaMesa').html('');
         $('#areaProducto').html('');
-        $.post('../venta/initParam', function(resp){
+        $.post('../venta/initParam?ventaId='+ventaId, function(resp){
             if(resp.status) {
                 dataReq.venta.cliente = resp.data.cliente;
                 dataReq.mesaList = resp.data.mesas;
@@ -791,7 +794,11 @@
                     resp.data.mesas.forEach(it => {
                         let divCol = $('<div class="col-md-2"></div>');
                         let divInfoBox = $('<div class="info-box"></div>');
-                        $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+                        if(ventaId > 0 && resp.data.venta.mesaId === it.id) {
+                            $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'" checked/></span>').appendTo(divInfoBox);
+                        } else {
+                            $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+                        }
                         let divContent = $('<div class="info-box-content"></div>');
                         $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
                         $('<span class="info-box-text">'+it.nombre+'</span>').appendTo(divContent);
@@ -854,6 +861,88 @@
                     })
                 } else {
                     modalAlert('Sin cartilla de preparaciones', 'Contactarse con administracion', 'info');
+                }
+                if(ventaId > 0) {
+                    dataReq.isUpdate = true;
+                    dataReq.venta.mesa = resp.data.mesas.find(it => it.id === resp.data.venta.mesaId);
+                    dataReq.venta.user = {'userId': resp.data.venta.usuarioId, 'xuser': resp.data.venta.xusuario};
+                    $('#usuarioId').val(resp.data.venta.usuarioId);
+                    $('#cantidadPersonas').val(resp.data.venta.cantidadPersonas);
+                    dataReq.venta.obs = resp.data.venta.obs;
+                    if(resp.data.venta.detalleVenta && resp.data.venta.detalleVenta.length > 0) {
+                        resp.data.venta.detalleVenta.forEach(it => {
+                            if(it.cartillaDiariaId && it.detalleCartillaDiariaId) { //Es producto creado
+                                resp.data.cartillaDiariaList.cartillaSucursalFormList.forEach(item => {
+                                    item.detalleCartillaList.forEach(subitem => {
+                                        subitem.productos.forEach(pro => {
+                                            if(pro.cartillaDiariaId === it.cartillaDiariaId && pro.detalleCartillaDiariaId === it.detalleCartillaDiariaId) {
+                                                dataReq.detalleVenta.push({
+                                                    'productoId': pro.productoId,
+                                                    'xproducto':pro.xproducto,
+                                                    'cantidad': it.cantidad,
+                                                    'precio': it.precio,
+                                                    'total': it.total,
+                                                    'tipoVenta': it.tipoVenta,
+                                                    'cantidadUnitaria': it.cantidadUnitaria,
+                                                    'xtipoVenta': it.tipoVenta === 1 ? 'Unid.': 'Caja',
+                                                    'cartillaDiariaId':pro.cartillaDiariaId,
+                                                    'detalleCartillaDiariaId':pro.detalleCartillaDiariaId
+                                                });
+                                            }
+                                        })
+                                    })
+                                })
+                            } else { // Es producto comprado
+                                let productoObtenido = resp.data.productos.find(item => item.productoId === it.productoId);
+                                dataReq.detalleVenta.push({
+                                    'productoId': productoObtenido.productoId,
+                                    'xproducto':productoObtenido.xproducto,
+                                    'cantidad': it.cantidad,
+                                    'precio': it.precio,
+                                    'total': it.total,
+                                    'tipoVenta': it.tipoVenta,
+                                    'cantidadUnitaria': it.cantidadUnitaria,
+                                    'xtipoVenta': it.tipoVenta === 1 ? 'Unid.': 'Caja',
+                                    'cartillaDiariaId':productoObtenido.cartillaDiariaId,
+                                    'detalleCartillaDiariaId':productoObtenido.detalleCartillaDiariaId
+                                });
+                            }
+                        });
+                    }
+                    console.log('detalleCompuesto')
+                    if(resp.data.venta.detalleVentaCompuesto && resp.data.venta.detalleVentaCompuesto.length > 0) {
+                        dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(item => {
+                            if(item.estaCompuesto && item.estaCompuesto === true) {
+                                item.detalleCartillaList.forEach(subitem => {
+                                    subitem.productos.forEach(pro => {
+                                        resp.data.venta.detalleVentaCompuesto.forEach(it => {
+                                            if(pro.cartillaDiariaId === it.cartillaDiariaId && pro.id === it.detalleCartillaDiariaId) {
+                                                pro.cantidadVenta = it.cantidad;
+                                                item.selectUpdate =true;
+                                            }
+                                        })
+                                    })
+                                })
+                            }
+                        })
+                        dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(item => {
+                            if(item.selectUpdate && item.selectUpdate === true) {
+                                let totalCantidad = 0;
+                                //Calcular cantidad total del combo
+                                item.detalleCartillaList[0].productos.forEach(subitem => {
+                                    totalCantidad += subitem.cantidadVenta;
+                                });
+                                let itemAux = item;
+                                itemAux.cantidadVenta = totalCantidad;
+                                itemAux.precioVenta = item.total;
+                                itemAux.totalVenta = itemAux.cantidadVenta * itemAux.precioVenta;
+                                itemAux.tipoVenta = 1;//unidad
+                                itemAux.xtipoVenta = 'Unid.';//unidad
+                                dataReq.detalleVentaCompuesto.push(itemAux);
+                            }
+                        });
+                    }
+                    renderDetalleVenta();
                 }
             }
         })
@@ -1134,6 +1223,7 @@
                 modalAlert('Se requiere seleccionar una mesa', 'Revisar Paso 1', 'error');
             }
             let ventaForm = {
+                id: ventaId,
                 clienteId: dataReq.venta.cliente.cod_per,
                 usuarioId: dataReq.venta.user.userId,
                 mesaId:dataReq.venta.mesa.id,
@@ -1176,7 +1266,7 @@
                                     total: (subitem.cantidadVenta * subitem.precioCompuesto),
                                     tipoVenta: 1,//1=unidad, 2= caja
                                     cartillaDiariaId: (subitem.cartillaDiariaId ? subitem.cartillaDiariaId : null),
-                                    detalleCartillaDiariaId: (subitem.detalleCartillaDiariaId ? subitem.detalleCartillaDiariaId : null),
+                                    detalleCartillaDiariaId: (subitem.id ? subitem.id : null),
                                     esCompuesto: true
                                 });
                             }
@@ -1185,9 +1275,13 @@
 
                 });
             }
+            let urlComanda = '../venta/guardarComanda';
+            if(dataReq.isUpdate) {
+                urlComanda = '../venta/actualizarComanda';
+            }
             alertAdicion('Registro de comanda', 'Esta seguro de realizar esta comanda?', function(){
                 $.ajax({
-                    url: '../venta/guardarComanda',
+                    url: urlComanda,
                     type: "post", dataType: "json",
                     data: JSON.stringify(ventaForm), cache: false,
                     contentType: 'application/json',

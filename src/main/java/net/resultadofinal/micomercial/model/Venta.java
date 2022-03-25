@@ -1,6 +1,7 @@
 package net.resultadofinal.micomercial.model;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -10,11 +11,69 @@ public class Venta  {
 	private Short tipo;
 	private String obs;
 	private Date fecha;
-	private BigDecimal total,descuento,subtotal;
+	private BigDecimal total,descuento,subtotal, totalPagado, totalCambio, numero;
 	private Boolean estado;
 	private String xusuario,xcliente;
 	private Short mesaId, cantidadPersonas, formaPagoId;
+	private Timestamp createdAt, updatedAt;
+	private Long createdBy, updatedBy;
 	private List<DetalleVenta> detalles;
+
+	public BigDecimal getTotalPagado() {
+		return totalPagado;
+	}
+
+	public void setTotalPagado(BigDecimal totalPagado) {
+		this.totalPagado = totalPagado;
+	}
+
+	public BigDecimal getTotalCambio() {
+		return totalCambio;
+	}
+
+	public void setTotalCambio(BigDecimal totalCambio) {
+		this.totalCambio = totalCambio;
+	}
+
+	public BigDecimal getNumero() {
+		return numero;
+	}
+
+	public void setNumero(BigDecimal numero) {
+		this.numero = numero;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
 	public Long getId() {
 		return id;

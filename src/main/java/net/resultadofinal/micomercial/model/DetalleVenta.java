@@ -6,9 +6,52 @@ public class DetalleVenta {
 	private Long ventaId;
 	private Short id;
 	private Long productoId;
-	private Integer cantidad;
+	private Integer cantidad, cantidadUnitaria;
 	private BigDecimal precio,descuento,subtotal,total;
+	private Long cartillaDiariaId;
+	private Short detalleCartillaDiariaId, tipoVenta;
+	private Boolean esCompuesto;
 	private String xproducto;
+
+	public Integer getCantidadUnitaria() {
+		return cantidadUnitaria;
+	}
+
+	public void setCantidadUnitaria(Integer cantidadUnitaria) {
+		this.cantidadUnitaria = cantidadUnitaria;
+	}
+
+	public Long getCartillaDiariaId() {
+		return cartillaDiariaId;
+	}
+
+	public void setCartillaDiariaId(Long cartillaDiariaId) {
+		this.cartillaDiariaId = cartillaDiariaId;
+	}
+
+	public Short getDetalleCartillaDiariaId() {
+		return detalleCartillaDiariaId;
+	}
+
+	public void setDetalleCartillaDiariaId(Short detalleCartillaDiariaId) {
+		this.detalleCartillaDiariaId = detalleCartillaDiariaId;
+	}
+
+	public Short getTipoVenta() {
+		return tipoVenta;
+	}
+
+	public void setTipoVenta(Short tipoVenta) {
+		this.tipoVenta = tipoVenta;
+	}
+
+	public Boolean getEsCompuesto() {
+		return esCompuesto;
+	}
+
+	public void setEsCompuesto(Boolean esCompuesto) {
+		this.esCompuesto = esCompuesto;
+	}
 
 	public Long getVentaId() {
 		return ventaId;

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VentaImpl extends DbConeccion implements VentaS {
@@ -59,8 +61,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	@Override
 	public Venta obtener(Long codVen){
 		try {
-			sqlString = "select v.*,obtener_nombre_persona(v.usuario_id) xusuario,obtener_nombre_persona(v.cliente_id) xcliente from venta v where v.id=?";
-			List<Venta> ventaList=db.query(sqlString, new VentaMapper(),codVen);
+			sqlString = "select v.*,concat(p.nom_per,' ',p.priape_per) as xusuario from venta v inner join persona p on p.cod_per = v.usuario_id where v.id=?";
+			List<Venta> ventaList=db.query(sqlString, BeanPropertyRowMapper.newInstance(Venta.class),codVen);
 			Venta venta = UtilClass.getFirst(ventaList);
 			if(venta != null) {
 				venta.setDetalles(obtenerDetalle(codVen));
@@ -68,16 +70,50 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			return venta;
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public VentaForm obtenerVentaForm(Long codVen){
+		try {
+			sqlString = "select v.*,concat(p.nom_per,' ',p.priape_per) as xusuario from venta v inner join persona p on p.cod_per = v.usuario_id where v.id=?";
+			List<VentaForm> ventaList=db.query(sqlString, BeanPropertyRowMapper.newInstance(VentaForm.class),codVen);
+			VentaForm venta = UtilClass.getFirst(ventaList);
+			if(venta != null) {
+				sqlString = "select dv.*, dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id from detalle_venta dv inner join detalle_cartilla_diaria dcd on dcd.cartilla_diaria_id = dv.cartilla_diaria_id and dcd.id = dv.detalle_cartilla_diaria_id where dv.es_compuesto = true and dv.venta_id = ?";
+				venta.setDetalleVentaCompuesto(db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), codVen));
+				sqlString = "select dv.*, dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id from detalle_venta dv left join detalle_cartilla_diaria dcd on dcd.cartilla_diaria_id = dv.cartilla_diaria_id and dcd.id = dv.detalle_cartilla_diaria_id where dv.es_compuesto = false and dv.venta_id = ?";
+				venta.setDetalleVenta(db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), codVen));
+			}
+			return venta;
+		} catch (Exception e) {
+			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public List<DetalleVentaForm> obtenerDetallesForm(Long ventaId, Boolean estaCompuesto) {
+		try {
+			sqlString = "select dv.*, dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id from detalle_venta dv inner join detalle_cartilla_diaria dcd on dcd.cartilla_diaria_id = dv.cartilla_diaria_id and dcd.id = dv.detalle_cartilla_diaria_id where dv.venta_id = ?";
+			if(estaCompuesto != null) {
+				sqlString += " and dv.es_compuesto = ?";
+				return db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), estaCompuesto, ventaId);
+			} else {
+				return db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), ventaId);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 	@Override
 	public List<DetalleVenta> obtenerDetalle(Long ventaId){
 		try {
-			sqlString = "select dv.*,p.nombre as xproducto from detalle_venta dv inner join producto p on p.id = dv.producto_id where dv.venta_id = ? order by dv.id asc;";
-			return db.query(sqlString,new DetalleventaMapper(),ventaId);
+			sqlString = "select dv.* from detalle_venta dv  where dv.venta_id = ? order by dv.id asc;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVenta.class),ventaId);
 		} catch (DataAccessException e) {
 			logger.error(Utils.errorGet("detalle de ventas", e.toString()));
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -121,21 +157,9 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			boolean saveVenta = db.update(sqlString,ventaId, obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
 					obj.getTipo(), obj.getSucursalId(),obj.getSubtotal(),obj.getMesaId(), obj.getCantidadPersonas(),obj.getFormaPagoId(),obj.getTotalPagado(),obj.getTotalCambio(),obj.getCreatedBy())>0;
 			if(saveVenta) {
-				sqlString ="INSERT INTO detalle_venta(venta_id, id, producto_id, precio, cantidad, descuento, subtotal, total, cartilla_diaria_id, detalle_cartilla_diaria_id, es_compuesto, tipo_venta, cantidad_unitaria) " +
-						"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 				short detalleId = 1;
-				if(obj.getDetalleVenta() != null && !obj.getDetalleVenta().isEmpty()) {
-					for (DetalleVentaForm det: obj.getDetalleVenta()) {
-						adicionarDetalleComanda(ventaId, detalleId, det, obj.getSucursalId(), obj.getUsuarioId());
-						detalleId++;
-					}
-				}
-				if(obj.getDetalleVentaCompuesto() != null && !obj.getDetalleVentaCompuesto().isEmpty()) {
-					for (DetalleVentaForm det: obj.getDetalleVentaCompuesto()) {
-						adicionarDetalleComanda(ventaId, detalleId, det, obj.getSucursalId(), obj.getUsuarioId());
-						detalleId++;
-					}
-				}
+				detalleId = adicionarDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVenta());
+				detalleId = adicionarDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVentaCompuesto());
 				if(detalleId <= 1) {
 					throw new RuntimeException("no se encontro detalles de la comanda para guardar");
 				}
@@ -147,11 +171,87 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			throw new RuntimeException(Utils.errorAdd(ENTITY, ex.getMessage()));
 		}
 	}
-	public void adicionarDetalleComanda(Long ventaId, short detalleId, DetalleVentaForm det, Integer sucursalId, Long userId) {
-		db.update(sqlString, ventaId, detalleId, det.getProductoId(), det.getPrecio(), det.getCantidad(), 0, 0, det.getTotal(), det.getCartillaDiariaId(),
-				det.getDetalleCartillaDiariaId(), det.getEsCompuesto() == null ? false : det.getEsCompuesto(), det.getTipoVenta() == null ? 1: det.getTipoVenta(), det.getCantidadUnitaria());
-		almacenS.registrarAlmacen(det.getProductoId(), sucursalId, det.getCantidad(), userId, VENTA_PRODUCTO, "Disminucion por comanda");
+	private short adicionarDetalleComanda(Long ventaId, short detalleId, Integer sucursalId, Long userId, List<DetalleVentaForm> detalles) {
+		sqlString ="INSERT INTO detalle_venta(venta_id, id, producto_id, precio, cantidad, descuento, subtotal, total, cartilla_diaria_id, detalle_cartilla_diaria_id, es_compuesto, tipo_venta, cantidad_unitaria) " +
+				"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		if(detalles != null && !detalles.isEmpty()) {
+			for (DetalleVentaForm det: detalles) {
+				db.update(sqlString, ventaId, detalleId, det.getProductoId(), det.getPrecio(), det.getCantidad(), 0, 0, det.getTotal(), det.getCartillaDiariaId(),
+						det.getDetalleCartillaDiariaId(), det.getEsCompuesto() == null ? false : det.getEsCompuesto(), det.getTipoVenta() == null ? 1: det.getTipoVenta(), det.getCantidadUnitaria());
+				almacenS.registrarAlmacen(det.getProductoId(), sucursalId, det.getCantidad(), userId, VENTA_PRODUCTO, "Disminucion por comanda");
+				detalleId++;
+			}
+		}
+		return detalleId;
 	}
+	@Transactional
+	public DataResponse actualizarComanda(VentaForm obj) {
+		try {
+			sqlString = "update venta set usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, subtotal, mesa_id, cantidad_personas, updated_by=?, updated_at=now() where id=?";
+			boolean saveVenta = db.update(sqlString,obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getSubtotal(),obj.getMesaId(),
+					obj.getCantidadPersonas(),obj.getCreatedBy(), obj.getId())>0;
+			if(saveVenta) {
+				List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
+				if(obj.getDetalleVenta() != null && !obj.getDetalleVenta().isEmpty()
+				&& detallesBD != null && !detallesBD.isEmpty()) {
+					for (DetalleVentaForm det: obj.getDetalleVenta()) {
+						if(det.getCartillaDiariaId() != null && det.getDetalleCartillaDiariaId() != null) { //Es preparado
+							Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId()).findFirst();
+							if(!found.isPresent()) {
+								//Adicionar DB
+								det.toString();//add
+							}
+						} else { // Es producto
+							Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getProductoId() == det.getProductoId()).findFirst();
+							if(!found.isPresent()) {
+								//Adicionar DB
+								det.toString();//add
+							}
+						}
+					}
+					//Revisar los detalles de ventas eliminados
+					for (DetalleVentaForm det : detallesBD) {
+						Optional<DetalleVentaForm> found = obj.getDetalleVenta().stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+						&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
+						if(!found.isPresent()) {
+							det.toString();//Eliminar
+						} else { // Si se encuentra se modifica segun
+							det.toString();//update
+						}
+					}
+				}
+
+				if(obj.getDetalleVentaCompuesto() != null && !obj.getDetalleVentaCompuesto().isEmpty()
+						&& detallesBD != null && !detallesBD.isEmpty()) {
+					for (DetalleVentaForm det: obj.getDetalleVentaCompuesto()) {
+						Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+								&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId()).findFirst();
+						if(!found.isPresent()) {
+							//Adicionar DB
+							det.toString();//add
+						}
+					}
+					//Revisar los detalles de ventas eliminados
+					for (DetalleVentaForm det : detallesBD) {
+						Optional<DetalleVentaForm> found = obj.getDetalleVentaCompuesto().stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+								&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
+						if(!found.isPresent()) {
+							det.toString();//Eliminar
+						} else { // Si se encuentra se modifica segun
+							det.toString();//update
+						}
+					}
+				}
+				return new DataResponse(true, "Registro de comanda exitosa");
+			} else {
+				return new DataResponse(false, "Error al guardar la venta");
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException(Utils.errorAdd(ENTITY, ex.getMessage()));
+		}
+	}
+
 	@Override
 	@Transactional
 	public Boolean eliminar(Long ventaId, Long userId){
