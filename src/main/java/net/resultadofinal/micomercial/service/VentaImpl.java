@@ -327,8 +327,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
 						if(diferencia != 0) {
 							//update
-							db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ?,total = ? where venta_id = ? and id = ?",
-									found.get().getCantidad(),found.get().getCantidadUnitaria(), found.get().getTotal(), det.getVentaId(), det.getId());
+							db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ?, precio =?, tipo_venta =? ,total = ? where venta_id = ? and id = ?",
+									found.get().getCantidad(),found.get().getCantidadUnitaria(), found.get().getPrecio(), found.get().getTipoVenta(), found.get().getTotal(), det.getVentaId(), det.getId());
 							if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
 								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia, userId,
 										VENTA_PRODUCTO, "Aumento detalle, por venta # "+ventaId);

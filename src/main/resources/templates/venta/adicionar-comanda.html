@@ -869,6 +869,7 @@
                     $('#usuarioId').val(resp.data.venta.usuarioId);
                     $('#cantidadPersonas').val(resp.data.venta.cantidadPersonas);
                     dataReq.venta.obs = resp.data.venta.obs;
+                    $('#obsGeneral').val(resp.data.venta.obs);
                     if(resp.data.venta.detalleVenta && resp.data.venta.detalleVenta.length > 0) {
                         resp.data.venta.detalleVenta.forEach(it => {
                             if(it.cartillaDiariaId && it.detalleCartillaDiariaId) { //Es producto creado
@@ -881,7 +882,7 @@
                                                     'xproducto':pro.xproducto,
                                                     'cantidad': it.cantidad,
                                                     'precio': it.precio,
-                                                    'total': it.total,
+                                                    'total': (it.cantidad * it.precio),
                                                     'tipoVenta': it.tipoVenta,
                                                     'cantidadUnitaria': it.cantidadUnitaria,
                                                     'xtipoVenta': it.tipoVenta === 1 ? 'Unid.': 'Caja',
@@ -899,7 +900,7 @@
                                     'xproducto':productoObtenido.xproducto,
                                     'cantidad': it.cantidad,
                                     'precio': it.precio,
-                                    'total': it.total,
+                                    'total': (it.cantidad * it.precio),
                                     'tipoVenta': it.tipoVenta,
                                     'cantidadUnitaria': it.cantidadUnitaria,
                                     'xtipoVenta': it.tipoVenta === 1 ? 'Unid.': 'Caja',
