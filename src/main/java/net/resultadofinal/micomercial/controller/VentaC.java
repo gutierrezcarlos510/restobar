@@ -123,32 +123,12 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("adicionar")
-	public String adicionar(Model model,Boolean isMobil, Long ventaId){
+	public String adicionar(HttpServletRequest request,Model model,Boolean isMobil, Long ventaId){
+		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
-		model.addAttribute("formas", formaPagoS.listAll());
+		model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 		model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
 		return "venta/adicionar-comanda";
-	}
-	@RequestMapping("guardar")
-	public @ResponseBody
-    DataResponse guardar(HttpServletRequest request, Venta obj, Long productos[], Integer cantidades[], BigDecimal precios[],
-						 BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]){
-		try {
-			Persona usuario=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
-			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
-			if(usuario != null && gestion != null) {
-				obj.setUsuarioId(usuario.getCod_per());
-				obj.setGestion(gestion.getGes_gen());
-				obj.setSucursalId(gestion.getCod_suc());
-				return ventaS.adicionar(obj,productos,cantidades,precios,descuentos,subtotales,totales);
-			} else {
-				logger.error("Sesion expirada al ingresar a ventas");
-				return new DataResponse(false, "Sesion expirada al adicionar ventas");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new DataResponse(false, e.getMessage());
-		}
 	}
 	@RequestMapping("guardarComanda")
 	public @ResponseBody
@@ -205,6 +185,16 @@ public class VentaC {
     DataResponse obtener(Long id){
 		try {
 			return new DataResponse(true, ventaS.obtener(id), "Se realizo la consulta exitosamente");
+		} catch (Exception e) {
+			logger.error("error al obtener="+e.toString());
+			return new DataResponse(false, "error al obtener venta: "+e.getMessage());
+		}
+	}
+	@RequestMapping("obtenerInfo")
+	public @ResponseBody
+	DataResponse obtenerInfo(Long ventaId){
+		try {
+			return new DataResponse(true, ventaS.obtenerVentaInfo(ventaId), "Se realizo la consulta exitosamente");
 		} catch (Exception e) {
 			logger.error("error al obtener="+e.toString());
 			return new DataResponse(false, "error al obtener venta: "+e.getMessage());

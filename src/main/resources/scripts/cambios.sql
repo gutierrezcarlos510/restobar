@@ -623,3 +623,64 @@ BEGIN
 END
 $function$
 ;
+
+CREATE OR REPLACE FUNCTION public.venta_eliminar(cod bigint, user_id bigint)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE v_producto int8;
+DECLARE v_cantidad int4;
+DECLARE v_sucursal int4;
+DECLARE v_cursor1 CURSOR FOR select producto_id,cantidad,v.sucursal_id from detalle_venta dv inner join venta v on v.id = dv.venta_id where venta_id =cod ;
+DECLARE v_arqueo int8;
+DECLARE v_detalle_arqueo int2;
+DECLARE cant_inicial int4;
+DECLARE cant_final int4;
+DECLARE REVERSION_VENTA int4:=2;
+DECLARE numero_venta int8;
+DECLARE total_venta numeric(10,2);
+DECLARE forma_pago_venta int2;
+begin
+	v_arqueo = (SELECT coalesce(max(a.id),-1) FROM arqueo a where a.delegado_id=user_id and a.custodio_final_id is  null and a.estado = true);
+--	v_arqueo = (select coalesce(max(arqueo_id),0) from venta where id = cod);
+	v_detalle_arqueo = (select coalesce(max(detalle_arqueo_id),0) from detalle_arqueo where arqueo_id = v_arqueo);
+	if(v_arqueo > 0 and v_detalle_arqueo > 0) then
+	--	update detalle_arqueo set estado=false where arqueo_id=v_arqueo and id = v_detalle_arqueo;
+		numero_venta = (select coalesce(max(numero),0) from venta where id=cod);
+		total_venta = (select coalesce(max(total),0) from venta where id=cod);
+		forma_pago_venta = (select coalesce(max(forma_pago_id),0) from venta where id=cod);
+		INSERT INTO detalle_arqueo(arqueo_id, id, tipo, descripcion, monto, fecha, estado, forma_pago_id) VALUES(v_arqueo, v_detalle_arqueo, REVERSION_VENTA, concat('Reversion de venta #',numero_venta), total_venta, now(), false, form_pago_venta);
+	end if;
+	OPEN v_cursor1;
+		loop
+		FETCH v_cursor1 INTO v_producto,v_cantidad,v_sucursal;
+			EXIT WHEN NOT FOUND;
+			cant_inicial := (select cantidad from almacen where producto_id=v_producto and sucursal_id=v_sucursal);
+			cant_final := cant_inicial + v_cantidad ;
+			update almacen set cantidad = cant_final where producto_id = v_producto and sucursal_id = v_sucursal;
+				insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+			VALUES(v_producto, v_sucursal, now(),user_id ,cant_inicial , v_cantidad, cant_final, 4, 'Reversion de la venta');
+		end loop;
+		close v_cursor1;
+		update venta set estado=false, updated_by = user_id, updated_at = now() where id=cod;
+		RETURN TRUE;
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.detalle_arqueo_adicionar(p_arqueo int8, p_tipo int2, p_descripcion character varying, p_monto numeric,p_forma_pago int2,p_es_debe boolean)
+ RETURNS int2
+ LANGUAGE plpgsql
+AS $function$
+DECLARE detalle_id int2;
+BEGIN
+		detalle_id:=(select COALESCE(max(id),0)+1 from detalle_arqueo where arqueo_id=p_arqueo);
+		insert into detalle_arqueo(arqueo_id, id, tipo, descripcion, monto, fecha, estado, forma_pago_id, es_debe) values(p_arqueo,detalle_id,p_tipo,p_descripcion,p_monto,now(),true,p_forma_pago, p_es_debe);
+	RETURN detalle_id;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+	RETURN -1;
+END
+$function$
+;

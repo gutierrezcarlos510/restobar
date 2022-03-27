@@ -22,10 +22,10 @@ public class FormaPagoImpl extends DbConeccion implements FormaPagoS {
 	private String sqlString;
 
 	@Override
-	public List<FormaPago> listAll() {
+	public List<FormaPago> listAll(int sucursalId) {
 		try {
-			sqlString = "select fp.* from forma_pago fp where fp.estado = true;";
-			return db.query(sqlString, BeanPropertyRowMapper.newInstance(FormaPago.class));
+			sqlString = "select fp.* from forma_pago fp where fp.estado = true and fp.sucursal_id=?;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(FormaPago.class), sucursalId);
 		} catch(Exception ex) {
 			return null;
 		}

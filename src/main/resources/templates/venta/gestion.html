@@ -1,4 +1,87 @@
 <!-- Default box -->
+<form id="formularioEliminar" method="post" action="../venta/eliminar" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+    <div id="modalEliminar" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Eliminar Venta</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="ventaIdEliminar" />
+                    <table class="w3-table" id="areaVentaInfo">
+                        <thead>
+                            <tr>
+                                <td class="custom-bolder" colspan="2">Registrado en Sistema por</td>
+                                <td colspan="2" aria-label="xcreatedBy"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder" colspan="2">Mesero asignado</td>
+                                <td colspan="2" aria-label="xusuario"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder" colspan="2">Cliente</td>
+                                <td colspan="2" aria-label="xcliente"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder">Fecha</td>
+                                <td aria-label="xfecha"></td>
+                                <td class="custom-bolder">Estado</td>
+                                <td aria-label="xtipoVenta"></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <br>
+                    <table id="areaResumenDetalleVenta" class="w3-table-all">
+                        <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th width="10%" class="w3-center">Cantidad</th>
+                            <th width="10%" class="w3-center">Medida</th>
+                            <th width="10%" class="w3-center"> Precio </th>
+                            <th width="10%" class="w3-center">Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="unit">
+                            <td colspan="7" class="w3-center">Sin ningun detalle</td>
+                        </tr>
+                        </tbody>
+                        <tfoot id="areaResumenDetalleFooter">
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Subtotal</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="subtotal"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Descuento</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="descuento"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Total</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="total"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="5" aria-label="totalLiteral"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Total Pagado</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="totalPagado"></td>
+                            </tr>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Total Cambio</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="totalCambio"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                    <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="box box-primary">
     <div class="box-header with-border">
         <div class="row">
@@ -73,7 +156,54 @@
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
     var dataReq = {
-        stateColor : ['','warning','success','primary']
+        stateColor : ['','warning','success','primary'],
+        estadoVenta: ['','Comanda activa','Comanda Finalizada','Comanda Revertida'],
+        ventaInfo : {}
+    }
+    function renderVenta() {
+        dataReq.ventaInfo.xfecha = moment(dataReq.ventaInfo.fecha).format('LLL');
+        dataReq.ventaInfo.xtipoVenta = dataReq.estadoVenta[dataReq.ventaInfo.tipo];
+        dataReq.ventaInfo.totalLiteral = 'Son: '+numeroALetras(dataReq.ventaInfo.total);
+        $('#formularioEliminar').loadJSON(dataReq.ventaInfo);
+        $('#ventaIdEliminar').val(dataReq.ventaInfo.id);
+        $('#areaResumenDetalleVenta > tbody').html('');
+        if(dataReq.ventaInfo.detalleVenta && dataReq.ventaInfo.detalleVenta.length > 0) {
+            dataReq.ventaInfo.detalleVenta.forEach(it => {
+                let row = $('<tr></tr>');
+                $('<td>'+it.xproducto+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
+                $('#areaResumenDetalleVenta > tbody:last').append(row);
+            });
+        }
+        if(dataReq.ventaInfo.detalleVentaCompuesto && dataReq.ventaInfo.detalleVentaCompuesto.length > 0) {
+            dataReq.ventaInfo.detalleVentaCompuesto.forEach(it => {
+                let tablaInterna = $('<table class="w3-table w3-small"></table>');
+                let tableBody = $('<tbody></tbody>');
+                it.subdetallesCompuestos.forEach(subitem => {
+                    $('<tr><td class="custom-bolder">'+subitem.xtipoProducto+'</td><td class="custom-bolder">Cantidad</td></tr>').appendTo(tableBody);
+                    subitem.productos.forEach( pro => {
+                        let fila = $('<tr></tr>');
+                        $('<td style="padding-left: 35px;">'+pro.xproducto+'</td>').appendTo(fila);
+                        $('<td>'+pro.cantidad+'</td>').appendTo(fila);
+                        tableBody.append(fila);
+                    });
+                })
+                tablaInterna.append(tableBody);
+                let row = $('<tr></tr>');
+                let tdNombre = $('<td></td>');
+                $('<span>'+it.xproducto+'</span>').appendTo(tdNombre);
+                tablaInterna.appendTo(tdNombre);
+                tdNombre.appendTo(row);
+                $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
+                $('<td class="w3-center">Unid.</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
+                $('#areaResumenDetalleVenta > tbody:last').append(row);
+            });
+        }
     }
     $(document).ready(function() {
         $('.select-chosen').chosen({
@@ -154,16 +284,14 @@
         });
         $('#tabla tbody').on('click', 'tr td button.eliminar', function() {
 			let obj = tablaVenta.row($(this).closest('tr')).data();
-			alertEliminacion("Eliminacion de venta", ("Cod. venta: "+ obj.id+", en Fecha: "+UtilDate.formatDateLiteral(obj.fecha)+", para el Cliente: "+obj.xcliente), function(){
-				jQuery.post('../venta/eliminar?id='+obj.id, function(resp){
-					if(resp.status){
-						$('#tabla').dataTable().fnDraw('');
-						mostrarMensaje('success', resp.msg);
-					}else{
-						mostrarMensaje('error', resp.msg);
-					}
-				});
-			});
+			$.post('../venta/obtenerInfo?ventaId='+obj.id,function(resp){
+			    finishTransaction(resp, function(){
+			        dataReq.ventaInfo = resp.data;
+			        renderVenta();
+                    console.log(resp.data);
+                    $('#modalEliminar').modal('show');
+                })
+            })
 		});
         $('#tabla tbody').on('click', 'tr td button.modificar', function() {
             let obj = tablaVenta.row($(this).closest('tr')).data();
@@ -191,14 +319,10 @@
             e.preventDefault();
             var xform = $(e.target);
             $.post(xform.attr('action'), xform.serialize(), function(result) {
-                if (result.status) {
-                    xform.data('formValidation').resetForm();
+                finishTransaction(result, function(){
                     $('.modal').modal('hide');
                     $('#tabla').dataTable().fnDraw('');
-                    mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                } else {
-                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                }
+                });
             }, 'json');
         });
     });

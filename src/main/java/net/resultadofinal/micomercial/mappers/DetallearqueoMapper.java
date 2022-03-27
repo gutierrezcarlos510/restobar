@@ -19,7 +19,7 @@ public class DetallearqueoMapper implements RowMapper<DetalleArqueo> {
 		detallearqueo.setMonto(rs.getBigDecimal("monto"));
 		detallearqueo.setFecha(rs.getTimestamp("fecha"));
 		detallearqueo.setEstado(rs.getBoolean("estado"));
-		detallearqueo.setSubcuentaId(rs.getInt("subcuenta_id"));
+		detallearqueo.setFormaPagoId(rs.getShort("forma_pago_id"));
 		return detallearqueo;
 	}
 }

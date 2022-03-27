@@ -7,12 +7,45 @@ public class DetalleVentaForm {
     private Long ventaId;
     private Long productoId;
     private Integer cantidad, cantidadUnitaria;
-    private BigDecimal precio, total;
+    private BigDecimal precio, total,precioCombo;
     private Short tipoVenta;//1=unidad, 2= caja
     private Long cartillaDiariaId;
     private Integer cartillaSucursalId;
     private Short detalleCartillaSucursalId, detalleCartillaDiariaId;
     private Boolean esCompuesto;
+    private String xtipoProducto, xcombo, xproducto;
+
+    public BigDecimal getPrecioCombo() {
+        return precioCombo;
+    }
+
+    public void setPrecioCombo(BigDecimal precioCombo) {
+        this.precioCombo = precioCombo;
+    }
+
+    public String getXtipoProducto() {
+        return xtipoProducto;
+    }
+
+    public void setXtipoProducto(String xtipoProducto) {
+        this.xtipoProducto = xtipoProducto;
+    }
+
+    public String getXcombo() {
+        return xcombo;
+    }
+
+    public void setXcombo(String xcombo) {
+        this.xcombo = xcombo;
+    }
+
+    public String getXproducto() {
+        return xproducto;
+    }
+
+    public void setXproducto(String xproducto) {
+        this.xproducto = xproducto;
+    }
 
     public Long getVentaId() {
         return ventaId;

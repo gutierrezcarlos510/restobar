@@ -6,13 +6,41 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class DetalleArqueo extends TableRow {
-	private Integer id,subcuentaId;
-	private Short tipo;
+	private Integer id;
+	private Short tipo, formaPagoId;
 	private Long arqueoId;
 	private String descripcion;
 	private Timestamp fecha;
 	private BigDecimal monto;
-	private Boolean estado;
+	private Boolean estado,esDebe;
+
+	public Boolean getEsDebe() {
+		return esDebe;
+	}
+
+	public void setEsDebe(Boolean esDebe) {
+		this.esDebe = esDebe;
+	}
+
+	public DetalleArqueo() {
+	}
+
+	public Short getFormaPagoId() {
+		return formaPagoId;
+	}
+
+	public DetalleArqueo(Long arqueoId, Short tipo, Short formaPagoId,  String descripcion, BigDecimal monto, boolean esDebe) {
+		this.tipo = tipo;
+		this.formaPagoId = formaPagoId;
+		this.arqueoId = arqueoId;
+		this.descripcion = descripcion;
+		this.monto = monto;
+		this.esDebe = esDebe;
+	}
+
+	public void setFormaPagoId(Short formaPagoId) {
+		this.formaPagoId = formaPagoId;
+	}
 
 	public Integer getId() {
 		return id;
@@ -20,14 +48,6 @@ public class DetalleArqueo extends TableRow {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getSubcuentaId() {
-		return subcuentaId;
-	}
-
-	public void setSubcuentaId(Integer subcuentaId) {
-		this.subcuentaId = subcuentaId;
 	}
 
 	public void setTipo(Short tipo) {

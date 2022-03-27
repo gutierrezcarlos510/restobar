@@ -1,11 +1,17 @@
 package net.resultadofinal.micomercial.service;
 
+import net.resultadofinal.micomercial.enumeration.TipoArqueoE;
 import net.resultadofinal.micomercial.mappers.DetalleventaMapper;
 import net.resultadofinal.micomercial.mappers.VentaMapper;
+import net.resultadofinal.micomercial.model.DetalleArqueo;
 import net.resultadofinal.micomercial.model.DetalleVenta;
 import net.resultadofinal.micomercial.model.Venta;
 import net.resultadofinal.micomercial.model.form.DetalleVentaForm;
 import net.resultadofinal.micomercial.model.form.VentaForm;
+import net.resultadofinal.micomercial.model.wrap.DetalleVentaWrap;
+import net.resultadofinal.micomercial.model.wrap.ProductoDetalleVenta;
+import net.resultadofinal.micomercial.model.wrap.SubDetalleVentaWrap;
+import net.resultadofinal.micomercial.model.wrap.VentaInfoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -21,8 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class VentaImpl extends DbConeccion implements VentaS {
@@ -30,6 +41,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	private JdbcTemplate db;
 	@Autowired
 	private AlmacenS almacenS;
+	@Autowired
+	private ArqueoS arqueoS;
 	@Autowired
 	public VentaImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
@@ -119,43 +132,18 @@ public class VentaImpl extends DbConeccion implements VentaS {
 		}
 		
 	}
-	@Override
-	@Transactional
-	public DataResponse adicionar(Venta v, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]){
-		try {
-			Vectores vec=new Vectores();
-			String codPro=vec.convertir_Long_a_String(productos);
-			String preDetcom=vec.convertirBigDecimalString(precios);
-			String canDetcom=vec.convertir_Int_a_String(cantidades);
-			String desDetcom=vec.convertirBigDecimalString(descuentos);
-			String subtotDetcom=vec.convertirBigDecimalString(subtotales);
-			String totDetcom=vec.convertirBigDecimalString(totales);
-//			logger.info("adicionar header: "+v.getCodPer()+" | "+v.getCodCli()+" | "+v.getObsVen()+" | "+v.getTotVen()+" | "+v.getDesVen()+" | "+v.getGesGen()+" | "+v.getCodSuc()+" | "+v.getSubtotVen()+" | "+v.getCodSubcuenta());
-//			logger.info("adicionar detalles: "+codPro+" | "+preDetcom+" | "+canDetcom+" | "+desDetcom+" | "+subtotDetcom+" | "+totDetcom);
-			String sql = "select venta_adicionar(?,?,?,?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\');"; 
-			Long cod = db.queryForObject(sql,Long.class,v.getUsuarioId(),v.getClienteId(),v.getObs(),v.getTotal(),v.getDescuento(),v.getGestion(),
-					v.getSucursalId(),v.getSubtotal());
-			if(cod < 0) {
-				if(cod == -2) {
-					throw new RuntimeException("Error al procesar la adicion, no se encontro el arqueo sesionado.");
-				} else {
-					throw new RuntimeException("Error al procesar la adicion");
-				}
-			} else {
-				return new DataResponse(true,cod,"Venta registrada exitosamente.");
-			}
-		} catch (Exception e) {
-			logger.error(Utils.errorAdd(ENTITY, e.toString()));
-			throw new RuntimeException(Utils.errorAdd(ENTITY, ""));
-		}
-	}
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
 		try {
 			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta where sucursal_id =?", Long.class, obj.getSucursalId());
-			sqlString = "insert into venta(id, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
-					"VALUES(?, ?, ?, now(), ?, ?, ?, ?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
-			boolean saveVenta = db.update(sqlString,ventaId, obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
+			obj.setId(ventaId);
+			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
+					"VALUES(?, ?, ?, ?, now(), ?, ?, ?, ?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
+			if(obj.getTipo() == 2) { // si es venta finalizada
+				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from sucursal_id = ?", Long.class, obj.getSucursalId());
+				obj.setNumero(numero);
+			}
+			boolean saveVenta = db.update(sqlString,ventaId, obj.getNumero(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
 					obj.getTipo(), obj.getSucursalId(),obj.getSubtotal(),obj.getMesaId(), obj.getCantidadPersonas(),obj.getFormaPagoId(),obj.getTotalPagado(),obj.getTotalCambio(),obj.getCreatedBy())>0;
 			if(saveVenta) {
 				short detalleId = 1;
@@ -164,6 +152,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				if(detalleId <= 1) {
 					throw new RuntimeException("no se encontro detalles de la comanda para guardar");
 				}
+				adicionarVentaArqueo(obj);
 				return new DataResponse(true, "Registro de comanda exitosa");
 			} else {
 				return new DataResponse(false, "Error al guardar la venta");
@@ -191,8 +180,12 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	@Transactional
 	public DataResponse actualizarComanda(VentaForm obj) {
 		try {
-			sqlString = "update venta set usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, subtotal=?, mesa_id=?, cantidad_personas=?, updated_by=?, updated_at=now() where id=?";
-			boolean saveVenta = db.update(sqlString,obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getSubtotal(),obj.getMesaId(),
+			sqlString = "update venta set numero=?,tipo=?,usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, subtotal=?, mesa_id=?, cantidad_personas=?, updated_by=?, updated_at=now() where id=?";
+			if(obj.getTipo() == 2) { // si es venta finalizada
+				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from venta where sucursal_id = ?", Long.class, obj.getSucursalId());
+				obj.setNumero(numero);
+			}
+			boolean saveVenta = db.update(sqlString,obj.getNumero(),obj.getTipo(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getSubtotal(),obj.getMesaId(),
 					obj.getCantidadPersonas(),obj.getCreatedBy(), obj.getId())>0;
 			if(saveVenta) {
 				List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
@@ -284,12 +277,31 @@ public class VentaImpl extends DbConeccion implements VentaS {
 //						}
 //					}
 //				}
+				adicionarVentaArqueo(obj);
 				return new DataResponse(true, "Registro de comanda exitosa");
 			} else {
 				return new DataResponse(false, "Error al guardar la venta");
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException(Utils.errorAdd(ENTITY, ex.getMessage()));
+		}
+	}
+	private void adicionarVentaArqueo(VentaForm obj) {
+		if(obj.getTipo() != null && obj.getTipo() == 2) {//Arqueo
+			Long arqueoIdSesionado = arqueoS.obtenerArqueoSesionActiva(obj.getCreatedBy(), obj.getSucursalId());
+			if(arqueoIdSesionado > 0) {
+				DetalleArqueo det = new DetalleArqueo(arqueoIdSesionado, TipoArqueoE.INGRESO_VENTA.getTipo(), obj.getFormaPagoId(), "Venta #"+obj.getNumero(),obj.getTotal(), true);
+				short detalleArqueoId = arqueoS.adicionarDetalle(det);
+				if(detalleArqueoId > 0) {
+					boolean saveArqueo = db.update("update venta set arqueo_id=?, detalle_arqueo_id=?,total_pagado=?,total_cambio=?,forma_pago_id=? where id=?",
+							arqueoIdSesionado, detalleArqueoId, obj.getTotalPagado(), obj.getTotalCambio(), obj.getFormaPagoId(), obj.getId()) > 0;
+					if(!saveArqueo) {
+						throw new RuntimeException("Error al cruzar datos de aruqeo con venta");
+					}
+				}
+			} else { //no se tiene0
+				throw new RuntimeException("Venta cancelada, ya que no se tiene una caja abierta");
+			}
 		}
 	}
 	private short adicionarDetallesComandaModificar(short detalleVentaId,List<DetalleVentaForm> detallesBD,List<DetalleVentaForm> detalleVentaRequest,Integer sucId, Long userId, Long ventaId, boolean soloCompuestos){
@@ -363,6 +375,84 @@ public class VentaImpl extends DbConeccion implements VentaS {
 		} catch (Exception e) {
 			logger.error("obtener por arqueo de caja: "+e.toString());
 			throw new RuntimeException("error al obtener por arqueo de caja");
+		}
+	}
+	public VentaInfoWrap obtenerVentaInfo(Long codVen){
+		try {
+			sqlString = "select v.id,v.numero,v.arqueo_id,v.gestion,v.detalle_arqueo_id,v.tipo,v.obs,v.fecha,v.cantidad_personas,v.created_at,v.total,v.descuento,v.subtotal, v.total_pagado, v.total_cambio," +
+					"concat(p.nom_per,' ',p.priape_per) as xusuario,concat(p3.nom_per,' ',p3.priape_per) as xcliente,concat(p2.nom_per,' ',p2.priape_per) as xcreated_by,m.nombre as xmesa from venta v " +
+					"inner join persona p on p.cod_per = v.usuario_id " +
+					"inner join mesa m on m.id=v.mesa_id " +
+					"inner join persona p2 on p2.cod_per = v.created_by " +
+					"inner join persona p3 on p3.cod_per = v.cliente_id " +
+					"left join forma_pago fp on fp.id =v.forma_pago_id where v.id=?";
+			List<VentaInfoWrap> ventaList=db.query(sqlString, BeanPropertyRowMapper.newInstance(VentaInfoWrap.class),codVen);
+			VentaInfoWrap venta = UtilClass.getFirst(ventaList);
+			if(venta !=null) {
+				sqlString = "select dv.*, dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,tp.nombre as xtipo_producto,cs.nombre as xcombo,p.nombre as xproducto,cs.total as precio_combo " +
+						"from detalle_venta dv " +
+						"inner join producto p on p.id = dv.producto_id " +
+						"left join detalle_cartilla_diaria dcd on dcd.cartilla_diaria_id = dv.cartilla_diaria_id and dcd.id = dv.detalle_cartilla_diaria_id " +
+						"left join detalle_cartilla_sucursal dcs on dcs.cartilla_sucursal_id = dcd.cartilla_sucursal_id and dcs.id = dcd.detalle_cartilla_sucursal_id " +
+						"left join tipo_producto tp on tp.id = dcs.tipo_producto_id " +
+						"left join cartilla_sucursal cs on cs.id = dcs.cartilla_sucursal_id " +
+						"where dv.venta_id = ?";
+				List<DetalleVentaForm> det = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), codVen);
+				List<DetalleVentaForm> detalles = det.stream().filter(it -> !it.getEsCompuesto()).collect(Collectors.toList());
+				List<DetalleVentaForm> detallesCompuestos = det.stream().filter(it -> it.getEsCompuesto()).collect(Collectors.toList());
+				if(UtilClass.isNotNullEmpty(detalles)) {
+					List<DetalleVentaWrap> detalleVentaWrapList = new ArrayList<>();
+					for (DetalleVentaForm it: detalles) {
+						DetalleVentaWrap d = new DetalleVentaWrap();
+						d.setXproducto(it.getXproducto());
+						d.setCantidad(it.getCantidad());
+						d.setPrecio(it.getPrecio());
+						d.setXtipoVenta(it.getTipoVenta()==1?"Unid.":"caja");
+						d.setTotal(it.getTotal());
+						detalleVentaWrapList.add(d);
+					}
+					venta.setDetalleVenta(detalleVentaWrapList);
+				}
+				//Desarrollo de detalles compuestos
+				if(detallesCompuestos != null && !detallesCompuestos.isEmpty()) {
+					Map<Integer, List<DetalleVentaForm>> grupoSucursal = detallesCompuestos.stream().collect(Collectors.groupingBy(DetalleVentaForm::getCartillaSucursalId));
+					if(grupoSucursal.entrySet() != null && !grupoSucursal.entrySet().isEmpty()) {
+						List<DetalleVentaWrap> detalleVentaComboList = new ArrayList<>();
+						for (Map.Entry<Integer, List<DetalleVentaForm>> comboItemList : grupoSucursal.entrySet()) {//Almuerzo, desayuno
+							DetalleVentaWrap detalleVentaCombo = new DetalleVentaWrap();
+							detalleVentaCombo.setXproducto(comboItemList.getValue().get(0).getXcombo());
+							detalleVentaCombo.setPrecio(comboItemList.getValue().get(0).getPrecioCombo());
+							List<SubDetalleVentaWrap> subdetalleVentaList = new ArrayList<>();
+							Map<Short,List<DetalleVentaForm>> tipoComboList = comboItemList.getValue().stream().collect(Collectors.groupingBy(DetalleVentaForm::getDetalleCartillaSucursalId));
+							for (Map.Entry<Short, List<DetalleVentaForm>> tipoComboItem: tipoComboList.entrySet()) {// Sopa, Segundo
+								int cantidadTotalGrupo = 0;
+								SubDetalleVentaWrap tipoCombo = new SubDetalleVentaWrap();
+								tipoCombo.setXtipoProducto(tipoComboItem.getValue().get(0).getXtipoProducto());
+								List<ProductoDetalleVenta> productoDetalleVentaList = new ArrayList<>();
+								for (DetalleVentaForm producto: tipoComboItem.getValue()) {
+									cantidadTotalGrupo += producto.getCantidadUnitaria();
+									ProductoDetalleVenta pro = new ProductoDetalleVenta();
+									pro.setXproducto(producto.getXproducto());
+									pro.setCantidad(producto.getCantidadUnitaria());
+									productoDetalleVentaList.add(pro);
+								}
+								detalleVentaCombo.setCantidad(cantidadTotalGrupo);
+								detalleVentaCombo.setTotal(detalleVentaCombo.getPrecio().multiply(new BigDecimal(detalleVentaCombo.getCantidad())));
+								tipoCombo.setProductos(productoDetalleVentaList);
+								subdetalleVentaList.add(tipoCombo);
+							}
+							detalleVentaCombo.setSubdetallesCompuestos(subdetalleVentaList);
+							detalleVentaComboList.add(detalleVentaCombo);
+						}
+						venta.setDetalleVentaCompuesto(detalleVentaComboList);
+					}
+				}
+			}
+			return venta;
+		} catch (Exception e) {
+			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

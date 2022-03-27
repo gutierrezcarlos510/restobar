@@ -2,8 +2,10 @@ package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.*;
 import net.resultadofinal.micomercial.model.wrap.ArqueoWrap;
+import net.resultadofinal.micomercial.model.wrap.ResumenArqueoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.ArqueoS;
+import net.resultadofinal.micomercial.service.FormaPagoS;
 import net.resultadofinal.micomercial.service.GeneralS;
 import net.resultadofinal.micomercial.service.UsuarioS;
 import net.resultadofinal.micomercial.util.*;
@@ -33,6 +35,8 @@ public class ArqueoCajaC {
 	@Autowired
 	private ArqueoS arqueocajaS;
 	@Autowired
+	private FormaPagoS formaPagoS;
+	@Autowired
 	private UsuarioS usuarioS;
 	@Autowired
 	DataSource datasource;
@@ -44,6 +48,7 @@ public class ArqueoCajaC {
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (gestion != null) {
 			model.addAttribute("usuarios", usuarioS.listarUsuariosSistema());
+			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 			return "arqueocaja/gestion";
 		}
 		return "principal/login"+ MyConstant.SYSTEM;
@@ -58,6 +63,7 @@ public class ArqueoCajaC {
 				Arqueo arqueo = arqueocajaS.obtenerCaja(arqueoId);
 				model.addAttribute("esPropioCajero",(arqueo.getDelegadoId() == user.getCod_per()));
 				model.addAttribute("arqueoId", arqueoId);
+				model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 				return "arqueocaja/gestion_detalle";
 			}
 			comunGestionArqueo(model, user, gestion);
@@ -89,6 +95,7 @@ public class ArqueoCajaC {
 		if (user != null && gestion != null) {
 			model.addAttribute("userCajero",user.getCod_per());
 			comunGestionArqueo(model, user, gestion);
+			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 		} else {
 			model.addAttribute("msg", "Sesion expirada, por favor vuelva a ingresar.");
 			return "principal/login"+ MyConstant.SYSTEM;
@@ -235,7 +242,7 @@ public class ArqueoCajaC {
 	public @ResponseBody
     DataResponse obtenerResumen(HttpServletRequest request, Long arqueoId) {
 		try {
-			ArqueoWrap arqueo = arqueocajaS.obtenerResumenArqueo(arqueoId);
+			ResumenArqueoWrap arqueo = arqueocajaS.obtenerResumenArqueo(arqueoId);
 			boolean status = arqueo != null;
 			return new DataResponse(status, arqueo, status? Utils.successGet("resumen de arqueo de caja"): Utils.failedGet("resumen de arqueo de caja"));
 		} catch (Exception e) {
@@ -456,11 +463,9 @@ public class ArqueoCajaC {
 			Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			if (user != null && gestion != null) {
-				Arqueo arqueo = arqueocajaS.arqueocajaVerificarSesionActual(user.getCod_per(), gestion.getCod_suc());
-				if (arqueo != null) {
-					detalle.setArqueoId(arqueo.getId());
-					boolean status = arqueocajaS.adicionarDetalle(detalle) > 0;
-					return new DataResponse(status, Utils.getSuccessFailedAdd("detalle de arqueo", status));
+				if (detalle != null) {
+					short detalleId = arqueocajaS.adicionarDetalle(detalle);
+					return new DataResponse(detalleId > 0, detalleId, Utils.getSuccessFailedAdd("detalle de arqueo", detalleId>0));
 				} else
 					return new DataResponse(false, "No se logro recuperar el arqueo de caja, para registro de detalle");
 			}else {

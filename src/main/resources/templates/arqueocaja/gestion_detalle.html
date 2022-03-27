@@ -1,20 +1,27 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <input type="hidden" name="id" th:value="${cod_arqcaj}">
         <form id="formularioIngresar" method="post" action="../arqueocaja/guardarDetalle" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalIngresar" class="modal fade">
+            <div id="modalIngresar" data-backdrop="static" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Ingreso a Caja</h4>
+                            <h4 class="modal-title"><span id="xarqueoTitulo"></span></h4>
                         </div>
                         <div class="modal-body">
+                            <input type="hidden" id="idArqueo" name="arqueoId" />
+                            <input type="hidden" id="tipoArqueo" name="tipo" />
+                            <input type="hidden" id="esDebeArqueo" name="esDebe" />
+                            <div class="form-group">
+                                <select name="formaPagoId" class="form-control input-lg" data-fv-notempty="true">
+                                    <option value="">Seleccionar</option>
+                                    <option th:each="f : ${formas}" th:value="${f.id}" th:text="${f.nombre}"></option>
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>Monto</label>
                                 <input type="text" class="form-control text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." name="monto" data-fv-notempty="true">
-                                <input type="hidden" name="tipo" value="5">
                             </div>
                             <div class="form-group">
                                 <label>Descripcion</label>
@@ -26,38 +33,7 @@
                             <button type="submit" id="btnIngresarConfirmacion" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
-            </div>
-        </form>
-        <form id="formularioEgresar" method="post" action="../arqueocaja/guardarDetalle" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalEgresar" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Egreso de Caja</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Monto</label>
-                                <input type="text" class="form-control text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." name="monto" data-fv-notempty="true">
-                                <input type="hidden" name="tipo" value="1">
-                            </div>
-                            <div class="form-group">
-                                <label>Descripcion</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" data-fv-notempty="true" placeholder="Ingrese un motivo por el cual sali&oacute; dinero"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
             </div>
         </form>
         <form id="formularioCerrar" method="post" action="../arqueocaja/cerrar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
@@ -171,7 +147,7 @@
                                     <button type="button" class="btn btn-xs active btn-success" id="btnIngreso"><i class="fa fa-plus-circle"></i><br>Ingreso</button>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-xs btn-primary" id="btnEgreso"><i class="fa fa-minus-circle"></i><br>Egreso</button>
+                                    <button type="button" class="btn btn-xs btn-warning" id="btnEgreso"><i class="fa fa-minus-circle"></i><br>Egreso</button>
                                 </div>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-xs btn-danger" id="btnCerrar"><i class="fa fa-sign-out"></i><br>Cerrar Caja</button>
@@ -197,49 +173,49 @@
             <div class="widget-user-image" style="display: none" id="imgArqueo">
                 <img class="img-circle" src="../../img/arqueo.jpg" alt="User Avatar">
             </div>
-            <div class="box-footer">
-                <div class="row" id="widgetDetalle">
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <div class="description-block">
-                            <h5 class="description-header"><span aria-label="tingresos"></span></h5>
-                            <span class="description-text custom-bolder">TOTAL INGRESOS <br /></span>
-                            <span class="h1 text-success"><i class="fa fa-check-square-o"></i></span>
-                        </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <div class="description-block">
-                            <h5 class="description-header"><span aria-label="tegresos"></span></h5>
-                            <span class="description-text custom-bolder">TOTAL EGRESOS <br /></span>
-                            <span class="h1 text-danger"><i class="fa fa-minus-square"></i></span>
-                        </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <div class="description-block">
-                            <h5 class="description-header"><span aria-label="totalSistema"></span></h5>
-                            <span class="description-text custom-bolder">TOTAL EN CAJA F&Iacute;SICO<br /></span>
-                            <span class="h1 text-primary"><i class="glyphicon glyphicon-usd"></i></span>
-                        </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-xs-6 col-sm-6 col-md-3">
-                        <div class="description-block">
-                            <h5 class="description-header"><span aria-label="tbanco"></span></h5>
-                            <span class="description-text custom-bolder">INGRESOS POR BANCO <br /></span>
-                            <span class="h1 text-warning"><i class="fa fa-hospital-o"></i></span>
-                        </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div>
+<!--            <div class="box-footer">-->
+<!--                <div class="row" id="widgetDetalle">-->
+<!--                    <div class="col-xs-6 col-sm-6 col-md-3">-->
+<!--                        <div class="description-block">-->
+<!--                            <h5 class="description-header"><span aria-label="tingresos"></span></h5>-->
+<!--                            <span class="description-text custom-bolder">TOTAL INGRESOS <br /></span>-->
+<!--                            <span class="h1 text-success"><i class="fa fa-check-square-o"></i></span>-->
+<!--                        </div>&lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                    </div>&lt;!&ndash; /.col &ndash;&gt;-->
+<!--                    <div class="col-xs-6 col-sm-6 col-md-3">-->
+<!--                        <div class="description-block">-->
+<!--                            <h5 class="description-header"><span aria-label="tegresos"></span></h5>-->
+<!--                            <span class="description-text custom-bolder">TOTAL EGRESOS <br /></span>-->
+<!--                            <span class="h1 text-danger"><i class="fa fa-minus-square"></i></span>-->
+<!--                        </div>&lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                    </div>&lt;!&ndash; /.col &ndash;&gt;-->
+<!--                    <div class="col-xs-6 col-sm-6 col-md-3">-->
+<!--                        <div class="description-block">-->
+<!--                            <h5 class="description-header"><span aria-label="totalSistema"></span></h5>-->
+<!--                            <span class="description-text custom-bolder">TOTAL EN CAJA F&Iacute;SICO<br /></span>-->
+<!--                            <span class="h1 text-primary"><i class="glyphicon glyphicon-usd"></i></span>-->
+<!--                        </div>&lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                    </div>&lt;!&ndash; /.col &ndash;&gt;-->
+<!--                    <div class="col-xs-6 col-sm-6 col-md-3">-->
+<!--                        <div class="description-block">-->
+<!--                            <h5 class="description-header"><span aria-label="tbanco"></span></h5>-->
+<!--                            <span class="description-text custom-bolder">INGRESOS POR BANCO <br /></span>-->
+<!--                            <span class="h1 text-warning"><i class="fa fa-hospital-o"></i></span>-->
+<!--                        </div>&lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                    </div>&lt;!&ndash; /.col &ndash;&gt;-->
+<!--                </div>&lt;!&ndash; /.row &ndash;&gt;-->
+<!--            </div>-->
         </div><!-- /.widget-user -->
     </div>
     <div class="box-body">
         <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th class="all">Detalles</th>
+                    <th class="all" width="5%">Detalles</th>
                     <th class="desktop">Fecha y Hora</th>
                     <th class="desktop">Descripcion</th>
-                    <th class="desktop">Tipo</th>
-                    <th class="desktop">Monto<br>(Bs.)</th>
+                    <th class="desktop">Debe</th>
+                    <th class="desktop">Haber</th>
                     <th class="all">Accion</th>
                 </tr>
             </thead>
@@ -254,14 +230,18 @@
     var esPropioCajero = /*[[${esPropioCajero}]]*/ false;
 </script>
 <script type="text/javascript" th:inline="none">
-	var dataArqueo = {};
+    var dataReq = {
+        TIPO_INGRESO: 3,
+        TIPO_EGRESO: 4,
+        dataArqueo : {}
+    }
 
 	function actualizarInfoArqueo(){
 		if(arqueoId){
 			$.post('../arqueocaja/obtenerResumen?arqueoId='+arqueoId,function(resp){
 				if(resp.status){
-					resp.data.finicio = UtilDate.formatTimestampLiteral(resp.data.finicio) + ' ('+resp.data.xesActivo+')';
-					dataArqueo = resp.data;
+					resp.data.finicio = UtilDate.formatTimestampLiteral(resp.data.finicio) + ' ('+resp.data.esActivo?'Activo':'Finalizado'+')';
+                    dataReq.dataArqueo = resp.data;
 					if(resp.data.esActivo){
 					    if(esPropioCajero){
                             $('#cajaCerrar').show(300);
@@ -274,11 +254,8 @@
 						$('#cajaCerrar').hide();
 						$('#cajaFinalizada').show(300);
 					}
-					$('#widgetArqueo').loadJSON(dataArqueo);
-					$('#widgetDetalle').loadJSON(dataArqueo);
 				}else{
 					$('#modalAdicionar').modal('show');
-//	 				modalAlert('Error al recuperar resumen de arqueo',resp.msg,'error');
 				}
 			});
 		}else{
@@ -299,12 +276,12 @@
         $('#checkObservacion').click(function(){
     		if($("#checkObservacion").is(':checked')){
     			$("#des_arqcaj").val($("#checkObservacion").val());  // checked
-    			$('#formularioCerrar').data('formValidation').enableFieldValidators('des_arqcaj',true).revalidateField('des_arqcaj');
+    			$('#formularioCerrar').data('formValidation').enableFieldValidators('descripcion',true).revalidateField('descripcion');
     		}
     	});
         $('#checkMonto').click(function(){
     		if($("#checkMonto").is(':checked')){
-    			$("#monrea_arqcaj").val(dataArqueo.totalSistema);  // checked
+    			$("#monrea_arqcaj").val(dataReq.dataArqueo.totalSistema);  // checked
     			$('#formularioCerrar').data('formValidation').enableFieldValidators('montoReal',true).revalidateField('montoReal');
     		}
     	});
@@ -325,7 +302,7 @@
                 }
             },
             "order":[[0,'desc']],
-            "columnDefs":[{targets: [5],className:'text-right'}],
+            "columnDefs":[{targets: [3,4,5],className:'text-right'}],
             "columns": [{
                 "data": "id"
             }, {
@@ -333,7 +310,7 @@
             }, {
                 "data": "descripcion"
             }, {
-                "data": "tipo"
+                "data": "monto"
             }, {
                 "data": "monto"
             }, {
@@ -341,30 +318,14 @@
             }],
             "createdRow": function(row, data, index) {
                 $('td',row).eq(1).html(UtilDate.formatTimestampLiteral(data.fecha));
-            	switch (parseInt(data.tipo)) {
-				case 3://Salidas
-				case 5://Salidas
-				case 14://Salidas
-				case 15://Salidas
-				case 17://Salidas
-				case 21://Salidas
-					$('td', row).eq(3).css('font-weight','bolder');
-            		$('td', row).eq(3).addClass('text-danger');
-					break;
-				case 21:
-				case 24:
-					$('td', row).eq(3).css('font-weight','bolder');
-            		$('td', row).eq(3).addClass('text-warning');
-            		break;
-				default:
-					$('td', row).eq(3).css('font-weight','bolder');
-            		$('td', row).eq(3).addClass('text-success');
-					break;
-				}
-				let buttons = '<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>';
-            	if(data.tipo == 16 || data.tipo == 17){
-                    buttons += '<button class="btn btn-danger eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar detalle"><i class="fa fa-times"></i><br>borrar </button>';
+            	if(data.esDebe) {
+                    $('td',row).eq(3).html(data.monto);
+                    $('td',row).eq(4).html(0);
+                } else {
+                    $('td',row).eq(3).html(0);
+            	    $('td',row).eq(4).html(data.monto);
                 }
+				let buttons = '<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>';
                 $('td', row).eq(5).html('<div class="btn-group-xs">'+buttons+'</div>');
             },
             "drawCallback": function(settings) {
@@ -396,10 +357,9 @@
             $('#formularioCerrar').data('formValidation').resetForm();
             $('#formularioCerrar')[0].reset();
             
-            $('#dataCajaResumen').loadJSON(dataArqueo);
-            $('#formularioCerrar').loadJSON(dataArqueo);
-            $('#monfin_arqcaj').val(dataArqueo.totalSistema);
-            $('#cod_arqcaj').val(dataArqueo.id);
+            $('#dataCajaResumen').loadJSON(dataReq.dataArqueo);
+            $('#formularioCerrar').loadJSON(dataReq.dataArqueo);
+            $('#id').val(dataReq.dataArqueo.id);
             $('#modalCerrar').modal('show');
         });
         $('#btnImprimir').click(function() {
@@ -407,10 +367,22 @@
             $("#reportes").modal('show');
         });
         $('#btnIngreso').click(function() {
-            $.post('../arqueocaja/adicionarIngreso', function(resp) {$("#contenedor").html(resp);});
+            $('#formularioIngresar').data('formValidation').resetForm();
+            $('#formularioIngresar')[0].reset();
+            $('#idArqueo').val(arqueoId);
+            $('#tipoArqueo').val(dataReq.TIPO_INGRESO);
+            $('#esDebeArqueo').val(true);
+            $('#xarqueoTitulo').html('Ingreso a Caja');
+            $('#modalIngresar').modal('show');
         });
         $('#btnEgreso').click(function() {
-        	$.post('../arqueocaja/adicionarEgreso', function(resp) {$("#contenedor").html(resp);});
+            $('#formularioIngresar').data('formValidation').resetForm();
+            $('#formularioIngresar')[0].reset();
+            $('#idArqueo').val(arqueoId);
+            $('#tipoArqueo').val(dataReq.TIPO_EGRESO);
+            $('#esDebeArqueo').val(false);
+            $('#xarqueoTitulo').html('Egreso de Caja');
+            $('#modalIngresar').modal('show');
         });
         $('#formulario').formValidation({
             locale: 'es_ES'
@@ -419,9 +391,8 @@
             alertAdicion('Confirmar transaccion','Esta seguro de realizar la transaccion.',function(){
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status == true) {
+                    if (result.status) {
                         xform.data('formValidation').resetForm();
-                        $('#cod_arqcaj1').val(result.data.arqueoId);
                         $('.modal').modal('hide');
                         $('#tabla').dataTable().fnDraw('page');
                         actualizarInfoArqueo();

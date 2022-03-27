@@ -6,6 +6,8 @@ import net.resultadofinal.micomercial.model.ArqueoTotal;
 import net.resultadofinal.micomercial.model.DetalleArqueo;
 import net.resultadofinal.micomercial.model.wrap.ArqueoWrap;
 import net.resultadofinal.micomercial.model.wrap.CompraVentaWrap;
+import net.resultadofinal.micomercial.model.wrap.DetalleResumenArqueoWrap;
+import net.resultadofinal.micomercial.model.wrap.ResumenArqueoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -109,6 +111,16 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 			return null;
 		}
 	}
+	public Long obtenerArqueoSesionActiva(Long codPer, Integer sucursal){
+		try {
+			sqlString = "select coalesce(max(ac.id),0) from arqueo ac where ac.delegado_id=? and ac.sucursal_id = ? and ac.custodio_final_id is null and ac.estado=true";
+			return db.queryForObject(sqlString,Long.class, codPer, sucursal);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(Utils.errorGet("verificacion actual de "+ENTITY, e.toString()));
+			return null;
+		}
+	}
 	public List<DetalleArqueo> obtenerDetallexArqueoCaja(Long cod){
 		try {
 			sqlString = "select * from detalle_arqueo where arqueo_id=? and estado = true;";
@@ -190,20 +202,21 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 		}
 	}
 	@Transactional
-	public Integer adicionarDetalle(DetalleArqueo d){
+	public Short adicionarDetalle(DetalleArqueo d){
 		try {
-//			logger.info("adicionarDetalle: "+d.getCod_arqcaj()+" | "+d.getTip_detarq()+" | "+d.getDes_detarq()+" | "+d.getMon_detarq()+" | "+d.getCodSubcuenta());
-			return db.queryForObject("select detallearqueo_adicionar(?,?,?,?,?);",Integer.class,d.getId(),d.getTipo(),
-					d.getDescripcion(),d.getMonto(),d.getSubcuentaId());
+			sqlString = "select detalle_arqueo_adicionar(?,?,?,?,?,?)";
+			short detalleId = db.queryForObject(sqlString, Short.class, d.getArqueoId(),d.getTipo(),d.getDescripcion(),d.getMonto(),d.getFormaPagoId(),d.getEsDebe());
+			return detalleId > 0 ? detalleId : (short)-1;
 		} catch (Exception e) {
-			logger.error(Utils.errorAdd("detalles de "+ENTITY, e.toString()));
-			return -1;
+//			logger.error(Utils.errorAdd("detalles de "+ENTITY, e.toString()));
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 	@Override
 	public ArqueoTotal obtenerTotal(Long codArqCaj) {
 		try {
-			String sqlString = "select a.id, " +
+			sqlString = "select a.id, " +
 					"(select coalesce(sum(monto),0) from detalle_arqueo d where d.arqueo_id=a.id and d.tipo=5) tingresos," +
 					"(select coalesce(sum(monto),0) from detalle_arqueo d where d.arqueo_id=a.id and d.tipo=1) tegresos," +
 					"(select coalesce(sum(monto),0) from detalle_arqueo d where d.arqueo_id=a.id and d.tipo=8) tventas," +
@@ -272,19 +285,18 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 		}
 	}
 	@Override
-	public ArqueoWrap obtenerResumenArqueo(Long codArqcaj) {
+	public ResumenArqueoWrap obtenerResumenArqueo(Long codArqcaj) {
 		try {
-			SqlBuilder sqlBuilder = new SqlBuilder("arqueo a");
-			sqlBuilder.setSelect("a.id,(select coalesce(sum(monto),0) from detalle_arqueo where estado=true and arqueo_id =a.id and tipo in (5,6,7,8,9,10,13,16)) tingresos,");
-			sqlBuilder.setSelectConcat("(select coalesce(sum(monto),0) from detalle_arqueo where estado=true and arqueo_id=a.id and tipo in (1,2,3,4,14,15,17,21)) tegresos,");
-			sqlBuilder.setSelectConcat("((select coalesce(sum(monto),0) from detalle_arqueo where estado=true and arqueo_id=a.id and tipo =22)-");
-			sqlBuilder.setSelectConcat("(select coalesce(sum(monto),0) from detalle_arqueo where estado=true and arqueo_id=a.id and tipo =24)) tbanco,");
-			sqlBuilder.setSelectConcat("a.monto_real,(a.ffin is null) es_activo,obtener_nombre_persona(a.delegado_id) xusuario,");
-			sqlBuilder.setSelectConcat("a.finicio,a.ffin");
-			sqlBuilder.setWhere("a.id =:xid");
-			sqlBuilder.addParameter("xid", codArqcaj);
-			List<ArqueoWrap> lista = db.query(sqlBuilder.generate(), new ArqueoWrapMapper());
-			return UtilClass.getFirst(lista);
+			sqlString = "select a.id,concat(p.nom_per, ' ', p.priape_per) as xusuario,a.finicio,a.ffin,a.custodio_final_id is null es_activo from arqueo a inner join persona p on p.cod_per = a.delegado_id where a.id = ?;";
+			List<ResumenArqueoWrap> resumenList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ResumenArqueoWrap.class),codArqcaj);
+			ResumenArqueoWrap resumen = UtilClass.getFirst(resumenList);
+			if(resumen != null) {
+				sqlString = "select fp.id,fp.nombre,da.es_debe , fp.es_efectivo_caja,sum(da.monto) as total from detalle_arqueo da " +
+						"inner join forma_pago fp on fp.id = da.forma_pago_id where da.arqueo_id = ? group by fp.id,fp.nombre,da.es_debe, fp.es_efectivo_caja order by fp.nombre, da.es_debe";
+				List<DetalleResumenArqueoWrap> detalleResumen = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleResumenArqueoWrap.class), codArqcaj);
+				resumen.setDetalleResumen(detalleResumen);
+			}
+			return resumen;
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;

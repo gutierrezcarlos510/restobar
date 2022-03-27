@@ -784,7 +784,13 @@
     function init(){
         $('#areaMesa').html('');
         $('#areaProducto').html('');
-        $.post('../venta/initParam?ventaId='+ventaId, function(resp){
+        $.ajax({
+            url: '../venta/initParam?ventaId='+ventaId,
+            type: "post",
+            beforeSend: function( xhr ) {
+                abrirLoad();
+            }
+        }).done(function(resp) {
             if(resp.status) {
                 dataReq.venta.cliente = resp.data.cliente;
                 dataReq.mesaList = resp.data.mesas;
@@ -945,7 +951,15 @@
                     renderDetalleVenta();
                 }
             }
-        })
+        }).fail(function(jqXHR, textStatus) {
+            console.log('Request failed:', textStatus);
+        }).always(function() {
+            cerrarLoad();
+        });
+        //
+        // $.post('../venta/initParam?ventaId='+ventaId, function(resp){
+        //
+        // })
     }
     function generateColumnPlato(itProducto){
         let div1 = $('<div class="col-md-4 item" id="areaPlato-'+itProducto.cartillaDiariaId+'-'+itProducto.id+'"></div>');
@@ -1134,8 +1148,26 @@
                 }
                 if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
                     dataReq.detalleVentaCompuesto.forEach(it => {
+                        let tablaInterna = $('<table class="w3-table w3-small"></table>');
+                        let tableBody = $('<tbody></tbody>');
+                        it.detalleCartillaList.forEach(subitem => {
+                            $('<tr><td class="custom-bolder">'+subitem.xtipoProducto+'</td><td>Cantidad</td></tr>').appendTo(tableBody);
+                            subitem.productos.forEach( pro => {
+                                if(pro.cantidadVenta > 0) {
+                                    let fila = $('<tr></tr>');
+                                    $('<td style="padding-left: 35px;">'+pro.xproducto+'</td>').appendTo(fila);
+                                    $('<td>'+pro.cantidadVenta+'</td>').appendTo(fila);
+                                    tableBody.append(fila);
+                                }
+                            });
+                        })
+                        tablaInterna.append(tableBody);
                         let row = $('<tr></tr>');
-                        $('<td>'+it.nombre+'</td>').appendTo(row);
+                        let tdNombre = $('<td></td>');
+                        $('<span>'+it.nombre+'</span>').appendTo(tdNombre);
+                        tablaInterna.appendTo(tdNombre);
+                        tdNombre.appendTo(row);
+                        // $('<td>'+it.nombre+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
@@ -1183,7 +1215,57 @@
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-
+            let ventaForm = validacionVenta();
+            if(ventaForm) {
+                ventaForm.tipo = 1;
+                submitVenta(ventaForm);
+            }
+        });
+        $('#formulario4').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            let ventaForm = validacionVenta();
+            if(ventaForm) {
+                ventaForm.tipo = 2;
+                let formData = $('#formulario4').formToJSON();
+                ventaForm.formaPagoId = parseInt(formData.formaPagoId);
+                submitVenta(ventaForm);
+            }
+        });
+        function submitVenta(ventaForm){
+            let urlForm = '../venta/guardarComanda';
+            if(dataReq.isUpdate) {
+                urlForm = '../venta/actualizarComanda';
+            }
+            alertAdicion('Registro de comanda', 'Esta seguro de realizar esta comanda?', function(){
+                $.ajax({
+                    url: urlForm,
+                    type: "post", dataType: "json",
+                    data: JSON.stringify(ventaForm), cache: false,
+                    contentType: 'application/json',
+                    processData: false,
+                    beforeSend: function( xhr ) {
+                        abrirLoad();
+                    }
+                }).done(function(result) {
+                    cerrarLoad();
+                    if(result.status) {
+                        mostrarMensaje('info', result.msg);
+                        $.post('../venta/gestion', function(resp){
+                            $('#contenedor').html(resp);
+                        })
+                    } else {
+                        modalAlert('Error de transaccion', result.msg, 'error')
+                    }
+                }).fail(function(jqXHR, textStatus) {
+                    console.log('Request failed:', textStatus);
+                }).always(function() {
+                    cerrarLoad();
+                });
+            });
+        }
+        function validacionVenta(){
             let obsGeneral = $('#obsGeneral').val();
             if(!obsGeneral) {
                 obsGeneral = '';
@@ -1205,26 +1287,28 @@
             calcularTotal();
             if(totalVenta <= 0) {
                 modalAlert('Ingrese detalle de venta', 'Revisar Paso 2', 'error');
-                return;
+                return null;
             }
             let cantidadPersonas = $('#cantidadPersonas').val();
             if(!cantidadPersonas) {
                 modalAlert('Se requiere ingresar la cantidad de personas', 'Revisar Paso 1', 'error');
-                return;
+                return null;
             }
             if(!dataReq.venta.user) {
                 modalAlert('Se requiere mesero que atiende la comanda', 'Revisar Paso 1', 'error');
-                return;
+                return null;
             }
             if(!dataReq.venta.cliente) {
                 modalAlert('Se requiere seleccionar un cliente', 'Revisar Paso 1', 'error');
+                return null;
             }
             if(!dataReq.venta.mesa) {
                 modalAlert('Se requiere seleccionar una mesa', 'Revisar Paso 1', 'error');
+                return null;
             }
             let ventaForm = {
                 id: ventaId,
-                clienteId: dataReq.venta.cliente.cod_per,
+                clienteId: dataReq.venta.cliente.cod_cli,
                 usuarioId: dataReq.venta.user.userId,
                 mesaId:dataReq.venta.mesa.id,
                 obs:dataReq.venta.obs,
@@ -1275,37 +1359,8 @@
 
                 });
             }
-            let urlComanda = '../venta/guardarComanda';
-            if(dataReq.isUpdate) {
-                urlComanda = '../venta/actualizarComanda';
-            }
-            alertAdicion('Registro de comanda', 'Esta seguro de realizar esta comanda?', function(){
-                $.ajax({
-                    url: urlComanda,
-                    type: "post", dataType: "json",
-                    data: JSON.stringify(ventaForm), cache: false,
-                    contentType: 'application/json',
-                    processData: false,
-                    beforeSend: function( xhr ) {
-                        abrirLoad();
-                    }
-                }).done(function(result) {
-                    cerrarLoad();
-                    if(result.status) {
-                        mostrarMensaje('info', result.msg);
-                        $.post('../venta/gestion', function(resp){
-                            $('#contenedor').html(resp);
-                        })
-                    } else {
-                        modalAlert('Error de transaccion', result.msg, 'error')
-                    }
-                }).fail(function(jqXHR, textStatus) {
-                    console.log('Request failed:', textStatus);
-                }).always(function() {
-                    cerrarLoad();
-                });;
-            });
-        });
+            return ventaForm;
+        }
         $('#adicionarCliente').click(function() {
             $('#formularioCliente').data('formValidation').resetForm();
             $('#formularioCliente')[0].reset();
