@@ -1,38 +1,39 @@
 package net.resultadofinal.micomercial.model;
 
-public class ArqueoTotal {
-	private Float tingresos,tegresos,tcompras,tventas;
+import java.math.BigDecimal;
 
-	public Float getTingresos() {
+public class ArqueoTotal {
+	private BigDecimal tingresos,tegresos,tcompras,tventas;
+
+	public BigDecimal getTingresos() {
 		return tingresos;
 	}
 
-	public void setTingresos(Float tingresos) {
+	public void setTingresos(BigDecimal tingresos) {
 		this.tingresos = tingresos;
 	}
 
-	public Float getTegresos() {
+	public BigDecimal getTegresos() {
 		return tegresos;
 	}
 
-	public void setTegresos(Float tegresos) {
+	public void setTegresos(BigDecimal tegresos) {
 		this.tegresos = tegresos;
 	}
 
-	public Float getTcompras() {
+	public BigDecimal getTcompras() {
 		return tcompras;
 	}
 
-	public void setTcompras(Float tcompras) {
+	public void setTcompras(BigDecimal tcompras) {
 		this.tcompras = tcompras;
 	}
 
-	public Float getTventas() {
+	public BigDecimal getTventas() {
 		return tventas;
 	}
 
-	public void setTventas(Float tventas) {
+	public void setTventas(BigDecimal tventas) {
 		this.tventas = tventas;
 	}
-
 }

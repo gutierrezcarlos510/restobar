@@ -7,19 +7,20 @@ import net.resultadofinal.micomercial.model.wrap.ArqueoWrap;
 import net.resultadofinal.micomercial.model.wrap.CompraVentaWrap;
 import net.resultadofinal.micomercial.model.wrap.ResumenArqueoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
+import net.resultadofinal.micomercial.util.DataResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ArqueoS {
-	DataTableResults<Arqueo> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion);
+	DataTableResults<Arqueo> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion, boolean estaActivoCaja);
 	DataTableResults<DetalleArqueo> listadoDetalles(HttpServletRequest request, boolean estado,Long arqueo);
 	Arqueo arqueocajaVerificarSesionActual(Long cod, Integer sucursal);
 	Long obtenerArqueoSesionActiva(Long codPer, Integer sucursal);
 	List<DetalleArqueo> obtenerDetallexArqueoCaja(Long cod);
 	DetalleArqueo obtenerDetalle(Integer detalleArqueoId,Long arqueoId);
-	Long iniciar(Arqueo ac);
+	DataResponse iniciar(Arqueo ac);
 	Boolean modificar(Arqueo ac);
 	Boolean cerrar(Arqueo ac);
 	Boolean darEstado(Long cod, Boolean est, Long cod_per);

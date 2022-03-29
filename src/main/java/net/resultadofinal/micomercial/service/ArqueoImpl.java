@@ -40,7 +40,7 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 	}
 	@Autowired
 	private UtilDataTableS utilDataTableS;
-	public DataTableResults<Arqueo> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion) {
+	public DataTableResults<Arqueo> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion, boolean estaActivoCaja) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("arqueo ac");
 			sqlBuilder.setSelect("ac.*,cast(concat(p1.nom_per,' ',p1.priape_per,' ',p1.segape_per) as varchar(100)) xdelegado,");
@@ -49,7 +49,7 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 			sqlBuilder.addJoin("persona p1 on p1.cod_per=ac.delegado_id");
 			sqlBuilder.addJoin("persona p2 on p2.cod_per=ac.custodio_inicial_id");
 			sqlBuilder.addLeftJoin("persona p3 on p3.cod_per=ac.custodio_final_id");
-			sqlBuilder.setWhere("ac.estado=:xestado and (ac.custodio_inicial_id=:xuser or :xuser=-1) and ac.gestion=:xgestion");
+			sqlBuilder.setWhere("ac.estado=:xestado and (ac.custodio_inicial_id=:xuser or :xuser=-1) and ac.gestion=:xgestion" + (estaActivoCaja?" and ac.custodio_final_id is null":" and ac.custodio_final_id is not null"));
 			sqlBuilder.addParameter("xestado",estado);
 			sqlBuilder.addParameter("xuser",xuser);
 			sqlBuilder.addParameter("xgestion",xgestion);
@@ -76,14 +76,18 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 	public Arqueo obtenerCaja(Long id) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("arqueo a");
-			sqlBuilder.setSelect("a.*,obtener_nombre_persona(a.delegado_id) xdelegado,");
-			sqlBuilder.setSelectConcat("obtener_nombre_persona(a.custodio_inicial_id) custodio_inicial,");
-			sqlBuilder.setSelectConcat("obtener_nombre_persona(a.custodio_final_id) custodio_final");
+			sqlBuilder.setSelect("a.*,concat(p1.nom_per,' ', p1.priape_per) xdelegado,");
+			sqlBuilder.setSelectConcat("concat(p2.nom_per,' ', p2.priape_per) xcustodio_inicial,");
+			sqlBuilder.setSelectConcat("concat(p3.nom_per,' ', p3.priape_per) xcustodio_final");
+			sqlBuilder.addJoin("persona p1 on p1.cod_per = a.delegado_id");
+			sqlBuilder.addJoin("persona p2 on p2.cod_per = a.custodio_inicial_id");
+			sqlBuilder.addLeftJoin("persona p3 on p3.cod_per = a.custodio_final_id");
 			sqlBuilder.setWhere("a.id=?");
-			List<Arqueo> arqueoList = db.query(sqlBuilder.generate(), new BeanPropertyRowMapper<Arqueo>(Arqueo.class), id);
-			return UtilClass.isNotNullEmpty(arqueoList)?arqueoList.get(0):null;
+			List<Arqueo> arqueoList = db.query(sqlBuilder.generate(), BeanPropertyRowMapper.newInstance(Arqueo.class), id);
+			return UtilClass.getFirst(arqueoList);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -152,13 +156,22 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 			return null;
 		}
 	}
-	public Long iniciar(Arqueo ac){
+	public DataResponse iniciar(Arqueo ac){
 		try {
-			return db.queryForObject("select arqueocaja_iniciar(?,?,?,?,?,?);",Long.class,ac.getDelegadoId(),ac.getCustodioInicialId(),ac.getMontoInicial(),
+			Long arqueoId = db.queryForObject("select arqueocaja_iniciar(?,?,?,?,?,?);",Long.class,ac.getDelegadoId(),ac.getCustodioInicialId(),ac.getMontoInicial(),
 					ac.getGestion(),ac.getDescripcion(),ac.getSucursalId());
+			if(arqueoId > 0) {
+				return new DataResponse(true, arqueoId, Utils.getSuccessFailedAdd("Arqueo inicial",true));
+			} else {
+				if(arqueoId == -1) {
+					return new DataResponse(false, Utils.getSuccessFailedAdd("Arqueo inicial",false));
+				} else {
+					return new DataResponse(false, "No se realizo el arqueo, ya que existe una sesion del usuario abierta. Por favor cierre primeramente.");
+				}
+			}
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd("iniciar "+ENTITY, e.toString()));
-			return -1L;
+			throw new RuntimeException("Error al iniciar caja: "+e.getMessage());
 		}
 	}
 	public Boolean modificar(Arqueo ac){

@@ -121,22 +121,21 @@
         </form>
 
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <h1><span class="fa  fa-ellipsis-v"></span> Arqueo de Cajas </h1>
             </div>
             <div class="col-md-4"></div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-md">
-                <label class="col-xs-5 control-label">F. Inicio</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="fini" name="fini">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-md">
-                <label class="col-xs-5 control-label">F. Fin</label>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control input-sm fecha" id="ffin" name="ffin">
+            <div class="col-md-3"></div>
+            <div class="col-xs-12 col-sm-12 col-md-3 padding-sm">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-sm w3-purple active estadoCajaRadio">
+                        <input type="radio" name="estadoCaja" value="true" title="Arqueo de Cajas Propias" checked> Cajas Activas
+                    </label>
+                    <label class="btn btn-sm btn-warning estadoCajaRadio" title="Arqueo de Cajas generales">
+                        <input type="radio" name="estadoCaja" value="false"> Cajas Finalizadas
+                    </label>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-3 padding-sm">
@@ -207,6 +206,7 @@
                     d.fini = $('#fini').val();
                     d.ffin = $('#ffin').val();
                     d.usuario = $('input[name=usuario]:checked').val();
+                    d.estaActivoCaja = $('input[name=estadoCaja]:checked').val();
                 }
             },
             "ordering":true,
@@ -335,6 +335,9 @@
         $('.estadoRadio').click(function() {
             $('#tabla').dataTable().fnDraw('page');
         });
+        $('.estadoCajaRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('page');
+        });
         $('.usuarioRadio').click(function() {
             $('#tabla').dataTable().fnDraw('page');
         });
@@ -356,16 +359,13 @@
         }).on('success.form.fv', function(e) {
             e.preventDefault();
             alertAdicion('Confirmacion de transaccion', 'Esta seguro de realizar esta transaccion?', function(){
-            	var xfom = $(e.target);
+            	let xfom = $(e.target);
                 $.post(xfom.attr('action'), xfom.serialize(), function(result) {
-                    if (result.status) {
+                    finishTransaction(result, function(){
                         xfom.data('formValidation').resetForm();
                         $('.modal').modal('hide');
-                        $('#tabla').dataTable().fnDraw('page');
-                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                    } else {
-                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                    }
+                        $('#tabla').dataTable().fnDraw('');
+                    })
                 }, 'json');
             });
         });

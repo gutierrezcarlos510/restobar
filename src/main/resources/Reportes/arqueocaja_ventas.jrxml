@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38508f05-8ccb-4644-985b-30fc88f35b33">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="294"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="699"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<parameter name="ges_gen" class="java.lang.Integer"/>
 	<parameter name="delegado" class="java.lang.String"/>
 	<parameter name="cusini" class="java.lang.String"/>
@@ -16,9 +16,9 @@
 	<parameter name="fini" class="java.lang.String"/>
 	<parameter name="ffin" class="java.lang.String"/>
 	<parameter name="cod_arqcaj" class="java.lang.Long"/>
-	<parameter name="monrea" class="java.lang.Float"/>
-	<parameter name="monini" class="java.lang.Float"/>
-	<parameter name="monfin" class="java.lang.Float"/>
+	<parameter name="monrea" class="java.math.BigDecimal"/>
+	<parameter name="monini" class="java.math.BigDecimal"/>
+	<parameter name="monfin" class="java.math.BigDecimal"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="des_gen" class="java.lang.String"/>
 	<parameter name="dir_gen" class="java.lang.String"/>
@@ -27,114 +27,123 @@
 	<parameter name="path" class="java.lang.String"/>
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<parameter name="logsintex_gen" class="java.lang.String"/>
-	<parameter name="ingresos" class="java.lang.Float"/>
-	<parameter name="egresos" class="java.lang.Float"/>
+	<parameter name="ingresos" class="java.math.BigDecimal"/>
+	<parameter name="egresos" class="java.math.BigDecimal"/>
 	<queryString>
-		<![CDATA[select v.cod_arqcaj,t.nom_tippro,p.nom_pro ,p.gan_pro,p.precom_pro ,d.*,(d.can_detven*d.pre_detven) as ingreso_total,(d.can_detven*p.gan_pro) as ganancia_total from detalleventa d 
-inner join venta v on v.cod_ven = d.cod_ven and v.cod_arqcaj =  $P{cod_arqcaj}  and v.est_ven = true
-inner join producto p on p.cod_pro = d.cod_pro
-inner join tipoproducto t on t.cod_tippro = p.cod_tippro
-order by d.cod_ven,d.cod_detven asc]]>
+		<![CDATA[select v.arqueo_id ,t.nombre xtipo,
+p.nombre as xproducto,d.*,
+case when d.es_compuesto then p.pc_caja else p.pc_unit end as precio_compra,
+d.total as ingreso_total,
+case when d.es_compuesto then (d.cantidad *(p.pv_caja - p.pc_caja)) else (d.cantidad_unitaria *(p.pv_unit - p.pc_unit)) end  as ganancia_total
+from detalle_venta d 
+inner join venta v on v.id = d.venta_id and v.arqueo_id =  $P{cod_arqcaj}   and v.estado = true
+inner join producto p on p.id = d.producto_id 
+inner join tipo_producto t on t.id = p.tipo_id 
+order by d.venta_id ,d.id asc]]>
 	</queryString>
-	<field name="cod_arqcaj" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_arqcaj"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_arqcaj"/>
+	<field name="arqueo_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="arqueo_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
 	</field>
-	<field name="nom_tippro" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="nom_tippro"/>
-		<property name="com.jaspersoft.studio.field.label" value="nom_tippro"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="tipoproducto"/>
+	<field name="xtipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xtipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_producto"/>
 	</field>
-	<field name="nom_pro" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="nom_pro"/>
-		<property name="com.jaspersoft.studio.field.label" value="nom_pro"/>
+	<field name="xproducto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xproducto"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
 	</field>
-	<field name="gan_pro" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="gan_pro"/>
-		<property name="com.jaspersoft.studio.field.label" value="gan_pro"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
+	<field name="venta_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="venta_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="precom_pro" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="precom_pro"/>
-		<property name="com.jaspersoft.studio.field.label" value="precom_pro"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="cod_ven" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_ven"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_ven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="producto_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="producto_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="cod_detven" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="precio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="precio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="cod_pro" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_pro"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="pre_detven" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="pre_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="pre_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="descuento" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="can_detven" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="can_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="can_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="subtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="des_detven" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="des_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="des_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="subtot_detven" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="subtot_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="subtot_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="cartilla_diaria_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="cartilla_diaria_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="tot_detven" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="tot_detven"/>
-		<property name="com.jaspersoft.studio.field.label" value="tot_detven"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detalleventa"/>
+	<field name="detalle_cartilla_diaria_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="detalle_cartilla_diaria_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
 	</field>
-	<field name="ingreso_total" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.name" value="ingreso_total"/>
+	<field name="es_compuesto" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="es_compuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<field name="tipo_venta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_venta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<field name="cantidad_unitaria" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_unitaria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<field name="precio_compra" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="precio_compra"/>
+	</field>
+	<field name="ingreso_total" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="ingreso_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="ingreso_total"/>
 	</field>
-	<field name="ganancia_total" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.name" value="ganancia_total"/>
+	<field name="ganancia_total" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="ganancia_total"/>
+		<property name="com.jaspersoft.studio.field.name" value="ganancia_total"/>
 	</field>
 	<variable name="cont" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{cod_detven}]]></variableExpression>
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
-	<variable name="subtotal_ganancia" class="java.lang.Double" calculation="Sum">
+	<variable name="subtotal_ganancia" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ganancia_total}]]></variableExpression>
 	</variable>
-	<variable name="total" class="java.lang.Float" calculation="Sum">
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ingreso_total}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="final" class="java.lang.Float">
-		<variableExpression><![CDATA[$V{total}+$P{ingresos}-$P{egresos}+$P{monini}]]></variableExpression>
+	<variable name="final" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{total}.doubleValue()+$P{ingresos}.doubleValue()-$P{egresos}.doubleValue()+$P{monini}.doubleValue()
+]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="subtotal_ingreso" class="java.lang.Float" calculation="Sum">
+	<variable name="subtotal_ingreso" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ingreso_total}]]></variableExpression>
 	</variable>
-	<variable name="total_percibido" class="java.lang.Float">
-		<variableExpression><![CDATA[$V{total}+$P{ingresos}-$P{egresos}]]></variableExpression>
+	<variable name="total_percibido" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{total}.doubleValue()+$P{ingresos}.doubleValue()-$P{egresos}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="total_1" class="java.lang.Float" calculation="Sum">
+	<variable name="total_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ingreso_total}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<group name="tip_detarq">
-		<groupExpression><![CDATA[$F{cod_arqcaj}]]></groupExpression>
+		<groupExpression><![CDATA[$F{arqueo_id}]]></groupExpression>
 	</group>
 	<background>
 		<band/>
@@ -478,7 +487,7 @@ order by d.cod_ven,d.cod_detven asc]]>
 	</columnHeader>
 	<detail>
 		<band height="15">
-			<textField textAdjust="StretchHeight">
+			<textField>
 				<reportElement x="35" y="0" width="230" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -492,9 +501,9 @@ order by d.cod_ven,d.cod_detven asc]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nom_tippro}+" - "+$F{nom_pro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{xproducto}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField>
 				<reportElement x="265" y="0" width="50" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -508,9 +517,9 @@ order by d.cod_ven,d.cod_detven asc]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{can_detven}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
 				<reportElement x="315" y="0" width="50" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -527,9 +536,9 @@ order by d.cod_ven,d.cod_detven asc]]>
 					<font size="6"/>
 					<paragraph leftIndent="0" rightIndent="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{precom_pro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{precio_compra}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
 				<reportElement x="485" y="0" width="70" height="15" uuid="405fe45d-a480-4b25-a53b-daac87388414">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -562,7 +571,7 @@ order by d.cod_ven,d.cod_detven asc]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{cont}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
 				<reportElement x="365" y="0" width="50" height="15" uuid="2b2b3c1e-9021-41be-98fe-be8a839c0d0f">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -579,9 +588,9 @@ order by d.cod_ven,d.cod_detven asc]]>
 					<font size="6"/>
 					<paragraph leftIndent="0" rightIndent="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pre_detven}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
 				<reportElement x="415" y="0" width="70" height="15" uuid="ac0c230e-797c-4736-89f8-14202b22d27d">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>

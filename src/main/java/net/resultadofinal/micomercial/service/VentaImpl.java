@@ -140,7 +140,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
 					"VALUES(?, ?, ?, ?, now(), ?, ?, ?, ?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
 			if(obj.getTipo() == 2) { // si es venta finalizada
-				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from sucursal_id = ?", Long.class, obj.getSucursalId());
+				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from venta where sucursal_id = ?", Long.class, obj.getSucursalId());
 				obj.setNumero(numero);
 			}
 			boolean saveVenta = db.update(sqlString,ventaId, obj.getNumero(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
@@ -363,7 +363,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			return db.queryForObject("select venta_eliminar(?,?);",Boolean.class,ventaId,userId);
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
-			throw new RuntimeException(Utils.errorEli(ENTITY, ""));
+			throw new RuntimeException(Utils.errorEli(ENTITY, e.getMessage()));
 		}
 	}
 

@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,14 +60,13 @@ public class ArqueoCajaC {
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (user != null && gestion != null) {
-			if(arqueoId != null){
-				Arqueo arqueo = arqueocajaS.obtenerCaja(arqueoId);
-				model.addAttribute("esPropioCajero",(arqueo.getDelegadoId() == user.getCod_per()));
-				model.addAttribute("arqueoId", arqueoId);
-				model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
-				return "arqueocaja/gestion_detalle";
+			Arqueo arqueo = null;
+			if(arqueoId != null){ // seleccion de caja
+				arqueo = arqueocajaS.obtenerCaja(arqueoId);
+			} else { // Se recupera la caja
+				arqueo = arqueocajaS.arqueocajaVerificarSesionActual(user.getCod_per(), gestion.getCod_suc());
 			}
-			comunGestionArqueo(model, user, gestion);
+			comunGestionArqueo(model, user, gestion, arqueo);
 			return "arqueocaja/gestion_detalle";
 		} else {
 			model.addAttribute("msg", "Sesion expirada, por favor vuelva a ingresar.");
@@ -74,17 +74,17 @@ public class ArqueoCajaC {
 		}
 	}
 
-	private void comunGestionArqueo(Model model, Persona user, General gestion) {
-		Arqueo arqueo = arqueocajaS.arqueocajaVerificarSesionActual(user.getCod_per(), gestion.getCod_suc());
+	private void comunGestionArqueo(Model model, Persona user, General gestion, Arqueo arqueo) {
 		if (arqueo == null) {
+			model.addAttribute("esPropioCajero",false);
 			model.addAttribute("arqueoId", 0);
-			model.addAttribute("fecha", new Fechas().obtenerFechaActual("dd/MM/yyyy"));
-			model.addAttribute("estado", 0);
 		} else {
-			model.addAttribute("arqueo", arqueo);
+			boolean esPropioCajero = arqueo.getDelegadoId() == user.getCod_per();
+			if(esPropioCajero) {
+				model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
+			}
+			model.addAttribute("esPropioCajero",esPropioCajero);
 			model.addAttribute("arqueoId", arqueo.getId());
-			model.addAttribute("fecha", arqueo.getFinicio());
-			model.addAttribute("estado", 1);
 		}
 	}
 
@@ -94,7 +94,8 @@ public class ArqueoCajaC {
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (user != null && gestion != null) {
 			model.addAttribute("userCajero",user.getCod_per());
-			comunGestionArqueo(model, user, gestion);
+			Arqueo arqueo = arqueocajaS.arqueocajaVerificarSesionActual(user.getCod_per(), gestion.getCod_suc());
+			comunGestionArqueo(model, user, gestion, arqueo);
 			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 		} else {
 			model.addAttribute("msg", "Sesion expirada, por favor vuelva a ingresar.");
@@ -104,14 +105,14 @@ public class ArqueoCajaC {
 	}
 	@RequestMapping("listar")
 	public @ResponseBody
-	DataTableResults<Arqueo> listar(HttpServletRequest request, boolean estado, boolean usuario) {
+	DataTableResults<Arqueo> listar(HttpServletRequest request, boolean estado, boolean usuario,boolean estaActivoCaja) {
 		try {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			Long cod_user = -1L;
 			if (!usuario)
 				cod_user = user.getCod_per();
-			return arqueocajaS.listado(request, estado,cod_user, gestion.getGes_gen());
+			return arqueocajaS.listado(request, estado,cod_user, gestion.getGes_gen(),estaActivoCaja);
 		} catch (Exception ex) {
 			System.out.println("error lista arqueo de caja: "+ex.toString());
 			ex.printStackTrace();
@@ -139,8 +140,7 @@ public class ArqueoCajaC {
 			arqueo.setCustodioInicialId(usuario.getCod_per());// custodio sin nombre
 			arqueo.setGestion(gestion.getGes_gen());
 			arqueo.setSucursalId(gestion.getCod_suc());
-			boolean status = arqueocajaS.iniciar(arqueo) > 0;
-			return new DataResponse(status, Utils.getSuccessFailedAct("arqueo de caja", status));
+			return arqueocajaS.iniciar(arqueo);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -156,10 +156,14 @@ public class ArqueoCajaC {
 			arqueo.setDelegadoId(usuario.getCod_per());
 			arqueo.setCustodioInicialId(1L);
 			arqueo.setGestion(gestion.getGes_gen());
-			arqueo.setSucursalId(gestion.getCod_suc());
-			Long cod = arqueocajaS.iniciar(arqueo);
-			boolean status = cod > 0;
-			return new DataResponse(status, arqueocajaS.obtenerCaja(cod), Utils.getSuccessFailedAdd("arqueo de caja", status));
+			arqueo.
+					setSucursalId(gestion.getCod_suc());
+			DataResponse resp = arqueocajaS.iniciar(arqueo);
+			if(resp.isStatus()) {
+				return new DataResponse(true, arqueocajaS.obtenerCaja((Long)resp.getData()), Utils.getSuccessFailedAdd("arqueo de caja", true));
+			} else {
+				return resp;
+			}
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -266,7 +270,7 @@ public class ArqueoCajaC {
 		try {
 			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
-			String nombre = "arqueocaja_" + arqueoId + "_" + gestion, tipo = "pdf", estado = "inline";
+			String nombre = "arqueocaja_" + arqueoId + "_" + gestion.getGes_gen(), tipo = "pdf", estado = "inline";
 			String reportUrl = (esImpresionFacturera!=null && esImpresionFacturera)?"/Reportes/arqueocaja_ver_factura.jasper":"/Reportes/arqueocaja_ver.jasper";
 			Arqueo arqueo = arqueocajaS.obtenerCaja(arqueoId);
 			if(arqueo == null){
@@ -292,7 +296,7 @@ public class ArqueoCajaC {
 				interpretacion = "Cierre de caja pendiente.";
 			}
 			parametros.put("usuario", us.toString());
-			parametros.put("arqueoId", arqueoId);
+			parametros.put("cod_arqcaj", arqueoId);
 			commonVer(request, response, gestion, nombre, tipo, estado, reportUrl, arqueo, parametros, montoReal, montoFinal, interpretacion);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -306,7 +310,6 @@ public class ArqueoCajaC {
 			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			Sucursal sucursal = (Sucursal) request.getSession().getAttribute(MyConstant.Session.SUCURSAL);
-			General general = generalS.obtener(gestion.getGes_gen(), sucursal.getCod_suc());
 			String nombre = "arqueo_usuario_" + codUsuario + "_" + gestion, tipo = "pdf", estado = "inline";
 
 			String reportUrl = (esImpresionFacturera!=null && esImpresionFacturera)?"/Reportes/arqueocaja_ver_factura.jasper":"/Reportes/arqueocaja_ver.jasper";
@@ -412,14 +415,14 @@ public class ArqueoCajaC {
 			parametros.put("cusini", arqueo.getXcustodioInicial());
 			parametros.put("cusfin", arqueo.getXcustodioFinal());
 			parametros.put("estado", arqueo.getEstado() ? "Activo" : "Inactivo");
-			parametros.put("fini", arqueo.getFinicio());
-			parametros.put("ffin", arqueo.getFfin() != null ? arqueo.getFfin() : "");
+			parametros.put("fini", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(arqueo.getFinicio()));
+			parametros.put("ffin", arqueo.getFfin() != null ? new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(arqueo.getFfin()) : "");
 			parametros.put("monrea", arqueo.getMontoReal() != null ? arqueo.getMontoReal() : null);
 			parametros.put("monini", arqueo.getMontoInicial());
 			parametros.put("monfin", arqueo.getMontoFinal() != null ? arqueo.getMontoFinal() : null);
 			parametros.put("gestion", gestion.getGes_gen());
 			parametros.put("ingresos", totales.getTingresos());
-			Float egresoTotal = totales.getTegresos() + totales.getTcompras();
+			BigDecimal egresoTotal = totales.getTegresos().add(totales.getTcompras());
 			parametros.put("egresos", egresoTotal);
 			parametros.put("logsintex_gen", gestion.getLogsintex_gen());
 			parametros.put("path", request.getSession().getServletContext().getRealPath("/general"));

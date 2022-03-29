@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38508f05-8ccb-4644-985b-30fc88f35b33">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="84"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="910"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="ges_gen" class="java.lang.Integer"/>
 	<parameter name="delegado" class="java.lang.String"/>
@@ -16,9 +16,9 @@
 	<parameter name="fini" class="java.lang.String"/>
 	<parameter name="ffin" class="java.lang.String"/>
 	<parameter name="cod_arqcaj" class="java.lang.Long"/>
-	<parameter name="monrea" class="java.lang.Float"/>
-	<parameter name="monini" class="java.lang.Float"/>
-	<parameter name="monfin" class="java.lang.Float"/>
+	<parameter name="monrea" class="java.math.BigDecimal"/>
+	<parameter name="monini" class="java.math.BigDecimal"/>
+	<parameter name="monfin" class="java.math.BigDecimal"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="des_gen" class="java.lang.String"/>
 	<parameter name="dir_gen" class="java.lang.String"/>
@@ -29,202 +29,86 @@
 	<parameter name="logsintex_gen" class="java.lang.String"/>
 	<parameter name="interpretacion" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select subquery.*,obtener_monto_tipo_detalle_caja(subquery.tip_detarq,subquery.mon_detarq) from (select * from detallearqueo_lista(-1,0,'',true, $P{cod_arqcaj}) as 
-(cod_arqcaj bigint ,cod_detarq integer ,tip_detarq integer ,des_detarq character varying(500) ,mon_detarq real ,fec_detarq timestamp,
-est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) order by tip_detarq asc) as subquery]]>
+		<![CDATA[select da.*,fp.es_efectivo_caja,fp.nombre as xforma_pago,case when da.es_debe then da.monto else cast(0 as numeric) end xdebe,
+case when da.es_debe = false then da.monto else cast(0 as numeric) end xhaber 
+from detalle_arqueo da 
+inner join forma_pago fp on fp.id = da.forma_pago_id 
+where da.arqueo_id =  $P{cod_arqcaj} 
+order by da.id asc]]>
 	</queryString>
-	<field name="cod_arqcaj" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_arqcaj"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_arqcaj"/>
-		<fieldDescription><![CDATA[codigo de arqueo]]></fieldDescription>
+	<field name="arqueo_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="arqueo_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
 	</field>
-	<field name="cod_detarq" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_detarq"/>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
 	</field>
-	<field name="tip_detarq" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="tip_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="tip_detarq"/>
-		<fieldDescription><![CDATA[tipo, 1=egreso de caja, 2=pago a ayudante de inscripcion, 3=pago a ayudante de prestacion, 4=compra, 5=ingreso a caja, 6=ingreso de inscripcion, 7= ingreso de prestacion, 8=ingreso de ventas]]></fieldDescription>
-	</field>
-	<field name="des_detarq" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="des_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="des_detarq"/>
-		<fieldDescription><![CDATA[descripcion de arqueo]]></fieldDescription>
-	</field>
-	<field name="mon_detarq" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="mon_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="mon_detarq"/>
-		<fieldDescription><![CDATA[monto de arqueo]]></fieldDescription>
-	</field>
-	<field name="fec_detarq" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.name" value="fec_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="fec_detarq"/>
-	</field>
-	<field name="est_detarq" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="est_detarq"/>
-		<property name="com.jaspersoft.studio.field.label" value="est_detarq"/>
-	</field>
-	<field name="cod_subcuenta" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_subcuenta"/>
-		<property name="com.jaspersoft.studio.field.label" value="cod_subcuenta"/>
-	</field>
-	<field name="fecha" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
-		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
-	</field>
-	<field name="tipo" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+	<field name="tipo" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
 	</field>
-	<field name="obtener_monto_tipo_detalle_caja" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="obtener_monto_tipo_detalle_caja"/>
-		<property name="com.jaspersoft.studio.field.label" value="obtener_monto_tipo_detalle_caja"/>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+	</field>
+	<field name="monto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="monto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+	</field>
+	<field name="fecha" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+	</field>
+	<field name="estado" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+	</field>
+	<field name="forma_pago_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="forma_pago_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+	</field>
+	<field name="es_debe" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="es_debe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_arqueo"/>
+	</field>
+	<field name="es_efectivo_caja" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="es_efectivo_caja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="forma_pago"/>
+	</field>
+	<field name="xforma_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xforma_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="forma_pago"/>
+	</field>
+	<field name="xdebe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="xdebe"/>
+	</field>
+	<field name="xhaber" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="xhaber"/>
 	</field>
 	<variable name="cont" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{cod_detarq}]]></variableExpression>
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
-	<variable name="subtotal" class="java.lang.Float" resetType="Group" resetGroup="tip_detarq" calculation="Sum">
-		<variableExpression><![CDATA[$F{mon_detarq}]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{mon_detarq}]]></initialValueExpression>
+	<variable name="subtotal" class="java.lang.Float" resetType="None" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{monto}]]></initialValueExpression>
 	</variable>
-	<variable name="total" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{obtener_monto_tipo_detalle_caja}]]></variableExpression>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{xdebe}.subtract( $F{xhaber} )]]></variableExpression>
 	</variable>
-	<variable name="sub" class="java.lang.String">
-		<variableExpression><![CDATA[(($F{tip_detarq}==5  || $F{tip_detarq}==6  || $F{tip_detarq}==7  || $F{tip_detarq}==8  || $F{tip_detarq}==9  || $F{tip_detarq}==10  || $F{tip_detarq}==13  || $F{tip_detarq}==16 )?"Subtotal (+)":($F{tip_detarq}==20?"Subtotal de ventas con pago bancario":($F{tip_detarq}==22?"Subtotal de prestacion de servicios con pago bancario":"Subtotal (-)")))]]></variableExpression>
+	<variable name="ingresos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{xdebe}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{xdebe}]]></initialValueExpression>
 	</variable>
-	<variable name="ingresos" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{obtener_monto_tipo_detalle_caja}>0?$F{obtener_monto_tipo_detalle_caja}:0]]></variableExpression>
+	<variable name="egresos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{xhaber}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{xhaber}]]></initialValueExpression>
 	</variable>
-	<variable name="egresos" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{obtener_monto_tipo_detalle_caja}<0?$F{mon_detarq}:0]]></variableExpression>
+	<variable name="final" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{total}.add( $P{monini} )]]></variableExpression>
 	</variable>
-	<variable name="final" class="java.lang.Float">
-		<variableExpression><![CDATA[$P{monini}+$V{total}]]></variableExpression>
-		<initialValueExpression><![CDATA[$P{monini}+$V{total}]]></initialValueExpression>
-	</variable>
-	<group name="tip_detarq">
-		<groupExpression><![CDATA[$F{tip_detarq}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="57" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="dffbc1e3-aa95-4bcd-916d-37c04a5c8e0e"/>
-					<textElement verticalAlignment="Middle">
-						<font size="14" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Tipo :  #]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="102" y="0" width="453" height="20" uuid="624f63fb-80da-461f-b6e1-6919764640c4"/>
-					<textElement verticalAlignment="Middle">
-						<font size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="57" y="0" width="45" height="20" uuid="eff89b26-5271-4bf0-909f-bd588902a99c"/>
-					<textElement verticalAlignment="Middle">
-						<font size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{tip_detarq}]]></textFieldExpression>
-				</textField>
-			</band>
-			<band height="15">
-				<staticText>
-					<reportElement mode="Opaque" x="35" y="0" width="43" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="a65261cb-b6d1-4ce4-85a5-2e118b9daf9e"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Cod.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="78" y="0" width="113" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="88865821-1217-4a95-9e10-15a22cf3f06f"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Fecha]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="191" y="0" width="281" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="dadc7df2-2a26-4305-b036-535dcdb2c97d"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Descripcion]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="472" y="0" width="83" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="c11ff78b-2d43-4979-857d-8a7b77043a0b"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="10" isBold="true"/>
-						<paragraph rightIndent="5"/>
-					</textElement>
-					<text><![CDATA[Monto (Bs.)]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="35" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="ea30b98d-d4a9-4362-a477-2b01cf7aa597"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[No.]]></text>
-				</staticText>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="20">
-				<textField>
-					<reportElement x="472" y="0" width="83" height="20" uuid="5451067f-b1a2-44be-9778-449b9d07753d"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-						<paragraph rightIndent="5"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{subtotal}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="348" y="0" width="124" height="20" uuid="297e18d1-11c9-4949-9d09-58c628374d1c"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-						<paragraph rightIndent="5"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{sub}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
 	<background>
 		<band/>
 	</background>
@@ -294,7 +178,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 	<pageHeader>
 		<band height="60">
 			<textField>
-				<reportElement x="116" y="0" width="169" height="13" uuid="769055e6-d3bc-4e49-8403-7959e6f3cd10"/>
+				<reportElement x="116" y="0" width="154" height="13" uuid="769055e6-d3bc-4e49-8403-7959e6f3cd10"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -310,7 +194,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="341" y="0" width="97" height="13" uuid="f3cfc635-3149-4389-a761-161848a8f58f"/>
+				<reportElement x="321" y="0" width="117" height="13" uuid="f3cfc635-3149-4389-a761-161848a8f58f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -339,8 +223,8 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				</textElement>
 				<text><![CDATA[Monto inicio :]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="116" y="26" width="169" height="13" uuid="9e0e90a9-ff6a-4e24-a4c7-1792830fe9b3"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="26" width="154" height="13" uuid="9e0e90a9-ff6a-4e24-a4c7-1792830fe9b3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -348,7 +232,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{cusini}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="285" y="26" width="56" height="13" uuid="dee139df-d590-4987-9a16-3cde3af6b416"/>
+				<reportElement x="270" y="26" width="51" height="13" uuid="dee139df-d590-4987-9a16-3cde3af6b416"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
@@ -399,7 +283,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Supervisor de apertura :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="285" y="0" width="56" height="13" uuid="a3777ade-9e9c-47ff-bca1-6fde68ba05fc"/>
+				<reportElement x="270" y="0" width="51" height="13" uuid="a3777ade-9e9c-47ff-bca1-6fde68ba05fc"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
@@ -428,14 +312,14 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{monfin}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="285" y="39" width="56" height="13" uuid="87581ca8-34b6-494b-85ca-fe168789ca5a"/>
+				<reportElement x="270" y="39" width="51" height="13" uuid="87581ca8-34b6-494b-85ca-fe168789ca5a"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[F. Fin :]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="116" y="39" width="169" height="13" uuid="bc41eba6-5cf8-4870-95ab-19ac385b1db7"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="39" width="154" height="13" uuid="bc41eba6-5cf8-4870-95ab-19ac385b1db7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -443,7 +327,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{cusfin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="341" y="26" width="97" height="13" uuid="85b29414-3d2d-41c5-95cf-793b196c1538"/>
+				<reportElement x="321" y="26" width="117" height="13" uuid="85b29414-3d2d-41c5-95cf-793b196c1538"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -451,7 +335,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{fini}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="341" y="39" width="97" height="13" uuid="98693641-ced7-4adf-b4dc-e7fa8e129c88"/>
+				<reportElement x="321" y="39" width="117" height="13" uuid="98693641-ced7-4adf-b4dc-e7fa8e129c88"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 					<paragraph leftIndent="5"/>
@@ -461,15 +345,54 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="21">
-			<line>
-				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="37fb45ac-73f7-454f-b848-57eaf26861bb"/>
-			</line>
+		<band height="16">
+			<staticText>
+				<reportElement x="0" y="0" width="35" height="16" uuid="5b7ed2d5-05cb-4764-b053-e42fb20f7f4e"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="0" width="43" height="16" uuid="04940a1e-e21f-47a5-aaa4-92eaa5ce4c9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="0" width="113" height="16" uuid="ac025689-0acf-4c7e-a84b-8bf6c5dcbfb1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="0" width="274" height="16" uuid="5c0db8e6-1c88-4a6b-8082-c709f931512b"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="45" height="16" uuid="1977f8b4-481f-41ec-b4ad-0795c0bfdb77"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="0" width="45" height="16" uuid="2fff3c49-1ca1-4dd4-bf5e-06fb243ee67d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15">
-			<textField textAdjust="StretchHeight">
+			<textField>
 				<reportElement stretchType="ElementGroupHeight" x="35" y="0" width="43" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f"/>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -479,11 +402,11 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cod_detarq}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField>
 				<reportElement stretchType="ElementGroupHeight" x="78" y="0" width="113" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e"/>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -493,12 +416,12 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
-				<reportElement stretchType="ElementGroupHeight" x="191" y="0" width="281" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="191" y="0" width="274" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -507,13 +430,13 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{des_detarq}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
-				<reportElement stretchType="ElementGroupHeight" x="472" y="0" width="83" height="15" uuid="405fe45d-a480-4b25-a53b-daac87388414"/>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="510" y="0" width="45" height="15" uuid="405fe45d-a480-4b25-a53b-daac87388414"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -522,10 +445,10 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mon_detarq}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{xhaber}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="35" height="15" uuid="bf5435bf-4507-4c26-9167-346765276467"/>
@@ -537,9 +460,24 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{cont}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupHeight" x="465" y="0" width="45" height="15" uuid="a93c7ca6-981f-432a-9802-cc256285463d"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{xdebe}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -593,9 +531,9 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="274">
+		<band height="215">
 			<textField>
-				<reportElement x="472" y="95" width="83" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
+				<reportElement x="472" y="49" width="83" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -603,7 +541,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="303" y="95" width="169" height="20" uuid="0eeab7ba-f4ab-4518-b179-c4013d1eac39"/>
+				<reportElement x="303" y="49" width="169" height="20" uuid="0eeab7ba-f4ab-4518-b179-c4013d1eac39"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -611,7 +549,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[TOTAL PERCIBIDO (=) Bs. : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="248" width="149" height="13" uuid="708e3a93-81d4-437d-943f-b792888926fd"/>
+				<reportElement x="0" y="189" width="149" height="13" uuid="708e3a93-81d4-437d-943f-b792888926fd"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -626,7 +564,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{delegado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="173" y="248" width="150" height="13" uuid="cd506ce0-406e-44ba-84c6-e12927d0cbf6"/>
+				<reportElement x="173" y="189" width="150" height="13" uuid="cd506ce0-406e-44ba-84c6-e12927d0cbf6"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 				</box>
@@ -637,21 +575,21 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{cusfin}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="261" width="149" height="13" uuid="7727c56b-55fa-4604-978a-52e41c2a5d24"/>
+				<reportElement x="0" y="202" width="149" height="13" uuid="7727c56b-55fa-4604-978a-52e41c2a5d24"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Firma del Cajero]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="173" y="261" width="150" height="13" uuid="6a8851f0-3253-4051-8102-dcd81aa7d9d7"/>
+				<reportElement x="173" y="202" width="150" height="13" uuid="6a8851f0-3253-4051-8102-dcd81aa7d9d7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Firma del Supervisor]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="472" y="55" width="80" height="20" uuid="2fe0cf4e-80c6-4c38-b2f5-7d8f506775fc"/>
+				<reportElement x="472" y="9" width="80" height="20" uuid="2fe0cf4e-80c6-4c38-b2f5-7d8f506775fc"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -659,7 +597,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$V{ingresos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="472" y="75" width="83" height="20" uuid="73c7eef4-06ee-4faf-81fa-a2ab0aa9a3c2"/>
+				<reportElement x="472" y="29" width="83" height="20" uuid="73c7eef4-06ee-4faf-81fa-a2ab0aa9a3c2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -667,7 +605,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$V{egresos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="323" y="55" width="149" height="20" uuid="d71fa5b7-d5f9-48da-ab73-8c2ab8b64b0d"/>
+				<reportElement x="323" y="9" width="149" height="20" uuid="d71fa5b7-d5f9-48da-ab73-8c2ab8b64b0d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -675,7 +613,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Total Ingresos (+) Bs. : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="75" width="149" height="20" uuid="f67740e8-25b0-4cd9-a6f5-95f0e804660d"/>
+				<reportElement x="323" y="29" width="149" height="20" uuid="f67740e8-25b0-4cd9-a6f5-95f0e804660d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -683,7 +621,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Total Egresos (-) Bs. : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="115" width="149" height="20" uuid="4ccd0821-dba0-47e5-9201-58eea38727d3"/>
+				<reportElement x="323" y="69" width="149" height="20" uuid="4ccd0821-dba0-47e5-9201-58eea38727d3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -691,7 +629,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Monto Inicial (+) Bs. : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="472" y="115" width="83" height="20" uuid="4eabecd9-4aec-4f16-9a1a-f7a522025064"/>
+				<reportElement x="472" y="69" width="83" height="20" uuid="4eabecd9-4aec-4f16-9a1a-f7a522025064"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="5" rightIndent="5"/>
@@ -699,7 +637,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{monini}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="323" y="135" width="149" height="20" uuid="859a22d9-8b49-4d57-b8e7-59992252bbd5"/>
+				<reportElement x="323" y="89" width="149" height="20" uuid="859a22d9-8b49-4d57-b8e7-59992252bbd5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -707,7 +645,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Monto Final (=) Bs. : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="472" y="135" width="83" height="20" uuid="70df721e-acc9-4600-b808-cd0b0edfa51b"/>
+				<reportElement x="472" y="89" width="83" height="20" uuid="70df721e-acc9-4600-b808-cd0b0edfa51b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -715,7 +653,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$V{final}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="323" y="162" width="149" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
+				<reportElement x="323" y="116" width="149" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -728,7 +666,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<text><![CDATA[Monto Real  Bs. : ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="472" y="162" width="83" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
+				<reportElement x="472" y="116" width="83" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -741,7 +679,7 @@ est_detarq boolean,cod_subcuenta int4,fecha varchar(25),tipo character varying) 
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="19" y="185" width="536" height="20" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
+				<reportElement x="19" y="139" width="536" height="20" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>
