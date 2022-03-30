@@ -581,6 +581,7 @@
         renderDetalleVenta();
     }
     function btnAdicionarPlato(cartillaSucursalId, cartillaDiariaId, detalleCartillaSucursalId, detalleCartillaDiariaId,productoId){
+        console.log('adicionar plato')
         dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(det => {
             if(det.id === cartillaSucursalId) {
                 det.detalleCartillaList.forEach(subdet => {
@@ -599,12 +600,10 @@
                         }
                         let precio = found.precioIndividual;
                         //Verificar si no existe el producto en la lista
-                        let productoExistente = dataReq.detalleVenta.find(it => it.productoId === productoId && it.cartillaSucursalId === cartillaSucursalId
-                            && it.cartillaDiariaId === cartillaDiariaId && it.detalleCartillaDiariaId === detalleCartillaDiariaId);
+                        let productoExistente = dataReq.detalleVenta.find(it => it.productoId === productoId && it.cartillaDiariaId === cartillaDiariaId && it.detalleCartillaDiariaId === detalleCartillaDiariaId);
                         if(productoExistente) { // producto existente
                             dataReq.detalleVenta.forEach(it=> {
-                                if(it.productoId === productoId && it.cartillaSucursalId === cartillaSucursalId
-                                    && it.cartillaDiariaId === cartillaDiariaId && it.detalleCartillaDiariaId === detalleCartillaDiariaId) {
+                                if(it.productoId === productoId && it.cartillaDiariaId === cartillaDiariaId && it.detalleCartillaDiariaId === detalleCartillaDiariaId) {
                                     let auxTotal = it.cantidadUnitaria + cantidad;
                                     if(auxTotal > found.cantidadUnitaria) {
                                         modalAlert('Cantidad modificada en total: '+auxTotal, 'No se cuenta con esa cantidad. Cantidad actual en almacen: '+found.cantidad, 'info');
@@ -642,9 +641,9 @@
     function eliminarDetalleVenta(productoId, cartillaDiariaId, detalleCartillaDiariaId) {
         productoFound = dataReq.detalleVenta.find(it => it.productoId === productoId);
         alertEliminacion('Eliminar Detalle Venta', productoFound.xproducto, function(){
-            dataReq.detalleVenta = dataReq.detalleVenta.filter( it => it.productoId !== productoId);
+            // dataReq.detalleVenta = dataReq.detalleVenta.filter( it => it.productoId !== productoId);
             if(cartillaDiariaId && detalleCartillaDiariaId) {
-                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.cartillaDiariaId !== cartillaDiariaId && it.detalleCartillaDiariaId !== detalleCartillaDiariaId);
+                dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.cartillaDiariaId !== cartillaDiariaId || it.detalleCartillaDiariaId !== detalleCartillaDiariaId);
             } else {
                 dataReq.detalleVenta = dataReq.detalleVenta.filter(it => it.productoId !== productoId);
             }
@@ -801,9 +800,9 @@
                         let divCol = $('<div class="col-md-2"></div>');
                         let divInfoBox = $('<div class="info-box"></div>');
                         if(ventaId > 0 && resp.data.venta.mesaId === it.id) {
-                            $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'" checked/></span>').appendTo(divInfoBox);
+                            $('<span class="info-box-icon bg-aqua" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-street-view"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'" checked/></span>').appendTo(divInfoBox);
                         } else {
-                            $('<span class="info-box-icon bg-aqua"><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+                            $('<span class="info-box-icon bg-aqua" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-street-view"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
                         }
                         let divContent = $('<div class="info-box-content"></div>');
                         $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);

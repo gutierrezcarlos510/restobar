@@ -1,7 +1,10 @@
 package net.resultadofinal.micomercial.controller;
 
+import com.google.gson.GsonBuilder;
 import net.resultadofinal.micomercial.model.*;
 import net.resultadofinal.micomercial.model.form.VentaForm;
+import net.resultadofinal.micomercial.model.wrap.VentaInfoWrap;
+import net.resultadofinal.micomercial.model.wrap.VentaPedidoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.*;
 import net.resultadofinal.micomercial.util.DataResponse;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -203,27 +207,82 @@ public class VentaC {
 	@RequestMapping("ver")
 	public void ver(HttpServletRequest request,HttpServletResponse response,Long id){
 		try {
-			List<DetalleVenta> detalles=ventaS.obtenerDetalle(id);
-			BigDecimal descuento = new BigDecimal(0);
-			for (DetalleVenta map : detalles) {
-				descuento.add(map.getDescuento());
-			}
+
 			General general = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			String nombre="venta_"+id+"_"+general.getGes_gen(),tipo="pdf",estado="inline";
 			Persona us=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
-			String reportUrl="/Reportes/venta_ver.jasper";
-			String SubRep=getClass().getResource("/Reportes/venta_ver_subreporte.jasper").toString();
+			String reportUrl="/Reportes/venta_ver_comprobante.jasper";
+			VentaInfoWrap venta = ventaS.obtenerVentaInfo(id);
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.serializeNulls();
+			String jsonDetalles = gsonBuilder.create().toJson(venta.getDetalleVentaGlobal());
+
 			Map<String, Object> parametros=new HashMap<String, Object>();
 			parametros.put("usuario", us.toString());
-			parametros.put("cod_ven", id);
-			parametros.put("subrep",SubRep.substring(0, SubRep.lastIndexOf("/")));
-			parametros.put("des_detven", descuento);
+			parametros.put("ventaId", id);
+			parametros.put("subtotal", venta.getSubtotal());
+			parametros.put("descuento", venta.getDescuento());
+			parametros.put("total", venta.getTotal());
+			parametros.put("totalPagado", venta.getTotalPagado());
+			parametros.put("totalCambio", venta.getTotalCambio());
+			parametros.put("xcliente", venta.getXcliente());
+			parametros.put("xusuario", venta.getXusuario());
+			parametros.put("xfecha", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(venta.getFecha()));
+
 			Utils.loadDataReport(parametros, general);
 			GeneradorReportes generador=new GeneradorReportes();
-			generador.generarReporte(response, getClass().getResource(reportUrl), tipo,parametros,datasource.getConnection() ,nombre, estado);
+			generador.generarReporteJson(response, getClass().getResource(reportUrl), tipo,parametros,jsonDetalles ,nombre, estado);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("error reporte de ventas="+e.toString());
+		}
+	}
+	@RequestMapping("gestionPedidoPendientes")
+	public String gestionPedidoPendientes(){
+		return "venta/pedidosPendientes";
+	}
+	@RequestMapping("listaPedidoCocina")
+	public @ResponseBody
+	DataTableResults<VentaPedidoWrap> listaPedidoCocina(HttpServletRequest request, Short area) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return ventaS.listadoPedidoCocina(request, gestion.getCod_suc(), area);
+		} catch (Exception ex) {
+			System.out.println("error lista arqueo de caja: "+ex.toString());
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	@RequestMapping("confirmarPedido")
+	public @ResponseBody
+	DataResponse confirmarPedido(Long ventaId, Short historicoVentaId, Short areaId){
+		try {
+			return ventaS.registrarPedidoRealizado(ventaId, historicoVentaId, areaId);
+		} catch (Exception e) {
+			logger.error("error al obtener="+e.toString());
+			return new DataResponse(false, "error al obtener venta: "+e.getMessage());
+		}
+	}
+	@RequestMapping("verPedidoPendiente")
+	public void verPedidoPendiente(HttpServletRequest request, HttpServletResponse response, Long ventaId, Short historicoVentaId) {
+		try {
+			String nombre = "pedido_comanda_" + ventaId, tipo = "pdf", estado = "inline";
+			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			String reportUrl = "/Reportes/venta_pedido_espera.jasper";
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			HistoricoVenta obj = ventaS.obtenerHistoricoVenta(ventaId, historicoVentaId);
+			parametros.put("usuario", us.toString());
+			parametros.put("ventaId", ventaId);
+			parametros.put("xcliente", obj.getXcliente());
+			parametros.put("xusuario", obj.getXusuario());
+			parametros.put("xfecha", obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH_mm:ss").format(obj.getFecha()): "");
+			parametros.put("xmesa", obj.getXmesa());
+			GeneradorReportes generador = new GeneradorReportes();
+			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
+					datasource.getConnection(), nombre, estado);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("error reporte ver=" + e.toString());
 		}
 	}
 }

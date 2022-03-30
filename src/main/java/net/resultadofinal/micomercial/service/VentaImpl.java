@@ -5,13 +5,11 @@ import net.resultadofinal.micomercial.mappers.DetalleventaMapper;
 import net.resultadofinal.micomercial.mappers.VentaMapper;
 import net.resultadofinal.micomercial.model.DetalleArqueo;
 import net.resultadofinal.micomercial.model.DetalleVenta;
+import net.resultadofinal.micomercial.model.HistoricoVenta;
 import net.resultadofinal.micomercial.model.Venta;
 import net.resultadofinal.micomercial.model.form.DetalleVentaForm;
 import net.resultadofinal.micomercial.model.form.VentaForm;
-import net.resultadofinal.micomercial.model.wrap.DetalleVentaWrap;
-import net.resultadofinal.micomercial.model.wrap.ProductoDetalleVenta;
-import net.resultadofinal.micomercial.model.wrap.SubDetalleVentaWrap;
-import net.resultadofinal.micomercial.model.wrap.VentaInfoWrap;
+import net.resultadofinal.micomercial.model.wrap.*;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -130,7 +128,24 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			e.printStackTrace();
 			return null;
 		}
-		
+	}
+	private void adicionarDetalleHistoricoVenta(Long ventaId, Long productoId, Integer cantidad, Short historicoVentaId){
+		try {
+			sqlString = "insert into detalle_historico_venta(venta_id, producto_id, cantidad, esta_impreso, historico_venta_id) values(?,?,?,false,?)";
+			db.update(sqlString, ventaId, productoId, cantidad,historicoVentaId);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error al crear historico de venta");
+		}
+	}
+	private Short adicionarHistoricoVenta(Long ventaId){
+		try {
+			Short historicoVentaId = db.queryForObject("select coalesce(max(id),0)+1 from historico_venta where venta_id=?", Short.class, ventaId);
+			sqlString = "insert into historico_venta(venta_id, fecha, id) values(?,now(),?)";
+			db.update(sqlString, ventaId, historicoVentaId);
+			return historicoVentaId;
+		} catch (Exception ex) {
+			throw new RuntimeException("Error al crear historico de venta");
+		}
 	}
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
@@ -146,9 +161,12 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			boolean saveVenta = db.update(sqlString,ventaId, obj.getNumero(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
 					obj.getTipo(), obj.getSucursalId(),obj.getSubtotal(),obj.getMesaId(), obj.getCantidadPersonas(),obj.getFormaPagoId(),obj.getTotalPagado(),obj.getTotalCambio(),obj.getCreatedBy())>0;
 			if(saveVenta) {
+				// Se registra el historico de venta
+				Short historicoVentaId = adicionarHistoricoVenta(ventaId);
+
 				short detalleId = 1;
-				detalleId = adicionarListaDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVenta());
-				detalleId = adicionarListaDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVentaCompuesto());
+				detalleId = adicionarListaDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVenta(), historicoVentaId);
+				detalleId = adicionarListaDetalleComanda(ventaId, detalleId, obj.getSucursalId(), obj.getUsuarioId(), obj.getDetalleVentaCompuesto(), historicoVentaId);
 				if(detalleId <= 1) {
 					throw new RuntimeException("no se encontro detalles de la comanda para guardar");
 				}
@@ -161,11 +179,13 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			throw new RuntimeException(Utils.errorAdd(ENTITY, ex.getMessage()));
 		}
 	}
-	private short adicionarListaDetalleComanda(Long ventaId, short detalleId, Integer sucursalId, Long userId, List<DetalleVentaForm> detalles) {
+	private short adicionarListaDetalleComanda(Long ventaId, short detalleId, Integer sucursalId, Long userId, List<DetalleVentaForm> detalles,Short historicoVentaId) {
 		if(detalles != null && !detalles.isEmpty()) {
 			for (DetalleVentaForm det: detalles) {
 				adicionarDetalleComanda(ventaId,detalleId,sucursalId,userId, det);
 				detalleId++;
+				//adicionar detalle de venta historico
+				adicionarDetalleHistoricoVenta(ventaId, det.getProductoId(), det.getCantidadUnitaria(), historicoVentaId);
 			}
 		}
 		return detalleId;
@@ -190,93 +210,9 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			if(saveVenta) {
 				List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
 				short detalleVentaId = db.queryForObject("select coalesce(max(id),0)+1 from detalle_venta where venta_id=?", Short.class, obj.getId());
-				detalleVentaId = adicionarDetallesComandaModificar(detalleVentaId, detallesBD,obj.getDetalleVenta(),obj.getSucursalId(), obj.getCreatedBy(),obj.getId(),false);
-				detalleVentaId = adicionarDetallesComandaModificar(detalleVentaId, detallesBD,obj.getDetalleVentaCompuesto(),obj.getSucursalId(), obj.getCreatedBy(),obj.getId(),true);
-//				if(obj.getDetalleVenta() != null && !obj.getDetalleVenta().isEmpty()
-//				&& detallesBD != null && !detallesBD.isEmpty()) {
-//					for (DetalleVentaForm det: obj.getDetalleVenta()) {
-//						if(det.getCartillaDiariaId() != null && det.getDetalleCartillaDiariaId() != null) { //Es preparado
-//							Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
-//							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId()).findFirst();
-//							if(!found.isPresent()) {
-//								//Adicionar DB
-//								adicionarDetalleComanda(obj.getId(),detalleVentaId,obj.getSucursalId(),obj.getCreatedBy(),det);
-//								detalleVentaId++;
-//							}
-//						} else { // Es producto
-//							Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getProductoId() == det.getProductoId()).findFirst();
-//							if(!found.isPresent()) {
-//								//Adicionar DB
-//								adicionarDetalleComanda(obj.getId(),detalleVentaId,obj.getSucursalId(),obj.getCreatedBy(),det);
-//								detalleVentaId++;
-//							}
-//						}
-//					}
-//					//Revisar los detalles de ventas eliminados
-//					for (DetalleVentaForm det : detallesBD) {
-//						if(!det.getEsCompuesto()) {
-//							Optional<DetalleVentaForm> found = obj.getDetalleVenta().stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
-//									&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
-//							if(!found.isPresent()) {
-//								//Eliminar
-//								db.update("delete from detalle_venta where venta_id =? and id=?", det.getVentaId(), det.getId());
-//								almacenS.registrarAlmacen(det.getProductoId(), obj.getSucursalId(), -1*det.getCantidad(), obj.getCreatedBy(),
-//										REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta");
-//							} else { // Si se encuentra se modifica segun
-//								int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
-//								if(diferencia != 0) {
-//									//update
-//									db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ? where venta_id = ? and detalle_venta_id = ?",
-//											found.get().getCantidad(),found.get().getCantidadUnitaria(), det.getVentaId(), det.getId());
-//									if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
-//										almacenS.registrarAlmacen(det.getProductoId(), obj.getSucursalId(), diferencia, obj.getCreatedBy(),
-//												VENTA_PRODUCTO, "Aumento detalle, por venta # "+obj.getId());
-//									} else {
-//										almacenS.registrarAlmacen(det.getProductoId(), obj.getSucursalId(), diferencia, obj.getCreatedBy(),
-//												REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta #"+obj.getId());
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//				if(obj.getDetalleVentaCompuesto() != null && !obj.getDetalleVentaCompuesto().isEmpty()
-//						&& detallesBD != null && !detallesBD.isEmpty()) {
-//					for (DetalleVentaForm det: obj.getDetalleVentaCompuesto()) {
-//						Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
-//								&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId()).findFirst();
-//						if(!found.isPresent()) {
-//							//Adicionar DB
-//							adicionarDetalleComanda(obj.getId(),detalleVentaId,obj.getSucursalId(),obj.getCreatedBy(),det);
-//							detalleVentaId++;
-//						}
-//					}
-//					//Revisar los detalles de ventas eliminados
-//					for (DetalleVentaForm det : detallesBD) {
-//						if(det.getEsCompuesto()) {
-//							Optional<DetalleVentaForm> found = obj.getDetalleVentaCompuesto().stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
-//									&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
-//							if(!found.isPresent()) {
-//								//Eliminar
-//								db.update("delete from detalle_venta where venta_id =? and id=?", det.getVentaId(), det.getId());
-//							} else { // Si se encuentra se modifica segun
-//								int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
-//								if(diferencia != 0) {
-//									//Update
-//									db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ? where venta_id = ? and detalle_venta_id = ?",
-//											found.get().getCantidad(),found.get().getCantidadUnitaria(), det.getVentaId(), det.getId());
-//									if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
-//										almacenS.registrarAlmacen(det.getProductoId(), obj.getSucursalId(), diferencia, obj.getCreatedBy(),
-//												VENTA_PRODUCTO, "Aumento detalle, por venta # "+obj.getId());
-//									} else {
-//										almacenS.registrarAlmacen(det.getProductoId(), obj.getSucursalId(), diferencia, obj.getCreatedBy(),
-//												REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta #"+obj.getId());
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
+				Short historicoVentaId = null;
+				detalleVentaId = adicionarDetallesComandaModificar(detalleVentaId, detallesBD,obj.getDetalleVenta(),obj.getSucursalId(), obj.getCreatedBy(),obj.getId(),false, historicoVentaId);
+				detalleVentaId = adicionarDetallesComandaModificar(detalleVentaId, detallesBD,obj.getDetalleVentaCompuesto(),obj.getSucursalId(), obj.getCreatedBy(),obj.getId(),true, historicoVentaId);
 				adicionarVentaArqueo(obj);
 				return new DataResponse(true, "Registro de comanda exitosa");
 			} else {
@@ -304,9 +240,20 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			}
 		}
 	}
-	private short adicionarDetallesComandaModificar(short detalleVentaId,List<DetalleVentaForm> detallesBD,List<DetalleVentaForm> detalleVentaRequest,Integer sucId, Long userId, Long ventaId, boolean soloCompuestos){
-		if(detalleVentaRequest != null && !detalleVentaRequest.isEmpty()
-				&& detallesBD != null && !detallesBD.isEmpty()) {
+	private void adicionarDetalleHistoricoVentaModificar(Long ventaId, Long productoId,Integer cantidad, Short historicoVentaId) {
+		try {
+			if(historicoVentaId == null) {
+				historicoVentaId = adicionarHistoricoVenta(ventaId);
+			}
+			adicionarDetalleHistoricoVenta(ventaId, productoId, cantidad, historicoVentaId);
+		} catch (Exception ex) {
+			throw new RuntimeException("error al guardar historico");
+		}
+	}
+	private short adicionarDetallesComandaModificar(short detalleVentaId,List<DetalleVentaForm> detallesBD,List<DetalleVentaForm> detalleVentaRequest,
+													Integer sucId, Long userId, Long ventaId, boolean soloCompuestos, Short historicoVentaId){
+
+		if(detallesBD != null && !detallesBD.isEmpty()) {
 			for (DetalleVentaForm det: detalleVentaRequest) {
 				if(det.getCartillaDiariaId() != null && det.getDetalleCartillaDiariaId() != null) { //Es preparado
 					Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
@@ -315,6 +262,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						//Adicionar DB
 						adicionarDetalleComanda(ventaId,detalleVentaId,sucId,userId,det);
 						detalleVentaId++;
+						//Adicionar historico
+						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),det.getCantidadUnitaria(),historicoVentaId);
 					}
 				} else { // Es producto
 					Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getProductoId() == det.getProductoId()).findFirst();
@@ -322,6 +271,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						//Adicionar DB
 						adicionarDetalleComanda(ventaId,detalleVentaId,sucId,userId,det);
 						detalleVentaId++;
+						//Adicionar historico
+						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),det.getCantidadUnitaria(),historicoVentaId);
 					}
 				}
 			}
@@ -335,6 +286,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						db.update("delete from detalle_venta where venta_id =? and id=?", det.getVentaId(), det.getId());
 						almacenS.registrarAlmacen(det.getProductoId(), sucId, -1*det.getCantidad(), userId,
 								REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta");
+						//Adicionar historico
+						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),-1*det.getCantidadUnitaria(),historicoVentaId);
 					} else { // Si se encuentra se modifica segun
 						int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
 						if(diferencia != 0) {
@@ -344,10 +297,13 @@ public class VentaImpl extends DbConeccion implements VentaS {
 							if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
 								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia, userId,
 										VENTA_PRODUCTO, "Aumento detalle, por venta # "+ventaId);
+								//Adicionar historico
 							} else {
 								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia, userId,
 										REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta #"+ ventaId);
 							}
+							//Adicionar historico
+							adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),diferencia,historicoVentaId);
 						}
 					}
 				}
@@ -400,6 +356,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				List<DetalleVentaForm> det = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleVentaForm.class), codVen);
 				List<DetalleVentaForm> detalles = det.stream().filter(it -> !it.getEsCompuesto()).collect(Collectors.toList());
 				List<DetalleVentaForm> detallesCompuestos = det.stream().filter(it -> it.getEsCompuesto()).collect(Collectors.toList());
+				List<DetalleVentaWrap> detallesGlobales = new ArrayList<>();
 				if(UtilClass.isNotNullEmpty(detalles)) {
 					List<DetalleVentaWrap> detalleVentaWrapList = new ArrayList<>();
 					for (DetalleVentaForm it: detalles) {
@@ -410,6 +367,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						d.setXtipoVenta(it.getTipoVenta()==1?"Unid.":"caja");
 						d.setTotal(it.getTotal());
 						detalleVentaWrapList.add(d);
+						detallesGlobales.add(d);
 					}
 					venta.setDetalleVenta(detalleVentaWrapList);
 				}
@@ -441,10 +399,12 @@ public class VentaImpl extends DbConeccion implements VentaS {
 								tipoCombo.setProductos(productoDetalleVentaList);
 								subdetalleVentaList.add(tipoCombo);
 							}
+							detallesGlobales.add(detalleVentaCombo);
 							detalleVentaCombo.setSubdetallesCompuestos(subdetalleVentaList);
 							detalleVentaComboList.add(detalleVentaCombo);
 						}
 						venta.setDetalleVentaCompuesto(detalleVentaComboList);
+						venta.setDetalleVentaGlobal(detallesGlobales);
 					}
 				}
 			}
@@ -453,6 +413,55 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			e.printStackTrace();
 			return null;
+		}
+	}
+	public DataTableResults<VentaPedidoWrap> listadoPedidoCocina(HttpServletRequest request, int xsucursal, Short area) {
+		try {
+			SqlBuilder sqlBuilder = new SqlBuilder("historico_venta hv");
+			sqlBuilder.setSelect("hv.venta_id,hv.id historico_venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario");
+			sqlBuilder.setSelectConcat(",concat(p3.nom_per, ' ', p3.priape_per) as xcliente,tp.area_destino");
+			sqlBuilder.addJoin("detalle_historico_venta dhv on dhv.venta_id = hv.venta_id and hv.id = dhv.historico_venta_id and dhv.esta_impreso = false");
+			sqlBuilder.addJoin("producto p on p.id = dhv.producto_id");
+			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = :xarea or -1 = :xarea)");
+			sqlBuilder.addJoin("venta v on v.id = hv.venta_id and v.estado = true and v.tipo = 1");
+			sqlBuilder.addJoin("mesa m on m.id = v.mesa_id");
+			sqlBuilder.addJoin("persona p2 on p2.cod_per = v.usuario_id");
+			sqlBuilder.addJoin("persona p3 on p3.cod_per = v.cliente_id");
+			sqlBuilder.setGroupBy("hv.venta_id,hv.id,hv.fecha,m.nombre,p2.nom_per, p2.priape_per,p3.nom_per, p3.priape_per,tp.area_destino");
+			sqlBuilder.addParameter("xarea", area);
+			sqlBuilder.addParameter("xsucursal",xsucursal);
+			return utilDataTableS.list(request, VentaPedidoWrap.class, sqlBuilder);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public DataResponse registrarPedidoRealizado(Long ventaId, Short historicoVentaId, Short areaId){
+		try {
+			sqlString = "update detalle_historico_venta set esta_impreso = true from (select dhv.venta_id,dhv.historico_venta_id, producto_id from detalle_historico_venta dhv " +
+					"inner join producto p on p.id = dhv.producto_id " +
+					"inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = ? or -1 = ?) " +
+					"where dhv.venta_id = ? and dhv.historico_venta_id = ?) subquery " +
+					"where subquery.venta_id=detalle_historico_venta.venta_id and subquery.historico_venta_id=detalle_historico_venta.historico_venta_id and subquery.producto_id=detalle_historico_venta.producto_id ";
+			db.update(sqlString, areaId, areaId, ventaId, historicoVentaId);
+			return new DataResponse(true, "Se realizo con exito");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	public HistoricoVenta obtenerHistoricoVenta(Long ventaId, Short historicoId) {
+		try {
+			sqlString = "select hv.venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario,concat(p3.nom_per, ' ', p3.priape_per) as xcliente from historico_venta hv " +
+					"inner join venta v on v.id = hv.venta_id " +
+					"inner join mesa m on m.id = v.mesa_id " +
+					"inner join persona p2 on p2.cod_per = v.usuario_id " +
+					"inner join persona p3 on p3.cod_per = v.cliente_id " +
+					"where hv.venta_id = ? and hv.id =?";
+			List<HistoricoVenta> lista = db.query(sqlString, BeanPropertyRowMapper.newInstance(HistoricoVenta.class), ventaId, historicoId);
+			return UtilClass.getFirst(lista);
+		} catch (Exception e) {
+			throw new RuntimeException("Error: "+e.getMessage());
 		}
 	}
 }

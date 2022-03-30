@@ -269,10 +269,10 @@
                     $('td', row).eq(6).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
             },
             "drawCallback": function(settings) {
+
                 $('.imprimir').click(function() {
-                	abrirLoad();
-                    $("#frameReportes").attr("src", "../venta/ver?id=" + $(this).data('id'));
-                    cerrarLoad();
+                    let obj = tablaVenta.row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../venta/ver?id=" + obj.id);
                     $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({

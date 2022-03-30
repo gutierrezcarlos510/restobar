@@ -17,6 +17,15 @@ public class VentaInfoWrap {
     private Timestamp createdAt;
     private List<DetalleVentaWrap> detalleVenta;
     private List<DetalleVentaWrap> detalleVentaCompuesto;
+    private List<DetalleVentaWrap> detalleVentaGlobal;
+
+    public List<DetalleVentaWrap> getDetalleVentaGlobal() {
+        return detalleVentaGlobal;
+    }
+
+    public void setDetalleVentaGlobal(List<DetalleVentaWrap> detalleVentaGlobal) {
+        this.detalleVentaGlobal = detalleVentaGlobal;
+    }
 
     public List<DetalleVentaWrap> getDetalleVenta() {
         return detalleVenta;

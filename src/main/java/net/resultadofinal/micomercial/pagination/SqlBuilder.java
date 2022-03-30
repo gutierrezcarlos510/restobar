@@ -242,7 +242,7 @@ public class SqlBuilder {
 	public String generateCount() {
 		String sql = "";
 		if (from != null) {
-			sql += "select count(*) from " + from;
+			sql += "select count(*) from (select "+select+" from " + from;
 			if (join != null && !join.isEmpty()) {
 				for (String item : join) {
 					sql += " join " + item;
@@ -262,6 +262,7 @@ public class SqlBuilder {
 					sql = " having " + having;
 				}
 			}
+			sql += ") as xsubquery";
 		} else
 			return "";
 		return replaceParameters(sql);
