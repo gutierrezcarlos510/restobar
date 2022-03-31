@@ -44,12 +44,6 @@ public class CompraC {
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (user != null && gestion != null) {
-//			ArqueoCaja arqueo = arqueocajaS.arqueocaja_verificar_sesion_actual(user.getCod_per(), gestion.getCod_suc());
-//			if (arqueo == null) {
-//				return "excepcion/sesion_caja";
-//			} else {
-//				return "compra/gestion";
-//			}
 			return "compra/gestion";
 		} else {
 			return "principal/login"+ MyConstant.SYSTEM;

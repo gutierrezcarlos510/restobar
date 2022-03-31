@@ -3,6 +3,7 @@ package net.resultadofinal.micomercial.controller;
 import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.Proveedor;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
+import net.resultadofinal.micomercial.service.EmpresaS;
 import net.resultadofinal.micomercial.service.GeneralS;
 import net.resultadofinal.micomercial.service.ProveedorS;
 import net.resultadofinal.micomercial.util.MyConstant;
@@ -33,13 +34,14 @@ public class ProveedorC {
 	@Autowired
 	private ProveedorS proveedorS;
 	@Autowired
-	private GeneralS generalS;
-	@Autowired
 	private DataSource datasource;
+	@Autowired
+	private EmpresaS empresaS;
 	private static final Logger logger = LoggerFactory.getLogger(ProveedorC.class);
 	private static final String ENTITY = "proveedor";
 	@RequestMapping("gestion")
 	public String gestion(Model model){
+		model.addAttribute("empresas",empresaS.listAll());
 		return "proveedor/gestion";
 	}
 	@RequestMapping("listar")

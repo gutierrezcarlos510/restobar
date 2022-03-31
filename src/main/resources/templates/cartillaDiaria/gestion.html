@@ -79,20 +79,35 @@
                 $('td', row).eq(3).html(UtilDate.formatTimestampLiteral(data.ffin));
                 $('td', row).eq(4).html(data.estadoCartilla ? '<span class="label-success">Activo</span>':'<span class="label-danger">Finalizado</span>');
                 if (data.estado) {
+                    let buttons = '';
                     if(data.estadoCartilla) {
-                        $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                        buttons += '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i><br>editar </button>';
+                        buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button>';
+                        buttons += '<button class="btn btn-success cerrar"  data-toggle="tooltip" data-placement="top" title="Cerrar"><i class="glyphicon glyphicon-log-out"></i><br>cerrar</button>';
                     } else {
-                        $('td', row).eq(5).html('<div class="btn-group btn-group-xs"><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button></div>');
+                        buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="glyphicon glyphicon-remove"></i><br>eliminar</button>';
                     }
+                    $('td', row).eq(5).html('<div class="btn-group btn-group-xs">'+buttons+'</div>');
                 } else {
                     $('td', row).eq(5).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
                 }
             },
             "drawCallback": function(settings) {
+                $('.cerrar').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    alertEliminacion('Cerrar Cartilla Diaria', 'Esta seguro de cerrar cartilla', function(){
+                        $.post('../cartillaDiaria/cerrar',{'id':obj.id }, function(resp){
+                            finishTransaction(resp, function(){
+                                $('.modal').modal('hide');
+                                $('#tabla').dataTable().fnDraw('page');
+                            });
+                        })
+                    })
+                });
                 $('.eliminar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    alertEliminacion('Eliminar Detalle', 'Esta seguro de eliminar: '+ obj.nombre, function(){
-                        $.post('../cartillaDiaria/eliminar',{'id':obj.id }, function(resp){
+                    alertEliminacion('Eliminar cartilla diaria', 'Esta seguro de eliminar la cartilla diaria ', function(){
+                        $.post('../cartillaDiaria/eliminar',{'cartillaDiariaId':obj.id }, function(resp){
                             finishTransaction(resp, function(){
                                 $('.modal').modal('hide');
                                 $('#tabla').dataTable().fnDraw('page');

@@ -160,15 +160,30 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	@Transactional
 	public DataResponse darEstado(Integer id, Boolean estado) {
 		try {
-//			if(!estado) { // Se va a Eliminar, FALTA PROCESAR
-//
-//			}
 			sqlString = "update cartilla_diaria set estado = ? where id=?";
 			boolean update = db.update(sqlString, estado, id) > 0;
 			return estado ? Utils.getResponseDataAct(ENTITY, update) : Utils.getResponseDataEli(ENTITY, update);
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorEli(ENTITY, e.getMessage()));
+		}
+	}
+	public Boolean eliminar(Long cod_com,Long user, Integer sucursalId){
+		try {
+//			logger.info("eliminar: "+cod_com+"  "+est);
+			Short res = db.queryForObject("select cartilla_diaria_eliminar(?,?,?);",Short.class,cod_com,user, sucursalId);
+			if(res > 0) {
+				return true;
+			} else {
+				if(res == -2) {
+					throw new RuntimeException("No se puede eliminar, ya que parte de los productos de almacen, no estan completos.");
+				} else {
+					throw new RuntimeException("Error al realizar la eliminacion de la cartilla diaria");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("error al eliminar compra="+e.toString());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 	public CartillaDiariaForm obtenerCartillaDiariaForm (Long cartillaDiariaId) {

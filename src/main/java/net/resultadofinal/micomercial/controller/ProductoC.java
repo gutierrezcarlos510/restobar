@@ -48,6 +48,7 @@ public class ProductoC {
 	public String gestion(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
 		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion";
 	}
 	@RequestMapping("gestionInsumos")
@@ -116,9 +117,9 @@ public class ProductoC {
 	public @ResponseBody
     DataResponse actualizar(Producto p, MultipartFile imgProducto){
 		try {
+			Producto productoDb = productoS.obtener(p.getId());
 			String nombreArchivo = "";
 			if (Utils.existeArchivo(imgProducto)) {
-				Producto productoDb = productoS.obtener(p.getId());
 				if(!productoDb.getFoto().equals(MyConstant.PRODUCTO_DEFAULT)) {
 					Utils.eliminarArchivo(MyConstant.Archivo.RUTA_PRODUCTO, productoDb.getFoto());
 				}
@@ -128,7 +129,7 @@ public class ProductoC {
 					nombreArchivo = MyConstant.PRODUCTO_DEFAULT;
 				}
 			} else {
-				nombreArchivo = MyConstant.PRODUCTO_DEFAULT;
+				nombreArchivo = productoDb.getFoto();
 			}
 			p.setFoto(nombreArchivo);
 			return productoS.modificar(p);

@@ -26,6 +26,8 @@ public interface CartillaDiariaS {
 
     DataResponse darEstado(Integer id, Boolean estado);
 
+    Boolean eliminar(Long cod_com,Long user, Integer sucursalId);
+
     CartillaDiariaForm obtenerCartillaDiariaForm (Long cartillaDiariaId);
 
     CartillaDiariaForm obtenerCartillaActivaSucursal(Integer sucursalId);

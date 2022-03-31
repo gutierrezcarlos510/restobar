@@ -99,7 +99,7 @@
             </div>
         </form>
         <form id="formulario" method="post" action="../arqueocaja/iniciar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalAdicionar" class="modal fade">
+            <div id="modalAdicionar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -378,17 +378,18 @@
             e.preventDefault();
             alertAdicion('Confirmar transaccion','Esta seguro de realizar la transaccion.',function(){
             	var xform = $(e.target);
-                $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status) {
-                        xform.data('formValidation').resetForm();
-                        $('.modal').modal('hide');
-                        $('#tabla').dataTable().fnDraw('page');
+                $.post(xform.attr('action'), xform.serialize(), function(resp) {
+
+                    finishTransaction(resp, function(){
+                        arqueoId = resp.data.id;
+                        esPropioCajero = true;
+                        $('#modalAdicionar').modal('hide');
                         actualizarInfoArqueo();
-                        $('#cajaCerrar').show(300);
-                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                    } else {
-                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                    }
+                        // resp.data.xfinicio = UtilDate.formatTimestampLiteral(resp.data.finicio) ;
+                        // resp.data.xfinicio +=' (Activo)';
+                        // dataReq.dataArqueo = resp.data;
+                        // $('#widgetArqueo').loadJSON(resp.data);
+                    })
                 }, 'json');
             });
         });
@@ -399,15 +400,9 @@
             alertAdicion('Confirmar transaccion','Esta seguro de realizar la transaccion.',function(){
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    if (result.status) {
-                        xform.data('formValidation').resetForm();
-                        $('.modal').modal('hide');
-                        $('#tabla').dataTable().fnDraw('page');
+                    finishTransaction(result, function(){
                         actualizarInfoArqueo();
-                        mostrarMensaje('info', 'Se realizo con exito la Transaccion');
-                    } else {
-                        mostrarMensaje('error', 'No se realizo con exito la Transaccion');
-                    }
+                    })
                 }, 'json');
             })
         });

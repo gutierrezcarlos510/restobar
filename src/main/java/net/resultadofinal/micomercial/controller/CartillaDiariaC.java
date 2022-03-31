@@ -69,9 +69,13 @@ public class CartillaDiariaC {
 	}
 	@RequestMapping("eliminar")
 	public @ResponseBody
-    DataResponse eliminar(Integer id){
+    DataResponse eliminar(HttpServletRequest request,Long cartillaDiariaId){
 		try {
-			return cartillaDiariaS.darEstado(id,false);
+			Persona user=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			boolean status = cartillaDiariaS.eliminar(cartillaDiariaId, user.getCod_per(), gestion.getCod_suc());
+			return new DataResponse(status, status ? "Se realizo con exito la eliminacion de la cartilla diaria"
+					: "No se logro realizar la eliminacion de la cartilla diaria");
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
