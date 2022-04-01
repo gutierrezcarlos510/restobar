@@ -3,12 +3,11 @@ package net.resultadofinal.micomercial.service;
 import net.resultadofinal.micomercial.model.CartillaDiaria;
 import net.resultadofinal.micomercial.model.DetalleCartillaDiaria;
 import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
-import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
+import net.resultadofinal.micomercial.model.wrap.CierreWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.util.DataResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface CartillaDiariaS {
@@ -31,4 +30,7 @@ public interface CartillaDiariaS {
     CartillaDiariaForm obtenerCartillaDiariaForm (Long cartillaDiariaId);
 
     CartillaDiariaForm obtenerCartillaActivaSucursal(Integer sucursalId);
+
+    DataResponse cerrarCartilla(Integer sucursalId, Long userId, CierreWrap obj);
+    DataResponse obtenerResumenDetalleCierre(Long cartillaDiariaId, Integer sucursalId);
 }

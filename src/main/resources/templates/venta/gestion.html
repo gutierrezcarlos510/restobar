@@ -219,7 +219,7 @@
                 className: "btn-primary btn-block active",
                 action: function(e, dt, node, config) {
                     abrirLoad();
-                    $.post('../venta/adicionar?isMobil='+UtilBrowser.isMobil(), function(resp) {
+                    $.post('../venta/adicionar?isMobil='+UtilBrowser.isMobil()+'&esMesero=false', function(resp) {
                         $('#contenedor').html(resp);
                     }).fail(function(){
                         cerrarLoad();
@@ -295,13 +295,8 @@
 		});
         $('#tabla tbody').on('click', 'tr td button.modificar', function() {
             let obj = tablaVenta.row($(this).closest('tr')).data();
-            abrirLoad();
-            $.post('../venta/adicionar?isMobil=',{'isMobil':UtilBrowser.isMobil(),'ventaId':obj.id}, function(resp) {
+            $.post('../venta/adicionar?isMobil=',{'isMobil':UtilBrowser.isMobil(),'ventaId':obj.id,'esMesero':false}, function(resp) {
                 $('#contenedor').html(resp);
-            }).fail(function(){
-                cerrarLoad();
-            }).always(function(){
-                cerrarLoad();
             });
         });
         $('.estadoRadio').click(function() {

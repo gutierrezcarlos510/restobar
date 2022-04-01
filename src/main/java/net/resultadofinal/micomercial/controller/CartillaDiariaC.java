@@ -6,6 +6,7 @@ import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.Persona;
 import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
 import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
+import net.resultadofinal.micomercial.model.wrap.CierreWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.CartillaDiariaS;
 import net.resultadofinal.micomercial.util.DataResponse;
@@ -127,6 +128,29 @@ public class CartillaDiariaC {
 		try {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			return new DataResponse(true, cartillaDiariaS.obtenerCartillaActivaSucursal(gestion.getCod_suc()), "Se realizo con exito la consulta");
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("cerrar")
+	public @ResponseBody
+	DataResponse cerrar(HttpServletRequest request,@RequestBody CierreWrap obj){
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			Persona user=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			if(gestion != null && user != null) {
+				return cartillaDiariaS.cerrarCartilla(gestion.getCod_suc(), user.getCod_per(), obj);
+			}
+			return new DataResponse(false, "Sin sesion, ingrese nuevamente.");
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("obtenerDetalleCartillaCierre")
+	public @ResponseBody DataResponse obtenerDetalleCartillaCierre(HttpServletRequest request, Long cartillaDiariaId) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return cartillaDiariaS.obtenerResumenDetalleCierre(cartillaDiariaId, gestion.getCod_suc());
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}

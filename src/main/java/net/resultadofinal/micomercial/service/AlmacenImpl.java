@@ -49,7 +49,6 @@ public class AlmacenImpl extends DbConeccion implements AlmacenS {
 	@Transactional
 	public boolean registrarAlmacen(Long productoId, Integer sucursalId, Integer cantidad, Long userId, Short tipo, String obs) {
 		try {
-			System.out.println(productoId+" --- "+sucursalId+" --- "+cantidad+" --- "+userId+" --- "+tipo+" --- "+obs);
 			sqlString ="select almacen_adicionar(?,?,?,?,?,?);";
 			return db.queryForObject(sqlString, Boolean.class, productoId, sucursalId, cantidad, userId, tipo, obs);
 		} catch (Exception e) {

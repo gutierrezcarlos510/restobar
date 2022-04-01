@@ -29,7 +29,7 @@
                                     </fieldset>
 	                            <div class="form-group">
 	                                <label>Monto real en caja</label>
-	                                <input type="text" class="form-control text-right" id="monrea_arqcaj" name="monrea_arqcaj" data-fv-notempty="true" data-fv-numeric="true">
+	                                <input type="text" class="form-control text-right" id="montoReal" name="montoReal" data-fv-notempty="true" data-fv-numeric="true">
 	                                <input type="hidden" name="montoFinal" id="montoFinal" />
 	                            </div>
 	                            <div class="form-group">
@@ -52,30 +52,6 @@
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
-            </div>
-        </form>
-        <form id="formulario" method="post" action="../arqueocaja/iniciar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalAdicionar" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Iniciar Caja Independiente</h4>
-                        </div>
-                        <div class="modal-body">
-                        <input type="hidden" name="montoInicial" value="0" />
-                            <div class="form-group">
-                                <label>Descripcion</label>
-                                <textarea class="form-control" data-fv-notempty="true">Apertura de caja independiente, por falta de gerente.</textarea>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-                            <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </form>
     </div>

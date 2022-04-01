@@ -7,6 +7,8 @@ import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
 import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
 import net.resultadofinal.micomercial.model.form.DetalleCartillaForm;
 import net.resultadofinal.micomercial.model.form.ProductoCartillaForm;
+import net.resultadofinal.micomercial.model.wrap.CartillaDiariaCierreWrap;
+import net.resultadofinal.micomercial.model.wrap.CierreWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -198,7 +200,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
-					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id inner join almacen a on a.producto_id = p.id and a.sucursal_id = ? where dcd.cartilla_diaria_id = ?";
+					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,a.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id inner join almacen a on a.producto_id = p.id and a.sucursal_id = ? where dcd.cartilla_diaria_id = ?";
 					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), obj.getCodSuc(),cartillaDiariaId);
 					if(UtilClass.isNotNullEmpty(productoList)) {
 						for(ProductoCartillaForm pro: productoList) {
@@ -231,11 +233,9 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					obj.setCartillaSucursalFormList(cartillaSucursalList);
 					return obj;
 				} else {
-					System.out.println("cartillaSucursalList NULO");
 					return null;
 				}
 			} else {
-				System.out.println("CartillaDiariaForm NULO");
 				return null;
 			}
 		} catch (Exception ex) {
@@ -255,6 +255,45 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
+		}
+	}
+	@Transactional
+	public DataResponse cerrarCartilla(Integer sucursalId, Long userId, CierreWrap obj){
+		try {
+			boolean existeComandaPendiente = db.queryForObject("select count(*)> 0 from venta v where estado = true and tipo = 1 and sucursal_id = ?", Boolean.class, sucursalId);
+			if(existeComandaPendiente) {
+				return new DataResponse(false, "No se puede cerrar, ya que se tiene comandas pendientes, finalice las comandas primeramente");
+			}
+			if(UtilClass.isNotNullEmpty(obj.getListaCierre())) {
+				sqlString = "update detalle_cartilla_diaria set cantidad_editada_final = ?, cantidad_final_almacen = ? where cartilla_diaria_id = ? and id =?;";
+				obj.getListaCierre().stream().forEach(it-> {
+					Integer diferencia = it.getCantidadFinalAlmacen() - it.getCantidadAlmacen();
+					if(diferencia != 0) {
+						db.update(sqlString, diferencia,it.getCantidadFinalAlmacen(), it.getCartillaDiariaId(), it.getId());
+						almacenS.registrarAlmacen(it.getProductoId(), sucursalId, diferencia,userId, HistoricoE.MODIFICACION_CIERRE_CARTILLA.getTipo(), "Modificacion por cierre diario, #"+obj.getCartillaDiariaId());
+					}
+				});
+			}
+			boolean status = db.update("update cartilla_diaria set usuario_cierre =?, fecha_cierre = now(),estado_cartilla = false  where id=?",userId, obj.getCartillaDiariaId())>0;
+			return Utils.getResponseDataAdd("Registro Cierre Diario",status);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.getMessage());
+		}
+	}
+	public DataResponse obtenerResumenDetalleCierre(Long cartillaDiariaId, Integer sucursalId) {
+		try {
+			sqlString = "select p.nombre as xproducto, dcd.*,a.cantidad as cantidad_almacen ," +
+					"(select coalesce(sum(dv.cantidad_unitaria),0) from detalle_venta dv inner join venta v on v.id = dv.venta_id and v.estado = true where dv.cartilla_diaria_id = dcd.cartilla_diaria_id and dv.detalle_cartilla_diaria_id = dcd.id) as cantidad_vendida " +
+					"from detalle_cartilla_diaria dcd " +
+					"inner join producto p on p.id = dcd.producto_id " +
+					"inner join tipo_producto tp on tp.id = p.tipo_id and tp.es_preparado " +
+					"inner join almacen a on a.producto_id = dcd.producto_id and a.sucursal_id = ?" +
+					"where dcd.cartilla_diaria_id =?;";
+			return new DataResponse(true, db.query(sqlString, BeanPropertyRowMapper.newInstance(CartillaDiariaCierreWrap.class), sucursalId, cartillaDiariaId),Utils.successGet("Resumen detalle cierre"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.getMessage());
 		}
 	}
 }

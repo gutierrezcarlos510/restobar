@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +52,7 @@ public class VentaC {
 	private FormaPagoS formaPagoS;
 	@Autowired
 	private DataSource datasource;
-	private static final int ROL_MESERO = 4;
+	private static final int ROL_MESERO = 5;
 	private static final long CLIENTE_INCOGNITO = 0;
 	@RequestMapping("initParam")
 	public @ResponseBody DataResponse initParam(HttpServletRequest request, Long ventaId){
@@ -87,7 +86,6 @@ public class VentaC {
 		} else {
 			return new DataResponse(false, "Error al recuperar informacion");
 		}
-
 	}
 	@RequestMapping("gestion")
 	public String gestion(HttpServletRequest request){
@@ -127,12 +125,18 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("adicionar")
-	public String adicionar(HttpServletRequest request,Model model,Boolean isMobil, Long ventaId){
+	public String adicionar(HttpServletRequest request,Model model,Boolean isMobil, Long ventaId, Boolean esMesero){
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
-		model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
-		model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
-		model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
-		return "venta/adicionar-comanda";
+		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+		if(gestion != null && user != null) {
+			model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
+			model.addAttribute("meseroId", esMesero ? user.getCod_per() : 0);
+			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
+			model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
+			return "venta/adicionar-comanda";
+		} else {
+			return "principal/login"+ MyConstant.SYSTEM;
+		}
 	}
 	@RequestMapping("guardarComanda")
 	public @ResponseBody

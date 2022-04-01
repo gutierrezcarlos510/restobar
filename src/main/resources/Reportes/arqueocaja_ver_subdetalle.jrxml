@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver_subdetalle" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dccc4ea5-9b6f-4b87-a72e-56fd0672b132">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="arqueoId" class="java.lang.Long"/>
+	<parameter name="sucursalId" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select fp.nombre as xforma_pago,(select coalesce(sum(monto),0) from detalle_arqueo da inner join forma_pago fp2 on da.forma_pago_id = fp2.id and fp2.id = fp.id where da.arqueo_id = $P{arqueoId}   and es_debe = true)-(select coalesce(sum(monto),0) from detalle_arqueo da inner join forma_pago fp2 on da.forma_pago_id = fp2.id and fp2.id = fp.id where da.arqueo_id =  $P{arqueoId}  and es_debe = false) as total
+from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
+	</queryString>
+	<field name="xforma_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xforma_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="forma_pago"/>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+	</field>
+	<variable name="montoTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<group name="xforma_pago">
+		<groupExpression><![CDATA[$F{xforma_pago}]]></groupExpression>
+	</group>
+	<group name="total">
+		<groupExpression><![CDATA[$F{total}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="180" height="30" uuid="13b7172e-3f54-44dd-a8bb-7cdebd55ed62">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle de Ingresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="94" height="30" uuid="ba15c4d3-ad34-4297-a6b2-ecdfc62e848d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="180" height="25" uuid="eb403994-b25a-4204-b2dd-5f8475aedf16">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{xforma_pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="94" height="25" uuid="8ba0c801-4c57-4d14-821b-cac0f1bc2ee8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="180" height="25" uuid="03ce6eff-e8f3-47d0-84d5-5fee770a6944">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL INGRESOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="0" width="94" height="25" uuid="c90a7745-ac62-44c4-8a0e-265f16c03a4b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{montoTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+	<noData>
+		<band height="30">
+			<staticText>
+				<reportElement x="0" y="0" width="274" height="30" uuid="abb8cb1b-456b-453d-a29d-88b43d2d90f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sin datos de ingresos]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

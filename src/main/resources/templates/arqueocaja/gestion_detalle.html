@@ -15,6 +15,7 @@
                             <input type="hidden" id="tipoArqueo" name="tipo" />
                             <input type="hidden" id="esDebeArqueo" name="esDebe" />
                             <div class="form-group">
+                                <label>Forma de pago</label>
                                 <select name="formaPagoId" class="form-control input-lg" data-fv-notempty="true">
                                     <option value="">Seleccionar</option>
                                     <option th:each="f : ${formas}" th:value="${f.id}" th:text="${f.nombre}"></option>
@@ -24,7 +25,7 @@
                                 <label>Monto</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="text" class="form-control text-right" id="montoReal" name="montoReal" data-fv-notempty="true" data-fv-numeric="true">
+                                    <input type="text" class="form-control text-right" name="monto" data-fv-notempty="true" data-fv-numeric="true">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -76,7 +77,7 @@
 
 	                            <div class="form-group">
 	                                <label>Descripcion</label>
-	                                <textarea class="form-control" name="descripcion" rows="5" placeholder="Ingrese una descripci&oacute;n del cierre de caja" data-fv-notempty="true"></textarea>
+	                                <textarea class="form-control" id="descripcionCierre" name="descripcion" rows="5" placeholder="Ingrese una descripci&oacute;n del cierre de caja" data-fv-notempty="true"></textarea>
 	                            </div>
 	                            <div class="from-group text-right">
 	                            	<div class="form-check">
@@ -115,7 +116,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                            <button type="button" onclick="cancelarCajaIndependiente()" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
                             <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>
@@ -155,9 +156,9 @@
                         </div>
                         <div style="display: none;" id="cajaFinalizada">
                             <button type="button" class="btn btn-info" id="btnImprimir"><i class="glyphicon glyphicon-print"></i> | Informe de Cierre</button>
-                            <h5 class="widget-user-desc"><strong>Monto final por sistema:</strong> <span aria-label="totalSistema"></span></h5>
-                            <h5 class="widget-user-desc"><strong>Monto presentado por cajero:</strong> <span aria-label="montoReal"></span></h5>
-                            <h5 class="widget-user-desc"><strong>Interpretaci&oacute;n final:</strong> <span aria-label="interpretacion"></span></h5>
+                        </div>
+                        <div style="display: none;" id="ultimaCajaFinalizada">
+                            <button type="button" class="btn btn-info" onclick="imprimirUltimaCaja()"><i class="glyphicon glyphicon-print"></i> | Imprimir ultimo arqueo</button>
                         </div>
                     </div>
                 </div>
@@ -227,7 +228,15 @@
         TIPO_EGRESO: 4,
         dataArqueo : {}
     }
-
+    function cancelarCajaIndependiente(){
+        $('#cajaCerrar').hide();
+        $('#cajaFinalizada').hide();
+        $('#ultimaCajaFinalizada').show(500);
+    }
+    function imprimirUltimaCaja(){
+        $("#frameReportes").attr("src", "../arqueocaja/imprimirUltimoArqueo");
+        $("#reportes").modal('show');
+    }
 	function actualizarInfoArqueo(){
 		if(arqueoId){
 			$.post('../arqueocaja/obtenerResumen?arqueoId='+arqueoId,function(resp){
@@ -269,11 +278,11 @@
         });
         $('#checkObservacion').click(function(){
     		if($("#checkObservacion").is(':checked')){
-    			$("#des_arqcaj").val($("#checkObservacion").val());  // checked
+    			$("#descripcionCierre").val($("#checkObservacion").val());  // checked
     			$('#formularioCerrar').data('formValidation').enableFieldValidators('descripcion',true).revalidateField('descripcion');
     		}
     	});
-        $('#tabla').dataTable({
+        $('#tabla').DataTable({
             dom: "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
             "ordering": true,
             "oLanguage": {
@@ -318,12 +327,12 @@
             },
             "drawCallback": function(settings) {
                 $('.imprimir').click(function() {
-                    let obj = $('#tabla').dataTable().row($(this).closest('tr')).data();
-                	$("#frameReportes").attr("src", "../arqueocaja/ver_detalle?arqueoId=" + obj.arqueroId + "&detalleArqueoId=" + obj.id);
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                	$("#frameReportes").attr("src", "../arqueocaja/ver_detalle?arqueoId=" + obj.arqueoId + "&detalleArqueoId=" + obj.id);
                     $("#reportes").modal('show');
                 });
                 $('.eliminar').click(function() {
-                    let obj = $('#tabla').dataTable().row($(this).closest('tr')).data();
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
                     alertEliminacion('Confirmar eliminacion de detalle', 'Esta seguro de eliminar el detalle de arqueo: '+codDetarq,function(){
                         $.post('../arqueocaja/eliminarDetalle', {'arqueoId':obj.arqueoId, 'detalleArqueoId':obj.id}, function(result) {
                             if (result.status) {
@@ -339,19 +348,23 @@
             }
         });
         $('.estadoRadio').click(function() {
-            $('#tabla').dataTable().fnDraw('page');
+            $('#tabla').dataTable().fnDraw();
         });
         $('#btnCerrar').click(function() {
             $('#formularioCerrar').data('formValidation').resetForm();
             $('#formularioCerrar')[0].reset();
-            
-            // $('#dataCajaResumen').loadJSON(dataReq.dataArqueo);
-            $('#formularioCerrar').loadJSON(dataReq.dataArqueo);
-            $('#id').val(dataReq.dataArqueo.id);
-            $('#modalCerrar').modal('show');
+            $.post('../arqueocaja/obtenerResumen?arqueoId=' + dataReq.dataArqueo.id, function(result) {
+                if (result.status) {
+                    $('#formularioCerrar').loadJSON(result.data);
+                    $('#id').val(dataReq.dataArqueo.id)
+                    $('#modalCerrar').modal('show');
+                } else {
+                    mostrarMensaje('error', 'No se realizo con exito la Transaccion');
+                }
+            }, 'json');
         });
         $('#btnImprimir').click(function() {
-            $("#frameReportes").attr("src", "../arqueocaja/ver?id="+arqueoId+"&esImpresionFacturera=true");
+            $("#frameReportes").attr("src", "../arqueocaja/ver?arqueoId="+arqueoId+"&esImpresionFacturera=false");
             $("#reportes").modal('show');
         });
         $('#btnIngreso').click(function() {
@@ -401,6 +414,8 @@
             	var xform = $(e.target);
                 $.post(xform.attr('action'), xform.serialize(), function(result) {
                     finishTransaction(result, function(){
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw();
                         actualizarInfoArqueo();
                     })
                 }, 'json');

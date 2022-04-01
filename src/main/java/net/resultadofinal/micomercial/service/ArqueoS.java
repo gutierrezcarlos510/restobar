@@ -36,4 +36,6 @@ public interface ArqueoS {
 	ResumenArqueoWrap obtenerResumenArqueo(Long codArqcaj);
 	Arqueo obtenerUltimaCajaPorUsuario(Long codUsuario, Integer sucursal);
 	Boolean rehabilitarArqueo(Long cod);
+	Arqueo obtenerUltimoArqueoUsuario(Long userId, Integer sucursalId);
+	DataResponse existeVentasConArqueo(Long arqueoId);
 }

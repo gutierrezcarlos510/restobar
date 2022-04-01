@@ -188,8 +188,10 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 	public Boolean cerrar(Arqueo ac){
 		try {
 //			logger.info("cerrar: "+ac.getCusfin_arqcaj()+" | "+ac.getMonfin_arqcaj()+" | "+ac.getDes_arqcaj()+" | "+ac.getMonrea_arqcaj()+" | "+ac.getCod_arqcaj());
-			sqlString = "update arqueo set (custodio_final,ffin,monto_final,descripcion,monto_real)=(?,now(),?,?,?) where id=?;";
-			return db.update(sqlString,ac.getCustodioFinalId(),ac.getMontoFinal(), ac.getDescripcion(),ac.getMontoReal(),ac.getId())>0;
+			sqlString = "select (select coalesce(sum(monto),0) from detalle_arqueo da where da.arqueo_id = ? and es_debe = true)-(select coalesce(sum(monto),0) from detalle_arqueo da where da.arqueo_id = ? and es_debe = false) + (select monto_inicial from arqueo a where a.id = ?);";
+			BigDecimal montoFinal = db.queryForObject(sqlString, BigDecimal.class, ac.getId(),ac.getId(),ac.getId());
+			sqlString = "update arqueo set (custodio_final_id,ffin,monto_final,descripcion,monto_real)=(?,now(),?,?,?) where id=?;";
+			return db.update(sqlString,ac.getCustodioFinalId(),montoFinal, ac.getDescripcion(), ac.getMontoReal(),ac.getId())>0;
 		} catch (Exception e) {
 //			logger.error(Utils.errorAdd("cerrar "+ENTITY, e.toString()));
 			e.printStackTrace();
@@ -332,6 +334,34 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
 			return false;
+		}
+	}
+	public Arqueo obtenerUltimoArqueoUsuario(Long userId, Integer sucursalId){
+		try {
+			sqlString = "select coalesce(max(a.id),0) from arqueo a where delegado_id = ? and a.estado = true and sucursal_id = ?";
+			Long arqueoId = db.queryForObject(sqlString, Long.class, userId, sucursalId);
+			if(arqueoId > 0) {
+				return obtenerCaja(arqueoId);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error al obtener ultimo arqueo de usuario");
+		}
+	}
+	public DataResponse existeVentasConArqueo(Long arqueoId){
+		try {
+			sqlString = "select count(*) from venta v where arqueo_id = ? and estado = true";
+			Long cantidadVentas = db.queryForObject(sqlString, Long.class, arqueoId);
+			if(cantidadVentas > 0) {
+				return new DataResponse(true, "Existe ventas anexadas a este arqueo, favor de revertir primeramente las ventas, realizadas");
+			} else {
+				return new DataResponse(false, "Sin ventas realizadas con este arqueo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error al obtener ultimo arqueo de usuario");
 		}
 	}
 }

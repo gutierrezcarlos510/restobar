@@ -5,8 +5,8 @@ import java.util.List;
 
 public class CartillaDiaria {
     private Long id;
-    private Timestamp finicio,ffin;
-    private Long usuarioId;
+    private Timestamp finicio,ffin,fechaCierre;
+    private Long usuarioId,usuarioCierre;
     private boolean estado, estadoCartilla;
     private Integer codSuc;
     private String xusuario;
@@ -82,5 +82,21 @@ public class CartillaDiaria {
 
     public void setCodSuc(Integer codSuc) {
         this.codSuc = codSuc;
+    }
+
+    public Timestamp getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(Timestamp fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
+    public Long getUsuarioCierre() {
+        return usuarioCierre;
+    }
+
+    public void setUsuarioCierre(Long usuarioCierre) {
+        this.usuarioCierre = usuarioCierre;
     }
 }

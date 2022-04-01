@@ -1,20 +1,22 @@
-package net.resultadofinal.micomercial.model;
+package net.resultadofinal.micomercial.model.wrap;
 
 import java.math.BigDecimal;
 
-public class DetalleCartillaDiaria {
+public class CartillaDiariaCierreWrap {
     private Short id, detalleCartillaSucursalId;
     private Long productoId, cartillaDiariaId;
     private BigDecimal precioIndividual,precioCompuesto;
-    private Integer cartillaSucursalId,cantidad, cantidadEditadaFinal, cantidadFinalAlmacen;
+    private Integer cartillaSucursalId,cantidad, cantidadAlmacen, cantidadVendida, cantidadFinalAlmacen;
 
-    public Integer getCantidad() {
-        return cantidad;
+    public Integer getCantidadFinalAlmacen() {
+        return cantidadFinalAlmacen;
     }
 
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
+    public void setCantidadFinalAlmacen(Integer cantidadFinalAlmacen) {
+        this.cantidadFinalAlmacen = cantidadFinalAlmacen;
     }
+
+    private String xproducto;
 
     public Short getId() {
         return id;
@@ -72,19 +74,35 @@ public class DetalleCartillaDiaria {
         this.cartillaSucursalId = cartillaSucursalId;
     }
 
-    public Integer getCantidadEditadaFinal() {
-        return cantidadEditadaFinal;
+    public Integer getCantidad() {
+        return cantidad;
     }
 
-    public void setCantidadEditadaFinal(Integer cantidadEditadaFinal) {
-        this.cantidadEditadaFinal = cantidadEditadaFinal;
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
-    public Integer getCantidadFinalAlmacen() {
-        return cantidadFinalAlmacen;
+    public Integer getCantidadAlmacen() {
+        return cantidadAlmacen;
     }
 
-    public void setCantidadFinalAlmacen(Integer cantidadFinalAlmacen) {
-        this.cantidadFinalAlmacen = cantidadFinalAlmacen;
+    public void setCantidadAlmacen(Integer cantidadAlmacen) {
+        this.cantidadAlmacen = cantidadAlmacen;
+    }
+
+    public Integer getCantidadVendida() {
+        return cantidadVendida;
+    }
+
+    public void setCantidadVendida(Integer cantidadVendida) {
+        this.cantidadVendida = cantidadVendida;
+    }
+
+    public String getXproducto() {
+        return xproducto;
+    }
+
+    public void setXproducto(String xproducto) {
+        this.xproducto = xproducto;
     }
 }

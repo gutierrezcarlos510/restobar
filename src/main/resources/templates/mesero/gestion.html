@@ -1,0 +1,152 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="row">
+            <div class="col-md-5">
+                <h1><span class="fa  fa-ellipsis-v"></span> Comandas </h1>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 padding-top-md">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary tipoRadio" title="Comandas generales">
+                        <span class="fa fa-users"></span><br>
+                        <input type="radio" name="tipoVenta" value="0"> Todas
+                    </label>
+                    <label class="btn btn-warning active tipoRadio">
+                        <span class="fa fa-user-plus"></span><br>
+                        <input type="radio" name="tipoVenta" value="1" checked title="Comanda Activas"> Comanda Activa
+                    </label>
+                    <label class="btn btn-success tipoRadio" title="Comanda Finalizada">
+                        <span class="fa fa-user"></span> <span class="fa fa-dollar"></span><br>
+                        <input type="radio" name="tipoVenta" value="2"> Comanda Finalizada
+                    </label>
+                    <label class="btn btn-danger tipoRadio" title="Comanda Revertida">
+                        <span class="fa fa-user-times"></span><br>
+                        <input type="radio" name="tipoVenta" value="3"> Comanda Revertida
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 padding-top-md">
+                <div class="btn-group btn-group-justified">
+                    <label class="btn btn-primary active estadoRadio">
+                        <input type="radio" name="estado" value="true"  title="Mostrar Activos" checked> Activos
+                    </label>
+                    <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos">
+                        <input type="radio" name="estado" value="false"> Inactivos
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="tabla" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="all">C&oacute;digo</th>
+                    <th class="all">Fecha</th>
+                    <th class="desktop">Cliente</th>
+                    <th class="desktop">Usuario</th>
+                    <th class="desktop">Estado</th>
+                    <th class="desktop">Total</th>
+                    <th class="all">Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    var dataReq = {
+        stateColor : ['','warning','success','primary'],
+        estadoVenta: ['','Comanda activa','Comanda Finalizada','Comanda Revertida']
+    }
+
+    $(document).ready(function() {
+        var tablaVenta = $('#tabla').DataTable({
+            buttons: [{
+                text: 'Adicionar',
+                className: "btn-primary btn-block active",
+                action: function(e, dt, node, config) {
+                    abrirLoad();
+                    $.post('../venta/adicionar?isMobil='+UtilBrowser.isMobil()+'&esMesero=true', function(resp) {
+                        $('#contenedor').html(resp);
+                    }).fail(function(){
+                        cerrarLoad();
+                    }).always(function(){
+                        cerrarLoad();
+                    });
+                }
+            }],
+            "ajax": {
+                "type": "GET",
+                "url": "../venta/lista",
+                "data": function(d) {
+                    d.estado = $('input[name=estado]:checked').val();
+                    d.usuario = true;
+                    d.tipo = $('input[name=tipoVenta]:checked').val();
+                }
+            },
+            "ordering":true,
+            "order": [[0,'desc']],
+            "columnDefs":[{targets: [6],className:'text-right'}],
+            "columns": [{
+                "data": "id","name": "id"
+            }, {
+                "data": "fecha","name": "fecha"
+            }, {
+                "data": "xcliente","name": "xcliente"
+            }, {
+                "data": "xusuario","name": "xusuario"
+            }, {
+                "data": "tipo","name": "tipo"
+            }, {
+                "data": "total","name": "total"
+            }, {
+                "data": "id","name": "id"
+            }],
+            "createdRow": function(row, data, index) {
+                $('td', row).eq(1).html(UtilDate.formatDate(data.fecha,'DD/MM/YYYY'));
+                $('td', row).eq(4).html('<span class="label label-'+dataReq.stateColor[data.tipo]+'">'+data.xtipo+'</span>');
+                let acciones = '<button class="btn btn-success btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
+                if(data.tipo === 1) {
+                    acciones += '<button class="btn btn-primary modificar btn-sm"  data-toggle="tooltip" data-placement="top" title="Modificar"><i class="glyphicon glyphicon-edit"></i><br>modificar</button>';
+                }
+                if (data.estado) {
+                    $('td', row).eq(6).html('<div class="btn-group btn-group-xs">'+acciones+'</div>');
+                } else
+                    $('td', row).eq(6).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir </button>');
+            },
+            "drawCallback": function(settings) {
+
+                $('.imprimir').click(function() {
+                    let obj = tablaVenta.row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../venta/ver?id=" + obj.id);
+                    $("#reportes").modal('show');
+                });
+                $('button[data-toggle="tooltip"]').tooltip({
+                    animated: 'fade',
+                    placement: 'bottom',
+                });
+
+            }
+        });
+        $('#tabla tbody').on('click', 'tr td button.modificar', function() {
+            let obj = tablaVenta.row($(this).closest('tr')).data();
+            $.post('../venta/adicionar?isMobil=',{'isMobil':UtilBrowser.isMobil(),'ventaId':obj.id,'esMesero':true}, function(resp) {
+                $('#contenedor').html(resp);
+            });
+        });
+        $('.estadoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('');
+        });
+        $('.tipoRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('');
+        });
+    });
+
+</script>

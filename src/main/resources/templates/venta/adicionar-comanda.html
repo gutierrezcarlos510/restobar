@@ -350,7 +350,7 @@
                                     <tr>
                                         <td colspan="6" class="custom-bolder" aria-label="totalLiteral"></td>
                                     </tr>
-                                    <tr>
+                                    <tr class="areaRestringidaMesero">
                                         <td colspan="4" class="w3-right-align">Forma de pago</td>
                                         <td colspan="2">
                                             <div class="form-group">
@@ -361,7 +361,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="areaRestringidaMesero">
                                         <td colspan="4" class="w3-right-align">Total Pagado</td>
                                         <td colspan="2">
                                             <div class="form-group">
@@ -369,7 +369,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="areaRestringidaMesero">
                                         <td colspan="4" class="w3-right-align">Cambio a entregar</td>
                                         <td colspan="2">
                                             <div class="form-group">
@@ -384,7 +384,7 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <button type="submit" id="guardar" class="btn btn-primary btn-block active">Guardar y Finalizar Comanda</button>
+                    <button type="submit" id="guardar" class="btn btn-primary btn-block active areaRestringidaMesero">Guardar y Finalizar Comanda</button>
                 </div>
             </div>
             </form>
@@ -395,6 +395,7 @@
 
 <script th:inline="javascript">
     var ventaId = /*[[${ventaId}]]*/ 0;
+    var meseroId = /*[[${meseroId}]]*/ 0;
 </script>
 <script type="text/javascript" th:inline="none">
     var dataReq = {
@@ -783,6 +784,16 @@
     function init(){
         $('#areaMesa').html('');
         $('#areaProducto').html('');
+        if(meseroId > 0) {
+            $('#usuarioId').val(meseroId);
+            let user = $('#usuarioId option:selected').val();
+            let xuser = $('#usuarioId option:selected').html();
+            dataReq.venta.user = {'userId':user,'xuser':xuser};
+            $('#usuarioId').attr('disabled','disabled');
+            $('.areaRestringidaMesero').hide();
+        } else {
+            $('.areaRestringidaMesero').show();
+        }
         $.ajax({
             url: '../venta/initParam?ventaId='+ventaId,
             type: "post",
@@ -795,6 +806,7 @@
                 dataReq.mesaList = resp.data.mesas;
                 dataReq.productoList = resp.data.productos;
                 dataReq.cartillaDiariaList = resp.data.cartillaDiariaList;
+
                 if(resp.data.mesas && resp.data.mesas.length > 0) {
                     resp.data.mesas.forEach(it => {
                         let divCol = $('<div class="col-md-2"></div>');
@@ -1124,6 +1136,15 @@
         $('#smartwizard').smartWizard("goToStep", 0);
         $("#smartwizard").on("stepContent", function(e, anchorObject, stepIndex, stepDirection) {
             if(stepIndex === 2) {
+                if(!dataReq.venta.mesa) {
+                    modalAlert('Seleccione mesa', 'Asigne una mesa', 'error');
+                }
+                if(!dataReq.venta.user) {
+                    modalAlert('Seleccione mesero', 'Asigne una mesero', 'error');
+                }
+                if(!dataReq.venta.cliente) {
+                    modalAlert('Seleccione cliente', 'Asigne un cliente', 'error');
+                }
                 //Renderizar resumen de comanda
                 if(dataReq.venta) {
                     $('#areaResumenVenta').loadJSON({
@@ -1251,7 +1272,7 @@
                     cerrarLoad();
                     if(result.status) {
                         mostrarMensaje('info', result.msg);
-                        $.post('../venta/gestion', function(resp){
+                        $.post(meseroId > 0 ? '../mesero/gestionComanda' : '../venta/gestion', function(resp){
                             $('#contenedor').html(resp);
                         })
                     } else {

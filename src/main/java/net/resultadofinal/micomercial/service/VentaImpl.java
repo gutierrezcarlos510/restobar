@@ -147,6 +147,9 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			throw new RuntimeException("Error al crear historico de venta");
 		}
 	}
+//	public DataResponse validarExitenciaPreviaProductos(VentaForm obj){
+//		if(obj.getDe)
+//	}
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
 		try {
@@ -257,7 +260,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			for (DetalleVentaForm det: detalleVentaRequest) {
 				if(det.getCartillaDiariaId() != null && det.getDetalleCartillaDiariaId() != null) { //Es preparado
 					Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
-							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId()).findFirst();
+							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId() && it.getEsCompuesto() == det.getEsCompuesto()).findFirst();
 					if(!found.isPresent()) {
 						//Adicionar DB
 						adicionarDetalleComanda(ventaId,detalleVentaId,sucId,userId,det);
@@ -295,10 +298,12 @@ public class VentaImpl extends DbConeccion implements VentaS {
 							db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ?, precio =?, tipo_venta =? ,total = ? where venta_id = ? and id = ?",
 									found.get().getCantidad(),found.get().getCantidadUnitaria(), found.get().getPrecio(), found.get().getTipoVenta(), found.get().getTotal(), det.getVentaId(), det.getId());
 							if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
-								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia, userId,
+								//disminuir almacen segun la cantidad: diferencia
+								almacenS.registrarAlmacen(det.getProductoId(), sucId, -1*diferencia, userId,
 										VENTA_PRODUCTO, "Aumento detalle, por venta # "+ventaId);
 								//Adicionar historico
 							} else {
+								//aumentar almacen segun la cantidad: diferencia
 								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia, userId,
 										REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta #"+ ventaId);
 							}
@@ -404,9 +409,9 @@ public class VentaImpl extends DbConeccion implements VentaS {
 							detalleVentaComboList.add(detalleVentaCombo);
 						}
 						venta.setDetalleVentaCompuesto(detalleVentaComboList);
-						venta.setDetalleVentaGlobal(detallesGlobales);
 					}
 				}
+				venta.setDetalleVentaGlobal(detallesGlobales);
 			}
 			return venta;
 		} catch (Exception e) {

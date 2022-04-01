@@ -1,4 +1,35 @@
 <section xmlns:th="http://www.thymeleaf.org">
+    <form id="formularioCerrar" method="post" action="../cartillaDiaria/cerrar" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <div id="modalCerrar" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Cerrar Cartilla Diaria # <strong id="idCartilla"></strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table id="areaResumenDetalleCartilla" class="w3-table-all">
+                            <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Producto</th>
+                                <th width="10%" class="w3-center">Cantidad <br>Cartilla <br>Registrada</th>
+                                <th width="10%" class="w3-center">Cantidad <br>Total <br>Vendida</th>
+                                <th width="10%" class="w3-center">Cantidad <br>Anterior  <br>Almacen</th>
+                                <th width="10%" class="w3-center">Cantidad <br>Resguardo  <br>Almacen</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                        <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 <div class="box box-primary">
     <div class="box-header with-border">
         <div class="row">
@@ -36,6 +67,30 @@
 </div>
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
+    var dataReq = {
+        cierre: {
+            listaCierre : []
+        }
+    }
+    function setDetalleCierre(detalleId){
+        setTimeout(function(){
+            let can = $('#idDet-'+detalleId).val();
+            if(!can) {
+                can = 0;
+            } else {
+                can = parseInt(can);
+            }
+            if(can <= 0) {
+                can = 0;
+                $('#idDet-'+detalleId).val(0);
+            }
+            dataReq.cierre.listaCierre.forEach(it => {
+                if(it.id === detalleId) {
+                    it.cantidadFinalAlmacen = can;
+                }
+            });
+        }, 1500);
+    }
     $(document).ready(function() {
         $('.select-chosen').chosen({
             no_results_text: "No se encuentra:",
@@ -89,19 +144,37 @@
                     }
                     $('td', row).eq(5).html('<div class="btn-group btn-group-xs">'+buttons+'</div>');
                 } else {
-                    $('td', row).eq(5).html('<button class="btn btn-primary activar" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br>activar</button>');
+                    $('td', row).eq(5).html('');
                 }
             },
             "drawCallback": function(settings) {
                 $('.cerrar').click(function() {
+                    $('#formularioCerrar').data('formValidation').resetForm();
+                    $('#formularioCerrar')[0].reset();
+                    $('#idCartilla').html('');
+                    $('#areaResumenDetalleCartilla > tbody').html('');
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    alertEliminacion('Cerrar Cartilla Diaria', 'Esta seguro de cerrar cartilla', function(){
-                        $.post('../cartillaDiaria/cerrar',{'id':obj.id }, function(resp){
-                            finishTransaction(resp, function(){
-                                $('.modal').modal('hide');
-                                $('#tabla').dataTable().fnDraw('page');
-                            });
-                        })
+                    $.post('../cartillaDiaria/obtenerDetalleCartillaCierre', {'cartillaDiariaId':obj.id}, function(resp){
+                        finishTransaction(resp, function(){
+                            if(resp.data && resp.data.length > 0) {
+                                dataReq.cierre.listaCierre = resp.data;
+                                dataReq.cierre.cartillaDiariaId = obj.id;
+                                let ind = 1;
+                                dataReq.cierre.listaCierre.forEach(item => {
+                                    let row = $('<tr></tr>');
+                                    $('<td class="w3-center">'+ind+'</td>').appendTo(row);
+                                    $('<td class="">'+item.xproducto+'</td>').appendTo(row);
+                                    $('<td class="w3-center">'+item.cantidad+'</td>').appendTo(row);
+                                    $('<td class="w3-center">'+item.cantidadVendida+'</td>').appendTo(row);
+                                    $('<td class="w3-center">'+(item.cantidadAlmacen - (item.cantidad - item.cantidadVendida))+'</td>').appendTo(row);
+                                    $('<td class=""><div class="form-group"><input type="text" class="form-control input-xs text-right" id="idDet-'+item.id+'" onkeyup="setDetalleCierre('+item.id+')" value="'+item.cantidadAlmacen+'"></div></td>').appendTo(row);
+                                    item.cantidadFinalAlmacen = item.cantidadAlmacen;
+                                    $('#areaResumenDetalleCartilla > tbody:last').append(row);
+                                    ind++;
+                                })
+                            }
+                            $('#modalCerrar').modal('show');
+                        });
                     })
                 });
                 $('.eliminar').click(function() {
@@ -119,17 +192,6 @@
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
                     $.post('../cartillaDiaria/adicionar?id='+obj.id, function(resp){
                         $('#contenedor').html(resp);
-                    })
-                });
-                $('.activar').click(function() {
-                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
-                    alertActivacion('Activar Detalle', 'Esta seguro de activar: '+ obj.nombre, function(){
-                        $.post('../cartillaSucursal/activar',{'id':obj.id }, function(resp){
-                            finishTransaction(resp, function(){
-                                $('.modal').modal('hide');
-                                $('#tabla').dataTable().fnDraw('page');
-                            });
-                        })
                     })
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
@@ -150,23 +212,23 @@
         $('.estadoRadio').click(function() {
             $('#tabla').dataTable().fnDraw('page');
         });
-        $('#formulario').formValidation({
+        $('#formularioCerrar').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-            if(dataReq.sizeDetails <=0) {
-                modalAlert('Invalido','Ingrese Detalle del Combo','error');
-                return;
-            }
             alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
-            	var xform = $(e.target);
-                $.post(xform.attr('action'), xform.serialize(), function(result) {
-                    finishTransaction(result, function(){
-                        xform.data('formValidation').resetForm();
+                $.ajax({
+                    url: '../cartillaDiaria/cerrar',
+                    type: "post", dataType: "json",
+                    data: JSON.stringify(dataReq.cierre), cache: false,
+                    contentType: 'application/json',
+                    processData: false
+                }).done(function(resp) {
+                    finishTransaction(resp, function(){
                         $('.modal').modal('hide');
                         $('#tabla').dataTable().fnDraw('page');
-                    });
-                }, 'json');
+                    })
+                });
             });
         });
     });

@@ -28,8 +28,9 @@
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<parameter name="logsintex_gen" class="java.lang.String"/>
 	<parameter name="interpretacion" class="java.lang.String"/>
+	<parameter name="sucursalId" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[select da.*,fp.es_efectivo_caja,fp.nombre as xforma_pago,case when da.es_debe then da.monto else cast(0 as numeric) end xdebe,
+		<![CDATA[select da.*,fp.es_efectivo_caja,fp.alias as xforma_pago,case when da.es_debe then da.monto else cast(0 as numeric) end xdebe,
 case when da.es_debe = false then da.monto else cast(0 as numeric) end xhaber 
 from detalle_arqueo da 
 inner join forma_pago fp on fp.id = da.forma_pago_id 
@@ -354,21 +355,21 @@ order by da.id asc]]>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="35" y="0" width="43" height="16" uuid="04940a1e-e21f-47a5-aaa4-92eaa5ce4c9e"/>
+				<reportElement x="35" y="0" width="62" height="16" uuid="04940a1e-e21f-47a5-aaa4-92eaa5ce4c9e"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Codigo]]></text>
+				<text><![CDATA[Pago]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="78" y="0" width="113" height="16" uuid="ac025689-0acf-4c7e-a84b-8bf6c5dcbfb1"/>
+				<reportElement x="97" y="0" width="113" height="16" uuid="ac025689-0acf-4c7e-a84b-8bf6c5dcbfb1"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="191" y="0" width="274" height="16" uuid="5c0db8e6-1c88-4a6b-8082-c709f931512b"/>
+				<reportElement x="210" y="0" width="255" height="16" uuid="5c0db8e6-1c88-4a6b-8082-c709f931512b"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
@@ -393,7 +394,7 @@ order by da.id asc]]>
 	<detail>
 		<band height="15">
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="35" y="0" width="43" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f"/>
+				<reportElement stretchType="ElementGroupHeight" x="35" y="0" width="62" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -404,10 +405,10 @@ order by da.id asc]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{xforma_pago}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="78" y="0" width="113" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e"/>
+				<reportElement stretchType="ElementGroupHeight" x="97" y="0" width="113" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -421,7 +422,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="191" y="0" width="274" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
+				<reportElement stretchType="ElementGroupHeight" x="210" y="0" width="255" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -531,7 +532,7 @@ order by da.id asc]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="215">
+		<band height="231">
 			<textField>
 				<reportElement x="472" y="49" width="83" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -549,7 +550,7 @@ order by da.id asc]]>
 				<text><![CDATA[TOTAL PERCIBIDO (=) Bs. : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="189" width="149" height="13" uuid="708e3a93-81d4-437d-943f-b792888926fd"/>
+				<reportElement x="0" y="198" width="149" height="13" uuid="708e3a93-81d4-437d-943f-b792888926fd"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -564,7 +565,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{delegado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="173" y="189" width="150" height="13" uuid="cd506ce0-406e-44ba-84c6-e12927d0cbf6"/>
+				<reportElement x="173" y="198" width="150" height="13" uuid="cd506ce0-406e-44ba-84c6-e12927d0cbf6"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 				</box>
@@ -575,14 +576,14 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{cusfin}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="202" width="149" height="13" uuid="7727c56b-55fa-4604-978a-52e41c2a5d24"/>
+				<reportElement x="0" y="211" width="149" height="13" uuid="7727c56b-55fa-4604-978a-52e41c2a5d24"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Firma del Cajero]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="173" y="202" width="150" height="13" uuid="6a8851f0-3253-4051-8102-dcd81aa7d9d7"/>
+				<reportElement x="173" y="211" width="150" height="13" uuid="6a8851f0-3253-4051-8102-dcd81aa7d9d7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -679,7 +680,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="19" y="139" width="536" height="20" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
+				<reportElement x="303" y="139" width="252" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>
@@ -691,6 +692,17 @@ order by da.id asc]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{interpretacion}]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement x="0" y="9" width="300" height="161" uuid="77da79d4-257d-4631-b719-dfdb1e020eda"/>
+				<subreportParameter name="arqueoId">
+					<subreportParameterExpression><![CDATA[$P{cod_arqcaj}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sucursalId">
+					<subreportParameterExpression><![CDATA[$P{sucursalId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{path}+"/arqueocaja_ver_subdetalle.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>

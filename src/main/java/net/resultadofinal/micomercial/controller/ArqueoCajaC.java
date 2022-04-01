@@ -41,7 +41,6 @@ public class ArqueoCajaC {
 	private UsuarioS usuarioS;
 	@Autowired
 	DataSource datasource;
-	private static final int SESION_ACTIVA = 1;
 
 	private static final Logger logger = LoggerFactory.getLogger(ArqueoCajaC.class);
 	@RequestMapping("gestion")
@@ -75,33 +74,34 @@ public class ArqueoCajaC {
 	}
 
 	private void comunGestionArqueo(Model model, Persona user, General gestion, Arqueo arqueo) {
+		model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 		if (arqueo == null) {
 			model.addAttribute("esPropioCajero",false);
 			model.addAttribute("arqueoId", 0);
 		} else {
 			boolean esPropioCajero = arqueo.getDelegadoId() == user.getCod_per();
-			if(esPropioCajero) {
-				model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
-			}
 			model.addAttribute("esPropioCajero",esPropioCajero);
 			model.addAttribute("arqueoId", arqueo.getId());
 		}
 	}
 
-	@RequestMapping("gestion_detalle_vendedor")
+	@RequestMapping("gestionDetalleVendedor")
 	public String gestionDetalleVendedor(HttpServletRequest request, Model model) {
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (user != null && gestion != null) {
 			model.addAttribute("userCajero",user.getCod_per());
 			Arqueo arqueo = arqueocajaS.arqueocajaVerificarSesionActual(user.getCod_per(), gestion.getCod_suc());
+			if(arqueo == null) {
+				return "excepcion/sesion_caja";
+			}
 			comunGestionArqueo(model, user, gestion, arqueo);
 			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 		} else {
 			model.addAttribute("msg", "Sesion expirada, por favor vuelva a ingresar.");
 			return "principal/login"+ MyConstant.SYSTEM;
 		}
-		return "arqueocaja/gestion-detalle-vendedor";
+		return "arqueocaja/gestion_detalle";
 	}
 	@RequestMapping("listar")
 	public @ResponseBody
@@ -212,9 +212,14 @@ public class ArqueoCajaC {
 
 	@RequestMapping("eliminar")
 	public @ResponseBody
-    DataResponse eliminar(HttpServletRequest request, Model model, Long arqueoId)
+    DataResponse eliminar(HttpServletRequest request, Long arqueoId)
 			throws IOException {
 		try {
+			DataResponse existeVentas = arqueocajaS.existeVentasConArqueo(arqueoId);
+			if(existeVentas.isStatus()) {
+				existeVentas.setStatus(false);
+				return existeVentas;
+			}
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			boolean status = arqueocajaS.darEstado(arqueoId, false, usuario.getCod_per());
 			return new DataResponse(status, Utils.getSuccessFailedEli("arqueo de caja", status));
@@ -350,6 +355,7 @@ public class ArqueoCajaC {
 						   String estado, String reportUrl, Arqueo arqueo, Map<String, Object> parametros, BigDecimal montoReal,
 						   BigDecimal montoFinal, String interpretacion) throws JRException, SQLException, IOException {
 		Utils.loadDataReport(parametros, gestion);
+		String SubRep=getClass().getResource("/Reportes/arqueocaja_ver.jasper").toString();
 		parametros.put("delegado", arqueo.getXdelegado());
 		parametros.put("cusini", arqueo.getXcustodioInicial());
 		parametros.put("cusfin", arqueo.getXcustodioFinal());
@@ -360,8 +366,10 @@ public class ArqueoCajaC {
 		parametros.put("monini", arqueo.getMontoInicial());
 		parametros.put("monfin", montoFinal);
 		parametros.put("gestion", gestion.getGes_gen());
+		parametros.put("sucursalId", gestion.getCod_suc());
 		parametros.put("logsintex_gen", gestion.getLogsintex_gen());
-		parametros.put("path", request.getSession().getServletContext().getRealPath("/general"));
+		parametros.put("path", SubRep.substring(0, SubRep.lastIndexOf("/")));
+		System.out.println(SubRep.substring(0, SubRep.lastIndexOf("/")));
 		parametros.put("interpretacion", interpretacion);
 		GeneradorReportes generador = new GeneradorReportes();
 		generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
@@ -446,8 +454,8 @@ public class ArqueoCajaC {
 			String reportUrl = "/Reportes/detallearqueo_ver.jasper";
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("usuario", us.toString());
-			parametros.put("cod_arqcaj", arqueoId);
-			parametros.put("cod_detarq", detalleArqueoId);
+			parametros.put("arqueoId", arqueoId);
+			parametros.put("detalleArqueoId", detalleArqueoId);
 			Utils.loadDataReport(parametros, gestion);
 			GeneradorReportes generador = new GeneradorReportes();
 			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
@@ -460,8 +468,8 @@ public class ArqueoCajaC {
 
 	@RequestMapping("guardarDetalle")
 	public @ResponseBody
-    DataResponse guardarDetalle(HttpServletRequest request, Model model,
-                                DetalleArqueo detalle) throws IOException {
+    DataResponse guardarDetalle(HttpServletRequest request,
+                                DetalleArqueo detalle) {
 		try {
 			Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
@@ -547,6 +555,48 @@ public class ArqueoCajaC {
 			return new DataResponse(status, Utils.getSuccessFailedEli("arqueo de caja", status));
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("imprimirUltimoArqueo")
+	public void imprimirUltimoArqueo(HttpServletRequest request, HttpServletResponse response,Boolean esImpresionFacturera) {
+		try {
+			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			if(us != null && gestion !=null) {
+				Arqueo ultimoArqueoUserSession = arqueocajaS.obtenerUltimoArqueoUsuario(us.getCod_per(), gestion.getCod_suc());
+				if(ultimoArqueoUserSession != null) {
+					String nombre = "arqueocaja_" + ultimoArqueoUserSession.getId() + "_" + gestion.getGes_gen(), tipo = "pdf", estado = "inline";
+					String reportUrl = (esImpresionFacturera!=null && esImpresionFacturera)?"/Reportes/arqueocaja_ver_factura.jasper":"/Reportes/arqueocaja_ver.jasper";
+					if(ultimoArqueoUserSession == null){
+						logger.error("No se encontro ultima caja del usuario para ver");
+						return;
+					}
+					Map<String, Object> parametros = new HashMap<String, Object>();
+					BigDecimal montoReal = ultimoArqueoUserSession.getMontoReal() != null ? ultimoArqueoUserSession.getMontoReal() : null;
+					BigDecimal montoFinal = ultimoArqueoUserSession.getMontoFinal() != null ? ultimoArqueoUserSession.getMontoFinal() : null;
+					String interpretacion = "";
+					if (montoReal != null && montoFinal != null) {
+						int resp = montoReal.compareTo(montoFinal);
+						if (resp == 0) {
+							interpretacion = "Cierre de caja Correcto";
+						} else {
+							if (resp > 0) {
+								interpretacion = "Ganancia extra en caja diaria: " + (montoReal.subtract(montoFinal));
+							} else {
+								interpretacion = "Perdida extra en caja diaria: " + (montoFinal.subtract(montoReal));
+							}
+						}
+					} else {
+						interpretacion = "Cierre de caja pendiente.";
+					}
+					parametros.put("usuario", us.toString());
+					parametros.put("cod_arqcaj", ultimoArqueoUserSession.getId());
+					commonVer(request, response, gestion, nombre, tipo, estado, reportUrl, ultimoArqueoUserSession, parametros, montoReal, montoFinal, interpretacion);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("error de reporte caja=" + e.toString());
 		}
 	}
 }
