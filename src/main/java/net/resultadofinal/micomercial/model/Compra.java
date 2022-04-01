@@ -14,6 +14,33 @@ public class Compra extends TableRow {
 	private BigDecimal tot_com,des_com,subtotCom;
 	private Boolean est_com;
 	private String usuario,proveedor,fecha;
+	private BigDecimal saldoDeber,acuenta;
+	private Boolean tipo;
+
+	public BigDecimal getSaldoDeber() {
+		return saldoDeber;
+	}
+
+	public void setSaldoDeber(BigDecimal saldoDeber) {
+		this.saldoDeber = saldoDeber;
+	}
+
+	public BigDecimal getAcuenta() {
+		return acuenta;
+	}
+
+	public void setAcuenta(BigDecimal acuenta) {
+		this.acuenta = acuenta;
+	}
+
+	public Boolean getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Boolean tipo) {
+		this.tipo = tipo;
+	}
+
 	private List<DetalleCompra> detalles;
 
 	public Long getCod_com() {

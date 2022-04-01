@@ -1,4 +1,114 @@
-<!-- Default box -->
+<div id="modalVerPago" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pagos de compra al credito</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="areaPagosVer" class="w3-table-all">
+                            <thead>
+                            <tr>
+                                <th width="5%" class="w3-center">No.</th>
+                                <th class="w3-center">Registrado Por</th>
+                                <th class="w3-center"> Fecha </th>
+                                <th width="10%" class="w3-center">Monto</th>
+                                <th width="10%" class="w3-center">Forma de Pago</th>
+                                <th width="5%" class="w3-center">Anular</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="custom-bolder w3-right-align" colspan="3">Total a cuenta</td>
+                                <td class="custom-bolder w3-right-align" colspan="2" aria-label="totalAcuentaVer"></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="formularioPagar" method="post" action="../compra/guardarPago" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+    <div id="modalPagar" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Pagos de compra al credito</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <table id="areaPagos" class="w3-table-all">
+                                <thead>
+                                <tr>
+                                    <th width="5%" class="w3-center">No.</th>
+                                    <th class="w3-center">Registrado Por</th>
+                                    <th class="w3-center"> Fecha </th>
+                                    <th width="10%" class="w3-center">Monto</th>
+                                    <th width="5%" class="w3-center">Anular</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="unit">
+                                    <td colspan="7" class="w3-center">Sin ningun detalle</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td class="custom-bolder w3-right-align" colspan="3">Total a cuenta</td>
+                                    <td class="custom-bolder w3-right-align" colspan="2" aria-label="totalAcuenta"></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Compra</label>
+                                <input type="text"  class="form-control text-right" name="compraId" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Compra</label>
+                                <span class="form-control text-right" aria-label="tot_com"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>A cuenta</label>
+                                <span class="form-control text-right" aria-label="acuenta"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Saldo a Deber</label>
+                                <span class="form-control text-right" aria-label="saldoDeber"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Forma de pago</label>
+                                <select name="formaPagoId" class="form-control" data-fv-notempty="true">
+                                    <option value="">Seleccionar</option>
+                                    <option th:each="f : ${formas}" th:value="${f.id}" th:text="${f.nombre}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto a pagar</label>
+                                <input type="text"  class="form-control text-right" name="monto" data-fv-notempty="true" min="0.1"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                    <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="box box-primary">
     <div class="box-header with-border">
         <h1><span class="fa  fa-ellipsis-v"></span> Gesti&oacute;n Compras </h1>
@@ -35,8 +145,7 @@
                     <th class="desktop">Proveedor</th>
                     <th class="none">Usuario</th>
                     <th class="none">Observaci&oacute;n</th>
-                    <th class="desktop">Subtotal</th>
-                    <th class="desktop">Descuento</th>
+                    <th class="desktop">Tipo</th>
                     <th class="desktop">Total</th>
                     <th class="all">Acciones</th>
                 </tr>
@@ -54,7 +163,7 @@
         $(".fecha").inputmask("dd/mm/yyyy", {
             "placeholder": "dd/mm/yyyy"
         });
-        $('#tabla').dataTable({
+        $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
                 className: "btn-primary btn-block active",
@@ -74,7 +183,7 @@
                     d.usuario = $('input[name=usuario]:checked').val();
                 }
             },
-            "columnDefs":[{targets: [5,6,7,8],className:'text-right'}],
+            "columnDefs":[{targets: [6,7],className:'text-right'}],
             "columns": [{
                 "data": "cod_com"
             }, {
@@ -86,21 +195,34 @@
             }, {
                 "data": "obs_com"
             }, {
-                "data": "subtotCom"
-            }, {
-                "data": "des_com"
+                "data": "tipo"
             }, {
                 "data": "tot_com"
             }, {
                 "data": "cod_com"
             }],
             "createdRow": function(row, data, index) {
-                if ($('input[name=estado]:checked').val() == 'true') {
-                    let buttons = '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.cod_com + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
+                let estadoVenta = '';
+                let buttons = '';
+                if(data.tipo) {
+                    buttons += '<button class="btn btn-info verPagos"  data-toggle="tooltip" data-placement="top" title="Ver pagos" ><i class="glyphicon glyphicon-eye-open"></i><br>ver pagos</button>';
+                    estadoVenta = 'Credito<br>';
+                    if(data.saldoDeber > 0) {
+                        estadoVenta += 'Pendiente';
+                        buttons += '<button class="btn btn-primary pagarCredito"  data-toggle="tooltip" data-placement="top" title="Revisar pagos" ><i class="glyphicon glyphicon-usd"></i><br>revisar pagos</button>';
+                    } else {
+                        estadoVenta += 'Finalizado';
+                    }
+                } else {
+                    estadoVenta = 'Al Contado';
+                }
+                $('td', row).eq(5).html(estadoVenta);
+                if (data.est_com) {
+                    buttons += '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir" data-id="' + data.cod_com + '"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
                     buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_com + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
-                    $('td', row).eq(8).html('<div class="btn-group btn-group-xs">'+buttons+'</div>');
+                    $('td', row).eq(7).html('<div class="btn-group btn-group-xs">'+buttons+'</div>');
                 } else
-                    $('td', row).eq(8).html('<button class="btn btn-success imprimir" data-id="' + data.cod_com + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i>  </button>');
+                    $('td', row).eq(7).html('<button class="btn btn-success imprimir" data-id="' + data.cod_com + '" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i>  </button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
@@ -113,6 +235,105 @@
                             })
                         }, 'json');
                     });
+                });
+                $('.pagarCredito').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    obj.compraId = obj.cod_com;
+                    $('#formularioPagar').data('formValidation').resetForm();
+                    $('#formularioPagar')[0].reset();
+                    $('#areaPagos > tbody').html('');
+                    let total = 0;
+                    $.post('../compra/obtenerPagosCredito?compraId='+obj.cod_com, function(resp){
+                        finishTransaction(resp, function(){
+                            if(resp.data && resp.data.length > 0) {
+                                let ind = 1;
+                                resp.data.forEach(it => {
+                                    total += it.monto;
+                                    let row = $('<tr></tr>');
+                                    $('<td class="">'+ind+'</td>').appendTo(row);
+                                    $('<td class="">'+it.xcreatedBy+'</td>').appendTo(row);
+                                    $('<td class="">'+UtilDate.formatTimestampLiteral(it.createdAt)+'</td>').appendTo(row);
+                                    $('<td class="">'+it.monto+'</td>').appendTo(row);
+                                    $('<td class="small"><a href="#" class="eliminarDetalle text-danger" data-monto="'+it.monto+'" data-compra="'+it.compraId+'" data-pago="'+it.id+'">Eliminar</a></td>').appendTo(row);
+                                    ind++;
+                                    $('#areaPagos > tbody:last').append(row);
+                                    $('.eliminarDetalle').off('click');
+                                    $('.eliminarDetalle').on('click', function(){
+                                        let compraId = $(this).data('compra');
+                                        let pagoId = $(this).data('pago');
+                                        let montoPago = $(this).data('monto');
+                                        let tr = $(this).closest('tr');
+                                        alertEliminacion('Eliminacion de Pago', 'Esta seguro de eliminar el pago de: '+montoPago, function (){
+                                            $.post('../compra/eliminarPago', {'compraId':compraId, 'id': pagoId}, function(resp2){
+                                                finishTransaction(resp2, function(){
+                                                    $('#tabla').dataTable().fnDraw('');
+                                                    if(resp2.status) {
+                                                        tr.fadeOut(100, function() {
+                                                            tr.remove();
+                                                        });
+                                                    }
+                                                })
+                                            })
+                                        })
+                                    });
+                                });
+                            } else {
+                                $('#areaPagos > tbody:last').append($('<tr><td colspan="5" class="w3-center">Sin pagos realizados</td></tr>'));
+                            }
+                            obj.totalAcuenta = total;
+                            $('#formularioPagar').loadJSON(obj);
+                        })
+                    })
+                    $('#modalPagar').modal('show');
+                });
+                $('.verPagos').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    obj.compraId = obj.cod_com;
+                    $('#areaPagosVer > tbody').html('');
+                    let total = 0;
+                    $.post('../compra/obtenerPagosCredito?compraId='+obj.cod_com, function(resp){
+                        finishTransaction(resp, function(){
+                            if(resp.data && resp.data.length > 0) {
+                                let ind = 1;
+                                resp.data.forEach(it => {
+                                    total += it.monto;
+                                    let row = $('<tr></tr>');
+                                    $('<td class="w3-center">'+ind+'</td>').appendTo(row);
+                                    $('<td class="">'+it.xcreatedBy+'</td>').appendTo(row);
+                                    $('<td class="">'+UtilDate.formatTimestampLiteral(it.createdAt)+'</td>').appendTo(row);
+                                    $('<td class="w3-center">'+it.monto+'</td>').appendTo(row);
+                                    $('<td class="w3-center">'+it.xformaPago+'</td>').appendTo(row);
+                                    $('<td class="small"><a href="#" class="eliminarDetalleVer text-danger" data-monto="'+it.monto+'" data-compra="'+it.compraId+'" data-pago="'+it.id+'">Eliminar</a></td>').appendTo(row);
+                                    ind++;
+                                    $('#areaPagosVer > tbody:last').append(row);
+                                    $('.eliminarDetalleVer').off('click');
+                                    $('.eliminarDetalleVer').on('click', function(){
+                                        let compraId = $(this).data('compra');
+                                        let pagoId = $(this).data('pago');
+                                        let montoPago = $(this).data('monto');
+                                        let tr = $(this).closest('tr');
+                                        alertEliminacion('Eliminacion de Pago', 'Esta seguro de eliminar el pago de: '+montoPago, function (){
+                                            $.post('../compra/eliminarPago', {'compraId':compraId, 'id': pagoId}, function(resp2){
+                                                finishTransaction(resp2, function(){
+                                                    $('#tabla').dataTable().fnDraw('');
+                                                    if(resp2.status) {
+                                                        tr.fadeOut(100, function() {
+                                                            tr.remove();
+                                                        });
+                                                    }
+                                                })
+                                            })
+                                        })
+                                    });
+                                });
+                            } else {
+                                $('#areaPagosVer > tbody:last').append($('<tr><td colspan="5" class="w3-center">Sin pagos realizados</td></tr>'));
+                            }
+                            obj.totalAcuentaVer = total;
+                            $('#areaPagosVer').loadJSON(obj);
+                        })
+                    })
+                    $('#modalVerPago').modal('show');
                 });
                 $('.imprimir').click(function() {
                 	abrirLoad();
@@ -127,16 +348,26 @@
 
             }
         });
+        $('#formularioPagar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion','Esta seguro de realizar la transaccion.',function(){
+                var xform = $(e.target);
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
+                    finishTransaction(result, function(){
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw();
+                    })
+                }, 'json');
+            })
+        });
         $('.estadoRadio').click(function() {
-            $('#tabla').dataTable().fnDraw('page');
+            $('#tabla').dataTable().fnDraw('');
         });
         $('.usuarioRadio').click(function() {
-            $('#tabla').dataTable().fnDraw('page');
+            $('#tabla').dataTable().fnDraw('');
         });
 
-        function isDate(cad) {
-            var d = new Date(cad.substring(3, 5) + '/' + cad.substring(0, 2) + '/' + cad.substring(6, 10));
-            return !isNaN(d.valueOf());
-        }
     });
 </script>

@@ -32,8 +32,6 @@ import java.util.Map;
 @RequestMapping("/arqueocaja/*")
 public class ArqueoCajaC {
 	@Autowired
-	private GeneralS generalS;
-	@Autowired
 	private ArqueoS arqueocajaS;
 	@Autowired
 	private FormaPagoS formaPagoS;

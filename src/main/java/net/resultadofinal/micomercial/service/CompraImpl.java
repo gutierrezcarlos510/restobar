@@ -4,11 +4,9 @@ import net.resultadofinal.micomercial.mappers.CompraMapper;
 import net.resultadofinal.micomercial.mappers.DetallecompraMapper;
 import net.resultadofinal.micomercial.model.Compra;
 import net.resultadofinal.micomercial.model.DetalleCompra;
+import net.resultadofinal.micomercial.model.PagoCreditoCompra;
 import net.resultadofinal.micomercial.model.wrap.HistorialCompraProducto;
-import net.resultadofinal.micomercial.util.DbConeccion;
-import net.resultadofinal.micomercial.util.Fechas;
-import net.resultadofinal.micomercial.util.UtilClass;
-import net.resultadofinal.micomercial.util.Vectores;
+import net.resultadofinal.micomercial.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +81,11 @@ public class CompraImpl extends DbConeccion implements CompraS {
 			Long codCompra = db.queryForObject(sqlString,Long.class, c.getCod_per(),c.getCod_pro(),c.getFecha(),c.getObs_com(),c.getSubtotCom(),
 					c.getTot_com(),c.getDes_com(),c.getGes_gen(),c.getCod_suc());
 			if(codCompra > 0) {
+				if(c.getTipo()) { // Si es al credito
+					db.update("update compra set tipo = ?,saldo_deber = ?, acuenta = ? where cod_com =?", c.getTipo(), c.getTot_com(), 0, codCompra);
+				} else {
+					db.update("update compra set tipo = ?,saldo_deber = ?, acuenta = ? where cod_com =?", c.getTipo(), 0, c.getTot_com(), codCompra);
+				}
 				return true;
 			} else {
 				throw new RuntimeException("error al guardar la compra");
@@ -92,15 +95,6 @@ public class CompraImpl extends DbConeccion implements CompraS {
 			logger.error("error al adicionarCompra="+e.toString());
 			return false;
 		}
-	}
-	private Float sumatoriaDescuentoDetalle(Float descuentos[]) {
-		Float des = 0f;
-		if(descuentos !=null && descuentos.length > 0) {
-			for (int i = 0; i < descuentos.length; i++) {
-				des += descuentos[i];
-			}
-		}
-		return des;
 	}
 
 	public Boolean eliminar(Long cod_com,Long user){
@@ -145,6 +139,54 @@ public class CompraImpl extends DbConeccion implements CompraS {
 			return db.query(sqlString, new BeanPropertyRowMapper<HistorialCompraProducto>(HistorialCompraProducto.class),codpro);
 		} catch (Exception e) {			
 			throw new RuntimeException("No se logro obtener el historial de las compras del producto");
+		}
+	}
+	public DataResponse adicionarPago(PagoCreditoCompra obj) {
+		try {
+			Compra compra = obtener(obj.getCompraId());
+			if(compra != null) {
+				BigDecimal diferencia = compra.getSaldoDeber().subtract(obj.getMonto());
+				if(diferencia.compareTo(new BigDecimal(0)) < 0) {
+					return new DataResponse(false, "El monto pagado es mayor al saldo de la deuda. Realizar la correccion, por favor.");
+				}
+				sqlString = "select coalesce(max(id),0)+1 from pago_credito_compra where compra_id = ?";
+				Short id = db.queryForObject(sqlString, Short.class, obj.getCompraId());
+				String sqlString = "INSERT INTO pago_credito_compra(compra_id, id, monto, forma_pago_id, created_by, created_at, estado)" +
+						" VALUES(?, ?, ?, ?, ?, now(), true);";
+				db.update(sqlString, obj.getCompraId(), id, obj.getMonto(), obj.getFormaPagoId(), obj.getCreatedBy());
+				db.update("update compra set acuenta = acuenta + ?,saldo_deber = saldo_deber - ? where cod_com = ?", obj.getMonto(), obj.getMonto(), obj.getCompraId());
+				return Utils.getResponseDataAdd("Pago de compra al credito", true);
+			} else {
+				return new DataResponse(false, "No se logro obtener la compra");
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("No se logro al guardar pago de compra al credito: "+e.getMessage());
+		}
+	}
+	public List<PagoCreditoCompra> listarPagosCompraCredito(Long id) {
+		try {
+			sqlString = "select pc.*,concat(p.nom_per, ' ', p.priape_per) xcreated_by,fp.nombre as xforma_pago from pago_credito_compra pc inner join persona p on p.cod_per = pc.created_by inner join forma_pago fp on fp.id = pc.forma_pago_id where pc.compra_id = ? and pc.estado = true;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(PagoCreditoCompra.class), id);
+		} catch (Exception e) {
+			throw new RuntimeException("No se logro obtener la lista de pagos de  la compra al credito:"+e.getMessage());
+		}
+	}
+	public DataResponse eliminarPago(PagoCreditoCompra obj) {
+		try {
+			List<PagoCreditoCompra> pagos = db.query("select * from pago_credito_compra where compra_id = ? and id = ?", BeanPropertyRowMapper.newInstance(PagoCreditoCompra.class), obj.getCompraId(), obj.getId());
+			PagoCreditoCompra pago = UtilClass.getFirst(pagos);
+			if(pago != null) {
+				sqlString = "update pago_credito_compra set estado = false,updated_by =?, updated_at = now() where compra_id = ? and id = ?;";
+				db.update(sqlString, obj.getUpdatedBy(),obj.getCompraId(), obj.getId());
+				db.update("update compra set acuenta = acuenta - ?,saldo_deber = saldo_deber + ? where cod_com = ?", pago.getMonto(), pago.getMonto(), pago.getCompraId());
+				return Utils.getResponseDataEli("Pago de credito", true);
+			} else {
+				return new DataResponse(false, "No se encontro el pago en la base de datos");
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("No se logro obtener la lista de pagos de  la compra al credito:"+e.getMessage());
 		}
 	}
 }

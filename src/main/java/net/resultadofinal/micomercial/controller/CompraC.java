@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.Compra;
 import net.resultadofinal.micomercial.model.General;
+import net.resultadofinal.micomercial.model.PagoCreditoCompra;
 import net.resultadofinal.micomercial.model.Persona;
 import net.resultadofinal.micomercial.model.wrap.HistorialCompraProducto;
 import net.resultadofinal.micomercial.service.*;
@@ -37,6 +38,8 @@ public class CompraC {
 	@Autowired
 	private TipoProductoS tipoProductoS;
 	@Autowired
+	private FormaPagoS formaPagoS;
+	@Autowired
 	private DataSource datasource;
 
 	@RequestMapping("gestion")
@@ -44,6 +47,7 @@ public class CompraC {
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		if (user != null && gestion != null) {
+			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 			return "compra/gestion";
 		} else {
 			return "principal/login"+ MyConstant.SYSTEM;
@@ -93,8 +97,7 @@ public class CompraC {
 	@RequestMapping("guardar")
 	public @ResponseBody
     DataResponse guardar(HttpServletRequest request, Compra c, Long productos[],
-						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[])
-			throws IOException {
+						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]) {
 		try {
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
@@ -172,6 +175,41 @@ public class CompraC {
 			return new DataResponse(true, historialProducto, "Se realizo con exito la consulta");
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("guardarPago")
+	public @ResponseBody
+	DataResponse guardar(HttpServletRequest request, PagoCreditoCompra obj) {
+		try {
+			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			obj.setCreatedBy(usuario.getCod_per());
+			return compraS.adicionarPago(obj);
+		} catch (Exception e) {
+			logger.error("error eliminarPago: " + e.getMessage());
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("eliminarPago")
+	public @ResponseBody
+	DataResponse eliminarPago(HttpServletRequest request, PagoCreditoCompra obj) {
+		try {
+			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			obj.setUpdatedBy(usuario.getCod_per());
+			return compraS.eliminarPago(obj);
+		} catch (Exception e) {
+			logger.error("error eliminarPago: " + e.getMessage());
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+
+	@RequestMapping("obtenerPagosCredito")
+	public @ResponseBody
+	DataResponse obtenerPagosCredito( Long compraId) {
+		try {
+			return new DataResponse(true, compraS.listarPagosCompraCredito(compraId), "Se logro con exito la consulta");
+		} catch (Exception e) {
+			logger.error("error al obtenerPagosCredito: " + e.getMessage());
+			return new DataResponse(false, "error al obtener la compra: " + e.toString());
 		}
 	}
 }

@@ -33,7 +33,7 @@
         <div class="panel-body" style="padding-bottom: 0px;">
             <form id="formulario1" name="formulario1" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">Proveedor</label>
                             <select id="proveedor" name="cod_pro" class="form-control" data-placeholder="Seleccione..." data-fv-notempty="true">
@@ -44,12 +44,25 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
+                            <label class="control-label">Tipo de compra</label>
+                            <div class="radio">
+                                <label for="alcontado">
+                                    <input id="alcontado" type="radio" name="tipo" value="false" data-fv-notempty="true"> Al contado
+                                </label>
+                                <label for="alcredito" style="margin-left: 10px;">
+                                    <input id="alcredito" type="radio" name="tipo" value="true" data-fv-notempty="true"> Al credito
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
                             <label class="control-label">Fecha:</label>
                             <input type="text" id="fec_com" name="fecha" class="form-control fec text-right" th:value="${actual}" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true" data-fv-date data-fv-date-format="DD/MM/YYYY"
                                    data-fv-date-separator="/">
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">Descripci&oacute;n</label>
                             <textarea class="form-control input-xs" rows="2" id="obs_com" name="obs_com">Compra de productos</textarea>

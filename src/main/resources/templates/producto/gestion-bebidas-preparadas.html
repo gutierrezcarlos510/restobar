@@ -399,8 +399,8 @@
                                             'id' : $(this).data('id')
                                         }
                                         dataResp.listaIngrediente = dataResp.listaIngrediente.filter(it => it.id !== productoId);
-                                        $.post('../producto/eliminarIngrediente', req, function(){
-                                            if(resp.status) {
+                                        $.post('../producto/eliminarIngrediente', req, function(resp2){
+                                            if(resp2.status) {
                                                 tr.fadeOut(100, function() {
                                                     tr.remove();
                                                 });

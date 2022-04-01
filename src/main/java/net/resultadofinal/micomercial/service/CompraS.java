@@ -1,7 +1,9 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.Compra;
+import net.resultadofinal.micomercial.model.PagoCreditoCompra;
 import net.resultadofinal.micomercial.model.wrap.HistorialCompraProducto;
+import net.resultadofinal.micomercial.util.DataResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,4 +15,7 @@ public interface CompraS {
 	Boolean eliminar(Long cod_com,Long user);
 	Compra obtenerPorArqueoCaja(Long codArqcaj, Integer codDet);
 	List<HistorialCompraProducto> obtenerHistorialCompraProducto(Integer codpro);
+	DataResponse adicionarPago(PagoCreditoCompra obj);
+	List<PagoCreditoCompra> listarPagosCompraCredito(Long id);
+	DataResponse eliminarPago(PagoCreditoCompra obj);
 }

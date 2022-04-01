@@ -27,6 +27,9 @@ public class CompraMapper implements RowMapper<Compra> {
 		compra.setUsuario(rs.getString("usuario"));
 		compra.setProveedor(rs.getString("proveedor"));
 		compra.setFecha(rs.getString("fecha"));
+		compra.setTipo(rs.getBoolean("tipo"));
+		compra.setSaldoDeber(rs.getBigDecimal("saldo_deber"));
+		compra.setAcuenta(rs.getBigDecimal("acuenta"));
 		if(compra.hasColumn(rs, "rn")) {
 			compra.setRn(rs.getLong("rn"));
 		}
