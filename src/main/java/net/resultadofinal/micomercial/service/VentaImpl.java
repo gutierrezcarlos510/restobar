@@ -3,10 +3,7 @@ package net.resultadofinal.micomercial.service;
 import net.resultadofinal.micomercial.enumeration.TipoArqueoE;
 import net.resultadofinal.micomercial.mappers.DetalleventaMapper;
 import net.resultadofinal.micomercial.mappers.VentaMapper;
-import net.resultadofinal.micomercial.model.DetalleArqueo;
-import net.resultadofinal.micomercial.model.DetalleVenta;
-import net.resultadofinal.micomercial.model.HistoricoVenta;
-import net.resultadofinal.micomercial.model.Venta;
+import net.resultadofinal.micomercial.model.*;
 import net.resultadofinal.micomercial.model.form.DetalleVentaForm;
 import net.resultadofinal.micomercial.model.form.VentaForm;
 import net.resultadofinal.micomercial.model.wrap.*;
@@ -147,12 +144,73 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			throw new RuntimeException("Error al crear historico de venta");
 		}
 	}
-//	public DataResponse validarExitenciaPreviaProductos(VentaForm obj){
-//		if(obj.getDe)
-//	}
+	public String validarExistenciaPreviaProductos(Integer sucursalId,List<DetalleVentaForm> productos, List<DetalleVentaForm> compuestos){
+		String faltantes = "";
+		boolean existe = false;
+		if(UtilClass.isNotNullEmpty(productos)) {
+			if(UtilClass.isNotNullEmpty(compuestos)) {
+				for (DetalleVentaForm compuesto: compuestos) {
+					existe = false;
+					for (DetalleVentaForm producto: productos) {
+						if(producto.getProductoId() == producto.getProductoId()) {
+							producto.setCantidad(producto.getCantidadUnitaria() + compuesto.getCantidadUnitaria());
+							existe = true;
+							break;
+						}
+					}
+					if(!existe) {
+						productos.add(compuesto);
+					}
+				}
+			}
+		} else {
+			if(UtilClass.isNotNullEmpty(compuestos)) {
+				productos = compuestos;
+			} else {
+				faltantes = "No se encontraron detalles";
+			}
+		}
+		if(!faltantes.isEmpty()) {
+			return faltantes;
+		}
+
+		return validarFaltantesLista(faltantes, productos, sucursalId);
+	}
+	public String validarFaltantesLista(String faltantes, List<DetalleVentaForm> productos, Integer sucursalId) {
+		if(UtilClass.isNotNullEmpty(productos)) {
+			sqlString ="select * from almacen where sucursal_id = ? and producto_id in (";
+			for (DetalleVentaForm det : productos) {
+				sqlString += det.getProductoId() + ",";
+			}
+			sqlString = sqlString.substring(0, sqlString.length()-1) + ")";
+			List<Almacen> almacenList = db.query(sqlString, BeanPropertyRowMapper.newInstance(Almacen.class), sucursalId);
+			if(UtilClass.isNotNullEmpty(almacenList)) {
+				for (DetalleVentaForm prod : productos) {
+					Almacen alm = almacenList.stream().filter(it -> it.getProductoId()== prod.getProductoId()).findFirst().get();
+					if(alm != null) {
+						if(prod.getCantidadUnitaria() > alm.getCantidad()) {
+							faltantes += prod.getXproducto() + " = " + alm.getCantidad() + ", ";
+						}
+					} else {
+						faltantes += prod.getXproducto() + " = No existe" ;
+					}
+				}
+				if(!faltantes.isEmpty()) {
+					faltantes = "Cantidad actual de los siguentes productos: "+ faltantes.substring(0, faltantes.length()-2);
+				}
+			} else {
+				faltantes = "No se encontraron ningun producto en almacen";
+			}
+		}
+		return faltantes;
+	}
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
 		try {
+			String msgValidacion = validarExistenciaPreviaProductos(obj.getSucursalId(), obj.getDetalleVenta(), obj.getDetalleVentaCompuesto());
+			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
+				return new DataResponse(false, msgValidacion);
+			}
 			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta where sucursal_id =?", Long.class, obj.getSucursalId());
 			obj.setId(ventaId);
 			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
@@ -200,9 +258,66 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				det.getDetalleCartillaDiariaId(), det.getEsCompuesto() == null ? false : det.getEsCompuesto(), det.getTipoVenta() == null ? 1: det.getTipoVenta(), det.getCantidadUnitaria());
 		almacenS.registrarAlmacen(det.getProductoId(), sucursalId, -1*det.getCantidadUnitaria(), userId, VENTA_PRODUCTO, "Disminucion por venta #"+ventaId);
 	}
+	public String validarExistenciaPreviaProductosActualizacion(Integer sucursalId,List<DetalleVentaForm> detalleVentaRequest, List<DetalleVentaForm> compuestos,List<DetalleVentaForm> detallesBD){
+		List<DetalleVentaForm> listaValidar = new ArrayList<>();
+		revisarObtenerDetalleValidacion(detalleVentaRequest,listaValidar,detallesBD, false);
+		revisarObtenerDetalleValidacion(compuestos,listaValidar,detallesBD, true);
+		return validarFaltantesLista("", listaValidar, sucursalId);
+	}
+	public void revisarObtenerDetalleValidacion(List<DetalleVentaForm> detalleVentaRequest, List<DetalleVentaForm> listaValidar,List<DetalleVentaForm> detallesBD, boolean esCompuesto){
+		if(detallesBD != null && !detallesBD.isEmpty()) {
+			for (DetalleVentaForm det : detalleVentaRequest) {
+				if (det.getCartillaDiariaId() != null && det.getDetalleCartillaDiariaId() != null) { //Es preparado
+					Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && it.getProductoId() == det.getProductoId() && it.getEsCompuesto() == det.getEsCompuesto()).findFirst();
+					if (!found.isPresent()) {
+						//Adicionar DB
+						ingresarProductoListaValidacion(listaValidar, det);
+					}
+				} else { // Es producto
+					Optional<DetalleVentaForm> found = detallesBD.stream().filter(it -> it.getProductoId() == det.getProductoId()).findFirst();
+					if (!found.isPresent()) {
+						//Adicionar DB
+						ingresarProductoListaValidacion(listaValidar, det);;
+					}
+				}
+			}
+			//Revisar los detalles de ventas eliminados
+			for (DetalleVentaForm det : detallesBD) {
+				if (det.getEsCompuesto() == esCompuesto) {
+					Optional<DetalleVentaForm> found = detalleVentaRequest.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
+							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
+					if (found.isPresent()) {// Si se encuentra se modifica segun
+						int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
+						if (diferencia != 0 && diferencia > 0) {
+							det.setCantidadUnitaria(diferencia);
+							listaValidar.add(det);
+						}
+					}
+				}
+			}
+		}
+	}
+	public void ingresarProductoListaValidacion(List<DetalleVentaForm> listaValidar, DetalleVentaForm det) {
+		boolean existe = false;
+		for (DetalleVentaForm item : listaValidar) {
+			if(item.getProductoId() == det.getProductoId()) {
+				existe= true;
+				item.setCantidadUnitaria(item.getCantidadUnitaria() + det.getCantidadUnitaria());
+			}
+		}
+		if(!existe) {
+			listaValidar.add(det);
+		}
+	}
 	@Transactional
 	public DataResponse actualizarComanda(VentaForm obj) {
 		try {
+			List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
+			String msgValidacion = validarExistenciaPreviaProductosActualizacion(obj.getSucursalId(),obj.getDetalleVenta(),obj.getDetalleVentaCompuesto(),detallesBD);
+			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
+				return new DataResponse(false, msgValidacion);
+			}
 			sqlString = "update venta set numero=?,tipo=?,usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, subtotal=?, mesa_id=?, cantidad_personas=?, updated_by=?, updated_at=now() where id=?";
 			if(obj.getTipo() == 2) { // si es venta finalizada
 				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from venta where sucursal_id = ?", Long.class, obj.getSucursalId());
@@ -211,7 +326,6 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			boolean saveVenta = db.update(sqlString,obj.getNumero(),obj.getTipo(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getSubtotal(),obj.getMesaId(),
 					obj.getCantidadPersonas(),obj.getCreatedBy(), obj.getId())>0;
 			if(saveVenta) {
-				List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
 				short detalleVentaId = db.queryForObject("select coalesce(max(id),0)+1 from detalle_venta where venta_id=?", Short.class, obj.getId());
 				Short historicoVentaId = null;
 				detalleVentaId = adicionarDetallesComandaModificar(detalleVentaId, detallesBD,obj.getDetalleVenta(),obj.getSucursalId(), obj.getCreatedBy(),obj.getId(),false, historicoVentaId);
@@ -287,7 +401,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 					if(!found.isPresent()) {
 						//Eliminar
 						db.update("delete from detalle_venta where venta_id =? and id=?", det.getVentaId(), det.getId());
-						almacenS.registrarAlmacen(det.getProductoId(), sucId, -1*det.getCantidad(), userId,
+						almacenS.registrarAlmacen(det.getProductoId(), sucId, det.getCantidad(), userId,
 								REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta");
 						//Adicionar historico
 						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),-1*det.getCantidadUnitaria(),historicoVentaId);

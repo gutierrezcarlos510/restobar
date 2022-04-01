@@ -1292,7 +1292,6 @@
             }
             dataReq.venta.obs = obsGeneral;
             let totalVenta = 0;
-            $('#areaDetalleInfo > tbody').html('');
             if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
                 dataReq.detalleVenta.forEach(it => {
                     totalVenta += it.total;
@@ -1346,6 +1345,7 @@
                 dataReq.detalleVenta.forEach( it => {
                     ventaForm.detalleVenta.push({
                         productoId:it.productoId,
+                        xproducto: it.xproducto,
                         cantidad: it.cantidad,
                         cantidadUnitaria: it.cantidadUnitaria,
                         precio: it.precio,
@@ -1364,6 +1364,7 @@
                             if(subitem.cantidadVenta && subitem.cantidadVenta > 0) {
                                 ventaForm.detalleVentaCompuesto.push({
                                     productoId:subitem.productoId,
+                                    xproducto: subitem.xproducto,
                                     cantidad: subitem.cantidadVenta,
                                     cantidadUnitaria: subitem.cantidadVenta,
                                     precio: subitem.precioCompuesto,
