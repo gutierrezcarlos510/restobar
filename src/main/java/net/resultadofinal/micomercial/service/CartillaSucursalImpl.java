@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -67,6 +68,7 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 	}
 	
 	@Override
+	@Transactional
 	public DataResponse adicionar(CartillaSucursal obj,Integer tipos[], BigDecimal precios[]){
 		try {
 			if(tipos != null && tipos.length > 0) {
@@ -91,6 +93,7 @@ public class CartillaSucursalImpl extends DbConeccion implements CartillaSucursa
 	}
 	
 	@Override
+	@Transactional
 	public DataResponse modificar(CartillaSucursal obj, Integer tipos[], BigDecimal precios[]){
 		try {
 			if(tipos != null && tipos.length > 0) {

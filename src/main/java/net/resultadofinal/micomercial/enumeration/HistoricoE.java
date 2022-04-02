@@ -10,7 +10,9 @@ public enum HistoricoE {
     MODIFICACION_CARTILLA_DIARIA((short)6),
     REVERSION_CARTILLA_DIARIA((short)7),
     MODIFICACION_SUPERUSUARIO((short)8),
-    MODIFICACION_CIERRE_CARTILLA((short)8);
+    MODIFICACION_CIERRE_CARTILLA((short)9),
+    MOVIMIENTO_ENTRE_SUCURSALES((short)10),
+    REGISTRO_DESDE_MOVIMIENTO((short)11);
     private final Short tipo;
     private HistoricoE(Short tipo) {
         this.tipo = tipo;

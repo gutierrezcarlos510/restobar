@@ -346,6 +346,14 @@
                     placement: 'bottom',
                 });
 
+            },
+            "initComplete": function(settings, json){
+                $('#tabla_filter input').unbind();
+                $('#tabla_filter input').bind('keyup', function(e) {
+                    if(e.keyCode == 13) {
+                        $('#tabla').DataTable().search(this.value).draw();
+                    }
+                })
             }
         });
         $('#formularioPagar').formValidation({
