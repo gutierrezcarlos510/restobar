@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="control-label">Proveedor</label>
+                            <label class="control-label required">Proveedor</label>
                             <select id="proveedor" name="cod_pro" class="form-control" data-placeholder="Seleccione..." data-fv-notempty="true">
                                 <option value=""></option>
                                 <option th:each="p : ${proveedores}" th:value="${p.cod_pro}" th:text="${p.nom_emp} +' - '+ ${p.nom_per} +' '+${p.priape_per} +' '+${p.segape_per}"></option>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="control-label">Tipo de compra</label>
+                            <label class="control-label required">Tipo de compra</label>
                             <div class="radio">
                                 <label for="alcontado">
                                     <input id="alcontado" type="radio" name="tipo" value="false" data-fv-notempty="true"> Al contado
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="control-label">Fecha:</label>
+                            <label class="control-label required">Fecha:</label>
                             <input type="text" id="fec_com" name="fecha" class="form-control fec text-right" th:value="${actual}" data-fv-date-message="formato de fecha incorrecto" data-fv-notempty="true" data-fv-date data-fv-date-format="DD/MM/YYYY"
                                    data-fv-date-separator="/">
                         </div>

@@ -13,14 +13,14 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Plato</label>
+                                        <label class="required">Tipo de Plato</label>
                                         <input type="hidden" name="tipoGrupo" value="3" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
                                         <input type="hidden" id="medidaId" name="medidaId" value="0" />
@@ -30,7 +30,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Precio al p&uacute;blico</label>
+                                        <label class="required">Precio al p&uacute;blico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -68,21 +68,21 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Plato</label>
+                                        <label class="required">Tipo de Plato</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Precio al p&uacute;blico</label>
+                                        <label class="required">Precio al p&uacute;blico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -151,9 +151,14 @@
                                     <div>
                                         <h3>RECETA</h3>
                                         <div class="form-group row">
-                                            <label class="col-md-9 text-right">Cantidad de platos disponibles con la receta:</label>
+                                            <label class="col-md-9 text-right required">Cantidad de platos disponibles con la receta:</label>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                                        <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <table class="w3-table-all" id="tablaIngredientes">

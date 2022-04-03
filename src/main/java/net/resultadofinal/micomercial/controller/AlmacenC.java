@@ -25,10 +25,10 @@ public class AlmacenC {
 	}
 	@RequestMapping("listar")
 	public @ResponseBody
-	DataTableResults<Almacen> listar(HttpServletRequest request) {
+	DataTableResults<Almacen> listar(HttpServletRequest request, short tipo) {
 		try {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
-			return almacenS.listado(request, gestion.getCod_suc());
+			return almacenS.listado(request, gestion.getCod_suc(), tipo);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;

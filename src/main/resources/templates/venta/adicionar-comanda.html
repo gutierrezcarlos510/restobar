@@ -156,16 +156,22 @@
                                 <div class="form-group">
                                     <input type="hidden" name="usuarioId" />
                                     <label>Mesero</label>
-                                    <select class="form-control select-chosen" name="usuarioId" id="usuarioId" data-fv-notempty="true">
-                                        <option value="">Seleccionar</option>
-                                        <option th:each="m : ${meseros}" th:text="${m.nom_per + ' ' + m.priape_per}" th:value="${m.cod_per}"></option>
-                                    </select>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <select class="form-control select-chosen" name="usuarioId" id="usuarioId" data-fv-notempty="true">
+                                            <option value="">Seleccionar</option>
+                                            <option th:each="m : ${meseros}" th:text="${m.nom_per + ' ' + m.priape_per}" th:value="${m.cod_per}"></option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cantidad de personas</label>
-                                    <input type="text" class="form-control" id="cantidadPersonas" name="cantidadPersonas" >
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                                        <input type="text" class="form-control" id="cantidadPersonas" name="cantidadPersonas" >
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -176,7 +182,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cliente</label>
-                                    <a href="#" class="form-control" id="btnCliente"><i class="fa fa-user-secret"></i> <span id="xcliente">Cliente Incognito</span></a>
+                                    <div class="input-group">
+                                        <a href="#" class="form-control" id="btnCliente"><i class="fa fa-user-secret"></i> <span id="xcliente">Cliente Incognito</span></a>
+                                        <span class="input-group-addon"><i class="fa fa-toggle-left"></i></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -230,10 +239,10 @@
                     <div class="panel-body">
                         <div class="row" id="areaResumenVenta">
                             <div class="col-md-6">
-                                <div class="small-box bg-aqua">
+                                <div class="small-box bg-blue-gradient">
                                     <div class="inner">
-                                        <h3><span aria-label="xcliente">Carlos Franz Gutierrez</span></h3>
-                                        <p>Cliente</p>
+                                        <h3>Cliente</h3>
+                                        <p><span aria-label="xcliente">Carlos Franz Gutierrez</span></p>
                                     </div>
                                     <div class="icon">
                                         <i class="ion ion-person-add"></i>
@@ -242,7 +251,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="small-box bg-aqua">
+                                <div class="small-box bg-blue-gradient">
                                     <div class="inner">
                                         <h3><span aria-label="xmesa">Mesa 4</span></h3>
                                         <p>No. personas: <span aria-label="xcantidadPersonas">5</span></p>
@@ -254,10 +263,10 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="small-box bg-aqua">
+                                <div class="small-box bg-blue-gradient">
                                     <div class="inner">
-                                        <h3><span aria-label="xmesero">CGutierrez</span></h3>
-                                        <p>Mesero</p>
+                                        <h3>Mesero</h3>
+                                        <p><span aria-label="xmesero">CGutierrez</span></p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-user"></i>
@@ -272,6 +281,7 @@
                                 <tr>
                                     <th>Producto</th>
                                     <th width="10%" class="w3-center">Cantidad</th>
+                                    <th width="10%" class="w3-center"></th>
                                     <th width="10%" class="w3-center"> Precio </th>
                                     <th width="10%" class="w3-center">Total</th>
                                     <th width="10%" class="w3-center">Observacion</th>
@@ -304,11 +314,12 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <table id="areaDetalleInfo" class="w3-table-all w3-small">
+                            <table id="areaDetalleInfo" class="w3-table-all w3-large">
                                 <thead>
                                 <tr>
                                     <th>Producto</th>
                                     <th width="10%" class="w3-center">Cantidad</th>
+                                    <th width="10%" class="w3-center"></th>
                                     <th width="10%" class="w3-center"> Precio </th>
                                     <th width="10%" class="w3-center">Total</th>
                                 </tr>
@@ -322,7 +333,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="table-responsive">
-                                <table class="w3-table w3-small">
+                                <table class="w3-table w3-large">
                                     <thead>
                                     <tr>
                                         <th colspan="6" class="w3-center">Resumen de venta</th>
@@ -330,50 +341,79 @@
                                     </thead>
                                     <tbody>
                                     <tr class="w3-right-align">
-                                        <td colspan="4"  class="w3-right-align">Total</td>
+                                        <td colspan="4"  class="w3-right-align"><label>Total</label></td>
                                         <td colspan="2">
-                                            <input type="text" id="subtotalVenta" class="form-control input-xs text-right" readonly="readonly" name="subtotal" value="0">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" id="subtotalVenta" class="form-control text-right" width="50%" readonly="readonly" name="subtotal" value="0">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr  class="w3-right-align">
-                                        <td colspan="4" class="w3-right-align">Descuento</td>
+                                        <td colspan="4" class="w3-right-align"><label class="required">Descuento</label></td>
                                         <td colspan="2"  class="w3-right-align">
-                                            <input type="text" id="descuentoVenta" name="descuento" min="0" onkeyup="setDescuento()" class="form-control input-xs text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." value="0" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" id="descuentoVenta" name="descuento" min="0" onkeyup="setDescuento()" class="form-control text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." value="0" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" class="w3-right-align">Total a Pagar</td>
+                                        <td colspan="4" class="w3-right-align"><label>Total a Pagar</label></td>
                                         <td colspan="2">
-                                            <input type="text" class="form-control input-xs text-right" readonly="readonly" name="total" value="0">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" class="form-control text-right" readonly="readonly" name="total" value="0">
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="custom-bolder" aria-label="totalLiteral"></td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
                                     <tr class="areaRestringidaMesero">
-                                        <td colspan="4" class="w3-right-align">Forma de pago</td>
+                                        <td colspan="4" class="w3-right-align"><label class="required">Forma de pago</label></td>
                                         <td colspan="2">
                                             <div class="form-group">
-                                                <select name="formaPagoId" class="form-control input-xs" data-fv-notempty="true">
-                                                    <option value="">Seleccionar</option>
-                                                    <option th:each="f : ${formas}" th:value="${f.id}" th:text="${f.nombre}"></option>
-                                                </select>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="ion ion-cash"></i></span>
+                                                    <select name="formaPagoId" class="form-control" data-fv-notempty="true">
+                                                        <option value="">Seleccionar</option>
+                                                        <option th:each="f : ${formas}" th:value="${f.id}" th:text="${f.nombre}"></option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr class="areaRestringidaMesero">
-                                        <td colspan="4" class="w3-right-align">Total Pagado</td>
+                                        <td colspan="4" class="w3-right-align"><label class="required">Total Pagado</label></td>
                                         <td colspan="2">
                                             <div class="form-group">
-                                                <input type="text" class="form-control input-xs text-right" onkeyup="setTotalPagado()" id="totalPagado" name="totalPagado" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." onClick="this.setSelectionRange(0, this.value.length)"/>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" class="form-control text-right" onkeyup="setTotalPagado()" id="totalPagado" name="totalPagado" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." onClick="this.setSelectionRange(0, this.value.length)"/>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr class="areaRestringidaMesero">
-                                        <td colspan="4" class="w3-right-align">Cambio a entregar</td>
+                                        <td colspan="4" class="w3-right-align"><label >Cambio a entregar</label></td>
                                         <td colspan="2">
                                             <div class="form-group">
-                                                <input type="text" class="form-control input-xs text-right" id="totalCambio" name="totalCambio" readonly="readonly"/>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" class="form-control text-right" id="totalCambio" name="totalCambio" readonly="readonly"/>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -396,6 +436,7 @@
 <script th:inline="javascript">
     var ventaId = /*[[${ventaId}]]*/ 0;
     var meseroId = /*[[${meseroId}]]*/ 0;
+    var ingresarPago = /*[[${ingresarPago}]]*/ false;
 </script>
 <script type="text/javascript" th:inline="none">
     var dataReq = {
@@ -404,12 +445,49 @@
         detalleVentaCompuesto: [],
         productSelected : {},
         mesaList:[],
+        mesaEspecialList:[],
         productoList:[],
         cartillaDiariaList: [],
         detalleAux : {
             subdetalleAux: []
         },
         isUpdate : false
+    }
+    function beforeStep3(){
+        let obsGeneral = $('#obsGeneral').val();
+        if(!obsGeneral) {
+            obsGeneral = '';
+        }
+        dataReq.venta.obs = obsGeneral;
+        let totalVenta = 0;
+        $('#areaDetalleInfo > tbody').html('');
+        if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
+            dataReq.detalleVenta.forEach(it => {
+                let row = $('<tr></tr>');
+                $('<td>'+it.xproducto+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
+                $('#areaDetalleInfo > tbody:last').append(row);
+                totalVenta += it.total;
+            });
+        }
+        if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
+            dataReq.detalleVentaCompuesto.forEach(it => {
+                let row = $('<tr></tr>');
+                $('<td>'+it.nombre+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
+                $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
+                $('#areaDetalleInfo > tbody:last').append(row);
+                totalVenta += it.totalVenta;
+            });
+        }
+        dataReq.venta.subtotal = totalVenta;
+        calcularTotal();
+        $('#formulario4').loadJSON(dataReq.venta);
     }
     function volverPasoInicial() {
         $('#smartwizard').smartWizard("goToStep", 0);
@@ -778,8 +856,14 @@
         })
     }
     function seleccionarMesa(id){
-        let mesaSelected = dataReq.mesaList.find(it => it.id === id);
-        dataReq.venta.mesa = mesaSelected;
+        if(id < 0) {
+            let mesaSelected = dataReq.mesaEspecialList.find(it => it.id === id);
+            dataReq.venta.mesa = mesaSelected;
+        } else {
+            let mesaSelected = dataReq.mesaList.find(it => it.id === id);
+            dataReq.venta.mesa = mesaSelected;
+        }
+
     }
     function init(){
         $('#areaMesa').html('');
@@ -804,17 +888,39 @@
             if(resp.status) {
                 dataReq.venta.cliente = resp.data.cliente;
                 dataReq.mesaList = resp.data.mesas;
+                dataReq.mesaEspecialList = resp.data.mesasEspeciales;
                 dataReq.productoList = resp.data.productos;
                 dataReq.cartillaDiariaList = resp.data.cartillaDiariaList;
 
+                let divColPedido = $('<div class="col-md-2"></div>');
+                let divInfoBoxPedido = $('<div class="info-box"></div>');
+                $('<span class="info-box-icon bg-green-gradient" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-truck"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa(-1)" name="mesaId" '+((ventaId > 0 && resp.data.venta.mesaId === -1) ? 'checked':'')+' value="-1"/></span>').appendTo(divInfoBoxPedido);
+                let divContentPedido = $('<div class="info-box-content"></div>');
+                $('<span class="info-box-number">Pedido</span>').appendTo(divContentPedido);
+                $('<span class="info-box-text">Para llevar</span>').appendTo(divContentPedido);
+                $('<span class="info-box-more">Sin mesa a utilizar. </span>').appendTo(divContentPedido);
+                divInfoBoxPedido.append(divContentPedido);
+                divColPedido.append(divInfoBoxPedido);
+                $('#areaMesa').append(divColPedido);
+
+                let divColNinguna = $('<div class="col-md-2"></div>');
+                let divInfoBoxNinguna = $('<div class="info-box"></div>');
+                $('<span class="info-box-icon bg-red-gradient" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-odnoklassniki-square"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa(-2)" '+((ventaId > 0 && resp.data.venta.mesaId === -2) ? 'checked':'')+' name="mesaId" value="-2"/></span>').appendTo(divInfoBoxNinguna);
+                let divContentNinguna = $('<div class="info-box-content"></div>');
+                $('<span class="info-box-number">Ninguna</span>').appendTo(divContentNinguna);
+                // $('<span class="info-box-text">Sin Mesa</span>').appendTo(divContentNinguna);
+                $('<span class="info-box-more">Sin ubicacion registrada en sistemas </span>').appendTo(divContentNinguna);
+                divInfoBoxNinguna.append(divContentNinguna);
+                divColNinguna.append(divInfoBoxNinguna);
+                $('#areaMesa').append(divColNinguna);
                 if(resp.data.mesas && resp.data.mesas.length > 0) {
                     resp.data.mesas.forEach(it => {
                         let divCol = $('<div class="col-md-2"></div>');
                         let divInfoBox = $('<div class="info-box"></div>');
                         if(ventaId > 0 && resp.data.venta.mesaId === it.id) {
-                            $('<span class="info-box-icon bg-aqua" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-street-view"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'" checked/></span>').appendTo(divInfoBox);
+                            $('<span class="info-box-icon bg-blue-gradient" style="padding-right:10px;"><div class="icon pull-right"><i class="fi fi-akpoti w3-medium"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'" checked/></span>').appendTo(divInfoBox);
                         } else {
-                            $('<span class="info-box-icon bg-aqua" style="padding-right:10px;"><div class="icon pull-right"><i class="fa fa-street-view"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
+                            $('<span class="info-box-icon bg-blue-gradient" style="padding-right:10px;"><div class="icon pull-right"><i class="fi fi-akpoti w3-medium"></i></div><input type="radio" class="w3-radio" onchange="seleccionarMesa('+it.id+')" name="mesaId" value="'+it.id+'"/></span>').appendTo(divInfoBox);
                         }
                         let divContent = $('<div class="info-box-content"></div>');
                         $('<span class="info-box-number">'+it.alias+'</span>').appendTo(divContent);
@@ -838,14 +944,14 @@
                         $('<span class="plato-description">'+it.xproducto+'</span>').appendTo(div2);
                         div1.append(div2);
                         let div3 = $('<span class="plato-description"></span>');
-                        $('<input type="text" class="w3-medium" style="width: 50%;" id="cantidad-'+it.productoId+'" name="can"/><input type="hidden" name="productoId" value="'+it.productoId+'"/>').appendTo(div3);
+                        $('<input type="text" class="w3-medium" style="width: 40%;" id="cantidad-'+it.productoId+'" name="can"/><input type="hidden" name="productoId" value="'+it.productoId+'"/>').appendTo(div3);
                         $('<button onclick="btnMinProducto('+it.productoId+')" class="btn btn-xs btn-danger" style="margin-left: 10px;margin-right: 5px;"><span class="fa fa-minus"></span></button>').appendTo(div3);
                         $('<button onclick="btnMaxProducto('+it.productoId+')" class="btn btn-xs btn-success" style="margin-left: 5px;margin-right: 10px;"><span class="fa fa-plus"></span></button>').appendTo(div3);
                         let div4 = $('<span class="plato-description"></span>');
                         let div5 = $('<div class="radio"></div>');
                         $('<label style="margin-right: 10px;"><input type="radio" onchange="radioTipoVentaProducto('+it.productoId+',1)" name="tipoVenta-'+it.productoId+'" value="1" checked> Unidad </label>').appendTo(div5);
                         $('<label><input type="radio" onchange="radioTipoVentaProducto('+it.productoId+',2)" name="tipoVenta-'+it.productoId+'" value="2" > Caja</label>').appendTo(div5);
-                        $('<span class="pull-right"><button onclick="btnAdicionarProducto('+it.productoId+')" class="btn btn-xs btn-primary">OK</button></span>').appendTo(div5);
+                        $('<span class="pull-right"><button onclick="btnAdicionarProducto('+it.productoId+')" class="btn btn-xs btn-social btn-primary"><i class="fa fa-plus"></i> adicionar</button></span>').appendTo(div5);
                         div4.append(div5);
                         div1.append(div3);
                         div1.append(div4);
@@ -881,7 +987,11 @@
                 }
                 if(ventaId > 0) {
                     dataReq.isUpdate = true;
-                    dataReq.venta.mesa = resp.data.mesas.find(it => it.id === resp.data.venta.mesaId);
+                    if(resp.data.venta.mesaId < 0) {
+                        dataReq.venta.mesa = resp.data.mesasEspeciales.find(it => it.id === resp.data.venta.mesaId);
+                    } else {
+                        dataReq.venta.mesa = resp.data.mesas.find(it => it.id === resp.data.venta.mesaId);
+                    }
                     dataReq.venta.user = {'userId': resp.data.venta.usuarioId, 'xuser': resp.data.venta.xusuario};
                     $('#usuarioId').val(resp.data.venta.usuarioId);
                     $('#cantidadPersonas').val(resp.data.venta.cantidadPersonas);
@@ -961,16 +1071,18 @@
                     }
                     renderDetalleVenta();
                 }
+                if(ingresarPago) {
+                    beforeStep3();
+                    $('#smartwizard').smartWizard("goToStep", 3);
+                } else {
+                    $('#smartwizard').smartWizard("goToStep", 0);
+                }
             }
         }).fail(function(jqXHR, textStatus) {
             console.log('Request failed:', textStatus);
         }).always(function() {
             cerrarLoad();
         });
-        //
-        // $.post('../venta/initParam?ventaId='+ventaId, function(resp){
-        //
-        // })
     }
     function generateColumnPlato(itProducto){
         let div1 = $('<div class="col-md-4 item" id="areaPlato-'+itProducto.cartillaDiariaId+'-'+itProducto.id+'"></div>');
@@ -984,11 +1096,11 @@
         $('<span class="plato-description">'+itProducto.xproducto+'</span>').appendTo(div2);
         div1.append(div2);
         let div3 = $('<span class="plato-description"></span>');
-        $('<input type="text" class="w3-medium" style="width: 50%;" id="cantidadPlato-'+itProducto.id+'" name="can"/>').appendTo(div3);
+        $('<input type="text" class="w3-medium" style="width: 40%;" id="cantidadPlato-'+itProducto.id+'" name="can"/>').appendTo(div3);
         $('<button onclick="btnMinPlato('+itProducto.id+')" class="btn btn-xs btn-danger" style="margin-left: 10px;margin-right: 5px;"><span class="fa fa-minus"></span></button>').appendTo(div3);
         $('<button onclick="btnMaxPlato('+itProducto.id+')" class="btn btn-xs btn-success" style="margin-left: 5px;margin-right: 10px;"><span class="fa fa-plus"></span></button>').appendTo(div3);
         let div4 = $('<span class="plato-description"></span>');
-        $('<span class="pull-right"><button onclick="btnAdicionarPlato('+itProducto.cartillaSucursalId+','+itProducto.cartillaDiariaId+','+itProducto.detalleCartillaSucursalId+','+itProducto.id+','+itProducto.productoId+')" class="btn btn-xs btn-primary">OK</button></span>').appendTo(div4);
+        $('<span class="pull-right"><button onclick="btnAdicionarPlato('+itProducto.cartillaSucursalId+','+itProducto.cartillaDiariaId+','+itProducto.detalleCartillaSucursalId+','+itProducto.id+','+itProducto.productoId+')" class="btn btn-xs btn-social btn-primary"><i class="fa fa-plus"></i> adicionar</button></span>').appendTo(div4);
         div1.append(div3);
         div1.append(div4);
         return div1;
@@ -1133,7 +1245,7 @@
         });
         $('.sw-btn-next').html('<i class="fa fa-arrow-circle-right"></i><br>Siguiente');
         $('.sw-btn-prev').html('<i class="fa fa-arrow-circle-left"></i><br>Volver atras');
-        $('#smartwizard').smartWizard("goToStep", 0);
+
         $("#smartwizard").on("stepContent", function(e, anchorObject, stepIndex, stepDirection) {
             if(stepIndex === 2) {
                 if(!dataReq.venta.mesa) {
@@ -1160,6 +1272,7 @@
                         let row = $('<tr></tr>');
                         $('<td>'+it.xproducto+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
+                        $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
                         $('<td class="w3-center w3-tiny text-danger active"><a href="#" onclick="adicionarObservacion('+it.productoId+','+it.cartillaDiariaId+','+it.detalleCartillaDiariaId+')">Agregar Observacion</a></td>').appendTo(row);
@@ -1189,6 +1302,7 @@
                         tdNombre.appendTo(row);
                         // $('<td>'+it.nombre+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
+                        $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
                         $('<td class="w3-center w3-tiny text-danger active"><a href="#" onclick="adicionarObservacionCompuesto('+it.id+')">Agregar Observacion</a></td>').appendTo(row);
@@ -1197,38 +1311,7 @@
                 }
             }
             if(stepIndex === 3) {
-                let obsGeneral = $('#obsGeneral').val();
-                if(!obsGeneral) {
-                    obsGeneral = '';
-                }
-                dataReq.venta.obs = obsGeneral;
-                let totalVenta = 0;
-                $('#areaDetalleInfo > tbody').html('');
-                if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
-                    dataReq.detalleVenta.forEach(it => {
-                        let row = $('<tr></tr>');
-                        $('<td>'+it.xproducto+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.cantidad+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.precio+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
-                        $('#areaDetalleInfo > tbody:last').append(row);
-                        totalVenta += it.total;
-                    });
-                }
-                if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
-                    dataReq.detalleVentaCompuesto.forEach(it => {
-                        let row = $('<tr></tr>');
-                        $('<td>'+it.nombre+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
-                        $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
-                        $('#areaDetalleInfo > tbody:last').append(row);
-                        totalVenta += it.totalVenta;
-                    });
-                }
-                dataReq.venta.subtotal = totalVenta;
-                calcularTotal();
-                $('#formulario4').loadJSON(dataReq.venta);
+                beforeStep3();
             }
         });
         $('#formulario3').formValidation({
@@ -1253,6 +1336,7 @@
                 submitVenta(ventaForm);
             }
         });
+
         function submitVenta(ventaForm){
             let urlForm = '../venta/guardarComanda';
             if(dataReq.isUpdate) {

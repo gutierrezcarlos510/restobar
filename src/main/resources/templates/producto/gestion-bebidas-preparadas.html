@@ -13,14 +13,14 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo</label>
+                                        <label class="required">Tipo</label>
                                         <input type="hidden" name="tipoGrupo" value="4" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
@@ -29,14 +29,14 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Precio al p&uacute;blico</label>
+                                        <label class="required">Precio al p&uacute;blico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Medida para cantidad en inventario</label>
+                                        <label class="required">Medida para cantidad en inventario</label>
                                         <select id="medidaId1" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
@@ -71,7 +71,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
@@ -80,21 +80,21 @@
                                     <div class="form-group">
                                         <input type="hidden" name="tipoGrupo" value="4" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
-                                        <label>Tipo de bebida</label>
+                                        <label class="required">Tipo de bebida</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Precio al p&uacute;blico</label>
+                                        <label class="required">Precio al p&uacute;blico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pvUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Medida para cantidad en inventario</label>
+                                        <label class="required">Medida para cantidad en inventario</label>
                                         <select id="medidaId2" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
@@ -140,7 +140,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre de la bebida</label>
+                                        <label class="required">Nombre de la bebida</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
                                             <input type="text" class="form-control text-capitalize w3-xlarge" name="nombre" data-fv-notempty="true" readonly/>
@@ -164,9 +164,14 @@
                                     <div>
                                         <h3>RECETA</h3>
                                         <div class="form-group row">
-                                            <label class="col-md-9 text-right">Cantidad disponible con la receta:</label>
+                                            <label class="col-md-9 text-right required">Cantidad disponible con la receta:</label>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                                        <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <table class="w3-table-all" id="tablaIngredientes">

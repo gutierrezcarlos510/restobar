@@ -13,7 +13,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <input type="hidden" name="tipoGrupo" value="2" />
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
@@ -21,18 +21,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Insumo</label>
+                                        <label class="required">Tipo de Insumo</label>
                                         <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Unidades Por Caja</label>
+                                        <label class="required">Unidades Por Caja</label>
                                         <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de compra por defecto</label>
+                                        <label class="required">Tipo de compra por defecto</label>
                                         <select id="tipoCompra1" name="tipoCompra" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option value="1">En unidad</option>
@@ -40,7 +40,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de compra por defecto</label>
+                                        <label class="required">Tipo de compra por defecto</label>
                                         <select id="medidaId1" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Precio de Costo Por unidad</label>
+                                        <label class="required">Precio de Costo Por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pcUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Precio de Costo Por Caja</label>
+                                        <label class="required">Precio de Costo Por Caja</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pcCaja" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -80,19 +80,19 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Inventario Minimo por unidad</label>
+                                        <label class="required">Inventario Minimo por unidad</label>
                                         <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Inventario Minimo por caja</label>
+                                        <label class="required">Inventario Minimo por caja</label>
                                         <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Presentacion por Unidad</label>
+                                        <label class="required">Presentacion por Unidad</label>
                                         <select id="presentacionUnidadId1" name="presentacionUnidadId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Presentacion por caja</label>
+                                        <label class="required">Presentacion por caja</label>
                                         <select id="presentacionCajaId1" name="presentacionCajaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>
@@ -131,7 +131,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <input type="hidden" name="tipoGrupo" value="2" />
                                             <span class="input-group-addon"><i class="fa fa-cube"></i></span>
@@ -139,18 +139,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de Insumo</label>
+                                        <label class="required">Tipo de Insumo</label>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Unidades Por Caja</label>
+                                        <label class="required">Unidades Por Caja</label>
                                         <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de compra por defecto</label>
+                                        <label class="required">Tipo de compra por defecto</label>
                                         <select id="tipoCompra2" name="tipoCompra" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option value="1">En unidad</option>
@@ -158,7 +158,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Tipo de compra por defecto</label>
+                                        <label class="required">Tipo de compra por defecto</label>
                                         <select id="medidaId2" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Precio de Costo Por unidad</label>
+                                        <label class="required">Precio de Costo Por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pcUnit" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Precio de Costo Por Caja</label>
+                                        <label class="required">Precio de Costo Por Caja</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             <input type="text" class="form-control" name="pcCaja" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." min="" onClick="this.setSelectionRange(0, this.value.length)">
@@ -209,19 +209,19 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Inventario Minimo por unidad</label>
+                                        <label class="required">Inventario Minimo por unidad</label>
                                         <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Inventario Minimo por caja</label>
+                                        <label class="required">Inventario Minimo por caja</label>
                                         <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Presentacion por Unidad</label>
+                                        <label class="required">Presentacion por Unidad</label>
                                         <select id="presentacionUnidadId2" name="presentacionUnidadId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Presentacion por caja</label>
+                                        <label class="required">Presentacion por caja</label>
                                         <select id="presentacionCajaId2" name="presentacionCajaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>

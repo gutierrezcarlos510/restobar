@@ -32,13 +32,14 @@ public class AlmacenImpl extends DbConeccion implements AlmacenS {
 	private String sqlString;
 	@Autowired
 	UtilDataTableS utilDataTableS;
-	public DataTableResults<Almacen> listado(HttpServletRequest request, int sucursal) {
+	public DataTableResults<Almacen> listado(HttpServletRequest request, int sucursal, short tipo) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("almacen a");
-			sqlBuilder.setSelect("a.*,p.nombre as xproducto");
-			sqlBuilder.addJoin("producto p on p.id = a.producto_id and p.estado = true");
+			sqlBuilder.setSelect("a.*,p.nombre as xproducto,p.unidad_por_caja");
+			sqlBuilder.addJoin("producto p on p.id = a.producto_id and p.estado = true and (p.tipo_grupo = :xtipo or -1 = :xtipo)");
 			sqlBuilder.setWhere("a.sucursal_id = :xsucursal");
 			sqlBuilder.addParameter("xsucursal",sucursal);
+			sqlBuilder.addParameter("xtipo", tipo);
 			return utilDataTableS.list(request, Almacen.class, sqlBuilder);
 		} catch (Exception e) {
 			e.printStackTrace();

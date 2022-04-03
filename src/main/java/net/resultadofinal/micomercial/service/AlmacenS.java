@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface AlmacenS {
-    DataTableResults<Almacen> listado(HttpServletRequest request, int sucursal);
+    DataTableResults<Almacen> listado(HttpServletRequest request, int sucursal, short tipo);
 
     /**
      * Registro de producto en almacen

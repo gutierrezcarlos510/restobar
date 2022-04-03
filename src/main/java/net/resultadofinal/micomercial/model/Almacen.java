@@ -4,6 +4,7 @@ public class Almacen {
     private Long productoId;
     private Integer sucursalId, cantidad;
     private String xproducto;
+    private Integer unidadPorCaja;
 
     public String getXproducto() {
         return xproducto;
@@ -35,5 +36,24 @@ public class Almacen {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+    public int getCantidadCaja(){
+        if(this.cantidad != null) {
+            if(this.unidadPorCaja != null) {
+                return cantidad / unidadPorCaja;
+            } else {
+                return this.cantidad;
+            }
+        } else{
+            return 0;
+        }
+    }
+
+    public Integer getUnidadPorCaja() {
+        return unidadPorCaja;
+    }
+
+    public void setUnidadPorCaja(Integer unidadPorCaja) {
+        this.unidadPorCaja = unidadPorCaja;
     }
 }

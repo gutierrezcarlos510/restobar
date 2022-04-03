@@ -55,7 +55,7 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 	@Override
 	public Movimiento obtener(Long id){
 		try {
-			List<Movimiento> lista = db.query("select m.*,concat(p.nom_per,' ',p.priape_per) as xcreated_by,concat(p.nom_per,' ',p.priape_per) as xusuario_revision,s1.nombre as xsucursal_origen,s2.nombre as xsucursal_destino from movimiento m inner join persona p on p.cod_per = m.created_by inner join sucursal s1 on s1.cod_suc = m.sucursal_origen left join sucursal s2 on s2.cod_suc = m.sucursal_destino left join persona p2 on p2.cod_per = m.usuario_revision where id=?", BeanPropertyRowMapper.newInstance(Movimiento.class), id);
+			List<Movimiento> lista = db.query("select m.*,concat(p.nom_per,' ',p.priape_per) as xcreated_by,concat(p2.nom_per,' ',p2.priape_per) as xusuario_revision,s1.nombre as xsucursal_origen,s2.nombre as xsucursal_destino from movimiento m inner join persona p on p.cod_per = m.created_by inner join sucursal s1 on s1.cod_suc = m.sucursal_origen left join sucursal s2 on s2.cod_suc = m.sucursal_destino left join persona p2 on p2.cod_per = m.usuario_revision where id=?", BeanPropertyRowMapper.newInstance(Movimiento.class), id);
 			return UtilClass.getFirst(lista);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));

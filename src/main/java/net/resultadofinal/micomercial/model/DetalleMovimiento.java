@@ -3,9 +3,18 @@ package net.resultadofinal.micomercial.model;
 public class DetalleMovimiento {
     private Short id;
     private Long movimientoId, productoId;
-    private Integer cantidad, cantidadUnitaria;
+    private Integer cantidad, cantidadUnitaria, unidadPorCaja;
     private Boolean tipo, esIngreso;
     private String xproducto;
+
+    public Integer getUnidadPorCaja() {
+        return unidadPorCaja;
+    }
+
+    public void setUnidadPorCaja(Integer unidadPorCaja) {
+        this.unidadPorCaja = unidadPorCaja;
+    }
+
     public Short getId() {
         return id;
     }

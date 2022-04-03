@@ -62,15 +62,13 @@ public class VentaC {
 
 			map.put("productos", almacenS.listarProductos(gestion.getCod_suc()));
 			map.put("cartillaDiariaList", cartillaDiariaS.obtenerCartillaActivaSucursal(gestion.getCod_suc()));
-
+			map.put("mesasEspeciales", mesaS.listarMesasEspeciales());
 			if(ventaId > 0) {
 				VentaForm v = ventaS.obtenerVentaForm(ventaId);
 				List<Mesa> mesas = mesaS.listarMesasLibresPorSucursal(gestion.getCod_suc());
-				Mesa mesaVenta = mesaS.obtener(v.getMesaId());
-				if(mesas != null && !mesas.isEmpty()) {
-					mesas.add(mesaVenta);
-				} else {
-					if(mesas != null) {
+				if(v.getMesaId() > 0) { // Si es menor a cero es pedido o no tiene mesa, caso contrario se recupera la mesa
+					Mesa mesaVenta = mesaS.obtener(v.getMesaId());
+					if(mesas == null) {
 						mesas = new ArrayList<>();
 					}
 					mesas.add(mesaVenta);
@@ -125,7 +123,7 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("adicionar")
-	public String adicionar(HttpServletRequest request,Model model,Boolean isMobil, Long ventaId, Boolean esMesero){
+	public String adicionar(HttpServletRequest request,Model model,Boolean isMobil, Long ventaId, Boolean esMesero,Boolean ingresarPago){
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		if(gestion != null && user != null) {
@@ -133,6 +131,7 @@ public class VentaC {
 			model.addAttribute("meseroId", esMesero ? user.getCod_per() : 0);
 			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 			model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
+			model.addAttribute("ingresarPago", ingresarPago != null ? ingresarPago : false);
 			return "venta/adicionar-comanda";
 		} else {
 			return "principal/login"+ MyConstant.SYSTEM;

@@ -24,4 +24,5 @@ public interface MesaS {
     DataResponse darEstado(Short id, boolean est, Integer sucursalId);
     DataResponse ordenar(List<Short> codigos);
     List<Mesa> listarMesasLibresPorSucursal(Integer sucursalId);
+    List<Mesa> listarMesasEspeciales();
 }

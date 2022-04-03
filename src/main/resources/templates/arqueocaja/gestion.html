@@ -12,7 +12,7 @@
                         <div class="modal-body">
                             <input type="hidden" name="id" />
                             <div class="form-group">
-                                <label class="control-label col-md-4">Monto real en caja</label>
+                                <label class="control-label col-md-4 required">Monto real en caja</label>
                                 <div class="col-md-8">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
@@ -48,7 +48,7 @@
                         <div class="modal-body">
                         <input type="hidden" name="montoInicial" value="0" />
                             <div class="form-group">
-                                <label class="control-label col-md-4">Cajero</label>
+                                <label class="control-label col-md-4 required">Cajero</label>
                                 <select id="delegadoId" name="delegadoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
                   				<option value=""></option>
                   				<option th:each="u : ${usuarios}" th:value="${u.cod_per}" th:text="${u.nom_per} +' '+ ${u.priape_per} +' '+ ${u.segape_per}"></option>
@@ -88,7 +88,7 @@
                   			</select>
                             </div>
                             <div class="form-group">
-                                <label>Cajero</label>
+                                <label class="required">Cajero</label>
                                 <select id="delegadoId1" name="delegadoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
                   				<option value=""></option>
                                 <option th:each="u : ${usuarios}" th:value="${u.cod_per}" th:text="${u.nom_per} +' '+ ${u.priape_per} +' '+ ${u.segape_per}"></option>
