@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compra_ver_subreporte" pageWidth="164" pageHeight="297" columnWidth="164" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dea03c5e-e608-4769-96b4-d5c685a3493f">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compra_ver_subreporte" pageWidth="215" pageHeight="700" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="dea03c5e-e608-4769-96b4-d5c685a3493f">
 	<property name="ireport.zoom" value="3.797498335832416"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce RESFIT"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="63"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="931"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="cod_com" class="java.lang.Long"/>
 	<queryString>
-		<![CDATA[select * from detallecompra_obtener($P{cod_com}) as (cod_com bigint,cod_detcom integer,cod_pro integer,pre_detcom real,can_detcom integer,des_detcom real,subtot_detcom real,tot_detcom real,producto varchar(150))]]>
+		<![CDATA[select * from detallecompra_obtener($P{cod_com}) as (cod_com bigint,cod_detcom integer,cod_pro int8,pre_detcom numeric(10,2),can_detcom integer,des_detcom numeric(10,2),subtot_detcom numeric(10,2),tot_detcom numeric(10,2), cantidad_unitaria integer,tipo_compra int2,producto varchar(150))]]>
 	</queryString>
 	<field name="cod_com" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_com"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_com"/>
 	</field>
 	<field name="cod_detcom" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_detcom"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_detcom"/>
 	</field>
-	<field name="cod_pro" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
+	<field name="cod_pro" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="cod_pro"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
 	</field>
-	<field name="pre_detcom" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="pre_detcom"/>
+	<field name="pre_detcom" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="pre_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="pre_detcom"/>
 	</field>
 	<field name="can_detcom" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="can_detcom"/>
 		<property name="com.jaspersoft.studio.field.label" value="can_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="can_detcom"/>
 	</field>
-	<field name="des_detcom" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="des_detcom"/>
+	<field name="des_detcom" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="des_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="des_detcom"/>
 	</field>
-	<field name="subtot_detcom" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="subtot_detcom"/>
+	<field name="subtot_detcom" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="subtot_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="subtot_detcom"/>
 	</field>
-	<field name="tot_detcom" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="tot_detcom"/>
+	<field name="tot_detcom" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="tot_detcom"/>
+		<property name="com.jaspersoft.studio.field.name" value="tot_detcom"/>
+	</field>
+	<field name="cantidad_unitaria" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_unitaria"/>
+	</field>
+	<field name="tipo_compra" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_compra"/>
 	</field>
 	<field name="producto" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="producto"/>
 		<property name="com.jaspersoft.studio.field.label" value="producto"/>
+		<property name="com.jaspersoft.studio.field.name" value="producto"/>
 	</field>
 	<variable name="total" class="java.lang.Float">
-		<variableExpression><![CDATA[($F{can_detcom}*$F{pre_detcom})-$F{des_detcom}]]></variableExpression>
+		<variableExpression><![CDATA[($F{can_detcom}*$F{pre_detcom}.floatValue())-$F{des_detcom}.floatValue()]]></variableExpression>
+	</variable>
+	<variable name="xtipo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tipo_compra}==1 ? "Unidesdes":"Cajas"]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -62,16 +74,16 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="130" height="12" uuid="d46050cc-5a50-435d-a7bf-4a7636baf49b"/>
+				<reportElement x="0" y="0" width="175" height="12" uuid="d46050cc-5a50-435d-a7bf-4a7636baf49b"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="34" y="12" width="24" height="12" uuid="fcd407c2-00eb-43ec-9268-8745188e6c93"/>
+			<textField>
+				<reportElement x="85" y="12" width="30" height="12" uuid="fcd407c2-00eb-43ec-9268-8745188e6c93"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -85,7 +97,7 @@
 				<textFieldExpression><![CDATA[$F{can_detcom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="58" y="12" width="24" height="12" uuid="2eec375d-3ec5-4f14-be2c-b8351de9d6ca"/>
+				<reportElement x="115" y="12" width="30" height="12" uuid="2eec375d-3ec5-4f14-be2c-b8351de9d6ca"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -99,7 +111,7 @@
 				<textFieldExpression><![CDATA[$F{pre_detcom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="106" y="12" width="24" height="12" uuid="4de7ac1a-0fd8-451d-bf2a-6378318be66e"/>
+				<reportElement x="145" y="12" width="30" height="12" uuid="4de7ac1a-0fd8-451d-bf2a-6378318be66e"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -113,7 +125,7 @@
 				<textFieldExpression><![CDATA[$F{tot_detcom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="82" y="12" width="24" height="12" uuid="ca301f65-a9af-407c-b773-cff94d826339"/>
+				<reportElement x="23" y="12" width="62" height="12" uuid="61e99fc0-eee0-46a7-90fa-70645562b044"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -124,7 +136,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{des_detcom}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{xtipo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

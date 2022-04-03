@@ -30,16 +30,16 @@ public class CompraImpl extends DbConeccion implements CompraS {
 	}
 	private static final Logger logger = LoggerFactory.getLogger(CompraImpl.class);
 	private String sqlString;
-	public List<Compra> listar(int start, boolean estado, String search, int length, Long cod_per, String fini, String ffin, Integer gestion){
+	public List<Compra> listar(int start, boolean estado, String search, int length, Long cod_per, String fini, String ffin, Integer gestion,Short tipo){
 		if(fini.equals("") || fini==null)fini="01/01/"+gestion;
 		if(ffin.equals("")|| ffin==null)ffin="31/12/"+gestion;
 		Fechas f=new Fechas();
 		Date ini=f.convertirStringDate(fini, "dd/MM/yyyy");
 		Date fin=f.convertirStringDate(ffin, "dd/MM/yyyy");
 		if(search==null)search="";
-		sqlString = "select * from compra_lista(?,?,?,?,?,?,?,?)";
+		sqlString = "select * from compra_lista(?,?,?,?,?,?,?,?,?)";
 		sqlString += asObjectAdd(asCompra, ((start<0?"":"RN BIGINT,Tot INT,")+"usuario varchar(100),proveedor varchar(100),fecha varchar(15)"));
-		return db.query(sqlString, new CompraMapper(),start,length,search,estado,cod_per,ini,fin,gestion);
+		return db.query(sqlString, new CompraMapper(),start,length,search,estado,cod_per,ini,fin,gestion,tipo);
 	}
 	public Compra obtener(Long cod_com){
 		try {
@@ -66,18 +66,20 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		}
 	}
 	@Transactional
-	public Boolean adicionar(Compra c, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]){
+	public Boolean adicionar(Compra c, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[],
+							 BigDecimal totales[], Short tipos[]){
 		try {
 			Vectores v=new Vectores();
-			String codPro=v.convertir_Long_a_String(productos);
-			String preDetcom=v.convertirBigDecimalString(precios);
-			String canDetcom=v.convertir_Int_a_String(cantidades);
-			String desDetcom=v.convertirBigDecimalString(descuentos);
-			String subtotDetcom=v.convertirBigDecimalString(subtotales);
-			String totDetcom=v.convertirBigDecimalString(totales);
+			String codPro=v.convertLongToString(productos);
+			String preDetcom=v.convertBigDecimalToString(precios);
+			String canDetcom=v.convertIntegerToString(cantidades);
+			String desDetcom=v.convertBigDecimalToString(descuentos);
+			String subtotDetcom=v.convertBigDecimalToString(subtotales);
+			String totDetcom=v.convertBigDecimalToString(totales);
+			String tiposVec = v.convertShortToString(tipos);
 //			logger.info("adicionar header: "+c.getCod_per()+" | "+c.getCod_pro()+" | "+fecha+" | "+c.getObs_com()+" | "+c.getSubtotCom()+" | "+c.getTot_com()+" | "+c.getDes_com()+" | "+c.getGes_gen()+" | "+c.getCod_suc());
 //			logger.info("adicionar detalles: "+codPro+" | "+preDetcom+" | "+canDetcom+" | "+desDetcom+" | "+subtotDetcom+" | "+totDetcom);
-			sqlString = "select compra_adicionar(?,?,to_date(?,'DD/MM/YYYY'),?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\');";
+			sqlString = "select compra_adicionar(?,?,to_date(?,'DD/MM/YYYY'),?,?,?,?,?,?,\'"+codPro+"\',\'"+preDetcom+"\',\'"+canDetcom+"\',\'"+desDetcom+"\',\'"+subtotDetcom+"\',\'"+totDetcom+"\',\'"+tiposVec+"\');";
 			Long codCompra = db.queryForObject(sqlString,Long.class, c.getCod_per(),c.getCod_pro(),c.getFecha(),c.getObs_com(),c.getSubtotCom(),
 					c.getTot_com(),c.getDes_com(),c.getGes_gen(),c.getCod_suc());
 			if(codCompra > 0) {
@@ -93,7 +95,7 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("error al adicionarCompra="+e.toString());
-			return false;
+			throw new RuntimeException("Error en transaccion de compra");
 		}
 	}
 

@@ -4,9 +4,26 @@ import java.math.BigDecimal;
 
 public class DetalleCompra {
 	private Long cod_com,cod_pro;
-	private Integer cod_detcom,can_detcom;
+	private Integer cod_detcom,can_detcom, cantidadUnitaria;
+	private Short tipoCompra;
 	private BigDecimal pre_detcom,des_detcom,subtotDetcom,totDetcom;
 	private String producto;
+
+	public Integer getCantidadUnitaria() {
+		return cantidadUnitaria;
+	}
+
+	public void setCantidadUnitaria(Integer cantidadUnitaria) {
+		this.cantidadUnitaria = cantidadUnitaria;
+	}
+
+	public Short getTipoCompra() {
+		return tipoCompra;
+	}
+
+	public void setTipoCompra(Short tipoCompra) {
+		this.tipoCompra = tipoCompra;
+	}
 
 	public Long getCod_com() {
 		return cod_com;

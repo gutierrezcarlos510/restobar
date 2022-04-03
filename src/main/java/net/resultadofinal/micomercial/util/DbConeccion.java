@@ -7,7 +7,7 @@ public class DbConeccion {
 	public String asTipoProducto=" as (cod_tippro integer,nom_tippro character varying(100),des_tippro character varying(250),est_tippro boolean)";
 	public String asProducto=" as (nom_tippro character varying(100),cod_pro integer,nom_pro character varying(100) ,precom_pro real,preven_pro real,gan_pro real,can_pro integer,est_pro boolean,cod_tippro integer)";
 	public String asCompra=" as (cod_com bigint ,cod_per bigint,cod_pro bigint,fec_com date,obs_com character varying(500),tot_com numeric(10,2),est_com boolean,des_com numeric(10,2),ges_gen integer,cod_arqcaj bigint,cod_detarq integer,cod_suc integer,subtot_com numeric(10,2),tipo boolean, saldo_deber numeric(10,2), acuenta numeric(10,2))";
-	public String asDetalleCompra=" as (cod_com bigint,cod_detcom integer,cod_pro bigint,pre_detcom numeric(10,2),can_detcom integer,des_detcom numeric(10,2),subtot_detcom numeric(10,2),tot_detcom numeric(10,2))";
+	public String asDetalleCompra=" as (cod_com bigint,cod_detcom integer,cod_pro bigint,pre_detcom numeric(10,2),can_detcom integer,des_detcom numeric(10,2),subtot_detcom numeric(10,2),tot_detcom numeric(10,2),cantidad_unitaria int4,tipo_compra int2)";
 	public String asProveedor=" as (cod_pro bigint,cod_emp integer,est_pro boolean)";
 	public String asCliente=" as (cod_cli bigint,est_cli boolean)";
 	public String asVenta=" as (cod_ven bigint,cod_per bigint,cod_cli bigint,fec_ven timestamp,obs_ven character varying(500),tot_ven real,des_ven real,ges_gen integer,est_ven boolean,cod_arqcaj bigint,cod_detarq integer,tip_ven integer,cod_suc integer,subtot_ven real,cod_subcuenta integer)";

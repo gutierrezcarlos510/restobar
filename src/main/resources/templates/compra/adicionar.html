@@ -117,10 +117,21 @@
                     </table>
                     <p class="text-center" id="productoSeleccionado"></p>
                     <div class="form-group">
+                        <label class="col-md-3 control-label required">Cantidad a mover expresada en</label>
+                        <div class="col-md-9 radio w3-medium">
+                            <label for="enUnidad">
+                                <input type="radio" name="tipoDetalle"  id="enUnidad" value="1" data-fv-notempty="true"/> <i class="fa fa-cube"></i> Unidades
+                            </label>
+                            <label for="enCaja" style="margin-left: 25px;">
+                                <input type="radio" name="tipoDetalle"  id="enCaja" value="2" data-fv-notempty="true"/> <i class="fa fa-cubes"></i> Cajas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3 control-label">Cantidad</label>
                         <div class="col-md-9">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                <span class="input-group-addon"><i class="ion ion-pound custom-bolder"></i></span>
                                 <input type="text" class="form-control text-right" autocomplete="off" id="can1" name="can1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-integer="true">
                             </div>
                         </div>
@@ -151,8 +162,8 @@
                         </div>
                     </div>
                     <div class="pull-right">
-                        <button type="submit" class="btn btn-success" id="adicionar">
-							<span class="glyphicon glyphicon-plus-sign"></span> Adicionar
+                        <button type="submit" class="btn btn-success btn-social" id="adicionar">
+							<i class="glyphicon glyphicon-plus-sign"></i> Adicionar
 	            			</button>
                     </div>
                 </form>
@@ -173,8 +184,9 @@
                                 <tr>
                                     <th width="25px">No.</th>
                                     <th>Producto</th>
-                                    <th width="70px">Cantidad Unid.</th>
-                                    <th width="70px">Precio Unid.</th>
+                                    <th width="70px">Cantidad</th>
+                                    <th width="70px"></th>
+                                    <th width="70px">Precio</th>
                                     <th width="70px">Subtotal</th>
                                     <th width="25px">Descuento</th>
                                     <th width="70px">Total</th>
@@ -413,8 +425,10 @@ function calcularTotal() {
             "placeholder": "dd/mm/yyyy"
         });
         $('#cancelar').click(function() {
-            $.post('../compra/gestion', function(resp) {
-                $('#contenedor').html(resp);
+            alertCancelacion('Cancelar Compra','Esta seguro?', function (){
+                $.post('../compra/gestion', function(resp) {
+                    $('#contenedor').html(resp);
+                });
             });
         });
 
@@ -477,29 +491,28 @@ function calcularTotal() {
                 $('#tot1').val('');
             }).on('success.form.fv', function(e) {
                 e.preventDefault();
-                var xform = $(e.target);
-                var bv = xform.data('formValidation');
-                var estado = $('#formulario2').data('formValidation').isValid();
-                if (estado) {
-                    $('#unit').remove();
-                    var row = $('<tr></tr>');
-                    let xcodpro = productSelected.id;
-                    $('<td class="td-nro"></td>').appendTo(row);
-                    $('<td>' + productSelected.nombre + '</td>').appendTo(row);
-                    $('<td><input type="text" name="cantidades" id="can-'+xcodpro+'" class="form-control input-xs text-right" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#can1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
-                    $('<td><input type="text" name="precios" id="pre-'+xcodpro+'" class="form-control input-xs text-right inputDetalle" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#pre1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
-                    $('<td><input type="text" name="subtotales" id="subtot-'+xcodpro+'" class="form-control input-xs text-right input-subtot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
-                    $('<td><input type="text" id="pro-' + xcodpro + '" name="descuentos" class="form-control input-xs text-right input-des" onKeyup="calcularDetalle('+xcodpro+')" onClick="this.setSelectionRange(0, this.value.length)" value="0"></td>').appendTo(row);
-                    $('<td><input type="text" name="totales" id="tot-'+xcodpro+'" class="form-control input-xs text-right input-tot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
-                    $('<td class="remove-row w3-center"><button type="button" class="btn btn-xs btn-danger input-remove-row" data-producto="' + xcodpro + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
-                    $('<input type="hidden" class="listaProductos" name="productos" value="' + xcodpro + '" >').appendTo(row);
-                    $('#detalles > tbody:last').append(row);
-                    enumerarFila();
-                    calcularTotal();
-                    $('#formulario2')[0].reset();
-                    xform.data('formValidation').resetForm();
-                    $('#formulario3').formValidation('addField', 'descuentos', des_detcom);
-                }
+                let xform = $(e.target);
+                let formData = $('#formulario2').formToJSON();
+                let cantidad = parseInt(formData.can1);
+                $('#unit').remove();
+                var row = $('<tr></tr>');
+                let xcodpro = productSelected.id;
+                $('<td class="td-nro"></td>').appendTo(row);
+                $('<td>' + productSelected.nombre + '</td>').appendTo(row);
+                $('<td><input type="text" name="cantidades" id="can-'+xcodpro+'" class="form-control input-xs text-right" onKeyup="calcularDetalle('+xcodpro+')" value="' + cantidad + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                $('<td style="vertical-align: middle;">' + (formData.tipoDetalle === '1' ? 'Unidades':'Cajas') + '</td>').appendTo(row);
+                $('<td><input type="text" name="precios" id="pre-'+xcodpro+'" class="form-control input-xs text-right inputDetalle" onKeyup="calcularDetalle('+xcodpro+')" value="' + $('#pre1').val() + '" onClick="this.setSelectionRange(0, this.value.length)"></td>').appendTo(row);
+                $('<td><input type="text" name="subtotales" id="subtot-'+xcodpro+'" class="form-control input-xs text-right input-subtot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
+                $('<td><input type="text" id="pro-' + xcodpro + '" name="descuentos" class="form-control input-xs text-right input-des" onKeyup="calcularDetalle('+xcodpro+')" onClick="this.setSelectionRange(0, this.value.length)" value="0"></td>').appendTo(row);
+                $('<td><input type="text" name="totales" id="tot-'+xcodpro+'" class="form-control input-xs text-right input-tot" readonly="readonly" value="' + $('#tot1').val() + '" ></td>').appendTo(row);
+                $('<td class="remove-row w3-center"><button type="button" class="btn btn-xs btn-danger input-remove-row" data-producto="' + xcodpro + '"><span class="glyphicon glyphicon-remove"></span></button></td>').appendTo(row);
+                $('<input type="hidden" class="listaProductos" name="productos" value="' + xcodpro + '" ><input type="hidden" name="tipos" value="' + formData.tipoDetalle + '" >').appendTo(row);
+                $('#detalles > tbody:last').append(row);
+                enumerarFila();
+                calcularTotal();
+                $('#formulario2')[0].reset();
+                xform.data('formValidation').resetForm();
+                $('#formulario3').formValidation('addField', 'descuentos', des_detcom);
             });
         $('#formulario3').formValidation({
             locale: 'es_ES'

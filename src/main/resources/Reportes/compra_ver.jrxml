@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compra_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="185" leftMargin="20" rightMargin="10" topMargin="1" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
 	<property name="ireport.zoom" value="3.797498335832415"/>
 	<property name="ireport.x" value="47"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ecommerce"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="126"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="869"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\CARLOS\\workspace\\resultadofinal\\src\\Reportes\\"]]></defaultValueExpression>
 	</parameter>
@@ -18,75 +20,84 @@
 	<parameter name="lug_gen" class="java.lang.String"/>
 	<parameter name="nom_gen" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from compra_obtener($P{cod_com})  as (cod_com bigint ,cod_per bigint,cod_pro bigint,fec_com date,obs_com character varying(500),tot_com real,est_com boolean,des_com real,ges_gen integer,cod_arqcaj bigint,cod_detarq integer,cod_suc integer,subtot_com real,usuario varchar(100),proveedor varchar(100),fecha varchar(15))]]>
+		<![CDATA[select * from compra_obtener($P{cod_com})  as (cod_com bigint ,cod_per bigint,cod_pro bigint,fec_com date,obs_com character varying(500),tot_com numeric(10,2),est_com boolean,des_com numeric(10,2),ges_gen integer,cod_arqcaj bigint,cod_detarq integer,cod_suc integer,subtot_com numeric(10,2),tipo boolean,saldo_deber numeric(10,2),acuenta numeric(10,2),usuario varchar(100),proveedor varchar(100),fecha varchar(15))]]>
 	</queryString>
 	<field name="cod_com" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_com"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_com"/>
 	</field>
 	<field name="cod_per" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_per"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_per"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_per"/>
 	</field>
 	<field name="cod_pro" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_pro"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_pro"/>
 	</field>
 	<field name="fec_com" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="fec_com"/>
 		<property name="com.jaspersoft.studio.field.label" value="fec_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="fec_com"/>
 	</field>
 	<field name="obs_com" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="obs_com"/>
 		<property name="com.jaspersoft.studio.field.label" value="obs_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="obs_com"/>
 	</field>
-	<field name="tot_com" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="tot_com"/>
+	<field name="tot_com" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="tot_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="tot_com"/>
 	</field>
 	<field name="est_com" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="est_com"/>
 		<property name="com.jaspersoft.studio.field.label" value="est_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="est_com"/>
 	</field>
-	<field name="des_com" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="des_com"/>
+	<field name="des_com" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="des_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="des_com"/>
 	</field>
 	<field name="ges_gen" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="ges_gen"/>
 		<property name="com.jaspersoft.studio.field.label" value="ges_gen"/>
+		<property name="com.jaspersoft.studio.field.name" value="ges_gen"/>
 	</field>
 	<field name="cod_arqcaj" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="cod_arqcaj"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_arqcaj"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_arqcaj"/>
 		<fieldDescription><![CDATA[codigo de arqueo]]></fieldDescription>
 	</field>
 	<field name="cod_detarq" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_detarq"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_detarq"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_detarq"/>
 	</field>
 	<field name="cod_suc" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cod_suc"/>
 		<property name="com.jaspersoft.studio.field.label" value="cod_suc"/>
+		<property name="com.jaspersoft.studio.field.name" value="cod_suc"/>
 	</field>
-	<field name="subtot_com" class="java.lang.Float">
-		<property name="com.jaspersoft.studio.field.name" value="subtot_com"/>
+	<field name="subtot_com" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="subtot_com"/>
+		<property name="com.jaspersoft.studio.field.name" value="subtot_com"/>
+	</field>
+	<field name="tipo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="saldo_deber" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="saldo_deber"/>
+	</field>
+	<field name="acuenta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="acuenta"/>
 	</field>
 	<field name="usuario" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
 		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
 	</field>
 	<field name="proveedor" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="proveedor"/>
 		<property name="com.jaspersoft.studio.field.label" value="proveedor"/>
+		<property name="com.jaspersoft.studio.field.name" value="proveedor"/>
 	</field>
 	<field name="fecha" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
 		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
 	</field>
 	<variable name="total" class="java.lang.Float">
-		<variableExpression><![CDATA[$F{tot_com}-$F{des_com}]]></variableExpression>
+		<variableExpression><![CDATA[$F{tot_com}.floatValue()-$F{des_com}.floatValue()]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -95,49 +106,49 @@
 		<band height="93" splitType="Immediate">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="65" width="130" height="13" forecolor="#030000" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="65" width="180" height="13" forecolor="#030000" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RECIBO DE COMPRA]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="78" width="130" height="15" forecolor="#030000" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="78" width="180" height="15" forecolor="#030000" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Gestion "+$F{ges_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="39" width="130" height="13" forecolor="#030000" uuid="558afa5e-d7cd-4636-81a2-8d7174e37322"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="39" width="180" height="13" forecolor="#030000" uuid="558afa5e-d7cd-4636-81a2-8d7174e37322"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="26" width="130" height="13" forecolor="#030000" uuid="ac7c796d-73ef-4d9d-9f40-0a77378b2cf8"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="26" width="180" height="13" forecolor="#030000" uuid="ac7c796d-73ef-4d9d-9f40-0a77378b2cf8"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="13" width="130" height="13" forecolor="#000000" uuid="e54e4b3f-908c-4ce8-8944-9f2d9c49042f"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="13" width="180" height="13" forecolor="#000000" uuid="e54e4b3f-908c-4ce8-8944-9f2d9c49042f"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="52" width="130" height="13" forecolor="#030000" uuid="a751c7f0-a0b0-4427-955e-7578aa10c114"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="52" width="180" height="13" forecolor="#030000" uuid="a751c7f0-a0b0-4427-955e-7578aa10c114"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="130" height="13" forecolor="#030000" uuid="f3cda6aa-fb7b-41a0-9346-c4d121aabd92"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="180" height="13" forecolor="#030000" uuid="f3cda6aa-fb7b-41a0-9346-c4d121aabd92"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -146,101 +157,131 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="72" splitType="Stretch">
+		<band height="102" splitType="Stretch">
 			<staticText>
-				<reportElement x="-1" y="0" width="32" height="12" uuid="d0143aa7-9486-493c-ac43-7e4b248b3f2a"/>
-				<textElement>
+				<reportElement x="0" y="21" width="48" height="12" uuid="d0143aa7-9486-493c-ac43-7e4b248b3f2a"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="33" y="0" width="46" height="12" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb"/>
-				<textElement>
+				<reportElement x="48" y="21" width="132" height="12" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="79" y="0" width="24" height="12" uuid="83377334-e8ee-4c37-b4fe-d464c041365e"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Cod :]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="104" y="0" width="26" height="12" uuid="f9057fff-980a-4367-ac21-077b041bc558"/>
-				<textElement>
+				<reportElement x="48" y="9" width="132" height="12" uuid="f9057fff-980a-4367-ac21-077b041bc558"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cod_com}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="12" width="130" height="12" uuid="5df1a06e-882e-48b4-847b-beea3cce9181"/>
-				<textElement>
+				<reportElement x="48" y="33" width="132" height="12" uuid="5df1a06e-882e-48b4-847b-beea3cce9181"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Proveedor : "+$F{proveedor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="36" width="130" height="36" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201"/>
+				<reportElement x="48" y="57" width="132" height="36" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Descripcion : "+$F{obs_com}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{obs_com}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="24" width="130" height="12" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b"/>
-				<textElement>
+				<reportElement x="48" y="45" width="132" height="12" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="33" width="48" height="12" uuid="20936b1f-53b6-47ed-9c9e-8bae6ba19b2f"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Comprador : "+$F{usuario}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="48" height="12" uuid="60fa079b-3f07-429c-8e74-0c0d6af08554"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Usuario: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="57" width="48" height="36" uuid="4bf0ea34-bd90-4384-8920-a737c257ab78"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripcion:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="9" width="48" height="12" uuid="243a919e-8bfd-4ead-af7a-c335af53e435"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo ID:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="24" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="130" height="12" forecolor="#000000" uuid="d9b456f0-c2e2-439c-8d83-55021a5da380"/>
+				<reportElement x="0" y="0" width="90" height="12" forecolor="#000000" uuid="d9b456f0-c2e2-439c-8d83-55021a5da380"/>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="33" y="12" width="24" height="12" forecolor="#000000" uuid="cdd4953d-cb99-487f-a222-9847194c3c4c"/>
+				<reportElement x="90" y="0" width="30" height="12" forecolor="#000000" uuid="cdd4953d-cb99-487f-a222-9847194c3c4c"/>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
 				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Cant.]]></text>
+				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="57" y="12" width="24" height="12" forecolor="#000000" uuid="9761d0ad-420c-43cf-8bc5-a8221ad3c50f"/>
+				<reportElement x="120" y="0" width="30" height="12" forecolor="#000000" uuid="9761d0ad-420c-43cf-8bc5-a8221ad3c50f"/>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
 				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Pre bs.]]></text>
+				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="106" y="12" width="24" height="12" forecolor="#000000" uuid="4e37c997-a512-4ec9-8708-969986a20826"/>
+				<reportElement x="150" y="0" width="30" height="12" forecolor="#000000" uuid="4e37c997-a512-4ec9-8708-969986a20826"/>
+				<box>
+					<bottomPen lineWidth="0.75"/>
+				</box>
 				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Subtotal]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="81" y="12" width="24" height="12" forecolor="#000000" uuid="34891101-7787-4677-bb7a-8968487bd3cf"/>
-				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Desc]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="0" width="130" height="12" uuid="7baf9751-bd02-40bc-b604-2a4ceed2ad86"/>
+				<reportElement x="-20" y="0" width="215" height="12" uuid="7baf9751-bd02-40bc-b604-2a4ceed2ad86"/>
 				<subreportParameter name="cod_com">
 					<subreportParameterExpression><![CDATA[$P{cod_com}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -255,35 +296,38 @@
 	<summary>
 		<band height="72" splitType="Stretch">
 			<textField>
-				<reportElement x="-1" y="0" width="130" height="12" uuid="d9f42b9d-d449-417e-8ac5-45df2af6fc11"/>
+				<reportElement x="120" y="0" width="60" height="12" uuid="d9f42b9d-d449-417e-8ac5-45df2af6fc11"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TOTAL : "+ $F{subtot_com}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subtot_com}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="-1" y="12" width="130" height="12" uuid="00e3160c-b833-47d8-b717-025506c2e005"/>
+				<reportElement x="120" y="12" width="60" height="12" uuid="00e3160c-b833-47d8-b717-025506c2e005"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DESCUENTO : "+$F{des_com}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{des_com}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="-1" y="24" width="130" height="12" uuid="c67bedeb-e000-429d-9e41-891704d88af9"/>
+				<reportElement x="120" y="24" width="60" height="12" uuid="c67bedeb-e000-429d-9e41-891704d88af9"/>
 				<textElement textAlignment="Right">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TOTAL A PAGAR : "+$F{tot_com}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tot_com}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="-1" y="48" width="130" height="12" forecolor="#000000" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
+				<reportElement x="-1" y="48" width="181" height="12" forecolor="#000000" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Usuario :"+$P{usuario}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="31" y="60" width="98" height="12" forecolor="#000000" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
+				<reportElement x="31" y="60" width="149" height="12" forecolor="#000000" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
@@ -295,6 +339,30 @@
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="120" height="12" forecolor="#000000" uuid="e914064c-079e-4bbd-9f4e-ddd3796a7451"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="12" width="120" height="12" forecolor="#000000" uuid="31d24e28-5e19-4daa-810a-8b611da7210b"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descuento: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="24" width="120" height="12" forecolor="#000000" uuid="9e2bf8c9-9f21-44cf-8e4f-62e8667a2d70"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL A PAGAR]]></text>
 			</staticText>
 		</band>
 	</summary>

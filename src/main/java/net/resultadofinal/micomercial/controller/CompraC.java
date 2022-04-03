@@ -56,7 +56,7 @@ public class CompraC {
 
 	@RequestMapping("lista")
 	public @ResponseBody Map<?, ?> lista(HttpServletRequest request, Integer draw, Integer start, boolean estado,
-			boolean usuario, int length, String fini, String ffin) throws IOException {
+			boolean usuario, int length, String fini, String ffin,Short tipo) throws IOException {
 		String total;
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
@@ -65,7 +65,7 @@ public class CompraC {
 			cod_user = -1L;
 		Map<String, Object> Data = new HashMap<String, Object>();
 		String search = request.getParameter("search[value]");
-		List<Compra> lista = compraS.listar(start, estado, search, length, cod_user, fini, ffin, gestion.getGes_gen());
+		List<Compra> lista = compraS.listar(start, estado, search, length, cod_user, fini, ffin, gestion.getGes_gen(),tipo);
 		try {
 			total = UtilClass.isNotNullEmpty(lista) ? lista.get(0).getTot().toString() : "0";
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class CompraC {
 	@RequestMapping("guardar")
 	public @ResponseBody
     DataResponse guardar(HttpServletRequest request, Compra c, Long productos[],
-						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[]) {
+						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[], Short tipos[]) {
 		try {
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
@@ -106,7 +106,7 @@ public class CompraC {
 				c.setGes_gen(gestion.getGes_gen());
 				c.setCod_suc(gestion.getCod_suc());
 				c.setUsuario(usuario.getNom_per()+" "+usuario.getPriape_per());
-				boolean status = compraS.adicionar(c, productos, cantidades, precios, descuentos, subtotales, totales);
+				boolean status = compraS.adicionar(c, productos, cantidades, precios, descuentos, subtotales, totales, tipos);
 				return new DataResponse(status,
 						status ? "Se realizo con exito el registro de la compra" : "No se logro registrar la compra:");
 			} else {

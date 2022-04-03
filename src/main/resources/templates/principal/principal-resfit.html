@@ -93,13 +93,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header custom-bolder">Sucursales</li>
-                                <li>
-                                    <ul class="menu" th:each="s : ${sucursales}">
-                                            <li align="center"  th:each="g : ${s.generalList}">
-                                                <a th:href="@{'../general/cambiar?gestion='+${g.ges_gen}+'&codSuc='+${g.cod_suc}}" th:text="${s.sucursal.nombre} +' - '+${g.ges_gen}"></a>
-                                            </li>
-                                    </ul>
-                                </li>
+                                <li id="listaSucursales"></li>
                                 <li class="footer"><a href="#">Gestiones del Sistema</a></li>
                             </ul>
                         </li>
@@ -451,6 +445,7 @@
         var msgBienvenida = /*[[${msg}]]*/ '';
         msgBienvenida += ', al Sistema de Ventas';
         var userSession = /*[[${user}]]*/ {};
+        var sucursalesAsignadas = /*[[${sucursales}]]*/ [];
     </script>
     <script type="text/javascript">
         var notificacionGeneral = {
@@ -501,6 +496,13 @@
         function init() {
             let hoy = moment().format('LLL');
             $('.fechaHoy').html(hoy);
+            let lista = $('<ul class="menu"></ul>');
+            sucursalesAsignadas.forEach(item=>{
+                item.generalList.forEach(subitem => {
+                    $('<li align="center"><a href="../general/cambiar?gestion='+subitem.ges_gen+'&codSuc='+subitem.cod_suc+'">'+item.sucursal.nombre+' - '+subitem.ges_gen+'</a></li>').appendTo(lista);
+                })
+            });
+            $('#listaSucursales').html(lista);
             revisarNotificacion();
         }
         function actualizarAvatar(imgNew){

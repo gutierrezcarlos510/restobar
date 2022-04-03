@@ -15,7 +15,7 @@
                                     <div class="form-group">
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
@@ -24,10 +24,13 @@
                                         <input type="hidden" name="tipoGrupo" value="3" />
                                         <input type="hidden" name="unidadPorCaja" value="1" />
                                         <input type="hidden" id="medidaId" name="medidaId" value="0" />
-                                        <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                        <select id="tipoId1" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Precio al p&uacute;blico</label>
@@ -70,16 +73,19 @@
                                     <div class="form-group">
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
                                             <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de Plato</label>
-                                        <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                        <select id="tipoId2" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Precio al p&uacute;blico</label>
@@ -129,7 +135,7 @@
                                     <div class="form-group">
                                         <label>Nombre del Plato</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            <span class="input-group-addon"><i class="fa fa-cutlery"></i></span>
                                             <input type="text" class="form-control text-capitalize w3-xlarge" name="nombre" data-fv-notempty="true" readonly/>
                                         </div>
                                     </div>
@@ -155,7 +161,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                                        <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                                         <input type="text" class="form-control" name="cantidadPlatos" data-fv-notempty="true" />
                                                     </div>
                                                 </div>
@@ -265,10 +271,6 @@
             maxFileCount: 1,
             resizeImage: true
         });
-        $('.select-chosen').chosen({
-            no_results_text: "No se encuentra:",
-            width: '100%'
-        });
         $('#btnImprimirInventario').click(function() {
             $("#frameReportes").attr("src", "../producto/verInventario");
             $("#reportes").modal('show');
@@ -281,7 +283,7 @@
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
                     $('#medidaId').val(0);
-                    $('.select-chosen').val('').trigger('chosen:updated');
+                    // $('.select-chosen').val('').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
             }],
@@ -356,7 +358,7 @@
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
                     $('#formularioModificar').loadJSON(obj);
-                    $('#tipoId2').val(obj.tipoId).trigger('chosen:updated');
+                    // $('#tipoId2').val(obj.tipoId).trigger('chosen:updated');
                     $('#imgActual').attr('src','/producto/'+obj.foto);
                     $('#modalModificar').modal('show');
                 });

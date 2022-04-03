@@ -107,7 +107,7 @@ public class RolImpl extends DbConeccion implements RolS {
 	@Transactional
 	public Boolean adicionarRolMenu(Integer codr,Integer obtenidos[]){
 		try {
-				return db.queryForObject("select rolmen_adicionar(?,\'"+new Vectores().convertir_Int_a_String(obtenidos)+"\')",Boolean.class,codr);
+				return db.queryForObject("select rolmen_adicionar(?,\'"+new Vectores().convertIntegerToString(obtenidos)+"\')",Boolean.class,codr);
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd("menu con relacion a "+ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorAdd("menu con relacion a "+ENTITY, ""));

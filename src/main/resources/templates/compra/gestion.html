@@ -114,22 +114,41 @@
         <h1><span class="fa  fa-ellipsis-v"></span> Gesti&oacute;n Compras </h1>
         <div class="row">
             <div class="col-md-3">
-                <div class="btn-group btn-group-justified">
+                <div class="btn-group btn-group-justified padding-top-sm">
                     <label class="btn btn-primary active usuarioRadio">
-                        <input type="radio" name="usuario" value="true" title="Compras Propias" checked> C. Propias
+                        <input type="radio" name="usuario" value="true" title="Compras Propias" checked> <br> Compras Propias
                     </label>
                     <label class="btn btn-success usuarioRadio" title="Compras generales">
-                        <input type="radio" name="usuario" value="false"> C. Generales
+                        <input type="radio" name="usuario" value="false"> <br/>Compras Generales
                     </label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="btn-group btn-group-justified padding-top-sm">
                     <label class="btn btn-primary active estadoRadio">
-                        <input type="radio" name="estado" value="true" title="Mostrar Activos" checked> Activos
+                        <input type="radio" name="estado" value="true" title="Mostrar Activos" checked> <br/>Compras Activas
                     </label>
                     <label class="btn btn-danger estadoRadio" title="Mostrar Inactivos">
-                        <input type="radio" name="estado" value="false"> Inactivos
+                        <input type="radio" name="estado" value="false"> <br/>Compras Inactivas
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group btn-group-justified padding-top-sm">
+                    <label class="btn btn-primary active tipoCompraRadio">
+                        <input type="radio" name="tipoCompra" value="0" title="Mostrar todas las compras" checked><br/>Todos
+                    </label>
+                    <label class="btn btn-warning tipoCompraRadio" title="Mostrar compras al contado">
+                        <input type="radio" name="tipoCompra" value="1"><br/>Al Contado
+                    </label>
+                    <label class="btn btn-success tipoCompraRadio" title="Mostrar compras al credito">
+                        <input type="radio" name="tipoCompra" value="2"><br/>Al Credito
+                    </label>
+                    <label class="btn btn-danger tipoCompraRadio" title="Mostrar compras al credito pendiee">
+                        <input type="radio" name="tipoCompra" value="3"><br/>C. Pendientes
+                    </label>
+                    <label class="btn btn-info tipoCompraRadio" title="Mostrar compras al credito finalizado">
+                        <input type="radio" name="tipoCompra" value="4"><br/>C. Finalizados
                     </label>
                 </div>
             </div>
@@ -181,6 +200,7 @@
                     d.fini = '';
                     d.ffin = '';
                     d.usuario = $('input[name=usuario]:checked').val();
+                    d.tipo = $('input[name=tipoCompra]:checked').val();
                 }
             },
             "columnDefs":[{targets: [6,7],className:'text-right'}],
@@ -376,6 +396,8 @@
         $('.usuarioRadio').click(function() {
             $('#tabla').dataTable().fnDraw('');
         });
-
+        $('.tipoCompraRadio').click(function() {
+            $('#tabla').dataTable().fnDraw('');
+        });
     });
 </script>

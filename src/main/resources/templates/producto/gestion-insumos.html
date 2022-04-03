@@ -16,35 +16,47 @@
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <input type="hidden" name="tipoGrupo" value="2" />
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                            <input type="text" class="form-control text-capitalize" name="nombre" autocomplete="off" data-fv-notempty="true" />
+                                            <span class="input-group-addon"><i class="fi fi-eggs"></i></span>
+                                            <input type="text" class="form-control input-lg" name="nombre" autocomplete="off" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de Insumo</label>
-                                        <select id="tipoId1" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                        <select id="tipoId1" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Unidades Por Caja</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de compra por defecto</label>
-                                        <select id="tipoCompra1" name="tipoCompra" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cart-plus"></i></span>
+                                        <select id="tipoCompra1" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option value="1">En unidad</option>
                                             <option value="2">En caja</option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de compra por defecto</label>
-                                        <select id="medidaId1" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                        <select id="medidaId1" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-7">
@@ -81,31 +93,43 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Inventario Minimo por unidad</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Inventario Minimo por caja</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Presentacion por Unidad</label>
-                                        <select id="presentacionUnidadId1" name="presentacionUnidadId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                        <select id="presentacionUnidadId1" name="presentacionUnidadId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Presentacion por caja</label>
-                                        <select id="presentacionCajaId1" name="presentacionCajaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                        <select id="presentacionCajaId1" name="presentacionCajaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -134,35 +158,47 @@
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <input type="hidden" name="tipoGrupo" value="2" />
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                            <span class="input-group-addon"><i class="fi fi-eggs"></i></span>
+                                            <input type="text" class="form-control input-lg" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de Insumo</label>
-                                        <select id="tipoId2" name="tipoId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                        <select id="tipoId2" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Unidades Por Caja</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de compra por defecto</label>
-                                        <select id="tipoCompra2" name="tipoCompra" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                        <select id="tipoCompra2" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option value="1">En unidad</option>
                                             <option value="2">En caja</option>
                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Tipo de compra por defecto</label>
-                                        <select id="medidaId2" name="medidaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                        <select id="medidaId2" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -210,31 +246,43 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Inventario Minimo por unidad</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Inventario Minimo por caja</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                                         <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Presentacion por Unidad</label>
-                                        <select id="presentacionUnidadId2" name="presentacionUnidadId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                        <select id="presentacionUnidadId2" name="presentacionUnidadId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="required">Presentacion por caja</label>
-                                        <select id="presentacionCajaId2" name="presentacionCajaId" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                        <select id="presentacionCajaId2" name="presentacionCajaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                             <option value="">Seleccionar</option>
                                             <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>
                                         </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -319,10 +367,6 @@
             maxFileCount: 1,
             resizeImage: true
         });
-        $('.select-chosen').chosen({
-            no_results_text: "No se encuentra:",
-            width: '100%'
-        });
         $('#btnImprimirInventario').click(function() {
             $("#frameReportes").attr("src", "../producto/verInventario");
             $("#reportes").modal('show');
@@ -334,7 +378,7 @@
                 action: function(e, dt, node, config) {
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
-                    $('.select-chosen').val('').trigger('chosen:updated');
+                    // $('.select-chosen').val('').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
             }],
