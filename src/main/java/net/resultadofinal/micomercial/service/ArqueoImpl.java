@@ -330,7 +330,7 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 	}
 	public Boolean rehabilitarArqueo(Long cod){
 		try {
-			return db.update("update arqueo set (custodio_final_id,ffin,monto_final)=(null,null,null) where id=?;",cod)>0;
+			return db.update("update arqueo set (custodio_final_id,ffin,monto_final,monto_real)=(null,null,null,null) where id=?;",cod)>0;
 		} catch (Exception e) {
 			logger.error(Utils.errorEli(ENTITY, e.toString()));
 			return false;

@@ -698,12 +698,13 @@ delete from historico_almacen ;
 delete from almacen ;
 delete from detalle_cartilla_diaria ;
 delete from cartilla_diaria ;
-
+delete from detalle_movimiento ;
+delete from movimiento ;
 
 
 
 delete from dato where cod_per > 1;
-delete from tiene_sucursal where cod_per > 1
+delete from tiene_sucursal where cod_per > 1;
 delete from usurol where cod_per > 1;
 delete from proveedor where cod_pro > 1;
 delete from cliente where cod_cli > 1;

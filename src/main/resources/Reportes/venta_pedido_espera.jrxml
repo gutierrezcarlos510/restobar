@@ -20,12 +20,13 @@
 	<parameter name="xusuario" class="java.lang.String"/>
 	<parameter name="xfecha" class="java.lang.String"/>
 	<parameter name="xmesa" class="java.lang.String"/>
+	<parameter name="areaId" class="java.lang.Short"/>
 	<queryString>
 		<![CDATA[select p.nombre, string_agg(dhv.cantidad::varchar,', ' order by dhv.historico_venta_id asc) cantidades 
 from historico_venta hv 
 inner join detalle_historico_venta dhv on dhv.venta_id = hv.venta_id and hv.id = dhv.historico_venta_id
 inner join producto p on p.id = dhv.producto_id 
-inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = 1 or -1 = -1)
+inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino =  $P{areaId} or -1 = $P{areaId})
 where hv.venta_id =$P{ventaId} 
 group by p.nombre]]>
 	</queryString>

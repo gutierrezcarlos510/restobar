@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +59,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 
 	
 	@Override
-	public CartillaDiaria obtener(Integer id){
+	public CartillaDiaria obtener(Long id){
 		try {
 			List<CartillaDiaria> lista = db.query("select * from cartilla_diaria where id=?", BeanPropertyRowMapper.newInstance(CartillaDiaria.class), id);
 			return UtilClass.getFirst(lista);
@@ -72,9 +69,9 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 		}
 	}
 	@Override
-	public List<DetalleCartillaDiaria> obtenerDetalles(Integer id){
+	public List<DetalleCartillaDiaria> obtenerDetalles(Long id){
 		try {
-			return db.query("select dcd.*,tp.nombre as xtipo_producto from detalle_cartilla_diaria dcd inner join producto p on dcd.producto_id = p.id where cartilla_diaria_id=? order by id asc", BeanPropertyRowMapper.newInstance(DetalleCartillaDiaria.class), id);
+			return db.query("select dcd.*,tp.nombre as xtipo_producto from detalle_cartilla_diaria dcd inner join producto p on dcd.producto_id = p.id inner join tipo_producto tp on tp.id = p.tipo_id where cartilla_diaria_id=? order by id asc", BeanPropertyRowMapper.newInstance(DetalleCartillaDiaria.class), id);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;
@@ -83,6 +80,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	
 	
 	@Override
+	@Transactional
 	public DataResponse adicionar(CartillaDiariaForm obj){
 		try {
 			if(obj != null && obj.getCartillaSucursalFormList() != null && !obj.getCartillaSucursalFormList().isEmpty()) {
@@ -103,31 +101,56 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 		}
 	}
 	@Override
+	@Transactional
 	public void adicionarDetalles(CartillaDiariaForm obj){
 		if(UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
 			sqlString = "select coalesce(max(id),0)+1 from detalle_cartilla_diaria where cartilla_diaria_id=?";
 			int i= db.queryForObject(sqlString, Integer.class, obj.getId());
 			sqlString = "insert into detalle_cartilla_diaria(cartilla_diaria_id,id,cartilla_sucursal_id,detalle_cartilla_sucursal_id,producto_id,precio_individual,precio_compuesto,cantidad) values(?,?,?,?,?,?,?,?);";
 
+			List<DetalleCartillaDiaria> detallesBD = obtenerDetalles(obj.getId());
+			List<ProductoCartillaForm> detallesModificados = new ArrayList<>();
+
 			for (CartillaSucursalForm det: obj.getCartillaSucursalFormList()) {
 				if (UtilClass.isNotNullEmpty(det.getDetalleCartillaList())) {
 					for(DetalleCartillaForm subdet: det.getDetalleCartillaList()) {
 						if (UtilClass.isNotNullEmpty(subdet.getProductos())) {
 							for(ProductoCartillaForm item : subdet.getProductos()) {
+								boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, item.getProductoId());
+								item.setEsProductoFabricado(esProductoFabricado);
 								if(item.getCartillaDiariaId() != null && item.getId() != null) { // Modificar
+									detallesModificados.add(item);
 									if(item.getCantidadModificar() != null) {
 										db.update("update detalle_cartilla_diaria set cantidad=?+cantidad where id=? and cartilla_diaria_id=?",
 												item.getCantidadModificar(),item.getId(), item.getCartillaDiariaId());
-										almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidadModificar(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+										if(!esProductoFabricado) {
+											almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidadModificar(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+										}
 									}
 								} else { // Adicionar
 									db.update(sqlString, obj.getId(),i,det.getId(),subdet.getId(),item.getProductoId(),item.getPrecioIndividual(),item.getPrecioCompuesto(),item.getCantidad());
-									almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidad(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+									if(!esProductoFabricado) {
+										almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidad(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+									}
 									i++;
 								}
 							}
 						} else {
 							throw new RuntimeException("Lista Productos nula");
+						}
+					}
+					//Luego de adicionar y modificar, revisamos si hay elementos por eliminar datos que se hayan ingresado anteriormente en BD, pero q ahora ya no estan
+					if(UtilClass.isNotNullEmpty(detallesBD)) {
+						for (DetalleCartillaDiaria data: detallesBD) {
+							Optional<ProductoCartillaForm> detalleBd = detallesModificados.stream().filter(it -> it.getCartillaDiariaId() == data.getCartillaDiariaId()
+									&& it.getId() == data.getId()).findFirst();
+							if(!detalleBd.isPresent()) {
+								db.update("delete from detalle_cartilla_diaria where id = ? and cartilla_diaria_id = ?", data.getId(), data.getCartillaDiariaId());
+								boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, data.getProductoId());
+								if(!esProductoFabricado) {
+									almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),(-1*data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
+								}
+							}
 						}
 					}
 				} else {
@@ -140,6 +163,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	}
 
 	@Override
+	@Transactional
 	public DataResponse modificar(CartillaDiariaForm obj){
 		try {
 			if(obj != null && UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
@@ -200,7 +224,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					sqlString = "select distinct dcs.*,tp.nombre as xtipo_producto,tp.es_preparado,tp.es_comerciable from detalle_cartilla_diaria dcd inner join detalle_cartilla_sucursal dcs on dcd.cartilla_sucursal_id = dcs.cartilla_sucursal_id and dcd.detalle_cartilla_sucursal_id = dcs.id inner join tipo_producto tp on tp.id=dcs.tipo_producto_id where dcd.cartilla_diaria_id =?;";
 					List<DetalleCartillaForm> detalleCartillaFormList = db.query(sqlString, BeanPropertyRowMapper.newInstance(DetalleCartillaForm.class), cartillaDiariaId);
 
-					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,a.cantidad,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id inner join almacen a on a.producto_id = p.id and a.sucursal_id = ? where dcd.cartilla_diaria_id = ?";
+					sqlString = "select dcd.cartilla_diaria_id,dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id,dcd.id,dcd.producto_id,dcd.precio_individual,dcd.precio_compuesto,dcd.cantidad,coalesce(a.cantidad,0) as cantidad_almacen,p.nombre as xproducto,p.foto from detalle_cartilla_diaria dcd inner join producto p on p.id=dcd.producto_id left join almacen a on a.producto_id = p.id and a.sucursal_id = ? where dcd.cartilla_diaria_id = ?";
 					List<ProductoCartillaForm> productoList = db.query(sqlString, BeanPropertyRowMapper.newInstance(ProductoCartillaForm.class), obj.getCodSuc(),cartillaDiariaId);
 					if(UtilClass.isNotNullEmpty(productoList)) {
 						for(ProductoCartillaForm pro: productoList) {

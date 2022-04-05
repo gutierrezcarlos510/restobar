@@ -92,7 +92,7 @@ public class CartillaDiariaC {
 	}
 	@RequestMapping("obtener")
 	public @ResponseBody
-    DataResponse obtener(Integer id){
+    DataResponse obtener(Long id){
 		try {
 			CartillaDiaria obj = cartillaDiariaS.obtener(id);
 			boolean exist = obj != null;
@@ -103,7 +103,7 @@ public class CartillaDiariaC {
 	}
 	@RequestMapping("obtenerDetalles")
 	public @ResponseBody
-	DataResponse obtenerDetalles(Integer id){
+	DataResponse obtenerDetalles(Long id){
 		try {
 			List<DetalleCartillaDiaria> obj = cartillaDiariaS.obtenerDetalles(id);
 			boolean exist = obj != null;

@@ -13,9 +13,9 @@ import java.util.List;
 public interface CartillaDiariaS {
     DataTableResults<CartillaDiaria> listado(HttpServletRequest request, boolean estado, Integer sucursalId);
 
-    CartillaDiaria obtener(Integer id);
+    CartillaDiaria obtener(Long id);
 
-    List<DetalleCartillaDiaria> obtenerDetalles(Integer id);
+    List<DetalleCartillaDiaria> obtenerDetalles(Long id);
 
     DataResponse adicionar(CartillaDiariaForm obj);
 

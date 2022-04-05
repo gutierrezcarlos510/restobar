@@ -10,7 +10,24 @@ public class ProductoCartillaForm {
     private Long productoId;
     private String xproducto, foto;
     private BigDecimal precioIndividual, precioCompuesto;
-    private Integer cantidad, cantidadModificar;
+    private Integer cantidad, cantidadModificar,cantidadAlmacen;
+    private Boolean esProductoFabricado;
+
+    public Integer getCantidadAlmacen() {
+        return cantidadAlmacen;
+    }
+
+    public void setCantidadAlmacen(Integer cantidadAlmacen) {
+        this.cantidadAlmacen = cantidadAlmacen;
+    }
+
+    public Boolean getEsProductoFabricado() {
+        return esProductoFabricado;
+    }
+
+    public void setEsProductoFabricado(Boolean esProductoFabricado) {
+        this.esProductoFabricado = esProductoFabricado;
+    }
 
     public String getFoto() {
         return foto;

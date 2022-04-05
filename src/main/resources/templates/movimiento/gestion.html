@@ -73,8 +73,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
-                    <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                    <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Salir</button>
                 </div>
             </div>
         </div>
@@ -279,7 +278,7 @@
                                     let row = $('<tr></tr>');
                                     $('<td style="vertical-align: bottom;">'+ind+'</td>').appendTo(row);
                                     $('<td style="vertical-align: bottom;">#'+it.productoId + ' - '+it.xproducto+'</td>').appendTo(row);
-                                    $('<td style="vertical-align: bottom;">'+(it.esIngreso === true ? '<span class="label label-success">Ingreso</span>':'<span class="label-danger">Salida</span>')+'</td>').appendTo(row);
+                                    $('<td style="vertical-align: bottom;">'+(it.esIngreso === true ? '<span class="badge label-success">Ingreso</span>':'<span class="badge label-danger">Salida</span>')+'</td>').appendTo(row);
                                     $('<td style="vertical-align: bottom;" class="w3-center">'+it.cantidad+'</td>').appendTo(row);
                                     $('<td style="vertical-align: bottom;">'+(it.tipo === true ? 'Unidades':'Cajas')+'</td>').appendTo(row);
                                     ind++;

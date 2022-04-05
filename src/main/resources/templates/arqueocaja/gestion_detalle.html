@@ -223,6 +223,9 @@
     var esPropioCajero = /*[[${esPropioCajero}]]*/ false;
 </script>
 <script type="text/javascript" th:inline="none">
+    if(esPropioCajero) {
+        $('#tabla').hide();
+    }
     var dataReq = {
         TIPO_INGRESO: 3,
         TIPO_EGRESO: 4,
@@ -284,7 +287,6 @@
     	});
         $('#tabla').DataTable({
             dom: "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
-            "ordering": true,
             "oLanguage": {
                 "sUrl": "../../js/Spanish.lang"
             },
@@ -298,6 +300,7 @@
                     d.arqueoId = arqueoId;
                 }
             },
+            "ordering": true,
             "order":[[0,'desc']],
             "columnDefs":[{targets: [3,4,5],className:'text-right'}],
             "columns": [{

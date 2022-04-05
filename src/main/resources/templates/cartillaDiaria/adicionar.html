@@ -82,7 +82,7 @@
             dataReq.cartillaDiaria.cartillaSucursalFormList.forEach(det => {
                 if(det.id === cartillaId) {
                     det.detalleCartillaList.forEach(subdet => {
-                        if (subdet.id === detalleCartillaId) {
+                        if (subdet.id === detalleCartillaId && subdet.productos) {
                             productFound = subdet.productos.find(it => it.productoId === productoId);
                         }
                     });
@@ -145,7 +145,8 @@
                                 $('<div class="col-md-2 text-center">En almacen</div>').appendTo(row);
                             }
                             if(dataReq.isUpdate) {
-                                $('<div class="col-md-2"></div>').appendTo(row);
+                                // $('<div class="col-md-2"></div>').appendTo(row);
+                                $('<div class="col-md-2"><a href="#" class="text-danger" onclick="eliminarProducto('+det.id+','+subdet.id+','+item.productoId+')">&laquo; Eliminar &raquo;</a></div>').appendTo(row);
                             } else {
                                 $('<div class="col-md-2"><a href="#" class="text-danger" onclick="eliminarProducto('+det.id+','+subdet.id+','+item.productoId+')">&laquo; Eliminar &raquo;</a></div>').appendTo(row);
                             }
@@ -299,7 +300,12 @@
                         det.detalleCartillaList.forEach(subdet => {
                             if(subdet.id === parseInt(dataForm.detalleCartillaSucursalId)){
                                 //Revisar si no existe el producto, si existe modificar
-                                let prod = subdet.productos.find(it => it.productoId === parseInt(dataForm.productoId));
+                                let prod = null;
+                                if(subdet.productos) {
+                                    prod = subdet.productos.find(it => it.productoId === parseInt(dataForm.productoId));
+                                } else {//Si no existe se lo crea, como vector vacio Vec
+                                    subdet.productos = [];
+                                }
                                 if(prod) { // Si Existe
                                     subdet.productos.forEach(item => {
                                         if(item.productoId === parseInt(dataForm.productoId)){
@@ -414,7 +420,7 @@
             dataReq.cartillaList.forEach(det => {
                 if(det.id === cartillaSucursalId) {
                     det.detalleCartillaList.forEach(subdet => {
-                        if (subdet.id === detalleCartillaSucursalId) {
+                        if (subdet.id === detalleCartillaSucursalId && subdet.productos) {
                             productFound = subdet.productos.find(it => it.productoId === obj.id);
                         }
                     });

@@ -14,19 +14,31 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>C.I. - (Ingrese cero si no tiene carnet)</label>
-                                        <input type="text" class="form-control" id="ci_per1" name="ci_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                            <input type="text" class="form-control" id="ci_per1" name="ci_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control text-uppercase" id="nom_per1" name="nom_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="nom_per1" name="nom_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Primer Apellido</label>
-                                        <input type="text" class="form-control text-uppercase" id="priape_per1" name="priape_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="priape_per1" name="priape_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Segundo Apellido</label>
-                                        <input type="text" class="form-control text-uppercase" id="segape_per1" name="segape_per">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="segape_per1" name="segape_per">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -77,32 +89,41 @@
                             	</div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Telefono</label>
-                                        <input type="text" class="form-control" id="tel_per1" name="tel_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                                            <input type="text" class="form-control" id="tel_per1" name="tel_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>Domicilio</label>
-                                        <input type="text" class="form-control" id="dir_per1" name="dir_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                                            <input type="text" class="form-control" id="dir_per1" name="dir_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" id="ema_per1" name="ema_per" data-fv-emailaddress="true">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Genero</label>
                                         <div class="radio">
-                                            <label for="masculino"><input type="radio" id="masculino" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
-                                            <label for="femenino"><input type="radio" id="femenino" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                            <label for="masculino" class="w3-medium"><input type="radio" id="masculino" name="sex_per" value="true" data-fv-notempty="true"/>Masculino</label>
+                                            <label style="padding-left: 25px" class="w3-medium" for="femenino"><input type="radio" id="femenino" name="sex_per" value="false" data-fv-notempty="true"/>Femenino</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-email"></i></span>
+                                            <input type="email" class="form-control" id="ema_per1" name="ema_per" data-fv-emailaddress="true">
                                         </div>
                                     </div>
                                 </div>
@@ -111,25 +132,34 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Usuario</label>
-                                        <input type="text" class="form-control" name="logDat" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <input type="text" class="form-control" name="logDat" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Roles</label>
-                                        <select id="rolesInit" multiple="multiple" data-fv-notempty name="rolesField" class="form-control input-md select-chosen" data-placeholder="Asignar">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="r : ${roles}" th:value="${r.cod_rol}" th:text="${r.nom_rol}"></option>
-                                        </select>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+                                            <select id="rolesInit" multiple="multiple" data-fv-notempty name="rolesField" class="form-control input-md select-chosen" data-placeholder="Asignar">
+                                                <option value="">Seleccionar</option>
+                                                <option th:each="r : ${roles}" th:value="${r.cod_rol}" th:text="${r.nom_rol}"></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Sucursales</label>
-                                        <select name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
-                                        </select>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                                            <select name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
+                                                <option value="">Seleccionar</option>
+                                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -159,19 +189,31 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>C.I. - (Ingrese cero si no tiene carnet)</label>
-                                        <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                            <input type="text" class="form-control" id="ci_per" name="ci_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Primer Apellido</label>
-                                        <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Segundo Apellido</label>
-                                        <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -222,38 +264,45 @@
                             	</div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Tel&eacute;fono</label>
-                                        <input type="text" class="form-control" id="tel_per" name="tel_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                                            <input type="text" class="form-control" id="tel_per" name="tel_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>Domicilio</label>
-                                        <input type="text" class="form-control" id="dir_per" name="dir_per" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                                            <input type="text" class="form-control" id="dir_per" name="dir_per" data-fv-notempty="true">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" id="ema_per" name="ema_per" data-fv-emailaddress="true">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>G&eacute;nero</label>
                                         <div class="radio">
                                             <label for="masculino1"><input type="radio" id="masculino1" value="true" name="sex_per" />Masculino</label>
-                                            <label for="femenino1"><input type="radio" id="femenino1" value="false" name="sex_per"/>Femenino</label>
+                                            <label style="padding-left: 25px;" for="femenino1"><input type="radio" id="femenino1" value="false" name="sex_per"/>Femenino</label>
                                         </div>
-
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="ion ion-email"></i></span>
+                                            <input type="text" class="form-control" id="ema_per" name="ema_per" data-fv-emailaddress="true">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
@@ -279,20 +328,32 @@
                             	</div>
                             	<div class="col-md-7">
                             		<div class="form-group">
-                            			<label>Usuario</label>
-                            			<label id="usuarioLabel3" class="form-control "></label>
+                            			<label>Nombre Completo del Usuario</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            			    <label id="usuarioLabel3" class="form-control"></label>
+                                        </div>
                             		</div>
                             		<div class="form-group">
 			                            <label>Usuario</label>
-			                            <input type="text" class="form-control" id="log_dat" name="log_dat" data-fv-notempty="true">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+			                                <input type="text" class="form-control" id="log_dat" name="log_dat" data-fv-notempty="true">
+                                        </div>
 		                            </div>
 		                            <div class="form-group">
 		                            	<label>Roles</label>
-		                            	<select id="roles" multiple="multiple" data-fv-notempty name="roles" class="form-control input-md select-chosen" data-placeholder="Asignar"></select>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+		                            	    <select id="roles" multiple="multiple" data-fv-notempty name="roles" class="form-control input-md select-chosen" data-placeholder="Asignar"></select>
+                                        </div>
 		                            </div>
 		                            <div class="form-group">
 		                            	<label>Sucursales</label>
-		                            	<select name="sucursales" id="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales..."></select>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-home"></i></span>
+		                            	    <select name="sucursales" id="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales..."></select>
+                                        </div>
 		                            </div> 
                             	</div>
                             </div>
@@ -307,7 +368,7 @@
             </div>
         </div>
         <div id="modalAsignarSucursales" class="modal fade">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <form id="formularioAsignarSucursales" method="post" action="../usuario/guardarSucursales" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -317,19 +378,24 @@
                         <div class="modal-body">
                             <input type="hidden" id="cod_per" name="cod_per" />
                             <div class="row">
-                            	<div class="col-md-5">
+                            	<div class="col-md-4">
                             		<img id="imageSucursal" name="image" class="img-thumbnail img-circle" src="#"> 
                             	</div>
-                            	<div class="col-md-7">
+                            	<div class="col-md-8">
                             		<div class="form-group">
                             			<label>Usuario</label>
-                            			<label id="usuarioLabelSucursal" class="form-control w3-border-0"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            			    <label id="usuarioLabelSucursal" class="form-control"></label>
+                                        </div>
                             		</div>
 		                            <div class="form-group">
-		                                		<label>Seleccionar sucursal o sucursales</label>
-		                                		<select name="sucursales" id="sucursales2" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar">
-		                                		</select>
-		                                	</div>
+                                        <label>Seleccionar sucursal o sucursales</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                                            <select name="sucursales" id="sucursales2" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar"></select>
+                                        </div>
+                                    </div>
                             	</div>
                             </div>
                         </div>

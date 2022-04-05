@@ -123,7 +123,7 @@
             }, {
                 "data": "finicio","name":"finicio"
             }, {
-                "data": "ffin","name":"ffin"
+                "data": "fechaCierre","name":"fecha_cierre"
             }, {
                 "data": "estadoCartilla","name":"estado_cartilla"
             }, {
@@ -131,7 +131,7 @@
             }],
             "createdRow": function(row, data, index) {
                 $('td', row).eq(2).html(UtilDate.formatTimestampLiteral(data.finicio));
-                $('td', row).eq(3).html(UtilDate.formatTimestampLiteral(data.ffin));
+                $('td', row).eq(3).html(UtilDate.formatTimestampLiteral(data.fechaCierre));
                 $('td', row).eq(4).html(data.estadoCartilla ? '<span class="label-success">Activo</span>':'<span class="label-danger">Finalizado</span>');
                 if (data.estado) {
                     let buttons = '';

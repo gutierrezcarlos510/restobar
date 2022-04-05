@@ -52,7 +52,7 @@ public class MesaImpl extends DbConeccion implements MesaS {
 	@Override
 	public List<Mesa> listPorSucursal(Integer sucursalId) {
 		try {
-			sqlString = "select m.* from mesa m where m.sucursal_id = ? order by m.orden";
+			sqlString = "select m.* from mesa m where m.sucursal_id = ? and m.id > 0 order by m.orden";
 			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Mesa.class), sucursalId);
 		} catch(Exception ex) {
 			return null;

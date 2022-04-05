@@ -189,7 +189,8 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-sm btn-success form-control" title="Adicionar Cliente" id="adicionarCliente"> <span class="glyphicon glyphicon-plus"></span> Cliente Nuevo</button>
+                                <button type="button" class="btn btn-success btn-block" title="Adicionar Cliente" id="adicionarCliente"> <i class="glyphicon glyphicon-plus"></i>
+                                    <br> Cliente Nuevo</button>
                             </div>
                         </div>
                         <h4 class="content-header">Mesa</h4>
@@ -289,9 +290,15 @@
                                 </thead>
                                 <tbody>
                                 <tr id="unit">
-                                    <td colspan="7" class="w3-center">Sin ningun detalle</td>
+                                    <td colspan="6" class="w3-center">Sin ningun detalle</td>
                                 </tr>
                                 </tbody>
+                                <tfoot>
+                                    <tr class="w3-xlarge">
+                                        <td colspan="4" class="w3-right-align">TOTAL </td>
+                                        <td colspan="2" class="w3-right-align" style="padding-right: 25px;" id="totalDetalleResumen"></td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <br>
@@ -660,7 +667,6 @@
         renderDetalleVenta();
     }
     function btnAdicionarPlato(cartillaSucursalId, cartillaDiariaId, detalleCartillaSucursalId, detalleCartillaDiariaId,productoId){
-        console.log('adicionar plato')
         dataReq.cartillaDiariaList.cartillaSucursalFormList.forEach(det => {
             if(det.id === cartillaSucursalId) {
                 det.detalleCartillaList.forEach(subdet => {
@@ -673,8 +679,8 @@
                             modalAlert('Cantidad incorrecta', found.xproducto, 'info');
                             return;
                         }
-                        if(cantidad > found.cantidad) {
-                            modalAlert('Cantidad excesiva', 'No se cuenta con esa cantidad. Cantidad actual: '+found.cantidad, 'info');
+                        if(cantidad > found.cantidadAlmacen) {
+                            modalAlert('Cantidad excesiva', 'No se cuenta con esa cantidad. Cantidad actual: '+found.cantidadAlmacen, 'info');
                             return;
                         }
                         let precio = found.precioIndividual;
@@ -845,7 +851,7 @@
                         item.cantidadVenta = 0;
                     }
                     // Verificar quno sobre pase el stock disponible
-                    if(item.cantidadVenta >= item.cantidad) {
+                    if(item.cantidadVenta >= item.cantidadAlmacen) {
                         modalAlert('Cantidad limite', 'No se puede cuenta con mas unidades del producto.','error');
                         return;
                     }
@@ -1092,7 +1098,7 @@
             $('<div class="plato-img"><img src="/producto/notimage.png" alt="Product Image"></div>').appendTo(div1);
         }
         let div2 = $('<div class="plato-info"></div>');
-        $('<a href="#" class="plato-title">Bs. <span id="precioPlato-'+itProducto.id+'">'+itProducto.precioIndividual+'</span> <span class="label label-warning pull-right w3-small" id="cantPlato-'+itProducto.id+'">Stock: '+itProducto.cantidad+'</span></a>').appendTo(div2);
+        $('<a href="#" class="plato-title">Bs. <span id="precioPlato-'+itProducto.id+'">'+itProducto.precioIndividual+'</span> <span class="label label-warning pull-right w3-small" id="cantPlato-'+itProducto.id+'">Stock: '+itProducto.cantidadAlmacen+'</span></a>').appendTo(div2);
         $('<span class="plato-description">'+itProducto.xproducto+'</span>').appendTo(div2);
         div1.append(div2);
         let div3 = $('<span class="plato-description"></span>');
@@ -1267,6 +1273,7 @@
                     });
                 }
                 $('#areaResumenDetalleVenta > tbody').html('');
+                let stotal = 0;
                 if(dataReq.detalleVenta && dataReq.detalleVenta.length > 0) {
                     dataReq.detalleVenta.forEach(it => {
                         let row = $('<tr></tr>');
@@ -1277,6 +1284,7 @@
                         $('<td class="w3-center">'+it.total+'</td>').appendTo(row);
                         $('<td class="w3-center w3-tiny text-danger active"><a href="#" onclick="adicionarObservacion('+it.productoId+','+it.cartillaDiariaId+','+it.detalleCartillaDiariaId+')">Agregar Observacion</a></td>').appendTo(row);
                         $('#areaResumenDetalleVenta > tbody:last').append(row);
+                        stotal += it.total;
                     });
                 }
                 if(dataReq.detalleVentaCompuesto && dataReq.detalleVentaCompuesto.length > 0) {
@@ -1300,15 +1308,16 @@
                         $('<span>'+it.nombre+'</span>').appendTo(tdNombre);
                         tablaInterna.appendTo(tdNombre);
                         tdNombre.appendTo(row);
-                        // $('<td>'+it.nombre+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.cantidadVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.xtipoVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.precioVenta+'</td>').appendTo(row);
                         $('<td class="w3-center">'+it.totalVenta+'</td>').appendTo(row);
                         $('<td class="w3-center w3-tiny text-danger active"><a href="#" onclick="adicionarObservacionCompuesto('+it.id+')">Agregar Observacion</a></td>').appendTo(row);
                         $('#areaResumenDetalleVenta > tbody:last').append(row);
+                        stotal += it.totalVenta;
                     });
                 }
+                $('#totalDetalleResumen').html(stotal);
             }
             if(stepIndex === 3) {
                 beforeStep3();

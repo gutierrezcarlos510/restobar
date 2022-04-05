@@ -64,11 +64,16 @@
                         Tipo de movimiento
                     </label>
                     <div class="col-md-8">
-                        <select name="tipo" id="tipo" class="form-control input-lg" data-fv-notempty="true">
-                            <option value="">Seleccionar</option>
-                            <option value="1">Traspaso entre sucursales</option>
-                            <option value="2">Registro de Movimiento</option>
-                        </select>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-sort"></i></span>
+                                <select name="tipo" id="tipo" class="form-control input-lg" data-fv-notempty="true">
+                                    <option value="">Seleccionar</option>
+                                    <option value="1">Traspaso entre sucursales</option>
+                                    <option value="2">Registro de Movimiento</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,10 +83,15 @@
                         Sucursal Destino
                     </label>
                     <div class="col-md-8">
-                        <select name="sucursalDestino" id="sucursalDestino" class="form-control input-lg">
-                            <option value="">Seleccionar</option>
-                            <option th:each="s: ${sucursales}" th:if="${s.cod_suc != sucursalOrigen}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
-                        </select>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                                <select name="sucursalDestino" id="sucursalDestino" class="form-control input-lg">
+                                    <option value="">Seleccionar</option>
+                                    <option th:each="s: ${sucursales}" th:if="${s.cod_suc != sucursalOrigen}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,7 +167,7 @@
                 <div class="form-group">
                     <label class="required">Cantidad movimiento</label>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                        <span class="input-group-addon"><i class="ion ion-pound"></i></span>
                         <input type="number" min="1" class="form-control text-right" autocomplete="off" name="cantidad" data-fv-notempty="true" data-fv-integer="true" />
                     </div>
                 </div>
@@ -350,7 +360,7 @@
                 return;
             }
             let esIngreso = formData.esIngreso;
-            if(tipoMovimiento === 1) {
+            if(tipoMovimiento === 1) { // traspaso entre sucursales
                 esIngreso = tipoMovimiento === 1 ? false : (formData.esIngreso == 'true');
             } else {
                 if(esIngreso) {
@@ -361,7 +371,6 @@
                     return;
                 }
             }
-
             let cantidadMovimiento = parseInt(formData.cantidad);
             let existeDetalle = dataReq.movimiento.detalles.find(it => it.productoId === dataReq.productoSelected.productoId);
             if(existeDetalle && esIngreso === existeDetalle.esIngreso && existeDetalle.tipo === tipoMedida) {
@@ -372,9 +381,18 @@
                     existeDetalle = null;
                 }
             }
-            if(!esIngreso && cantidadMovimiento > dataReq.productoSelected.cantidad) {
-                modalAlert('Cantidad inexistente','No se cuenta con la cantidad ingresada: '+cantidadMovimiento, 'error');
-                return ;
+            if(tipoMovimiento === 1) {
+                if(tipoMedida === true) { // Es unidades
+                    if(cantidadMovimiento > dataReq.productoSelected.cantidad) {
+                        modalAlert('Cantidad inexistente','No se cuenta con la cantidad ingresada: '+cantidadMovimiento + ' unidades', 'error');
+                        return ;
+                    }
+                } else { //cajas
+                    if(cantidadMovimiento > dataReq.productoSelected.cantidadCaja) {
+                        modalAlert('Cantidad inexistente','No se cuenta con la cantidad ingresada: '+cantidadMovimiento + ' cajas', 'error');
+                        return ;
+                    }
+                }
             }
             if(existeDetalle) {
                 dataReq.movimiento.detalles.forEach(it => {

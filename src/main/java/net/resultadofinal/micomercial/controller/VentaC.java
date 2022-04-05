@@ -267,7 +267,7 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("verPedidoPendiente")
-	public void verPedidoPendiente(HttpServletRequest request, HttpServletResponse response, Long ventaId, Short historicoVentaId) {
+	public void verPedidoPendiente(HttpServletRequest request, HttpServletResponse response, Long ventaId, Short historicoVentaId, Short areaId) {
 		try {
 			String nombre = "pedido_comanda_" + ventaId, tipo = "pdf", estado = "inline";
 			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
@@ -278,8 +278,9 @@ public class VentaC {
 			parametros.put("ventaId", ventaId);
 			parametros.put("xcliente", obj.getXcliente());
 			parametros.put("xusuario", obj.getXusuario());
-			parametros.put("xfecha", obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH_mm:ss").format(obj.getFecha()): "");
+			parametros.put("xfecha", obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(obj.getFecha()): "");
 			parametros.put("xmesa", obj.getXmesa());
+			parametros.put("areaId", areaId);
 			GeneradorReportes generador = new GeneradorReportes();
 			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
 					datasource.getConnection(), nombre, estado);

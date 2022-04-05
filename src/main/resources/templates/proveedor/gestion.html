@@ -17,26 +17,41 @@
                             <input type="hidden" name="sex_per" value="true"/>
                             <div class="form-group">
                             	<label>Empresa</label>
-                            	<select id="cod_emp" name="cod_emp" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
-	                  				<option value=""></option>
-	                  				<option th:each="em : ${empresas}" th:value="${em.cod_emp}" th:text="${em.nom_emp}"></option>
-                  				</select>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                    <select id="cod_emp" name="cod_emp" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty>
+                                        <option value=""></option>
+                                        <option th:each="em : ${empresas}" th:value="${em.cod_emp}" th:text="${em.nom_emp}"></option>
+                                    </select>
+                                </div>
                   			</div>
                             <div class="form-group">
                             	<label>Nombre</label>
-                            	<input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" id="nom_per" name="nom_per" data-fv-notempty="true">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Primer Apellido</label>
-                            	<input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" id="priape_per" name="priape_per" data-fv-notempty="true">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Segundo Apellido</label>
-                            	<input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" id="segape_per" name="segape_per">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Telefono o celular</label>
-                            	<input type="text" class="form-control" name="tel_per">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                            	    <input type="text" class="form-control" name="tel_per">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -67,26 +82,41 @@
                             <input type="hidden" name="sex_per" value="true"/>
                             <div class="form-group">
                             	<label>Empresa</label>
-                            	<select id="cod_emp1" name="cod_emp" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty>
-                  				<option value=""></option>
-                                <option th:each="em : ${empresas}" th:value="${em.cod_emp}" th:text="${em.nom_emp}"></option>
-                  				</select>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                    <select id="cod_emp1" name="cod_emp" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty>
+                                    <option value=""></option>
+                                    <option th:each="em : ${empresas}" th:value="${em.cod_emp}" th:text="${em.nom_emp}"></option>
+                                    </select>
+                                </div>
                   			</div>
                             <div class="form-group">
                             	<label>Nombre</label>
-                            	<input type="text" class="form-control text-uppercase" name="nom_per" data-fv-notempty="true">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" name="nom_per" data-fv-notempty="true">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Primer Apellido</label>
-                            	<input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" name="priape_per" data-fv-notempty="true">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Segundo Apellido</label>
-                            	<input type="text" class="form-control text-uppercase" name="segape_per">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            	    <input type="text" class="form-control text-uppercase" name="segape_per">
+                                </div>
                             </div>
                             <div class="form-group">
                             	<label>Telefono o celular</label>
-                            	<input type="text" class="form-control" name="tel_per">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                            	    <input type="text" class="form-control" name="tel_per">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -133,10 +163,6 @@
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
     $(document).ready(function() {
-        $('.select-chosen').chosen({
-            no_results_text: "No se encuentra:",
-            width: '100%'
-        });
         var tableProveedor = $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
@@ -145,7 +171,6 @@
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
                     $('#codigo').val(0);
-                    $('#cod_emp').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
             }],
@@ -210,7 +235,6 @@
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
                     $('#formularioModificar').loadJSON(obj);
-                    $('#cod_emp1').trigger('chosen:updated');
                     $('#modalModificar').modal('show');
                 });
                 $('.imprimir').click(function() {

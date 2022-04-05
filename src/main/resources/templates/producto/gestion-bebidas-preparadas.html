@@ -16,7 +16,7 @@
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-glass"></i></span>
-                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                            <input type="text" class="form-control" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -80,7 +80,7 @@
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-glass"></i></span>
-                                            <input type="text" class="form-control text-capitalize" name="nombre" data-fv-notempty="true" />
+                                            <input type="text" class="form-control" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -159,6 +159,21 @@
                                         </div>
                                     </div>
                                     <div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="btn-group btn-group-justified padding-top-sm">
+                                                    <label class="btn btn-success areaTipo">
+                                                        <i class="fi fi-plastic-bottle"></i><br>
+                                                        <input type="radio" name="radioTipo" value="1" checked> Producto
+                                                    </label>
+                                                    <label class="btn btn-primary areaTipo">
+                                                        <i class="fi fi-eggs"></i><br>
+                                                        <input type="radio" name="radioTipo" value="2"> Insumo
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
                                         <table id="tablaInsumo" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                                             <thead>
                                             <tr>
@@ -395,10 +410,10 @@
                                 dataResp.listaIngrediente = resp.data;
                                 resp.data.forEach(it => {
                                     let row = $('<tr></tr>');
-                                    $('<td>'+it.productoId+' <input type="hidden" name="productos" value="'+it.ingredienteId+'" /><input type="hidden" name="id" value="'+it.id+'"></td>').appendTo(row);
+                                    $('<td>'+it.id+' <input type="hidden" name="productos" value="'+it.ingredienteId+'" /><input type="hidden" name="id" value="'+it.id+'"></td>').appendTo(row);
                                     $('<td>'+it.xproducto+'</td>').appendTo(row);
                                     $('<td>'+it.xtipo+'</td>').appendTo(row);
-                                    $('<td><input type="text" class="form-control input-xs" style="width: 40px;" name="cantidades" value="'+it.cantidad+'" /></td>').appendTo(row);
+                                    $('<td><input type="text" class="form-control input-xs text-right" style="width: 70px;" name="cantidades" value="'+it.cantidad+'" /></td>').appendTo(row);
                                     $('<td>'+it.xmedida+'</td>').appendTo(row);
                                     $('<td><button class="btn btn-xs btn-danger eliminarDetalle" type="button" data-id="'+it.id+'" data-productoid="'+it.productoId+'"><i class="fa fa-remove"></i></button></td>').appendTo(row);
                                     $('#tablaIngredientes > tbody:last').append(row);
@@ -454,9 +469,10 @@
             "ajax": {
                 "type": "POST",
                 "url": "../producto/listar",
+                "dom": "<'row'<'col-sm-3 w3-tiny'f><'col-sm-1'B><'col-sm-8 w3-tiny'l>><'row'<'col-sm-12'tr>><'row'<'col-sm-5 w3-tiny'i><'col-sm-7 w3-tiny'p>>",
                 "data": function(d) {
                     d.estado = true;
-                    d.grupo = 1;
+                    d.grupo = $('input[name=radioTipo]:checked').val();;
                 }
             },
             "columnDefs":[
@@ -489,7 +505,7 @@
                     $('<td>'+obj.id+' <input type="hidden" name="productos" value="'+obj.id+'" /></td>').appendTo(row);
                     $('<td>'+obj.nombre+'</td>').appendTo(row);
                     $('<td>'+obj.xtipo+'</td>').appendTo(row);
-                    $('<td><input type="text" class="form-control input-xs" style="width: 40px;" name="cantidades" value="1" /></td>').appendTo(row);
+                    $('<td><input type="text" class="form-control input-xs text-right" style="width: 70px;" name="cantidades" value="1" /></td>').appendTo(row);
                     $('<td>'+obj.xmedida+'</td>').appendTo(row);
                     $('<td><button class="btn btn-xs btn-danger eliminarDetalleNuevo" data-productoid="'+obj.id+'" type="button"><i class="fa fa-remove"></i></button></td>').appendTo(row);
                     $('#tablaIngredientes > tbody:last').append(row);
@@ -512,6 +528,9 @@
         });
         $('.estadoRadio').click(function() {
             $('#tabla').dataTable().fnDraw();
+        });
+        $('.areaTipo').click(function() {
+            $('#tablaInsumo').dataTable().fnDraw();
         });
         $('#formularioModificar').formValidation({
             excluded: [':disabled']
