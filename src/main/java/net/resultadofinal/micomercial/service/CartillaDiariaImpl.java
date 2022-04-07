@@ -139,22 +139,22 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 							throw new RuntimeException("Lista Productos nula");
 						}
 					}
-					//Luego de adicionar y modificar, revisamos si hay elementos por eliminar datos que se hayan ingresado anteriormente en BD, pero q ahora ya no estan
-					if(UtilClass.isNotNullEmpty(detallesBD)) {
-						for (DetalleCartillaDiaria data: detallesBD) {
-							Optional<ProductoCartillaForm> detalleBd = detallesModificados.stream().filter(it -> it.getCartillaDiariaId() == data.getCartillaDiariaId()
-									&& it.getId() == data.getId()).findFirst();
-							if(!detalleBd.isPresent()) {
-								db.update("delete from detalle_cartilla_diaria where id = ? and cartilla_diaria_id = ?", data.getId(), data.getCartillaDiariaId());
-								boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, data.getProductoId());
-								if(!esProductoFabricado) {
-									almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),(-1*data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
-								}
-							}
-						}
-					}
 				} else {
 					throw new RuntimeException("Lista DetalleCartilla nula");
+				}
+			}
+			//Luego de adicionar y modificar, revisamos si hay elementos por eliminar datos que se hayan ingresado anteriormente en BD, pero q ahora ya no estan
+			if(UtilClass.isNotNullEmpty(detallesBD)) {
+				for (DetalleCartillaDiaria data: detallesBD) {
+					Optional<ProductoCartillaForm> detalleBd = detallesModificados.stream().filter(it -> it.getCartillaDiariaId() == data.getCartillaDiariaId()
+							&& it.getId() == data.getId()).findFirst();
+					if(!detalleBd.isPresent()) {
+						db.update("delete from detalle_cartilla_diaria where id = ? and cartilla_diaria_id = ?", data.getId(), data.getCartillaDiariaId());
+						boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, data.getProductoId());
+						if(!esProductoFabricado) {
+							almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),(-1*data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
+						}
+					}
 				}
 			}
 		} else {

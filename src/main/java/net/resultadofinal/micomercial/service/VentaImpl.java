@@ -153,7 +153,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 					existe = false;
 					for (DetalleVentaForm producto: productos) {
 						if(compuesto.getProductoId() == producto.getProductoId()) {
-							producto.setCantidad(producto.getCantidadUnitaria() + compuesto.getCantidadUnitaria());
+							producto.setCantidadUnitaria(producto.getCantidadUnitaria() + compuesto.getCantidadUnitaria());
 							existe = true;
 							break;
 						}
@@ -204,17 +204,34 @@ public class VentaImpl extends DbConeccion implements VentaS {
 		}
 		return faltantes;
 	}
+	private List<DetalleVentaForm> copyListObject(List<DetalleVentaForm> lista) {
+		List<DetalleVentaForm> auxDetalle = new ArrayList<>();
+		for (DetalleVentaForm d: lista) {
+			auxDetalle.add(copyObject(d));
+		}
+		return auxDetalle;
+	}
+	private DetalleVentaForm copyObject(DetalleVentaForm d) {
+		DetalleVentaForm it = new DetalleVentaForm();
+		it.setProductoId(d.getProductoId());
+		it.setCantidad(d.getCantidad());
+		it.setCantidadUnitaria(d.getCantidadUnitaria());
+		it.setId(d.getId());
+		it.setPrecio(d.getPrecio());
+		it.setCartillaDiariaId(d.getCartillaDiariaId());
+		it.setCartillaSucursalId(d.getCartillaSucursalId());
+		it.setDetalleCartillaDiariaId(d.getDetalleCartillaDiariaId());
+		it.setXproducto(d.getXproducto());
+		it.setXtipoProducto(d.getXtipoProducto());
+		it.setEsCompuesto(d.getEsCompuesto());
+		it.setTipoVenta(d.getTipoVenta());
+		return it;
+	}
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
 		try {
-			List<DetalleVentaForm> auxDetalle = new ArrayList<>();
-			for (DetalleVentaForm d: obj.getDetalleVenta()) {
-				auxDetalle.add(d);
-			}
-			List<DetalleVentaForm> auxDetalleCompuesto = new ArrayList<>();
-			for (DetalleVentaForm d: obj.getDetalleVentaCompuesto()) {
-				auxDetalleCompuesto.add(d);
-			}
+			List<DetalleVentaForm> auxDetalle = copyListObject(obj.getDetalleVenta());
+			List<DetalleVentaForm> auxDetalleCompuesto = copyListObject(obj.getDetalleVentaCompuesto());
 			String msgValidacion = validarExistenciaPreviaProductos(obj.getSucursalId(), auxDetalle, auxDetalleCompuesto);
 			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
 				return new DataResponse(false, msgValidacion);
@@ -322,7 +339,9 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	public DataResponse actualizarComanda(VentaForm obj) {
 		try {
 			List<DetalleVentaForm> detallesBD = obtenerDetallesForm(obj.getId(), null);
-			String msgValidacion = validarExistenciaPreviaProductosActualizacion(obj.getSucursalId(),obj.getDetalleVenta(),obj.getDetalleVentaCompuesto(),detallesBD);
+			List<DetalleVentaForm> auxDetalle = copyListObject(obj.getDetalleVenta());
+			List<DetalleVentaForm> auxDetalleCompuesto = copyListObject(obj.getDetalleVentaCompuesto());
+			String msgValidacion = validarExistenciaPreviaProductosActualizacion(obj.getSucursalId(),auxDetalle,auxDetalleCompuesto,detallesBD);
 			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
 				return new DataResponse(false, msgValidacion);
 			}

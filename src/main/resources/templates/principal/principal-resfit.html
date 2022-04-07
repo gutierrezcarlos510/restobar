@@ -392,7 +392,7 @@
     </div>
     <script src="/js/jquery-3.5.1.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/piexif.min.js}"></script>
+<!--    <script src="/js/piexif.min.js}"></script>-->
     <script>
         $.widget.bridge('uibutton', $.ui.button);
     </script>
@@ -525,7 +525,9 @@
         } );
         $(document).ready(function() {
             $.AdminLTE.pushMenu.expandOnHover()
-            $("[data-enable='expandOnHover']").click();
+            $.AdminLTE.pushMenu.expand();
+            $.AdminLTE.pushMenu.collapse();
+            // $("[data-enable='expandOnHover']").click();
             //Inicializacion
             if(UtilBrowser.isMobil()){
                 $('#labelEmpresaGeneral').addClass('padding-top-md padding-bottom-md');
