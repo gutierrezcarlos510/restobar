@@ -54,7 +54,8 @@ public class DatoImpl extends DbConeccion implements DatoS {
 			if(d.getCla_dat() == null) {
 				d.setCla_dat(CLAVE);
 			}
-			if(existeLogin(d.getLog_dat())) {
+			boolean existeLogin = db.queryForObject("select count(*)>0 from dato where log_dat=? and fecha_baja is null and cod_per != ?", Boolean.class, d.getLog_dat(), d.getCod_per());
+			if(existeLogin) {
 				throw new RuntimeException("Nombre de usuario ya existente, por favor ingrese otro.");
 			}
 			if(db.queryForObject("select dato_adicionar(?,?,?)",Boolean.class,d.getCod_per(),d.getLog_dat(),d.getCla_dat())){

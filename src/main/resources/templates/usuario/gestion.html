@@ -1,8 +1,8 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <form id="formulario" method="post" action="../usuario/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalAdicionar" class="modal fade">
+        <form id="formulario" method="post" autocomplete="off" action="../usuario/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -144,7 +144,6 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
                                             <select id="rolesInit" multiple="multiple" data-fv-notempty name="rolesField" class="form-control input-md select-chosen" data-placeholder="Asignar">
-                                                <option value="">Seleccionar</option>
                                                 <option th:each="r : ${roles}" th:value="${r.cod_rol}" th:text="${r.nom_rol}"></option>
                                             </select>
                                         </div>
@@ -155,8 +154,7 @@
                                         <label>Sucursales</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                                            <select name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
-                                                <option value="">Seleccionar</option>
+                                            <select id="sucursalesInit" name="sucursales" multiple="multiple" data-fv-notempty class="form-control input-md select-chosen" data-placeholder="Asignar sucursales...">
                                                 <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                                             </select>
                                         </div>
@@ -174,9 +172,9 @@
                 <!-- /.modal-dialog -->
             </div>
         </form>
-        <form id="formularioModificar" method="post" action="../usuario/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
+        <form id="formularioModificar" autocomplete="off" method="post" action="../usuario/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove"
             data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalModificar" class="modal fade">
+            <div id="modalModificar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -312,9 +310,9 @@
                 </div>
             </div>
         </form>
-        <div id="modalAsignar" class="modal fade">
+        <div id="modalAsignar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog modal-lg">
-                <form id="formularioAsignar" method="post" action="../usuario/guardarAsignacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioAsignar" autocomplete="off" method="post" action="../usuario/guardarAsignacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -367,9 +365,9 @@
                 </form>
             </div>
         </div>
-        <div id="modalAsignarSucursales" class="modal fade">
+        <div id="modalAsignarSucursales" class="modal fade" data-backdrop="static">
             <div class="modal-dialog modal-lg">
-                <form id="formularioAsignarSucursales" method="post" action="../usuario/guardarSucursales" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioAsignarSucursales" autocomplete="off" method="post" action="../usuario/guardarSucursales" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -465,6 +463,8 @@ function resetAvatar(idDestino){
                 action: function(e, dt, node, config) {
                     $('#formulario')[0].reset();
                     $('#formulario').data('formValidation').resetForm();
+                    $('#rolesInit').val('').trigger('chosen:updated');
+                    $('#sucursalesInit').val('').trigger('chosen:updated');
                     resetAvatar('adicionar');
                     $('#modalAdicionar').modal('show');
                 }

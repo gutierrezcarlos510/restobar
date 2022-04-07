@@ -142,8 +142,10 @@ public class UsuarioC {
 	public @ResponseBody
     DataResponse guardarAsignacion(Integer roles[], Integer sucursales[], Dato d){
 		try {
-			sucursalS.asignarSucursal(d.getCod_per(), sucursales);
 			boolean status = datoS.adicionarDatos(d,roles);
+			if(status) {
+				sucursalS.asignarSucursal(d.getCod_per(), sucursales);
+			}
 			return new DataResponse(status, Utils.getSuccessFailedAdd("asignacion de "+ENTITY, status));
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());

@@ -1,7 +1,7 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <form id="formulario" method="post" action="../producto/guardar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <form id="formulario" autocomplete="off" method="post" action="../producto/guardar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalAdicionar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </form>
-        <form id="formularioModificar" method="post" action="../producto/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <form id="formularioModificar" autocomplete="off" method="post" action="../producto/actualizar" enctype="multipart/form-data" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalModificar" class="modal fade" data-backdrop="static" >
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -139,7 +139,7 @@
                 </div>
             </div>
         </form>
-        <form id="formularioIngredientes" method="post" action="../producto/adicionarIngredientes"  data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <form id="formularioIngredientes" autocomplete="off" method="post" action="../producto/adicionarIngredientes"  data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalIngredientes" class="modal fade" data-backdrop="static" >
                 <div class="modal-dialog" style="width: 90%">
                     <div class="modal-content">

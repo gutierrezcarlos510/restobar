@@ -1,7 +1,7 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <div id="modalEliminar" class="modal fade">
+        <div id="modalEliminar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <form id="formularioEliminar" method="post" action="../dato/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
@@ -34,7 +34,7 @@
         </div>
         <!-- /.modal -->
 
-        <div id="modalActivar" class="modal fade">
+        <div id="modalActivar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <form id="formularioActivar" method="post" action="../usuario/activar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
@@ -58,9 +58,9 @@
         </div>
         <!-- /.modal -->
 
-        <div id="modalGenerar" class="modal fade">
+        <div id="modalGenerar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
-                <form id="formularioGenerar" method="post" action="../dato/generar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioGenerar" method="post" autocomplete="off" action="../dato/generar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -91,9 +91,9 @@
             </div>
         </div>
 
-        <div id="modalAsignar" class="modal fade">
+        <div id="modalAsignar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
-                <form id="formularioAsignar" method="post" action="../dato/guardarBiometrico" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioAsignar" method="post" autocomplete="off" action="../dato/guardarBiometrico" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

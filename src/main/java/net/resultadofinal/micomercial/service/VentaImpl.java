@@ -152,7 +152,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				for (DetalleVentaForm compuesto: compuestos) {
 					existe = false;
 					for (DetalleVentaForm producto: productos) {
-						if(producto.getProductoId() == producto.getProductoId()) {
+						if(compuesto.getProductoId() == producto.getProductoId()) {
 							producto.setCantidad(producto.getCantidadUnitaria() + compuesto.getCantidadUnitaria());
 							existe = true;
 							break;
@@ -207,7 +207,15 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	@Transactional
 	public DataResponse guardarComanda(VentaForm obj) {
 		try {
-			String msgValidacion = validarExistenciaPreviaProductos(obj.getSucursalId(), obj.getDetalleVenta(), obj.getDetalleVentaCompuesto());
+			List<DetalleVentaForm> auxDetalle = new ArrayList<>();
+			for (DetalleVentaForm d: obj.getDetalleVenta()) {
+				auxDetalle.add(d);
+			}
+			List<DetalleVentaForm> auxDetalleCompuesto = new ArrayList<>();
+			for (DetalleVentaForm d: obj.getDetalleVentaCompuesto()) {
+				auxDetalleCompuesto.add(d);
+			}
+			String msgValidacion = validarExistenciaPreviaProductos(obj.getSucursalId(), auxDetalle, auxDetalleCompuesto);
 			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
 				return new DataResponse(false, msgValidacion);
 			}

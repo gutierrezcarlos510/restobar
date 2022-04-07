@@ -1,7 +1,7 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <div id="modalEliminarNotificaciones" class="modal fade">
+        <div id="modalEliminarNotificaciones" class="modal fade" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <form id="formularioEliminarNotificaciones" method="post" action="../sucursal/eliminarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
@@ -22,9 +22,9 @@
                 </form>
             </div>
         </div>
-        <div id="modalAdicionarNotificacion" class="modal fade">
+        <div id="modalAdicionarNotificacion" class="modal fade" data-backdrop="static">
             <div class="modal-dialog" style="min-width: 85%">
-                <form id="formularioAdicionarNotificacion" method="post" action="../sucursal/adicionarNotificacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioAdicionarNotificacion"  autocomplete="off" method="post" action="../sucursal/adicionarNotificacion" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -57,9 +57,9 @@
                 </form>
             </div>
         </div>
-        <div id="modalAdicionarNotificaciones" class="modal fade">
+        <div id="modalAdicionarNotificaciones" class="modal fade" data-backdrop="static">
             <div class="modal-dialog" style="min-width: 85%">
-                <form id="formularioAdicionarNotificaciones" method="post" action="../sucursal/adicionarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+                <form id="formularioAdicionarNotificaciones"  autocomplete="off" method="post" action="../sucursal/adicionarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -97,8 +97,8 @@
                 </form>
             </div>
         </div>
-        <form id="formulario" method="post" action="../sucursal/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalAdicionar" class="modal fade">
+        <form id="formulario" method="post" autocomplete="off" action="../sucursal/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalAdicionar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -140,8 +140,8 @@
                 <!-- /.modal-dialog -->
             </div>
         </form>
-        <form id="formularioModificar" method="post" action="../sucursal/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalModificar" class="modal fade">
+        <form id="formularioModificar" autocomplete="off" method="post" action="../sucursal/actualizar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalModificar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -184,7 +184,7 @@
                 <!-- /.modal-dialog -->
             </div>
         </form>
-        <div id="modalEliminar" class="modal fade">
+        <div id="modalEliminar" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <form id="formularioEliminar" method="post" action="../sucursal/eliminar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                     <div class="modal-content">

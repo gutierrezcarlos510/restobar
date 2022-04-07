@@ -710,3 +710,99 @@ delete from proveedor where cod_pro > 1;
 delete from cliente where cod_cli > 1;
 delete from secretaria where cod_sec > 1;
 delete from persona where cod_per > 1;
+
+
+
+CREATE OR REPLACE FUNCTION public.rol_adicionar(nom character varying, des character varying)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod int;
+BEGIN
+	cod:=(select coalesce(max(cod_rol),0)+1 from rol);
+	insert into rol(cod_rol,nom_rol,des_rol) values(cod,trim(nom),des);
+	RETURN TRUE;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+				RETURN FALSE;
+
+END
+$function$
+;
+CREATE OR REPLACE FUNCTION public.rol_modificar(nom character varying, des character varying, cod integer)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	update rol set (nom_rol,des_rol)=(trim(nom),des) where cod_rol=cod;
+	IF NOT FOUND THEN
+		RETURN FALSE;
+	END IF;
+	RETURN TRUE;
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.proceso_adicionar(nom character varying, des character varying, ico character varying, url character varying)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod int;
+BEGIN
+	cod:=(select coalesce(max(cod_pro),0)+1 from proceso);
+	insert into proceso(cod_pro,nom_pro,des_pro,ico_pro,url_pro) values(cod,trim(nom),des,ico,url);
+		RETURN TRUE;
+		EXCEPTION
+			WHEN OTHERS THEN
+				RETURN FALSE;
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.proceso_modificar(nom character varying, des character varying, ico character varying, url character varying, cod integer)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	update proceso set (nom_pro,des_pro,ico_pro,url_pro)=(trim(nom),des,ico,url) where cod_pro=cod;
+	IF NOT FOUND THEN
+		RETURN FALSE;
+	END IF;
+	RETURN TRUE;
+END
+$function$
+;
+CREATE OR REPLACE FUNCTION public.menu_modificar(nom character varying, des character varying, ico character varying, cod integer)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+	update menu set (nom_men,des_men,ico_men)=( trim(nom),des,ico) where cod_men=cod;
+	IF NOT FOUND THEN
+		RETURN FALSE;
+	END IF;
+	RETURN TRUE;
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.menu_adicionar(nom character varying, des character varying, ico character varying)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE cod int;
+BEGIN
+	cod:=(select coalesce(max(cod_men),0)+1 from menu);
+	insert into menu(cod_men,nom_men,des_men,ico_men) values(cod,trim(nom) ,des,ico);
+	RETURN TRUE;
+	EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+				RETURN FALSE;
+
+END
+$function$
+;
+
+

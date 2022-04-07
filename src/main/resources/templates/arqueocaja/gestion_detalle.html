@@ -2,7 +2,7 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
-        <form id="formularioIngresar" method="post" action="../arqueocaja/guardarDetalle" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <form id="formularioIngresar" autocomplete="off" method="post" action="../arqueocaja/guardarDetalle" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalIngresar" data-backdrop="static" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -41,8 +41,8 @@
                 </div>
             </div>
         </form>
-        <form id="formularioCerrar" method="post" action="../arqueocaja/cerrar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-            <div id="modalCerrar" class="modal fade">
+        <form id="formularioCerrar" autocomplete="off" method="post" action="../arqueocaja/cerrar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div id="modalCerrar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -99,7 +99,7 @@
                 <!-- /.modal-dialog -->
             </div>
         </form>
-        <form id="formulario" method="post" action="../arqueocaja/iniciar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <form id="formulario" autocomplete="off" method="post" action="../arqueocaja/iniciar_independiente" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalAdicionar" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog">
                     <div class="modal-content">

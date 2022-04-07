@@ -13,7 +13,7 @@
     }
 </style>
 <section xmlns:th="http://www.thymeleaf.org">
-<form id="formularioCliente" method="post" action="../cliente/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+<form id="formularioCliente" autocomplete="off" method="post" action="../cliente/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
     <div id="modalCliente" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -55,7 +55,7 @@
         </div>
     </div>
 </form>
-    <form id="formularioCompuesto" method="post" action="#" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+    <form id="formularioCompuesto" autocomplete="off" method="post" action="#" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
         <div id="modalCompuesto" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -145,7 +145,7 @@
 
     <div class="tab-content" >
         <div style="height: 100vh !important;" id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
-            <form id="formulario1" name="formulario1" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <form id="formulario1" autocomplete="off" name="formulario1" action="#" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                 <div  class="panel panel-primary">
                     <div class="panel-heading">
                         <h5 class="w3-center">Registro de Venta </h5>
@@ -235,7 +235,7 @@
             </div>
         </div>
         <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-            <form id="formulario3" name="formulario3" action="../venta/guardarComanda" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <form id="formulario3" autocomplete="off" name="formulario3" action="../venta/guardarComanda" method="post" data-fv-framework="bootstrap" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <div class="row" id="areaResumenVenta">
@@ -316,7 +316,7 @@
             </form>
         </div>
         <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-            <form id="formulario4" name="formulario4" action="../venta/finalizarComanda" method="post">
+            <form id="formulario4" autocomplete="off" name="formulario4" action="../venta/finalizarComanda" method="post">
             <div class="panel panel-primary">
                 <div class="panel-body">
                     <div class="row">
@@ -915,7 +915,7 @@
                 let divContentNinguna = $('<div class="info-box-content"></div>');
                 $('<span class="info-box-number">Ninguna</span>').appendTo(divContentNinguna);
                 // $('<span class="info-box-text">Sin Mesa</span>').appendTo(divContentNinguna);
-                $('<span class="info-box-more">Sin ubicacion registrada en sistemas </span>').appendTo(divContentNinguna);
+                $('<span class="info-box-more">Sin ubicacion registrada </span>').appendTo(divContentNinguna);
                 divInfoBoxNinguna.append(divContentNinguna);
                 divColNinguna.append(divInfoBoxNinguna);
                 $('#areaMesa').append(divColNinguna);
