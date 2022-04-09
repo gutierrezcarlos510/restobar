@@ -151,6 +151,9 @@
     <!-- /.box-body -->
 </div>
 <!-- /.box -->
+    <script th:inline="javascript">
+        var URL_SYSTEM = /*[[${URL_SYSTEM}]]*/ '';
+    </script>
 <script type="text/javascript" th:inline="none">
     $(document).ready(function() {
         $('#tabla').DataTable({
@@ -182,10 +185,11 @@
                 $('td', row).eq(3).html(data.nom_per + ' ' + data.priape_per + ' ' + data.segape_per);
                 let buttons = '';
                 buttons += '<button class="btn btn-warning generar"  data-toggle="tooltip" data-placement="top" title="generar clave" data-id="' + data.cod_per + '"><i class="fa fa-key"></i><br/>generar clave</button>';
-                buttons += '<button class="btn btn-info asignar"  data-toggle="tooltip" data-placement="top" title="Asgnar biometrico" data-id="' + data.cod_per + '"><i class="fa fa-user-times"></i><br/>biometrico</button>';
+                buttons += '<button class="btn btn-info asignar"  data-toggle="tooltip" data-placement="top" title="Asignar biometrico" data-id="' + data.cod_per + '"><i class="fa fa-user-times"></i><br/>biometrico</button>';
                 if (data.esActivo) {
+                    buttons += '<button class="btn btn-success enviarWhatsapp"  data-toggle="tooltip" data-placement="top" title="Enviar por Whatsapp"><i class="fa fa-whatsapp"></i><br/>enviar whatsapp </button>';
                     buttons += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-remove"></i><br/>eliminar clave </button>';
-                    buttons += '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir datos" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-print"></i><br/> imprimir</button>';
+                    buttons += '<button class="btn btn-info imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir datos" data-id="' + data.cod_per + '"><i class="glyphicon glyphicon-print"></i><br/> imprimir</button>';
                 }
                 if (!data.codbio_per && data.codbio_per != '') {
                     buttons += '<button class="btn btn-primary asignar"  data-toggle="tooltip" data-placement="top" title="Reasignar biometrico" data-id="' + data.cod_per + '"><i class="fa fa-expeditedssl"></i><br/>reasignar biometrico</button>';
@@ -193,6 +197,22 @@
                 $('td', row).eq(6).html('<div class="btn-group btn-group-xs">' + buttons + '</div>');
             },
             "drawCallback": function(settings) {
+                $('.enviarWhatsapp').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    $.post('../dato/obtener?cod_per='+obj.cod_per, function(resp) {
+                        finishTransaction(resp, function(){
+                            alertActivacion("Enviar datos por whatsapp", ("Celular: "+ obj.tel_per+", Usuario: "+obj.nom_per + " "+ obj.priape_per), function(){
+                                let dataSend = '-- Credencial de Acceso a Sistema --\n\n';
+                                dataSend += 'URL Sistema: '+URL_SYSTEM+' \n';
+                                dataSend += 'Nombre Completo: '+obj.nom_per+' '+obj.priape_per+' '+(obj.segape_per||'')+'\n';
+                                dataSend += 'Usuario: *'+obj.logDat+'*\n';
+                                dataSend += 'Password: *'+resp.data.cla_dat+'*\n\n';
+                                dataSend += '*Estimado usuario, una vez ingresado al sistema, es importante que cambie su clave por primera vez.*';
+                                UtilString.enviarMensajeWhatsapp('591',obj.tel_per,dataSend);
+                            });
+                        })
+                    })
+                });
                 $('.eliminar').click(function() {
                     $('#formularioEliminar')[0].reset();
                     $.post('../usuario/obtener?cod_per=' + $(this).data('id'), function(result) {

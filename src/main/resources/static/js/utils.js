@@ -127,6 +127,10 @@ var UtilForm = {
 		}
 }
 var UtilString = {
+    enviarMensajeWhatsapp: function(codigoPais, celular, msg) {
+    let dataEncode = encodeURI(msg);
+    window.open('https://wa.me/'+codigoPais+celular+'?text='+dataEncode, '_blank');
+    },
     isNull: function(cad,alternative){
         if(cad) {
             return cad;

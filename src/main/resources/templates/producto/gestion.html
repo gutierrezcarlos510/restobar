@@ -387,7 +387,7 @@
 
             </div>
             <div class="col-xs-12 col-sm-12 col-md-2">
-<!--                <button class="btn btn-block btn-success" id="btnImprimirInventario"><i class="fa fa-print"></i> Imprimir</button>-->
+                <button class="btn btn-block btn-success" id="btnImprimirCatalogo"><i class="fa fa-print"></i> Imprimir</button>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-3">
                 <div class="btn-group btn-group-justified padding-top-sm">
@@ -459,10 +459,10 @@
         //     no_results_text: "No se encuentra:",
         //     width: '100%'
         // });
-        $('#btnImprimirInventario').click(function() {
-            $("#frameReportes").attr("src", "../producto/verInventario");
-            $("#reportes").modal('show');
-        })
+        $('#btnImprimirCatalogo').click(function() {
+            abrirLoad();
+            reportXLS('../producto/verCatalogo?grupo=1','catalogo_productos');
+        });
         var tablaProducto = $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
@@ -531,8 +531,8 @@
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertEliminacion("Eliminacion de Producto", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/eliminar?cod_pro='+obj.cod_pro, function(resp){
+                	alertEliminacion("Eliminacion de Producto", ("Cod. producto: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/eliminar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -544,8 +544,8 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de bebida", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
+                	alertAdicion("Activacion de bebida", ("Cod. producto: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/activar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -560,11 +560,6 @@
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
                     $('#formularioModificar').loadJSON(obj);
-                    // $('#tipoId2').val(obj.tipoId).trigger('chosen:updated');
-                    // $('#tipoCompra2').val(obj.tipoCompra).trigger('chosen:updated');
-                    // $('#medidaId2').val(obj.medidaId).trigger('chosen:updated');
-                    // $('#presentacionUnidadId2').val(obj.presentacionUnidadId).trigger('chosen:updated');
-                    // $('#presentacionCajaId2').val(obj.presentacionCajaId).trigger('chosen:updated');
                     $('#imgActual').attr('src','/producto/'+obj.foto);
                     $('#modalModificar').modal('show');
                 });

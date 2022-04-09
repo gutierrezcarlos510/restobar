@@ -80,11 +80,11 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 		try {
 			Long id = generarCodigo();
 			sqlString = "INSERT INTO producto(id, nombre, foto, tipo_id, tipo_grupo, pc_unit, pv_unit, pv_caja, pc_caja, pv_unit_descuento, pv_caja_descuento, inventario_minimo_unidad, inventario_minimo_caja, " +
-					"unidad_por_caja, tipo_compra, presentacion_unidad_id, presentacion_caja_id, estado,medida_id) " +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true,?);";
+					"unidad_por_caja, tipo_compra, presentacion_unidad_id, presentacion_caja_id, estado,medida_id,obs) " +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true,?,?);";
 			boolean save = db.update(sqlString, id, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
-					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId()) > 0;
+					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(),p.getObs()) > 0;
 			return new DataResponse(save, save ? id : null, Utils.getSuccessFailedAdd(ENTITY, save));
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
@@ -94,10 +94,10 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	public DataResponse modificar(Producto p){
 		try {
 			sqlString = "update producto set nombre=?, foto=?, tipo_id=?, tipo_grupo=?, pc_unit=?, pv_unit=?, pv_caja=?, pc_caja=?, pv_unit_descuento=?, pv_caja_descuento=?, inventario_minimo_unidad=?, inventario_minimo_caja=?, " +
-					"unidad_por_caja=?, tipo_compra=?, presentacion_unidad_id=?, presentacion_caja_id=?,medida_id=? where id=? " ;
+					"unidad_por_caja=?, tipo_compra=?, presentacion_unidad_id=?, presentacion_caja_id=?,medida_id=?,obs=? where id=? " ;
 			boolean update = db.update(sqlString, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
-					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(), p.getId()) > 0;
+					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(), p.getObs(), p.getId()) > 0;
 			return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));

@@ -7,7 +7,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Adicionar Insumo</h4>
+                            <h4 class="modal-title">Adicionar Material de Servicio</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -15,13 +15,13 @@
                                     <div class="form-group">
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
-                                            <input type="hidden" name="tipoGrupo" value="2" />
-                                            <span class="input-group-addon"><i class="fi fi-eggs"></i></span>
+                                            <input type="hidden" name="tipoGrupo" value="5" />
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-glass"></i></span>
                                             <input type="text" class="form-control input-lg" name="nombre" autocomplete="off" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="required">Tipo de Insumo</label>
+                                        <label class="required">Tipo de Material de Servicio</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-list"></i></span>
                                         <select id="tipoId1" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
@@ -88,51 +88,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 class="text-center">INFORMACION COMPLEMENTARIA PARA INVENTARIO</h3>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Inventario Minimo por unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Inventario Minimo por caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Presentacion por Unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                        <select id="presentacionUnidadId1" name="presentacionUnidadId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Presentacion por caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
-                                        <select id="presentacionCajaId1" name="presentacionCajaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
@@ -148,7 +103,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Modificar Insumo</h4>
+                            <h4 class="modal-title">Modificar Material de Servicio</h4>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" />
@@ -157,13 +112,13 @@
                                     <div class="form-group">
                                         <label class="required">Nombre</label>
                                         <div class="input-group">
-                                            <input type="hidden" name="tipoGrupo" value="2" />
-                                            <span class="input-group-addon"><i class="fi fi-eggs"></i></span>
+                                            <input type="hidden" name="tipoGrupo" value="5" />
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-glass"></i></span>
                                             <input type="text" class="form-control input-lg" name="nombre" data-fv-notempty="true" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="required">Tipo de Insumo</label>
+                                        <label class="required">Tipo de Material de Servicio</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-list"></i></span>
                                         <select id="tipoId2" name="tipoId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
@@ -241,51 +196,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 class="text-center">INFORMACION COMPLEMENTARIA PARA INVENTARIO</h3>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Inventario Minimo por unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Inventario Minimo por caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Presentacion por Unidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-                                        <select id="presentacionUnidadId2" name="presentacionUnidadId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="p : ${presentaciones}" th:if="${p.tipo == 1}" th:value="${p.id}" th:text="${p.nombre}"></option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="required">Presentacion por caja</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-                                        <select id="presentacionCajaId2" name="presentacionCajaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="p : ${presentaciones}" th:if="${p.tipo == 2}" th:value="${p.id}" th:text="${p.nombre}"></option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
@@ -299,7 +209,7 @@
         <!-- /.modal -->
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-3">
-                <h1><span class="fa  fa-ellipsis-v"></span> Insumos </h1>
+                <h1><span class="fa  fa-ellipsis-v"></span> Material de Servicios </h1>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4">
             </div>
@@ -324,13 +234,6 @@
                     <th class="all">C&oacute;digo</th>
                     <th class="all">Nombre</th>
                     <th class="all">Tipo de producto</th>
-                    <th class="none">Precio Costo por Unidad</th>
-                    <th class="none">Precio Costo por Caja</th>
-                    <th class="none">Inventario Minimo en unidad</th>
-                    <th class="none">Inventario Minimo en caja</th>
-                    <th class="none">Presentacion en unidades</th>
-                    <th class="none">Presentacion en cajas</th>
-                    <th class="none">Tipo de Compra por defecto</th>
                     <th class="none">Grupo</th>
                     <th class="all">Acciones</th>
                 </tr>
@@ -369,7 +272,7 @@
         });
         $('#btnImprimirCatalogo').click(function() {
             abrirLoad();
-            reportXLS('../producto/verCatalogo?grupo=2','catalogo_insumos');
+            reportXLS('../producto/verCatalogo?grupo=5','catalogo_materiales_servicios');
         });
         var tablaProducto = $('#tabla').DataTable({
             buttons: [{
@@ -387,12 +290,12 @@
                 "url": "../producto/listar",
                 "data": function(d) {
                     d.estado = $('input[name=estado]:checked').val();
-                    d.grupo = 2;
+                    d.grupo = 5;
                 }
             },
             "columnDefs":[
             	{targets: [0],className:'text-center'},
-            	{targets: [11],className:'text-right'}],
+            	{targets: [4],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -402,29 +305,15 @@
             }, {
                 "data": "xtipo", "name":"xtipo"
             }, {
-                "data": "pcUnit", "name":"pc_unit"
-            }, {
-                "data": "pcCaja", "name":"pc_caja"
-            }, {
-                "data": "inventarioMinimoUnidad", "name":"inventario_minimo_unidad"
-            }, {
-                "data": "inventarioMinimoCaja", "name":"inventario_minimo_caja"
-            }, {
-                "data": "xpresentacionUnidad", "name":"xpresentacion_unidad"
-            }, {
-                "data": "xpresentacionCaja", "name":"xpresentacion_caja"
-            }, {
-                "data": "xtipoCompra", "name":"xtipo_compra"
-            }, {
                 "data": "xgrupo", "name":"xgrupo"
             }, {
                 "data": "id", "name":"id"
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(11).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    $('td', row).eq(4).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
                 } else
-                    $('td', row).eq(11).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                    $('td', row).eq(4).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
@@ -442,7 +331,7 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de Insumo", ("Cod. insumo: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
+                	alertAdicion("Activacion de Material de Servicio", ("Cod. insumo: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
         				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');

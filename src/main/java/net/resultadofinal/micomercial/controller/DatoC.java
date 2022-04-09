@@ -39,6 +39,7 @@ public class DatoC {
 	private DataSource datasource;
 	@RequestMapping("gestion")
 	public String gestion(HttpServletRequest request,Model model){
+		model.addAttribute("URL_SYSTEM", MyConstant.URL_SYSTEM);
 		return "dato/gestion";
 	}
 
@@ -61,6 +62,19 @@ public class DatoC {
 		try {
 			boolean status = datoS.eliminar(cod_per);
 			return new DataResponse(status, (status ? "Transaccion exitosa" : "Error de transaccion."));
+		} catch (Exception ex) {
+			return new DataResponse(false, ex.getMessage());
+		}
+	}
+	@RequestMapping("obtener")
+	public @ResponseBody DataResponse obtener(HttpServletRequest request,Long cod_per)throws IOException{
+		try {
+			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
+			if (us != null) {
+				Dato obj = datoS.obtener(cod_per);
+				return new DataResponse(true, obj, "Se realizo con exito la consulta");
+			}
+			return new DataResponse(false, "Sin sesion, vuelva a ingresar por favor");
 		} catch (Exception ex) {
 			return new DataResponse(false, ex.getMessage());
 		}

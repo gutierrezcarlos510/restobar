@@ -16,12 +16,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Tipo</label>
-                                <select id="tipo1" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                <select id="tipo1" name="tipo" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                     <option value="">Seleccionar</option>
                                     <option value="1">Bebida</option>
                                     <option value="2">Insumo</option>
                                     <option value="3">Plato</option>
                                     <option value="4">Bebida preparada</option>
+                                    <option value="5">Material de Servicio</option>
                                 </select>
                             </div>
                         </div>
@@ -49,12 +50,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Tipo</label>
-                                <select id="tipo2" name="tipo" class="form-control input-md select-chosen" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                <select id="tipo2" name="tipo" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
                                     <option value="">Seleccionar</option>
                                     <option value="1">Bebida</option>
                                     <option value="2">Insumo</option>
                                     <option value="3">Plato</option>
                                     <option value="4">Bebida preparada</option>
+                                    <option value="5">Material de Servicio</option>
                                 </select>
                             </div>
                         </div>
@@ -100,10 +102,10 @@
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
     $(document).ready(function() {
-        $('.select-chosen').chosen({
-            no_results_text: "No se encuentra:",
-            width: '100%'
-        });
+        // $('.select-chosen').chosen({
+        //     no_results_text: "No se encuentra:",
+        //     width: '100%'
+        // });
         $('#tabla').DataTable({
             buttons: [{
                 text: 'Adicionar',
@@ -168,7 +170,7 @@
                     $('#formularioModificar').data('formValidation').resetForm();
                     $('#formularioModificar')[0].reset();
                     $('#formularioModificar').loadJSON(obj);
-                    $('#tipo2').val(obj.tipo).trigger('chosen:updated');
+                    // $('#tipo2').val(obj.tipo).trigger('chosen:updated');
                     $('#modalModificar').modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({

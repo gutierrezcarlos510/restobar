@@ -806,3 +806,94 @@ $function$
 ;
 
 
+ALTER TABLE public.producto ADD obs varchar(1500) NULL;
+UPDATE public.proceso
+SET nom_pro='Material de Servicio', des_pro='Gestiona los materiales de servicio', ico_pro='glyphicon glyphicon-th-large', est_pro=true, url_pro='../producto/gestionMaterialServicio'
+WHERE cod_pro=27;
+COMMENT ON COLUMN public.categoria.tipo IS '1= Bebida, 2 = Insumo, 3 = plato, 4= bebida preparada,5=Material de servicio';
+
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(3, 'Pago por QR', false, true, 1, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(4, 'En efectivo', true, true, 2, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(5, 'Pago por Tarjeta', false, true, 2, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(6, 'Pago por QR', false, true, 2, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(7, 'En efectivo', true, true, 3, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(8, 'Pago por Tarjeta', false, true, 3, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(9, 'Pago por QR', false, true, 3, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(10, 'En efectivo', true, true, 4, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(11, 'Pago por Tarjeta', false, true, 4, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(12, 'Pago por QR', false, true, 4, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(13, 'En efectivo', true, true, 5, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(14, 'Pago por Tarjeta', false, true, 5, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(15, 'Pago por QR', false, true, 5, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(16, 'En efectivo', true, true, 6, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(17, 'Pago por Tarjeta', false, true, 6, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(18, 'Pago por QR', false, true, 6, 'QR');
+
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(19, 'En efectivo', true, true, 7, 'Efectivo');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(20, 'Pago por Tarjeta', false, true, 7, 'Tarjeta');
+INSERT INTO public.forma_pago
+(id, nombre, es_efectivo_caja, estado, sucursal_id, alias)
+VALUES(21, 'Pago por QR', false, true, 7, 'QR');
+UPDATE public.forma_pago
+SET nombre='Pago por Tarjeta', es_efectivo_caja=false, estado=true, sucursal_id=1, alias='Tarjeta'
+WHERE id=2;
+
+delete from general where ges_gen = 2022 and cod_suc =3;
+delete from general where ges_gen = 2022 and cod_suc =4;
+INSERT INTO public."general"
+(ges_gen, des_gen, est_gen, nom_gen, logtex_gen, logsintex_gen, tel_gen, dir_gen, lug_gen, nit_gen, cod_suc)
+VALUES(2022, 'Karaoke Luna Park', true, 'Karaoke Luna Park', 'empresa.png', 'empresa.png', '75136609', 'Barrio San Jorge 1', 'Tarija- Bolivia', '1', 3);
+
+INSERT INTO public."general"
+(ges_gen, des_gen, est_gen, nom_gen, logtex_gen, logsintex_gen, tel_gen, dir_gen, lug_gen, nit_gen, cod_suc)
+VALUES(2022, 'Karaoke Dubai', true, 'Karaoke Dubai', 'empresa.png', 'empresa.png', '75136609', 'Barrio San Jorge 1', 'Tarija- Bolivia', '1', 4);
+
+INSERT INTO public."general"
+(ges_gen, des_gen, est_gen, nom_gen, logtex_gen, logsintex_gen, tel_gen, dir_gen, lug_gen, nit_gen, cod_suc)
+VALUES(2022, 'Discoteca Dubai', true, 'Disco Dubai', 'empresa.png', 'empresa.png', '75136609', 'Barrio San Jorge 1', 'Tarija- Bolivia', '1', 5);
+
+INSERT INTO public."general"
+(ges_gen, des_gen, est_gen, nom_gen, logtex_gen, logsintex_gen, tel_gen, dir_gen, lug_gen, nit_gen, cod_suc)
+VALUES(2022, 'Discoteca Papi Chulo', true, 'Disco Papi Chulo', 'empresa.png', 'empresa.png', '75136609', 'Barrio San Jorge 1', 'Tarija- Bolivia', '1', 2);

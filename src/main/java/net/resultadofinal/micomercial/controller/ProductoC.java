@@ -1,6 +1,8 @@
 package net.resultadofinal.micomercial.controller;
 
+import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.Ingrediente;
+import net.resultadofinal.micomercial.model.Persona;
 import net.resultadofinal.micomercial.model.Producto;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.CaracteristicaS;
@@ -68,6 +70,13 @@ public class ProductoC {
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA_PREPARADA));
 		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
 		return "producto/gestion-bebidas-preparadas";
+	}
+	@RequestMapping("gestionMaterialServicio")
+	public String gestionMaterialServicio(Model model){
+		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.MATERIAL_SERVICIO));
+		model.addAttribute("presentaciones", presentacionS.listarPorTipo((short) -1));
+		model.addAttribute("medidas", caracteristicaS.listAll(MyConstant.Caracteristica.MEDIDA));
+		return "producto/gestion-material-servicio";
 	}
 	@RequestMapping("gestionInventario")
 	public String gestionInventario(){
@@ -164,19 +173,6 @@ public class ProductoC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
-	@RequestMapping("verCatalogo")
-	public void verInventario(HttpServletResponse response){
-		try {
-			String nombre="inventario",tipo="pdf",estado="inline";
-			String reportUrl="/Reportes/inventario.jasper";
-			Map<String, Object> parametros=new HashMap<String, Object>();
-			GeneradorReportes generador=new GeneradorReportes();
-			generador.generarReporte(response, getClass().getResource(reportUrl), tipo,parametros,datasource.getConnection() ,nombre, estado);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("error al inventario="+e.toString());
-		}
-	}
 	@RequestMapping("obtenerIngredientes")
 	public @ResponseBody
 	DataResponse obtenerIngredientes(Long productoId){
@@ -202,6 +198,44 @@ public class ProductoC {
 			return productoS.eliminarIngrediente(productoId, id);
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("verCatalogo")
+	public void ver(HttpServletRequest request, HttpServletResponse response, Short grupo) {
+		try {
+			String xtipo = "";
+			switch (grupo) {
+				case 1:
+					xtipo = "Productos";
+					break;
+				case 2:
+					xtipo = "Insumos";
+					break;
+				case 3:
+					xtipo = "Platos Preparados";
+					break;
+				case 4:
+					xtipo = "Bebidas Preparadas";
+					break;
+				case 5:
+					xtipo = "Material de Servicios";
+					break;
+				default:
+					break;
+			}
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			String nombre = "catalogo_" + xtipo + "_" + gestion, tipo = "xls", estado = "inline";
+			String reportUrl = "/Reportes/producto_por_tipo.jasper";
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("tipo", grupo);
+			parametros.put("xtipo", xtipo);
+			Utils.loadDataReport(parametros, gestion);
+			GeneradorReportes generador = new GeneradorReportes();
+			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
+					datasource.getConnection(), nombre, estado);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("error reporte ver=" + e.toString());
 		}
 	}
 }

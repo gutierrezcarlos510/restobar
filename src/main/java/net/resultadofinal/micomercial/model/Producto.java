@@ -10,8 +10,16 @@ public class Producto {
 	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
 	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra;
-	private String xmedida;
+	private String xmedida,obs;
 	private Boolean hasIngredients;
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
 
 	public Integer getCantidadPlatos() {
 		return cantidadPlatos;

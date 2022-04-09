@@ -76,27 +76,27 @@ public class EjecucionScriptImpl extends DbConeccion implements EjecucionScriptS
 				case 14:
 					sqlString += "delete from movimiento;";
 					break;
-				case 15:
-					sqlString += "delete from dato where cod_per > 1;";
-					break;
-				case 16:
-					sqlString += "delete from tiene_sucursal where cod_per > 1;";
-					break;
-				case 17:
-					sqlString += "delete from usurol where cod_per > 1;";
-					break;
-				case 18:
-					sqlString += "delete from proveedor where cod_pro > 1;";
-					break;
-				case 19:
-					sqlString += "delete from cliente where cod_cli > 1;";
-					break;
-				case 20:
-					sqlString += "delete from secretaria where cod_sec > 1;";
-					break;
-				case 21:
-					sqlString += "delete from persona where cod_per > 1;";
-					break;
+//				case 15:
+//					sqlString += "delete from dato where cod_per > 1;";
+//					break;
+//				case 16:
+//					sqlString += "delete from tiene_sucursal where cod_per > 1;";
+//					break;
+//				case 17:
+//					sqlString += "delete from usurol where cod_per > 1;";
+//					break;
+//				case 18:
+//					sqlString += "delete from proveedor where cod_pro > 1;";
+//					break;
+//				case 19:
+//					sqlString += "delete from cliente where cod_cli > 1;";
+//					break;
+//				case 20:
+//					sqlString += "delete from secretaria where cod_sec > 1;";
+//					break;
+//				case 21:
+//					sqlString += "delete from persona where cod_per > 1;";
+//					break;
 				default:
 					break;
 				}
