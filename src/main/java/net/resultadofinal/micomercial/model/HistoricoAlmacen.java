@@ -1,11 +1,12 @@
 package net.resultadofinal.micomercial.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class HistoricoAlmacen {
     private Long productoId, usuarioId;
     private Timestamp fecha;
-    private Integer cantidadInicial, cantidadEntrante, cantidadFinal;
+    private BigDecimal cantidadInicial, cantidadEntrante, cantidadFinal;
     private Short tipo;
     private String observacion;
 
@@ -33,27 +34,27 @@ public class HistoricoAlmacen {
         this.fecha = fecha;
     }
 
-    public Integer getCantidadInicial() {
+    public BigDecimal getCantidadInicial() {
         return cantidadInicial;
     }
 
-    public void setCantidadInicial(Integer cantidadInicial) {
+    public void setCantidadInicial(BigDecimal cantidadInicial) {
         this.cantidadInicial = cantidadInicial;
     }
 
-    public Integer getCantidadEntrante() {
+    public BigDecimal getCantidadEntrante() {
         return cantidadEntrante;
     }
 
-    public void setCantidadEntrante(Integer cantidadEntrante) {
+    public void setCantidadEntrante(BigDecimal cantidadEntrante) {
         this.cantidadEntrante = cantidadEntrante;
     }
 
-    public Integer getCantidadFinal() {
+    public BigDecimal getCantidadFinal() {
         return cantidadFinal;
     }
 
-    public void setCantidadFinal(Integer cantidadFinal) {
+    public void setCantidadFinal(BigDecimal cantidadFinal) {
         this.cantidadFinal = cantidadFinal;
     }
 

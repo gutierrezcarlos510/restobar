@@ -5,14 +5,14 @@ import java.math.BigDecimal;
 public class DetalleCartillaDiaria {
     private Short id, detalleCartillaSucursalId;
     private Long productoId, cartillaDiariaId;
-    private BigDecimal precioIndividual,precioCompuesto;
-    private Integer cartillaSucursalId,cantidad, cantidadEditadaFinal, cantidadFinalAlmacen;
+    private BigDecimal precioIndividual,precioCompuesto,cantidad;
+    private Integer cartillaSucursalId, cantidadEditadaFinal, cantidadFinalAlmacen;
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 

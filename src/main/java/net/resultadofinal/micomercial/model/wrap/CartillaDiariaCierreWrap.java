@@ -6,13 +6,14 @@ public class CartillaDiariaCierreWrap {
     private Short id, detalleCartillaSucursalId;
     private Long productoId, cartillaDiariaId;
     private BigDecimal precioIndividual,precioCompuesto;
-    private Integer cartillaSucursalId,cantidad, cantidadAlmacen, cantidadVendida, cantidadFinalAlmacen;
+    private Integer cartillaSucursalId;
+    private BigDecimal cantidad, cantidadAlmacen, cantidadVendida, cantidadFinalAlmacen;
 
-    public Integer getCantidadFinalAlmacen() {
+    public BigDecimal getCantidadFinalAlmacen() {
         return cantidadFinalAlmacen;
     }
 
-    public void setCantidadFinalAlmacen(Integer cantidadFinalAlmacen) {
+    public void setCantidadFinalAlmacen(BigDecimal cantidadFinalAlmacen) {
         this.cantidadFinalAlmacen = cantidadFinalAlmacen;
     }
 
@@ -74,27 +75,27 @@ public class CartillaDiariaCierreWrap {
         this.cartillaSucursalId = cartillaSucursalId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Integer getCantidadAlmacen() {
+    public BigDecimal getCantidadAlmacen() {
         return cantidadAlmacen;
     }
 
-    public void setCantidadAlmacen(Integer cantidadAlmacen) {
+    public void setCantidadAlmacen(BigDecimal cantidadAlmacen) {
         this.cantidadAlmacen = cantidadAlmacen;
     }
 
-    public Integer getCantidadVendida() {
+    public BigDecimal getCantidadVendida() {
         return cantidadVendida;
     }
 
-    public void setCantidadVendida(Integer cantidadVendida) {
+    public void setCantidadVendida(BigDecimal cantidadVendida) {
         this.cantidadVendida = cantidadVendida;
     }
 

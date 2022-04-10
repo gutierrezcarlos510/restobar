@@ -14,7 +14,7 @@ public class DetalleventaMapper implements RowMapper<DetalleVenta> {
 		detalleventa.setId(rs.getShort("id"));
 		detalleventa.setProductoId(rs.getLong("producto_id"));
 		detalleventa.setPrecio(rs.getBigDecimal("precio"));
-		detalleventa.setCantidad(rs.getInt("cantidad"));
+		detalleventa.setCantidad(rs.getBigDecimal("cantidad"));
 		detalleventa.setDescuento(rs.getBigDecimal("descuento"));
 		detalleventa.setSubtotal(rs.getBigDecimal("subtotal"));
 		detalleventa.setTotal(rs.getBigDecimal("total"));

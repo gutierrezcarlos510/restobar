@@ -6,18 +6,17 @@ public class DetalleVenta {
 	private Long ventaId;
 	private Short id;
 	private Long productoId;
-	private Integer cantidad, cantidadUnitaria;
-	private BigDecimal precio,descuento,subtotal,total;
+	private BigDecimal cantidad, cantidadUnitaria,precio,descuento,subtotal,total;
 	private Long cartillaDiariaId;
 	private Short detalleCartillaDiariaId, tipoVenta;
 	private Boolean esCompuesto;
 	private String xproducto;
 
-	public Integer getCantidadUnitaria() {
+	public BigDecimal getCantidadUnitaria() {
 		return cantidadUnitaria;
 	}
 
-	public void setCantidadUnitaria(Integer cantidadUnitaria) {
+	public void setCantidadUnitaria(BigDecimal cantidadUnitaria) {
 		this.cantidadUnitaria = cantidadUnitaria;
 	}
 
@@ -77,11 +76,11 @@ public class DetalleVenta {
 		this.productoId = productoId;
 	}
 
-	public Integer getCantidad() {
+	public BigDecimal getCantidad() {
 		return cantidad;
 	}
 
-	public void setCantidad(Integer cantidad) {
+	public void setCantidad(BigDecimal cantidad) {
 		this.cantidad = cantidad;
 	}
 

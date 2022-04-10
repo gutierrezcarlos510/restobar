@@ -6,7 +6,7 @@ public class DetalleVentaForm {
     private Short id;
     private Long ventaId;
     private Long productoId;
-    private Integer cantidad, cantidadUnitaria;
+    private BigDecimal cantidad, cantidadUnitaria;
     private BigDecimal precio, total,precioCombo;
     private Short tipoVenta;//1=unidad, 2= caja
     private Long cartillaDiariaId;
@@ -71,19 +71,19 @@ public class DetalleVentaForm {
         this.productoId = productoId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Integer getCantidadUnitaria() {
+    public BigDecimal getCantidadUnitaria() {
         return cantidadUnitaria;
     }
 
-    public void setCantidadUnitaria(Integer cantidadUnitaria) {
+    public void setCantidadUnitaria(BigDecimal cantidadUnitaria) {
         this.cantidadUnitaria = cantidadUnitaria;
     }
 

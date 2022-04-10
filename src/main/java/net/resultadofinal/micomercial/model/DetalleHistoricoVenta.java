@@ -1,8 +1,10 @@
 package net.resultadofinal.micomercial.model;
 
+import java.math.BigDecimal;
+
 public class DetalleHistoricoVenta {
     private Long ventaId, productoId;
-    private Integer cantidad;
+    private BigDecimal cantidad;
     private Short historicoVentaId;
     private Boolean estaImpreso;
 
@@ -22,11 +24,11 @@ public class DetalleHistoricoVenta {
         this.productoId = productoId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 

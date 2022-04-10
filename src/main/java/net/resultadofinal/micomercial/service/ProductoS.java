@@ -13,8 +13,8 @@ public interface ProductoS {
 	DataTableResults<Producto> listaPorTipo(HttpServletRequest request, boolean estado, Integer tipo);
 	Producto obtener(Long id);
 	Long generarCodigo();
-	DataResponse adicionar(Producto p);
-	DataResponse modificar(Producto p);
+	DataResponse adicionar(Producto p,Integer sucursalId);
+	DataResponse modificar(Producto p,Integer sucursalId);
 	DataResponse darEstado(Long id,boolean est);
 	DataResponse adicionarIngredientes(Long producto, Long ingredientes[], Integer cantidades[],Integer cantidadPlatos);
 	DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[],Integer cantidadPlatos);

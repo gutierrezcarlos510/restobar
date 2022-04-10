@@ -1,8 +1,10 @@
 package net.resultadofinal.micomercial.model.wrap;
 
+import java.math.BigDecimal;
+
 public class ProductoDetalleVenta {
     private String xproducto;
-    private Integer cantidad;
+    private BigDecimal cantidad;
 
     public String getXproducto() {
         return xproducto;
@@ -12,11 +14,11 @@ public class ProductoDetalleVenta {
         this.xproducto = xproducto;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 }

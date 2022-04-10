@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -114,7 +115,7 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 					List<DetalleMovimiento> detalles = obtenerDetalles(obj.getId());
 					if(movimiento.getTipo() == TipoMovimientoE.TRASPASO_SUCURAL.getTipo()) {
 						for (DetalleMovimiento det: detalles) {
-							almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), (-1*det.getCantidadUnitaria()), obj.getUsuarioRevision(), HistoricoE.MOVIMIENTO_ENTRE_SUCURSALES.getTipo(), "Salida para sucursal: #"+movimiento.getSucursalDestino());
+							almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), det.getCantidadUnitaria().negate() , obj.getUsuarioRevision(), HistoricoE.MOVIMIENTO_ENTRE_SUCURSALES.getTipo(), "Salida para sucursal: #"+movimiento.getSucursalDestino());
 							almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalDestino(), det.getCantidadUnitaria(), obj.getUsuarioRevision(),HistoricoE.MOVIMIENTO_ENTRE_SUCURSALES.getTipo(), "Ingreso desde sucursal: #"+movimiento.getSucursalOrigen());
 						}
 					}else {
@@ -123,7 +124,7 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 								if(det.getEsIngreso()) {
 									almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), det.getCantidadUnitaria(), obj.getUsuarioRevision(), HistoricoE.REGISTRO_DESDE_MOVIMIENTO.getTipo(), "Aumento de producto desde movimiento: #"+obj.getId());
 								} else {
-									almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), -1*det.getCantidadUnitaria(), obj.getUsuarioRevision(), HistoricoE.REGISTRO_DESDE_MOVIMIENTO.getTipo(), "Disminucion de producto desde movimiento: #"+obj.getId());
+									almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), det.getCantidadUnitaria().negate(), obj.getUsuarioRevision(), HistoricoE.REGISTRO_DESDE_MOVIMIENTO.getTipo(), "Disminucion de producto desde movimiento: #"+obj.getId());
 								}
 							}
 						} else {
@@ -132,7 +133,7 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 									if(det.getEsIngreso()) {
 										almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), det.getCantidadUnitaria(), obj.getUsuarioRevision(), HistoricoE.MODIFICACION_SUPERUSUARIO.getTipo(), "Aumento de producto desde modificacion almacen, movimiento : #"+obj.getId());
 									} else {
-										almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), -1*det.getCantidadUnitaria(), obj.getUsuarioRevision(), HistoricoE.MODIFICACION_SUPERUSUARIO.getTipo(), "Disminucion de producto desde modificacion almacen, movimiento: #"+obj.getId());
+										almacenS.registrarAlmacen(det.getProductoId(),movimiento.getSucursalOrigen(), det.getCantidadUnitaria().negate(), obj.getUsuarioRevision(), HistoricoE.MODIFICACION_SUPERUSUARIO.getTipo(), "Disminucion de producto desde modificacion almacen, movimiento: #"+obj.getId());
 									}
 								}
 							}

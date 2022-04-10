@@ -104,7 +104,7 @@ public class ProductoC {
 		}
 	}
 	@RequestMapping("guardar")
-	public @ResponseBody DataResponse guardar(Producto p, MultipartFile imgProducto){
+	public @ResponseBody DataResponse guardar(HttpServletRequest request,Producto p, MultipartFile imgProducto){
 		try {
 			String nombreArchivo;
 			p.setId(productoS.generarCodigo());
@@ -117,14 +117,15 @@ public class ProductoC {
 				nombreArchivo = MyConstant.PRODUCTO_DEFAULT;
 			}
 			p.setFoto(nombreArchivo);
-			return productoS.adicionar(p);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.adicionar(p, gestion.getCod_suc());
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
 	@RequestMapping("actualizar")
 	public @ResponseBody
-    DataResponse actualizar(Producto p, MultipartFile imgProducto){
+    DataResponse actualizar(HttpServletRequest request,Producto p, MultipartFile imgProducto){
 		try {
 			Producto productoDb = productoS.obtener(p.getId());
 			String nombreArchivo = "";
@@ -141,7 +142,8 @@ public class ProductoC {
 				nombreArchivo = productoDb.getFoto();
 			}
 			p.setFoto(nombreArchivo);
-			return productoS.modificar(p);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.modificar(p,gestion.getCod_suc());
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}
@@ -229,6 +231,8 @@ public class ProductoC {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("tipo", grupo);
 			parametros.put("xtipo", xtipo);
+			parametros.put("sucursalId", gestion.getCod_suc());
+			parametros.put("xsucursal", gestion.getXsucursal());
 			Utils.loadDataReport(parametros, gestion);
 			GeneradorReportes generador = new GeneradorReportes();
 			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,

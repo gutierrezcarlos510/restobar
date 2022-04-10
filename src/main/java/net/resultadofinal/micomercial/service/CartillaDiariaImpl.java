@@ -152,7 +152,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 						db.update("delete from detalle_cartilla_diaria where id = ? and cartilla_diaria_id = ?", data.getId(), data.getCartillaDiariaId());
 						boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, data.getProductoId());
 						if(!esProductoFabricado) {
-							almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),(-1*data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
+							almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),new BigDecimal(-1).multiply(data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
 						}
 					}
 				}
@@ -291,8 +291,8 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 			if(UtilClass.isNotNullEmpty(obj.getListaCierre())) {
 				sqlString = "update detalle_cartilla_diaria set cantidad_editada_final = ?, cantidad_final_almacen = ? where cartilla_diaria_id = ? and id =?;";
 				obj.getListaCierre().stream().forEach(it-> {
-					Integer diferencia = it.getCantidadFinalAlmacen() - it.getCantidadAlmacen();
-					if(diferencia != 0) {
+					BigDecimal diferencia = it.getCantidadFinalAlmacen().subtract(it.getCantidadAlmacen());
+					if(diferencia.compareTo(new BigDecimal(0))!=0) {
 						db.update(sqlString, diferencia,it.getCantidadFinalAlmacen(), it.getCartillaDiariaId(), it.getId());
 						almacenS.registrarAlmacen(it.getProductoId(), sucursalId, diferencia,userId, HistoricoE.MODIFICACION_CIERRE_CARTILLA.getTipo(), "Modificacion por cierre diario, #"+obj.getCartillaDiariaId());
 					}

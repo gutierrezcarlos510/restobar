@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.Ingrediente;
 import net.resultadofinal.micomercial.model.Producto;
+import net.resultadofinal.micomercial.model.ProductoPrecioSucursal;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -42,6 +43,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			sqlBuilder.addJoin("caracteristica c on c.id = p.medida_id");
 			sqlBuilder.addLeftJoin("presentacion p1 on p1.id = p.presentacion_unidad_id");
 			sqlBuilder.addLeftJoin("presentacion p2 on p2.id = p.presentacion_caja_id");
+			sqlBuilder.addLeftJoin("");
 			sqlBuilder.setWhere("p.estado=:xestado " + (clase > 0 ? " and p.tipo_grupo = "+clase : ""));
 			sqlBuilder.addParameter("xestado",estado);
 			return utilDataTableS.list(request, Producto.class, sqlBuilder);
@@ -73,10 +75,32 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			return null;
 		}
 	}
+	public void registrarPrecioProductoSucursal(ProductoPrecioSucursal obj){
+		obj.setEsPrincipal(false);
+		if(obj.getId() == 1) {
+			obj.setEsPrincipal(true);
+			obj.setNombre("Unidad");
+		}
+		if(obj.getId() == 2) {
+			obj.setNombre("Caja");
+		}
+		if(obj.getId() == 3) {
+			obj.setNombre("Unidad con descuento");
+		}
+		if(obj.getId() == 4) {
+			obj.setNombre("Caja con descuento");
+		}
+		db.update("insert into producto_precio_sucursal(producto_id, sucursal_id, id, nombre, precio, es_principal) values(?,?,?,?,?,?);",
+				obj.getProductoId(),obj.getSucursalId(),obj.getId(),obj.getNombre(),obj.getEsPrincipal());
+
+	}
+	public void actualizarPrecioProductoSucursal(ProductoPrecioSucursal obj) {
+		db.update("update producto_precio_sucursal set precio = ? where producto_id = ? and sucursal_id = ? and id = ?");
+	}
 	public Long generarCodigo() {
 		return db.queryForObject("select coalesce(max(id),0)+1 from producto", Long.class);
 	}
-	public DataResponse adicionar(Producto p){
+	public DataResponse adicionar(Producto p,Integer sucursalId){
 		try {
 			Long id = generarCodigo();
 			sqlString = "INSERT INTO producto(id, nombre, foto, tipo_id, tipo_grupo, pc_unit, pv_unit, pv_caja, pc_caja, pv_unit_descuento, pv_caja_descuento, inventario_minimo_unidad, inventario_minimo_caja, " +
@@ -85,19 +109,47 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			boolean save = db.update(sqlString, id, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
 					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(),p.getObs()) > 0;
+			if(save) {
+				if(p.getPvUnit() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)1,p.getPvUnit()));
+				}
+				if(p.getPvCaja() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)2,p.getPvCajaDescuento()));
+				}
+				if(p.getPvUnitDescuento() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)3,p.getPvUnitDescuento()));
+				}
+				if(p.getPvCajaDescuento() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)4,p.getPvCajaDescuento()));
+				}
+			}
 			return new DataResponse(save, save ? id : null, Utils.getSuccessFailedAdd(ENTITY, save));
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));
 			throw new RuntimeException(Utils.errorAdd(ENTITY, e.getMessage()));
 		}
 	}
-	public DataResponse modificar(Producto p){
+	public DataResponse modificar(Producto p, Integer sucursalId){
 		try {
 			sqlString = "update producto set nombre=?, foto=?, tipo_id=?, tipo_grupo=?, pc_unit=?, pv_unit=?, pv_caja=?, pc_caja=?, pv_unit_descuento=?, pv_caja_descuento=?, inventario_minimo_unidad=?, inventario_minimo_caja=?, " +
 					"unidad_por_caja=?, tipo_compra=?, presentacion_unidad_id=?, presentacion_caja_id=?,medida_id=?,obs=? where id=? " ;
 			boolean update = db.update(sqlString, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPvUnit(),p.getPvCaja(), p.getPcCaja(), p.getPvUnitDescuento(), p.getPvCajaDescuento(), p.getInventarioMinimoUnidad(), p.getInventarioMinimoCaja(),
 					p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(), p.getObs(), p.getId()) > 0;
+			if(update) {
+				if(p.getPvUnit() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(p.getId(),sucursalId,(short)1,p.getPvUnit()));
+				}
+				if(p.getPvCaja() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(p.getId(),sucursalId,(short)2,p.getPvCajaDescuento()));
+				}
+				if(p.getPvUnitDescuento() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(p.getId(),sucursalId,(short)3,p.getPvUnitDescuento()));
+				}
+				if(p.getPvCajaDescuento() != null) {
+					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(p.getId(),sucursalId,(short)4,p.getPvCajaDescuento()));
+				}
+			}
 			return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 		} catch (Exception e) {
 			logger.error(Utils.errorMod(ENTITY, e.toString()));

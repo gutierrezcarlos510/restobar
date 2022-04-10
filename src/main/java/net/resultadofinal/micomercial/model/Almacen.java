@@ -1,8 +1,11 @@
 package net.resultadofinal.micomercial.model;
 
+import java.math.BigDecimal;
+
 public class Almacen {
     private Long productoId;
-    private Integer sucursalId, cantidad;
+    private Integer sucursalId;
+    private BigDecimal cantidad;
     private String xproducto;
     private Integer unidadPorCaja;
 
@@ -30,22 +33,22 @@ public class Almacen {
         this.sucursalId = sucursalId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
-    public int getCantidadCaja(){
+    public BigDecimal getCantidadCaja(){
         if(this.cantidad != null) {
             if(this.unidadPorCaja != null) {
-                return cantidad / unidadPorCaja;
+                return cantidad.divide(new BigDecimal(unidadPorCaja));
             } else {
                 return this.cantidad;
             }
         } else{
-            return 0;
+            return new BigDecimal(0);
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DetalleVentaWrap {
     private String xproducto,xtipoVenta;
-    private Integer cantidad;
+    private BigDecimal cantidad;
     private BigDecimal precio, total;
     private List<SubDetalleVentaWrap> subdetallesCompuestos;
 
@@ -25,11 +25,11 @@ public class DetalleVentaWrap {
         this.xproducto = xproducto;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 

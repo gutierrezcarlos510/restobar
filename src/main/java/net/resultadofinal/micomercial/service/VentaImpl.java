@@ -126,7 +126,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			return null;
 		}
 	}
-	private void adicionarDetalleHistoricoVenta(Long ventaId, Long productoId, Integer cantidad, Short historicoVentaId){
+	private void adicionarDetalleHistoricoVenta(Long ventaId, Long productoId, BigDecimal cantidad, Short historicoVentaId){
 		try {
 			sqlString = "insert into detalle_historico_venta(venta_id, producto_id, cantidad, esta_impreso, historico_venta_id) values(?,?,?,false,?)";
 			db.update(sqlString, ventaId, productoId, cantidad,historicoVentaId);
@@ -153,7 +153,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 					existe = false;
 					for (DetalleVentaForm producto: productos) {
 						if(compuesto.getProductoId() == producto.getProductoId()) {
-							producto.setCantidadUnitaria(producto.getCantidadUnitaria() + compuesto.getCantidadUnitaria());
+							producto.setCantidadUnitaria(producto.getCantidadUnitaria().add(compuesto.getCantidadUnitaria()));
 							existe = true;
 							break;
 						}
@@ -188,7 +188,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				for (DetalleVentaForm prod : productos) {
 					Almacen alm = almacenList.stream().filter(it -> it.getProductoId()== prod.getProductoId()).findFirst().get();
 					if(alm != null) {
-						if(prod.getCantidadUnitaria() > alm.getCantidad()) {
+						if(prod.getCantidadUnitaria().compareTo(alm.getCantidad()) > 0) {
 							faltantes += prod.getXproducto() + " = " + alm.getCantidad() + ", ";
 						}
 					} else {
@@ -281,7 +281,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		db.update(sqlString, ventaId, detalleId, det.getProductoId(), det.getPrecio(), det.getCantidad(), 0, 0, det.getTotal(), det.getCartillaDiariaId(),
 				det.getDetalleCartillaDiariaId(), det.getEsCompuesto() == null ? false : det.getEsCompuesto(), det.getTipoVenta() == null ? 1: det.getTipoVenta(), det.getCantidadUnitaria());
-		almacenS.registrarAlmacen(det.getProductoId(), sucursalId, -1*det.getCantidadUnitaria(), userId, VENTA_PRODUCTO, "Disminucion por venta #"+ventaId);
+		almacenS.registrarAlmacen(det.getProductoId(), sucursalId, det.getCantidadUnitaria().negate(), userId, VENTA_PRODUCTO, "Disminucion por venta #"+ventaId);
 	}
 	public String validarExistenciaPreviaProductosActualizacion(Integer sucursalId,List<DetalleVentaForm> detalleVentaRequest, List<DetalleVentaForm> compuestos,List<DetalleVentaForm> detallesBD){
 		List<DetalleVentaForm> listaValidar = new ArrayList<>();
@@ -313,8 +313,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 					Optional<DetalleVentaForm> found = detalleVentaRequest.stream().filter(it -> it.getCartillaDiariaId() == det.getCartillaDiariaId()
 							&& it.getDetalleCartillaDiariaId() == det.getDetalleCartillaDiariaId() && det.getProductoId() == it.getProductoId()).findFirst();
 					if (found.isPresent()) {// Si se encuentra se modifica segun
-						int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
-						if (diferencia != 0 && diferencia > 0) {
+						BigDecimal diferencia = found.get().getCantidadUnitaria().subtract(det.getCantidadUnitaria());
+						if (diferencia.compareTo(new BigDecimal(0)) > 0) {
 							det.setCantidadUnitaria(diferencia);
 							listaValidar.add(det);
 						}
@@ -328,7 +328,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 		for (DetalleVentaForm item : listaValidar) {
 			if(item.getProductoId() == det.getProductoId()) {
 				existe= true;
-				item.setCantidadUnitaria(item.getCantidadUnitaria() + det.getCantidadUnitaria());
+				item.setCantidadUnitaria(item.getCantidadUnitaria().add(det.getCantidadUnitaria()));
 			}
 		}
 		if(!existe) {
@@ -384,7 +384,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			}
 		}
 	}
-	private void adicionarDetalleHistoricoVentaModificar(Long ventaId, Long productoId,Integer cantidad, Short historicoVentaId) {
+	private void adicionarDetalleHistoricoVentaModificar(Long ventaId, Long productoId,BigDecimal cantidad, Short historicoVentaId) {
 		try {
 			if(historicoVentaId == null) {
 				historicoVentaId = adicionarHistoricoVenta(ventaId);
@@ -431,16 +431,16 @@ public class VentaImpl extends DbConeccion implements VentaS {
 						almacenS.registrarAlmacen(det.getProductoId(), sucId, det.getCantidad(), userId,
 								REVERSION_VENTA_PRODUCTO, "Reversion detalle de venta");
 						//Adicionar historico
-						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),-1*det.getCantidadUnitaria(),historicoVentaId);
+						adicionarDetalleHistoricoVentaModificar(ventaId,det.getProductoId(),det.getCantidadUnitaria().negate(),historicoVentaId);
 					} else { // Si se encuentra se modifica segun
-						int diferencia = found.get().getCantidadUnitaria() - det.getCantidadUnitaria();
-						if(diferencia != 0) {
+						BigDecimal diferencia = found.get().getCantidadUnitaria().subtract(det.getCantidadUnitaria());
+						if(diferencia.compareTo(new BigDecimal(0)) != 0) {
 							//update
 							db.update("update detalle_venta set cantidad = ?, cantidad_unitaria = ?, precio =?, tipo_venta =? ,total = ? where venta_id = ? and id = ?",
 									found.get().getCantidad(),found.get().getCantidadUnitaria(), found.get().getPrecio(), found.get().getTipoVenta(), found.get().getTotal(), det.getVentaId(), det.getId());
-							if(diferencia > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
+							if(diferencia.compareTo(new BigDecimal(0)) > 0){ // Si es positiva, se aumento la diferencia, caso contrario se disminuyo la diferencia
 								//disminuir almacen segun la cantidad: diferencia
-								almacenS.registrarAlmacen(det.getProductoId(), sucId, -1*diferencia, userId,
+								almacenS.registrarAlmacen(det.getProductoId(), sucId, diferencia.negate(), userId,
 										VENTA_PRODUCTO, "Aumento detalle, por venta # "+ventaId);
 								//Adicionar historico
 							} else {
@@ -529,19 +529,19 @@ public class VentaImpl extends DbConeccion implements VentaS {
 							List<SubDetalleVentaWrap> subdetalleVentaList = new ArrayList<>();
 							Map<Short,List<DetalleVentaForm>> tipoComboList = comboItemList.getValue().stream().collect(Collectors.groupingBy(DetalleVentaForm::getDetalleCartillaSucursalId));
 							for (Map.Entry<Short, List<DetalleVentaForm>> tipoComboItem: tipoComboList.entrySet()) {// Sopa, Segundo
-								int cantidadTotalGrupo = 0;
+								BigDecimal cantidadTotalGrupo = new BigDecimal(0);
 								SubDetalleVentaWrap tipoCombo = new SubDetalleVentaWrap();
 								tipoCombo.setXtipoProducto(tipoComboItem.getValue().get(0).getXtipoProducto());
 								List<ProductoDetalleVenta> productoDetalleVentaList = new ArrayList<>();
 								for (DetalleVentaForm producto: tipoComboItem.getValue()) {
-									cantidadTotalGrupo += producto.getCantidadUnitaria();
+									cantidadTotalGrupo = cantidadTotalGrupo.add(producto.getCantidadUnitaria());
 									ProductoDetalleVenta pro = new ProductoDetalleVenta();
 									pro.setXproducto(producto.getXproducto());
 									pro.setCantidad(producto.getCantidadUnitaria());
 									productoDetalleVentaList.add(pro);
 								}
 								detalleVentaCombo.setCantidad(cantidadTotalGrupo);
-								detalleVentaCombo.setTotal(detalleVentaCombo.getPrecio().multiply(new BigDecimal(detalleVentaCombo.getCantidad())));
+								detalleVentaCombo.setTotal(detalleVentaCombo.getPrecio().multiply(detalleVentaCombo.getCantidad()));
 								tipoCombo.setProductos(productoDetalleVentaList);
 								subdetalleVentaList.add(tipoCombo);
 							}

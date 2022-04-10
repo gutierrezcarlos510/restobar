@@ -6,6 +6,7 @@ import net.resultadofinal.micomercial.pagination.DataTableResults;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AlmacenS {
@@ -22,7 +23,7 @@ public interface AlmacenS {
      * @return
      */
     @Transactional
-    boolean registrarAlmacen(Long productoId, Integer sucursalId, Integer cantidad, Long userId, Short tipo, String obs);
+    boolean registrarAlmacen(Long productoId, Integer sucursalId, BigDecimal cantidad, Long userId, Short tipo, String obs);
     List<AlmacenVenta> listarProductos(Integer sucursalId);
     DataTableResults<AlmacenVenta> listaProducto(HttpServletRequest request, int sucursal);
 }

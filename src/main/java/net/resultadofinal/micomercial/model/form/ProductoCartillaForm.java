@@ -10,14 +10,14 @@ public class ProductoCartillaForm {
     private Long productoId;
     private String xproducto, foto;
     private BigDecimal precioIndividual, precioCompuesto;
-    private Integer cantidad, cantidadModificar,cantidadAlmacen;
+    private BigDecimal cantidad, cantidadModificar,cantidadAlmacen;
     private Boolean esProductoFabricado;
 
-    public Integer getCantidadAlmacen() {
+    public BigDecimal getCantidadAlmacen() {
         return cantidadAlmacen;
     }
 
-    public void setCantidadAlmacen(Integer cantidadAlmacen) {
+    public void setCantidadAlmacen(BigDecimal cantidadAlmacen) {
         this.cantidadAlmacen = cantidadAlmacen;
     }
 
@@ -37,11 +37,11 @@ public class ProductoCartillaForm {
         this.foto = foto;
     }
 
-    public Integer getCantidadModificar() {
+    public BigDecimal getCantidadModificar() {
         return cantidadModificar;
     }
 
-    public void setCantidadModificar(Integer cantidadModificar) {
+    public void setCantidadModificar(BigDecimal cantidadModificar) {
         this.cantidadModificar = cantidadModificar;
     }
 
@@ -109,11 +109,11 @@ public class ProductoCartillaForm {
         this.precioCompuesto = precioCompuesto;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 }

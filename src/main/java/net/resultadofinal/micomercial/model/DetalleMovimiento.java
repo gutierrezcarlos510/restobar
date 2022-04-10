@@ -1,11 +1,14 @@
 package net.resultadofinal.micomercial.model;
 
+import java.math.BigDecimal;
+
 public class DetalleMovimiento {
     private Short id;
     private Long movimientoId, productoId;
-    private Integer cantidad, cantidadUnitaria, unidadPorCaja;
+    private Integer unidadPorCaja;
     private Boolean tipo, esIngreso;
     private String xproducto;
+    private BigDecimal cantidad, cantidadUnitaria;
 
     public Integer getUnidadPorCaja() {
         return unidadPorCaja;
@@ -39,19 +42,19 @@ public class DetalleMovimiento {
         this.productoId = productoId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Integer getCantidadUnitaria() {
+    public BigDecimal getCantidadUnitaria() {
         return cantidadUnitaria;
     }
 
-    public void setCantidadUnitaria(Integer cantidadUnitaria) {
+    public void setCantidadUnitaria(BigDecimal cantidadUnitaria) {
         this.cantidadUnitaria = cantidadUnitaria;
     }
 

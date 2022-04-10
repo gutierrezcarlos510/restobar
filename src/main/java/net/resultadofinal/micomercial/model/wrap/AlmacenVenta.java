@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 
 public class AlmacenVenta {
     private Long productoId;
-    private Integer sucursalId, cantidad;
+    private Integer sucursalId;
     private String xproducto,foto;
     private Integer unidadPorCaja;
-    private BigDecimal pvUnitDescuento, pvCajaDescuento, pvUnit, pvCaja;
+    private BigDecimal cantidad,pvUnitDescuento, pvCajaDescuento, pvUnit, pvCaja;
 
     public String getFoto() {
         return foto;
@@ -33,11 +33,11 @@ public class AlmacenVenta {
         this.sucursalId = sucursalId;
     }
 
-    public Integer getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 

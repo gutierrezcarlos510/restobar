@@ -897,3 +897,55 @@ VALUES(2022, 'Discoteca Dubai', true, 'Disco Dubai', 'empresa.png', 'empresa.png
 INSERT INTO public."general"
 (ges_gen, des_gen, est_gen, nom_gen, logtex_gen, logsintex_gen, tel_gen, dir_gen, lug_gen, nit_gen, cod_suc)
 VALUES(2022, 'Discoteca Papi Chulo', true, 'Disco Papi Chulo', 'empresa.png', 'empresa.png', '75136609', 'Barrio San Jorge 1', 'Tarija- Bolivia', '1', 2);
+
+
+
+
+--Insercion de datos
+select importar_precio_sucursal(1,cast(1 as smallint));
+select importar_precio_sucursal(1,cast(2 as smallint));
+select importar_precio_sucursal(1,cast(3 as smallint));
+select importar_precio_sucursal(1,cast(4 as smallint));
+select importar_precio_sucursal(1,cast(5 as smallint));
+
+select importar_precio_sucursal(2,cast(1 as smallint));
+select importar_precio_sucursal(2,cast(2 as smallint));
+select importar_precio_sucursal(2,cast(3 as smallint));
+select importar_precio_sucursal(2,cast(4 as smallint));
+select importar_precio_sucursal(2,cast(5 as smallint));
+
+select importar_precio_sucursal(3,cast(1 as smallint));
+select importar_precio_sucursal(3,cast(2 as smallint));
+select importar_precio_sucursal(3,cast(3 as smallint));
+select importar_precio_sucursal(3,cast(4 as smallint));
+select importar_precio_sucursal(3,cast(5 as smallint));
+
+select importar_precio_sucursal(4,cast(1 as smallint));
+select importar_precio_sucursal(4,cast(2 as smallint));
+select importar_precio_sucursal(4,cast(3 as smallint));
+select importar_precio_sucursal(4,cast(4 as smallint));
+select importar_precio_sucursal(4,cast(5 as smallint));
+
+select importar_precio_sucursal(5,cast(1 as smallint));
+select importar_precio_sucursal(5,cast(2 as smallint));
+select importar_precio_sucursal(5,cast(3 as smallint));
+select importar_precio_sucursal(5,cast(4 as smallint));
+select importar_precio_sucursal(5,cast(5 as smallint));
+
+select importar_precio_sucursal(6,cast(1 as smallint));
+select importar_precio_sucursal(6,cast(2 as smallint));
+select importar_precio_sucursal(6,cast(3 as smallint));
+select importar_precio_sucursal(6,cast(4 as smallint));
+select importar_precio_sucursal(6,cast(5 as smallint));
+
+select importar_precio_sucursal(7,cast(1 as smallint));
+select importar_precio_sucursal(7,cast(2 as smallint));
+select importar_precio_sucursal(7,cast(3 as smallint));
+select importar_precio_sucursal(7,cast(4 as smallint));
+select importar_precio_sucursal(7,cast(5 as smallint));
+
+select importar_precio_sucursal(8,cast(1 as smallint));
+select importar_precio_sucursal(8,cast(2 as smallint));
+select importar_precio_sucursal(8,cast(3 as smallint));
+select importar_precio_sucursal(8,cast(4 as smallint));
+select importar_precio_sucursal(8,cast(5 as smallint));
