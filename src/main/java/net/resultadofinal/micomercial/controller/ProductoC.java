@@ -87,7 +87,8 @@ public class ProductoC {
 	public @ResponseBody
 	DataTableResults<Producto> listar(HttpServletRequest request, boolean estado, Integer grupo) {
 		try {
-			return productoS.listado(request, estado, grupo);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.listado(request, estado, grupo,gestion.getCod_suc());
 		} catch (Exception ex) {
 			logger.error("error lista productos: "+ex.toString());
 			return null;
@@ -97,7 +98,19 @@ public class ProductoC {
 	public @ResponseBody
 	DataTableResults<Producto> listarPorTipoProducto(HttpServletRequest request, boolean estado, Integer tipo) {
 		try {
-			return productoS.listaPorTipo(request, estado, tipo);
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.listaPorTipo(request, estado, tipo, gestion.getCod_suc());
+		} catch (Exception ex) {
+			logger.error("error lista productos: "+ex.toString());
+			return null;
+		}
+	}
+	@RequestMapping("listarPorTipoProductoAlmacen")
+	public @ResponseBody
+	DataTableResults<Producto> listarPorTipoProductoAlmacen(HttpServletRequest request, Integer tipo) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.listaPorTipoGrupoAlmacen(request, true, tipo, gestion.getCod_suc());
 		} catch (Exception ex) {
 			logger.error("error lista productos: "+ex.toString());
 			return null;

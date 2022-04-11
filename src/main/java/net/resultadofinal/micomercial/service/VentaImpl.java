@@ -186,7 +186,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			List<Almacen> almacenList = db.query(sqlString, BeanPropertyRowMapper.newInstance(Almacen.class), sucursalId);
 			if(UtilClass.isNotNullEmpty(almacenList)) {
 				for (DetalleVentaForm prod : productos) {
-					Almacen alm = almacenList.stream().filter(it -> it.getProductoId()== prod.getProductoId()).findFirst().get();
+					Almacen alm = almacenList.stream().filter(it -> it.getProductoId().equals(prod.getProductoId())).findFirst().get();
 					if(alm != null) {
 						if(prod.getCantidadUnitaria().compareTo(alm.getCantidad()) > 0) {
 							faltantes += prod.getXproducto() + " = " + alm.getCantidad() + ", ";

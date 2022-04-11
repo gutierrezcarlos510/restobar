@@ -66,13 +66,13 @@ public class CompraImpl extends DbConeccion implements CompraS {
 		}
 	}
 	@Transactional
-	public Boolean adicionar(Compra c, Long productos[], Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[],
+	public Boolean adicionar(Compra c, Long productos[], BigDecimal cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[],
 							 BigDecimal totales[], Short tipos[]){
 		try {
 			Vectores v=new Vectores();
 			String codPro=v.convertLongToString(productos);
 			String preDetcom=v.convertBigDecimalToString(precios);
-			String canDetcom=v.convertIntegerToString(cantidades);
+			String canDetcom=v.convertBigDecimalToString(cantidades);
 			String desDetcom=v.convertBigDecimalToString(descuentos);
 			String subtotDetcom=v.convertBigDecimalToString(subtotales);
 			String totDetcom=v.convertBigDecimalToString(totales);

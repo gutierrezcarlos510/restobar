@@ -135,7 +135,7 @@
                         <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="ion ion-pound custom-bolder"></i></span>
-                                <input type="text" class="form-control text-right" autocomplete="off" id="can1" name="can1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-integer="true">
+                                <input type="text" class="form-control text-right" id="can1" name="can1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                <input type="text" class="form-control text-right" autocomplete="off" id="pre1" name="pre1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                                <input type="text" class="form-control text-right" id="pre1" name="pre1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calculator"></i></span>
-                                <input type="text" class="form-control text-right" autocomplete="off" id="tot1" name="tot1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
+                                <input type="text" class="form-control text-right" id="tot1" name="tot1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
                             </div>
                         </div>
                     </div>
@@ -496,7 +496,7 @@ function calcularTotal() {
                 e.preventDefault();
                 let xform = $(e.target);
                 let formData = $('#formulario2').formToJSON();
-                let cantidad = parseInt(formData.can1);
+                let cantidad = parseFloat(formData.can1);
                 $('#unit').remove();
                 var row = $('<tr></tr>');
                 let xcodpro = productSelected.id;

@@ -949,3 +949,30 @@ select importar_precio_sucursal(8,cast(2 as smallint));
 select importar_precio_sucursal(8,cast(3 as smallint));
 select importar_precio_sucursal(8,cast(4 as smallint));
 select importar_precio_sucursal(8,cast(5 as smallint));
+
+
+--aumentar
+CREATE OR REPLACE FUNCTION public.almacen_adicionar(xproducto bigint, xsucursal integer, cant numeric(10,2), xuser bigint, xtipo smallint, xobs character varying)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+declare inicial numeric(10,2);
+begin
+	if exists (select * from almacen where producto_id=xproducto and sucursal_id = xsucursal) then
+		inicial := (select cantidad from almacen where producto_id=xproducto and sucursal_id = xsucursal);
+update almacen set cantidad = cant + cantidad where producto_id=xproducto and sucursal_id = xsucursal;
+else
+		insert into almacen(producto_id, sucursal_id, cantidad) values(xproducto, xsucursal, cant);
+		inicial := 0;
+end if;
+insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+values(xproducto, xsucursal, now(),xuser,inicial,cant,(inicial + cant), xtipo, xobs);
+RETURN true;
+EXCEPTION
+			WHEN OTHERS THEN
+				RAISE EXCEPTION '%',sqlerrm;
+RETURN false;
+END
+$function$
+;
+ALTER TABLE public.detalle_movimiento ADD cantidad_unitaria numeric(10, 2) NOT NULL;

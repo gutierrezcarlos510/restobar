@@ -97,7 +97,7 @@ public class CompraC {
 	@RequestMapping("guardar")
 	public @ResponseBody
     DataResponse guardar(HttpServletRequest request, Compra c, Long productos[],
-						 Integer cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[], Short tipos[]) {
+						 BigDecimal cantidades[], BigDecimal precios[], BigDecimal descuentos[], BigDecimal subtotales[], BigDecimal totales[], Short tipos[]) {
 		try {
 			Persona usuario = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);

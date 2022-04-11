@@ -1,17 +1,42 @@
 package net.resultadofinal.micomercial.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Producto {
-	private Long id;
+	private Long id,productoId;
 	private String nombre, foto;
 	private Integer tipoId, tipoGrupo, medidaId, cantidadPlatos;
-	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento;
+	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento, cantidad;
 	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
-	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra;
+	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra,xproducto;
 	private String xmedida,obs;
 	private Boolean hasIngredients;
+
+	public String getXproducto() {
+		return xproducto;
+	}
+
+	public void setXproducto(String xproducto) {
+		this.xproducto = xproducto;
+	}
+
+	public Long getProductoId() {
+		return productoId;
+	}
+
+	public void setProductoId(Long productoId) {
+		this.productoId = productoId;
+	}
+
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
 
 	public String getObs() {
 		return obs;
@@ -237,5 +262,16 @@ public class Producto {
 
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
+	}
+	public BigDecimal getCantidadCaja(){
+		if(this.cantidad != null) {
+			if(this.unidadPorCaja != null) {
+				return cantidad.divide(new BigDecimal(unidadPorCaja), 2, RoundingMode.HALF_DOWN);
+			} else {
+				return this.cantidad;
+			}
+		} else{
+			return new BigDecimal(0);
+		}
 	}
 }

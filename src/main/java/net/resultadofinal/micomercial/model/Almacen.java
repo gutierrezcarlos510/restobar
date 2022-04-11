@@ -1,6 +1,7 @@
 package net.resultadofinal.micomercial.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Almacen {
     private Long productoId;
@@ -43,7 +44,7 @@ public class Almacen {
     public BigDecimal getCantidadCaja(){
         if(this.cantidad != null) {
             if(this.unidadPorCaja != null) {
-                return cantidad.divide(new BigDecimal(unidadPorCaja));
+                return cantidad.divide(new BigDecimal(unidadPorCaja), 2, RoundingMode.HALF_DOWN);
             } else {
                 return this.cantidad;
             }

@@ -1,5 +1,5 @@
 <section xmlns:th="http://www.thymeleaf.org">
-        <div id="modalProducto" class="modal fade" data-backdrop="static">
+    <div id="modalProducto" class="modal fade" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -8,13 +8,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="btn-group btn-group-justified padding-top-sm">
-                            <label class="btn btn-danger areaTipo">
-                                <i class="glyphicon glyphicon-th-large"></i><br>
-                                <input type="radio" name="radioTipo" value="-1" checked> Todos
-                            </label>
                             <label class="btn btn-success areaTipo">
                                 <i class="fi fi-plastic-bottle"></i><br>
-                                <input type="radio" name="radioTipo" value="1"> Producto
+                                <input type="radio" name="radioTipo" value="1" checked> Producto
                             </label>
                             <label class="btn btn-warning areaTipo">
                                 <i class="fi fi-plate"></i><br>
@@ -63,39 +59,31 @@
         <form id="formulario" autocomplete="off" class="" method="post" action="#" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
         <div class="row">
             <div class="col-md-4">
-                <div class="form-group row">
-                    <label class="col-md-4 control-label required">
+                <div class="form-group">
+                    <label class="control-label required">
                         Tipo de movimiento
                     </label>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-sort"></i></span>
-                                <select name="tipo" id="tipo" class="form-control input-lg" data-fv-notempty="true">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Traspaso entre sucursales</option>
-                                    <option value="2">Registro de Movimiento</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-sort"></i></span>
+                        <select name="tipo" id="tipo" class="form-control input-lg" data-fv-notempty="true">
+                            <option value="">Seleccionar</option>
+                            <option value="1">Traspaso entre sucursales</option>
+                            <option value="2">Registro de Movimiento</option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 areaSucursalDestino" style="display: none;">
-                <div class="form-group row">
-                    <label class="col-md-4 control-label">
+                <div class="form-group">
+                    <label class="control-label">
                         Sucursal Destino
                     </label>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                                <select name="sucursalDestino" id="sucursalDestino" class="form-control input-lg">
-                                    <option value="">Seleccionar</option>
-                                    <option th:each="s: ${sucursales}" th:if="${s.cod_suc != sucursalOrigen}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                        <select name="sucursalDestino" id="sucursalDestino" class="form-control input-lg">
+                            <option value="">Seleccionar</option>
+                            <option th:each="s: ${sucursales}" th:if="${s.cod_suc != sucursalOrigen}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -172,7 +160,7 @@
                     <label class="required">Cantidad movimiento</label>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                        <input type="number" min="1" class="form-control text-right" autocomplete="off" name="cantidad" data-fv-notempty="true" data-fv-integer="true" />
+                        <input type="text" min="0.1" class="form-control text-right" autocomplete="off" name="cantidad" data-fv-notempty="true" data-fv-numeric="true" data-fv-numeric-decimalseparator="." />
                     </div>
                 </div>
                 <div class="pull-right">
@@ -265,7 +253,7 @@
             buttons: [],
             "ajax": {
                 "type": "POST",
-                "url": "../almacen/listar",
+                "url": "../producto/listarPorTipoProductoAlmacen",
                 "data": function(d) {
                     d.tipo = $('input[name=radioTipo]:checked').val();
                 }
@@ -375,7 +363,7 @@
                     return;
                 }
             }
-            let cantidadMovimiento = parseInt(formData.cantidad);
+            let cantidadMovimiento = parseFloat(formData.cantidad);
             let existeDetalle = dataReq.movimiento.detalles.find(it => it.productoId === dataReq.productoSelected.productoId);
             if(existeDetalle && esIngreso === existeDetalle.esIngreso && existeDetalle.tipo === tipoMedida) {
                 cantidadMovimiento += existeDetalle.cantidad;
@@ -409,7 +397,7 @@
                 dataReq.movimiento.detalles.push({
                     'productoId': dataReq.productoSelected.productoId,
                     'xproducto':dataReq.productoSelected.xproducto,
-                    'cantidad': parseInt(formData.cantidad),
+                    'cantidad': parseFloat(formData.cantidad),
                     'tipo': tipoMedida,//Unidad
                     'cantidadUnitaria': tipoMedida ? cantidadMovimiento : (cantidadMovimiento * dataReq.productoSelected.unidadPorCaja),
                     'esIngreso': esIngreso,
