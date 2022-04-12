@@ -1,12 +1,12 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.*;
+import net.resultadofinal.micomercial.model.wrap.Organigrama;
+import net.resultadofinal.micomercial.model.wrap.RolOrganigrama;
+import net.resultadofinal.micomercial.model.wrap.UsuarioOrganigrama;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
-import net.resultadofinal.micomercial.util.DataResponse;
-import net.resultadofinal.micomercial.util.DbConeccion;
-import net.resultadofinal.micomercial.util.UtilDataTableS;
-import net.resultadofinal.micomercial.util.Utils;
+import net.resultadofinal.micomercial.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,6 +188,24 @@ public class SucursalImpl extends DbConeccion implements SucursalS {
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Error al obtener notificacion por sucursal.");
+		}
+	}
+	public Organigrama listarOrganigramaUsuarios(Integer sucursalId) {
+		try {
+			sqlString = "select cod_rol,nom_rol as xrol from rol where est_rol = true and cod_rol != 1;";
+			List<RolOrganigrama> listaRol =db.query(sqlString, BeanPropertyRowMapper.newInstance(RolOrganigrama.class));
+			if(UtilClass.isNotNullEmpty(listaRol)) {
+				sqlString = "select distinct INITCAP(concat(p.nom_per,' ',p.priape_per)) as xusuario from persona p inner join usurol ur on ur.cod_per = p.cod_per and ur.cod_rol=? inner join tiene_sucursal ts on ts.cod_suc = ? and ts.cod_per = p.cod_per where p.est_per = true";
+				for (RolOrganigrama r: listaRol) {
+					r.setListaUsuarios(db.query(sqlString, BeanPropertyRowMapper.newInstance(UsuarioOrganigrama.class),r.getCodRol(),sucursalId));
+				}
+			}
+			Organigrama o = new Organigrama();
+			o.setNombreSucursal(db.queryForObject("select nombre from sucursal s where s.cod_suc = ?",String.class, sucursalId));
+			o.setListaRoles(listaRol);
+			return o;
+		} catch(Exception ex) {
+			return null;
 		}
 	}
 }

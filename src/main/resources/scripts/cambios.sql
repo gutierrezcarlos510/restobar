@@ -976,3 +976,11 @@ END
 $function$
 ;
 ALTER TABLE public.detalle_movimiento ADD cantidad_unitaria numeric(10, 2) NOT NULL;
+
+
+UPDATE public.proceso
+SET nom_pro='Organigrama', des_pro='Organigrama de cada sucursal', ico_pro='glyphicon glyphicon-th-large', est_pro=true, url_pro='../sucursal/organigrama'
+WHERE cod_pro=28;
+UPDATE public.proceso
+SET nom_pro='Reportes ADM.', des_pro='Gestiona los reportes de administracion', ico_pro='glyphicon glyphicon-print', est_pro=true, url_pro='../reporteAdministrativo/gestion'
+WHERE cod_pro=32;

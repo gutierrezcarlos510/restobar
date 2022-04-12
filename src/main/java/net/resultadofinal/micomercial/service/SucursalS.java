@@ -4,6 +4,7 @@ import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.GeneralWrap;
 import net.resultadofinal.micomercial.model.NotificacionSucursalWrap;
 import net.resultadofinal.micomercial.model.Sucursal;
+import net.resultadofinal.micomercial.model.wrap.Organigrama;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.util.DataResponse;
 
@@ -32,4 +33,5 @@ public interface SucursalS {
 	NotificacionSucursalWrap obtenerNotificacionPorSucursal(Integer sucursal);
 	DataTableResults<Sucursal> listado(HttpServletRequest request, boolean estado);
 	List<Sucursal> listAll();
+	Organigrama listarOrganigramaUsuarios(Integer sucursalId);
 }

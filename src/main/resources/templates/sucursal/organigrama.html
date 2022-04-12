@@ -1,0 +1,80 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="row">
+            <div class="col-md-2">
+                <h1><span class="fa fa-ellipsis-v"></span> Organigrama </h1>
+            </div>
+            <div class="col-md-6 areaOcultar">
+                <div class="form-group">
+                    <label>Sucursal</label>
+                    <select id="cod_suc" name="cod_suc" class="form-control select-chosen" data-fv-notempty="true">
+                        <option value="">Seleccionar</option>
+                        <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:title="${s.descripcion}" th:text="${s.nombre}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 areaOcultar">
+                <button class="btn btn-block btn-primary" id="btnPrinter"><i class="fa fa-print"></i> Imprimir</button>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div id="tree" class="text-capitalize">
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+    <script th:inline="javascript">
+        var sucursalId = /*[[${sucursal}]]*/ 0;
+    </script>
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $('#btnPrinter').click(function(){
+            $('.areaOcultar').hide();
+            window.print();
+        })
+        $('#cod_suc').change(function(){
+            let suc = $('#cod_suc option:selected').val();
+            if(suc)
+            $.post('../sucursal/organigrama?sucursal='+suc,function(resp){
+                $('#contenedor').html(resp);
+            })
+        });
+        if(sucursalId > 0) {
+            $('#cod_suc').val(sucursalId);
+            $.post('../sucursal/obtenerOrganigrama?cod_suc='+sucursalId, function(resp){
+                finishTransaction(resp, function(){
+                    resp.data.head = '<i class="fa fa-home"></i>';
+                    resp.data.contents = resp.data.nombreSucursal;
+                    resp.data.id = 'a1'
+                    let xid = 1;
+                    resp.data.listaRoles.forEach(item => {
+                        item.head = '<i class="fa fa-briefcase"></i>';
+                        item.contents = item.xrol;
+                        item.id = resp.data.id + '-' + xid;
+                        xid++;
+                        let usuarios = '';
+                        item.listaUsuarios.forEach(subitem => {
+                            usuarios += '<p class="">'+ subitem.xusuario +'</p><br>';
+                        });
+                        usuarios +=''
+                        let subitem = {};
+                        subitem.head = '<i class="fa fa-users"></i><br>Total: '+item.listaUsuarios.length+'<br/><br/>';
+                        subitem.contents = usuarios;
+                        subitem.id = item.id + '-' + 1;
+                        item.children = [subitem];
+                    })
+                    resp.data.children = resp.data.listaRoles;
+                    $("#tree").jHTree({
+                        callType: 'obj',
+                        structureObj: [resp.data]
+                    });
+                })
+            })
+        }
+
+    });
+</script>
+</section>

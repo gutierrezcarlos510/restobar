@@ -31,6 +31,12 @@ public class SucursalC {
 		model.addAttribute("sucursales", sucursalS.listAll());
 		return "sucursal/gestion";
 	}
+	@RequestMapping("organigrama")
+	public String organigrama(Model model,Integer sucursal){
+		model.addAttribute("sucursales", sucursalS.listAll());
+		model.addAttribute("sucursal", sucursal!=null ? sucursal : 0);
+		return "sucursal/organigrama";
+	}
 	@RequestMapping("listar")
 	public @ResponseBody
 	DataTableResults<Sucursal> listar(HttpServletRequest request, boolean estado) {
@@ -146,6 +152,15 @@ public class SucursalC {
 			}
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	@RequestMapping("obtenerOrganigrama")
+	public @ResponseBody
+	DataResponse obtenerOrganigrama(Integer cod_suc){
+		try {
+			return new DataResponse(true, sucursalS.listarOrganigramaUsuarios(cod_suc), Utils.successGet(ENTITY));
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
 		}
 	}
 }

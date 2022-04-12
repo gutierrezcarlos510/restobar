@@ -1,6 +1,25 @@
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
+        <div id="tree">
+        </div>
+        <div id="modalListaUsuarios" class="modal fade" data-backdrop="static">
+            <div class="modal-dialog" style="min-width: 95%;min-height: 500px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><span class="fa fa-chevron-circle-right"></span> Usuarios</h4>
+                        </div>
+                        <div class="modal-body">
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cerrar</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
         <div id="modalEliminarNotificaciones" class="modal fade" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <form id="formularioEliminarNotificaciones" method="post" action="../sucursal/eliminarNotificaciones" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
@@ -272,6 +291,7 @@
 </div>
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
+
     function ejecutarPlantilla1(idTitulo,idMensaje){
         let titulo = 'Actualizacion del sistema'
         let plantilla = 'Estimado usuario.-\n' +
@@ -325,7 +345,8 @@
                     } else {
                         btnGroup+='<button class="btn btn-success notificar"  data-toggle="tooltip" data-placement="top" title="Registrar notificacion"><i class="fa fa-comment"></i><br>notificacion</button>';
                     }
-                    btnGroup += '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_suc + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_suc + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
+                    btnGroup += '<button class="btn btn-primary modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_suc + '"><i class="fa fa-edit"></i><br>editar</button>';
+                    btnGroup += '<button class="btn btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_suc + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button>';
                     btnGroup += '</div>';
                     $('td', row).eq(5).html(btnGroup);
                 } else {

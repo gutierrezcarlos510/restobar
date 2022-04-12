@@ -458,7 +458,8 @@
         detalleAux : {
             subdetalleAux: []
         },
-        isUpdate : false
+        isUpdate : false,
+        esComboUnico: false // atributo auxiliar para saber si una cartilla compuesta es de un mismo producto y mayor a 1
     }
     function beforeStep3(){
         let obsGeneral = $('#obsGeneral').val();
@@ -547,6 +548,8 @@
         let can = $('#cantidadCompuesto').val();
         if(!can) {
             can = 0;
+        } else {
+            can = parseInt(can);
         }
         if(state) {
             can++;
@@ -554,6 +557,19 @@
             if(can > 0) {
                 can--;
             }
+        }
+        if(dataReq.esComboUnico) {
+            let cantidadTipoProductoTotal = dataReq.detalleAux.detalleCartillaList.length * can;
+            let productoUnico = dataReq.detalleAux.detalleCartillaList[0].productos[0];
+            if(cantidadTipoProductoTotal >= productoUnico.cantidadAlmacen) {
+                modalAlert('Cantidad limite', 'No se cuenta con la cantidad total del combo.','error');
+                return;
+            }
+            dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+                subdet.productos.forEach(item => {
+                    item.cantidadVenta = can;
+                })
+            })
         }
         $('#cantidadCompuesto').val(can);
     }
@@ -786,6 +802,7 @@
         $('#formularioCompuesto')[0].reset();
         $('#cantidadCompuesto').val('')
         $('#contenidoCartilla').html('');
+        dataReq.esComboUnico = false;
         let existeDetalleVenta = dataReq.detalleVentaCompuesto.find(it => it.id === id);
         dataReq.detalleAux = null;
         if(existeDetalleVenta) {
@@ -799,7 +816,21 @@
             });
         }
         if(dataReq.detalleAux) {
-            let row = $('<div class="row"></div>');
+            //Verificar si es el producto es el mismo en cada subcategoria, combo 5 x 100 y si es mas de 1 producto
+            if(dataReq.detalleAux.detalleCartillaList && dataReq.detalleAux.detalleCartillaList.length > 1) {
+                let productoSelect = dataReq.detalleAux.detalleCartillaList[0].productos[0].productoId;
+                dataReq.esComboUnico = true;
+                dataReq.detalleAux.detalleCartillaList.forEach(subdet => {
+                        subdet.productos.forEach(item => {
+                            if(item.productoId !== productoSelect) {
+                                dataReq.esComboUnico = false;
+                            }
+                        })
+                })
+            } else {
+                dataReq.esComboUnico = false;
+            }
+            let row = $('<div class="row" '+(dataReq.esComboUnico ? 'style="display: none"':'')+'></div>');
             $('<div class="col-md-6"><span class="custom-bolder h4">'+ dataReq.detalleAux.nombre +'</span> <span class="custom-bolder h5 text-muted">Bs. '+ dataReq.detalleAux.total +'</span></div>').appendTo(row);
             $('<div class="col-md-2 custom-bolder">Cantidad</div>').appendTo(row);
             $('<div class="col-md-4 custom-bolder text-center">Acciones</div>').appendTo(row);
@@ -971,14 +1002,35 @@
                         let divContent = $('<div class="tab-pane" id="tab_'+it.id+'"></div>');
                         if(it.estaCompuesto) {
                             $('<h3>'+it.nombre+' <button class="btn btn-success" type="button" onclick="btnAdicionarCompuesto('+it.id+')"> <i class="fa fa-plus"></i> Registrar '+it.nombre+'</button></h3>').appendTo(divContent);
-                            it.detalleCartillaList.forEach(itDetalleCartilla => {
-                                $('<h3>'+itDetalleCartilla.xtipoProducto+'</h3>').appendTo(divContent);
+
+                            if(it.detalleCartillaList && it.detalleCartillaList.length > 1) {
+                                let productoSelect = it.detalleCartillaList[0].productos[0].productoId;
+                                it.esComboUnico = true;
+                                it.detalleCartillaList.forEach(subdet => {
+                                    subdet.productos.forEach(item => {
+                                        if(item.productoId !== productoSelect) {
+                                            it.esComboUnico = false;
+                                        }
+                                    })
+                                })
+                            } else {
+                                it.esComboUnico = false;
+                            }
+                            if(it.esComboUnico) {
+                                $('<h3>'+it.detalleCartillaList[0].xtipoProducto+'</h3>').appendTo(divContent);
                                 let divRow = $('<div class="row platos-list plato-list-in-box"></div>');
-                                itDetalleCartilla.productos.forEach(itProducto => {
-                                    divRow.append(generateColumnPlato(itProducto));
-                                });
+                                divRow.append(generateColumnPlato(it.detalleCartillaList[0].productos[0]));
                                 divContent.append(divRow);
-                            });
+                            } else {
+                                it.detalleCartillaList.forEach(itDetalleCartilla => {
+                                    $('<h3>'+itDetalleCartilla.xtipoProducto+'</h3>').appendTo(divContent);
+                                    let divRow = $('<div class="row platos-list plato-list-in-box"></div>');
+                                    itDetalleCartilla.productos.forEach(itProducto => {
+                                        divRow.append(generateColumnPlato(itProducto));
+                                    });
+                                    divContent.append(divRow);
+                                });
+                            }
                         } else {
                             let divRow = $('<div class="row platos-list plato-list-in-box"></div>');
                             it.detalleCartillaList[0].productos.forEach(itProducto => {
@@ -1291,17 +1343,25 @@
                     dataReq.detalleVentaCompuesto.forEach(it => {
                         let tablaInterna = $('<table class="w3-table w3-small"></table>');
                         let tableBody = $('<tbody></tbody>');
-                        it.detalleCartillaList.forEach(subitem => {
-                            $('<tr><td class="custom-bolder">'+subitem.xtipoProducto+'</td><td>Cantidad</td></tr>').appendTo(tableBody);
-                            subitem.productos.forEach( pro => {
-                                if(pro.cantidadVenta > 0) {
-                                    let fila = $('<tr></tr>');
-                                    $('<td style="padding-left: 35px;">'+pro.xproducto+'</td>').appendTo(fila);
-                                    $('<td>'+pro.cantidadVenta+'</td>').appendTo(fila);
-                                    tableBody.append(fila);
-                                }
-                            });
-                        })
+                        if(it.esComboUnico) {
+                            $('<tr><td class="custom-bolder">Producto</td><td>Cantidad</td></tr>').appendTo(tableBody);
+                            let fila = $('<tr></tr>');
+                            $('<td style="padding-left: 35px;">'+it.detalleCartillaList[0].productos[0].xproducto+'</td>').appendTo(fila);
+                            $('<td>'+(it.cantidadVenta * it.detalleCartillaList.length)+'</td>').appendTo(fila);
+                            tableBody.append(fila);
+                        } else {
+                            it.detalleCartillaList.forEach(subitem => {
+                                $('<tr><td class="custom-bolder">'+subitem.xtipoProducto+'</td><td>Cantidad</td></tr>').appendTo(tableBody);
+                                subitem.productos.forEach( pro => {
+                                    if(pro.cantidadVenta > 0) {
+                                        let fila = $('<tr></tr>');
+                                        $('<td style="padding-left: 35px;">'+pro.xproducto+'</td>').appendTo(fila);
+                                        $('<td>'+pro.cantidadVenta+'</td>').appendTo(fila);
+                                        tableBody.append(fila);
+                                    }
+                                });
+                            })
+                        }
                         tablaInterna.append(tableBody);
                         let row = $('<tr></tr>');
                         let tdNombre = $('<td></td>');
@@ -1535,6 +1595,7 @@
             });
             if(statusModal) {
                 //Si todo esta bien, se procede al resguardo
+                dataReq.detalleAux.esComboUnico = dataReq.esComboUnico;
                 dataReq.detalleAux.cantidadVenta = cantidad;
                 dataReq.detalleAux.precioVenta = dataReq.detalleAux.total;
                 dataReq.detalleAux.totalVenta = cantidad * dataReq.detalleAux.total;

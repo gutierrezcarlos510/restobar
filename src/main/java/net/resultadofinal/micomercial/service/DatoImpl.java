@@ -58,20 +58,14 @@ public class DatoImpl extends DbConeccion implements DatoS {
 			if(existeLogin) {
 				throw new RuntimeException("Nombre de usuario ya existente, por favor ingrese otro.");
 			}
-			if(db.queryForObject("select dato_adicionar(?,?,?)",Boolean.class,d.getCod_per(),d.getLog_dat(),d.getCla_dat())){
-				List<Map<String, Object>> roles=db.queryForList("select * from usurol where cod_per=? and fecha_baja is null",d.getCod_per());
-				List<String> result=new DashBoard().asignarDesignarRoles(roles, obtenidos);
-				for (String cad : result) {
-					String sub[]=cad.split("-");
-					if(Boolean.parseBoolean(sub[1]))
-						db.queryForObject("select usurol_adicionar(?,?)",Boolean.class,d.getCod_per(),Integer.parseInt(sub[0]));
-					else
-						db.queryForObject("select usurol_modificar(?,?)",Boolean.class,d.getCod_per(),Integer.parseInt(sub[0]));
-				}
-				
-			}else {
-				logger.error(Utils.failedAdd(ENTITY));
-				throw new RuntimeException(Utils.failedAdd(ENTITY));
+			List<Map<String, Object>> roles=db.queryForList("select * from usurol where cod_per=? and fecha_baja is null",d.getCod_per());
+			List<String> result=new DashBoard().asignarDesignarRoles(roles, obtenidos);
+			for (String cad : result) {
+				String sub[]=cad.split("-");
+				if(Boolean.parseBoolean(sub[1]))
+					db.queryForObject("select usurol_adicionar(?,?)",Boolean.class,d.getCod_per(),Integer.parseInt(sub[0]));
+				else
+					db.queryForObject("select usurol_modificar(?,?)",Boolean.class,d.getCod_per(),Integer.parseInt(sub[0]));
 			}
 			return true;
 		} catch (Exception e) {

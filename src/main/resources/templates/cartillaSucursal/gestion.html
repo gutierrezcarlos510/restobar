@@ -3,7 +3,7 @@
     <div class="box-header with-border">
         <form id="formulario" autocomplete="off" method="post" action="../cartillaSucursal/guardar" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
             <div id="modalAdicionar" class="modal fade">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -18,11 +18,11 @@
                             <div class="form-group">
                                 <label>Esta Compuesto (Combo)</label>
                                 <div>
-                                    <label for="estaCompuestoSi" class="w3-medium">
-                                        <input type="radio" id="estaCompuestoSi" class="radio-inline estaCompuestoRadio" name="estaCompuesto" value="true" /> Si
+                                    <input type="radio" id="estaCompuestoSi" class="w3-radio estaCompuestoRadio" name="estaCompuesto" value="true" />
+                                    <label for="estaCompuestoSi" class="w3-medium" style="margin-right: 25px;">Si
                                     </label>
-                                    <label for="estaCompuestoNo" class="w3-medium">
-                                        <input type="radio" id="estaCompuestoNo" class="radio-inline estaCompuestoRadio" name="estaCompuesto" value="false" />
+                                    <input type="radio" id="estaCompuestoNo" class="w3-radio estaCompuestoRadio" name="estaCompuesto" value="false" />
+                                    <label for="estaCompuestoNo" class="w3-medium" >
                                          No
                                     </label>
                                 </div>
@@ -40,7 +40,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Precio</label>
-                                        <input type="number" class="form-control" id="precio" name="precio" />
+                                        <input type="number" class="form-control text-right" id="precio" name="precio" />
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +119,6 @@
     function calcularDetalle(){
         let total = 0;
         $('.preciosInput').each(function (){
-
             let valor = $(this).val();
             if(valor) {
                 valor = parseFloat($(this).val());;

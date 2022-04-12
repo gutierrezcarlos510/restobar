@@ -48,10 +48,10 @@ public class UsuarioImpl extends DbConeccion implements UsuarioS {
 			return null;
 		}
 	}
-	public List<Persona> listarUsuariosPorRol(Integer rolId){
+	public List<Persona> listarUsuariosPorRol(Integer rolId, Integer sucursalId){
 		try {
-			sqlString = "select p.* from persona p join usurol ur on ur.cod_per = p.cod_per and ur.cod_rol=? where p.est_per";
-			return db.query(sqlString, new BeanPropertyRowMapper<Persona>(Persona.class), rolId);
+			sqlString = "select distinct p.* from persona p inner join usurol ur on ur.cod_per = p.cod_per and ur.cod_rol=? inner join tiene_sucursal ts on ts.cod_suc = ? and ts.cod_per = p.cod_per where p.est_per = true";
+			return db.query(sqlString, new BeanPropertyRowMapper<Persona>(Persona.class), rolId,sucursalId);
 		} catch (Exception e) {
 			logger.error("Error al listar usuarios del sistema:"+e.toString());
 			return null;

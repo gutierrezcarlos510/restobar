@@ -1,0 +1,469 @@
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title custom-bolder">REPORTES DE ADMINISTRACION</h3>
+    </div>
+    <div class="box-body">
+        <form id="formulario1" method="post" action="../reporte/reporte2"
+              data-fv-framework="bootstrap" data-fv-excluded="disabled"
+              data-fv-icon-valid="glyphicon glyphicon-ok"
+              data-fv-icon-invalid="glyphicon glyphicon-remove"
+              data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>1.- Reporte</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                            <span class="form-control form-control-plaintext text-input">Informe de Almacen</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <select class="form-control" name="">
+                            <option value="">Inventario Actual</option>
+                            <option value="">Control de Stock</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <span class="form-control" id="fechaReporteAlmacen">Lunes, 11 de abril del 2022</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pull-right">
+                    <div class="form-group">
+                        <label>Imprimir</label><br>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form id="formulario2" method="post" action="../reporte/reporte2"
+              data-fv-framework="bootstrap" data-fv-excluded="disabled"
+              data-fv-icon-valid="glyphicon glyphicon-ok"
+              data-fv-icon-invalid="glyphicon glyphicon-remove"
+              data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>2.- Reporte</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                            <span class="form-control form-control-plaintext text-input">Informe de Compras</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type='hidden' id="fini2" name="fini" /> <input
+                            type='hidden' id="ffin2" name="ffin" /> <label
+                            for="daterange-btn2">Seleccione el rango de fechas</label>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default pull-right" id="daterange-btn2">
+                                    <i class="fa fa-calendar"></i> <i class="fa fa-caret-down"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control w3-white" id="reportrange2" name="reportrange" readonly="readonly" data-fv-notempty="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pull-right">
+                    <div class="form-group">
+                        <label>Imprimir</label><br>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form id="formulario3" method="post" action="../reporte/reporte3"
+              data-fv-framework="bootstrap" data-fv-excluded="disabled"
+              data-fv-icon-valid="glyphicon glyphicon-ok"
+              data-fv-icon-invalid="glyphicon glyphicon-remove"
+              data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>3.- Reporte</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                            <span class="form-control form-control-plaintext text-input">Informe de Ventas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type='hidden' id="fini3" name="fini" /> <input
+                            type='hidden' id="ffin3" name="ffin" /> <label
+                            for="daterange-btn3">Seleccione el rango de fechas</label>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default pull-right" id="daterange-btn3">
+                                    <i class="fa fa-calendar"></i> <i class="fa fa-caret-down"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control w3-white" id="reportrange3" name="reportrange" readonly="readonly" data-fv-notempty="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pull-right">
+                    <div class="form-group">
+                        <label>Imprimir</label><br>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form id="formulario4" method="post" action="../reporte/reporte4"
+              data-fv-framework="bootstrap" data-fv-excluded="disabled"
+              data-fv-icon-valid="glyphicon glyphicon-ok"
+              data-fv-icon-invalid="glyphicon glyphicon-remove"
+              data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>4.- Reporte</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                            <span class="form-control form-control-plaintext text-input">Informe de Arqueo de Caja</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <select class="form-control" name="" >
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type='hidden' id="fini4" name="fini" /> <input
+                            type='hidden' id="ffin4" name="ffin" /> <label
+                            for="daterange-btn4">Seleccione el rango de fechas</label>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default pull-right" id="daterange-btn4">
+                                    <i class="fa fa-calendar"></i> <i class="fa fa-caret-down"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control w3-white" id="reportrange4" name="reportrange" readonly="readonly" data-fv-notempty="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pull-right">
+                    <div class="form-group">
+                        <label>Imprimir</label><br>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form id="formulario5" method="post" action="../reporte/reporte4"
+              data-fv-framework="bootstrap" data-fv-excluded="disabled"
+              data-fv-icon-valid="glyphicon glyphicon-ok"
+              data-fv-icon-invalid="glyphicon glyphicon-remove"
+              data-fv-icon-validating="glyphicon glyphicon-refresh">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>5.- Reporte</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                            <span class="form-control form-control-plaintext text-input">Informe de Movimientos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Sucursal</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                            <select class="form-control" name="">
+                                <option value="">Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <select class="form-control" name="" id="">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type='hidden' id="fini5" name="fini" /> <input
+                            type='hidden' id="ffin5" name="ffin" /> <label
+                            for="daterange-btn5">Seleccione el rango de fechas</label>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default pull-right" id="daterange-btn5">
+                                    <i class="fa fa-calendar"></i> <i class="fa fa-caret-down"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control w3-white" id="reportrange5" name="reportrange" readonly="readonly" data-fv-notempty="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 pull-right">
+                    <div class="form-group">
+                        <label>Imprimir</label><br>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        moment.locale('es');
+        $('#reportrange2').val(moment().format('LLLL'));
+        $('#fini2').val(moment().format('DD/MM/YYYY'));
+        $('#ffin2').val(moment().format('DD/MM/YYYY'));
+        $('#reportrange3').val(moment().format('LLLL'));
+        $('#fini3').val(moment().format('DD/MM/YYYY'));
+        $('#ffin3').val(moment().format('DD/MM/YYYY'));
+        $('#reportrange4').val(moment().format('LLLL'));
+        $('#fini4').val(moment().format('DD/MM/YYYY'));
+        $('#ffin4').val(moment().format('DD/MM/YYYY'));
+        $('#reportrange5').val(moment().format('LLLL'));
+        $('#fini5').val(moment().format('DD/MM/YYYY'));
+        $('#ffin5').val(moment().format('DD/MM/YYYY'));
+        $(".iconDate").inputmask("dd/mm/yyyy", {
+            "placeholder": "dd/mm/yyyy"
+        });
+
+        $('#formulario1').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+
+        });
+        $('#formulario2').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+
+        });
+        $('#formulario3').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+
+        });
+        $('#formulario4').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+
+        });
+        $('#formulario5').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+
+        });
+
+        $('#daterange-btn2').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Ultima 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment(),
+                endDate: moment()
+            },
+            function (start, end) {
+                if(start.isSame(end,'day')){
+                    $('#reportrange2').val(start.format('LLLL'));
+                }else{
+                    $('#reportrange2').val(start.format('D MMMM [del] YYYY') + ' [ AL ] ' + end.format('D MMMM [del] YYYY'));
+                }
+                $('#formulario2').data('formValidation').enableFieldValidators('reportrange',true).revalidateField('reportrange');
+                $('#fini2').val(start.format('DD/MM/YYYY'));
+                $('#ffin2').val(end.format('DD/MM/YYYY'));
+            }
+        );
+        $('#daterange-btn3').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Ultima 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment(),
+                endDate: moment()
+            },
+            function (start, end) {
+                if(start.isSame(end,'day')){
+                    $('#reportrange3').val(start.format('LLLL'));
+                }else{
+                    $('#reportrange3').val(start.format('D MMMM [del] YYYY') + ' [ AL ] ' + end.format('D MMMM [del] YYYY'));
+                }
+                $('#formulario3').data('formValidation').enableFieldValidators('reportrange',true).revalidateField('reportrange');
+                $('#fini3').val(start.format('DD/MM/YYYY'));
+                $('#ffin3').val(end.format('DD/MM/YYYY'));
+            }
+        );
+        $('#daterange-btn4').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Ultima 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment(),
+                endDate: moment()
+            },
+            function (start, end) {
+                if(start.isSame(end,'day')){
+                    $('#reportrange4').val(start.format('LLLL'));
+                }else{
+                    $('#reportrange4').val(start.format('D MMMM [del] YYYY') + ' [ AL ] ' + end.format('D MMMM [del] YYYY'));
+                }
+                $('#formulario4').data('formValidation').enableFieldValidators('reportrange',true).revalidateField('reportrange');
+                $('#fini4').val(start.format('DD/MM/YYYY'));
+                $('#ffin4').val(end.format('DD/MM/YYYY'));
+            }
+        );
+        $('#daterange-btn5').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Ultima 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment(),
+                endDate: moment()
+            },
+            function (start, end) {
+                if(start.isSame(end,'day')){
+                    $('#reportrange5').val(start.format('LLLL'));
+                }else{
+                    $('#reportrange5').val(start.format('D MMMM [del] YYYY') + ' [ AL ] ' + end.format('D MMMM [del] YYYY'));
+                }
+                $('#formulario5').data('formValidation').enableFieldValidators('reportrange',true).revalidateField('reportrange');
+                $('#fini5').val(start.format('DD/MM/YYYY'));
+                $('#ffin5').val(end.format('DD/MM/YYYY'));
+            }
+        );
+    });
+</script>

@@ -127,7 +127,7 @@ public class VentaC {
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 		Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 		if(gestion != null && user != null) {
-			model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO));
+			model.addAttribute("meseros", usuarioS.listarUsuariosPorRol(ROL_MESERO, gestion.getCod_suc()));
 			model.addAttribute("meseroId", esMesero ? user.getCod_per() : 0);
 			model.addAttribute("formas", formaPagoS.listAll(gestion.getCod_suc()));
 			model.addAttribute("ventaId", ventaId != null ? ventaId : 0);
