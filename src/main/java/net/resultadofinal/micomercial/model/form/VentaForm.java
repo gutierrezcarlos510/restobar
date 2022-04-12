@@ -7,9 +7,17 @@ public class VentaForm {
     private Long id, clienteId, usuarioId, createdBy,numero;
     private Integer sucursalId,gestion;
     private String obs, xusuario;
-    private BigDecimal subtotal, descuento, total, totalPagado, totalCambio;
+    private BigDecimal subtotal, descuento, total, totalPagado, totalCambio, costoAdicional;
     private List<DetalleVentaForm> detalleVenta, detalleVentaCompuesto;
     private Short formaPagoId, cantidadPersonas, tipo, mesaId;
+
+    public BigDecimal getCostoAdicional() {
+        return costoAdicional;
+    }
+
+    public void setCostoAdicional(BigDecimal costoAdicional) {
+        this.costoAdicional = costoAdicional;
+    }
 
     public Short getMesaId() {
         return mesaId;

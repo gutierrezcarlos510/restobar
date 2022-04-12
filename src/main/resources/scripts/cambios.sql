@@ -984,3 +984,17 @@ WHERE cod_pro=28;
 UPDATE public.proceso
 SET nom_pro='Reportes ADM.', des_pro='Gestiona los reportes de administracion', ico_pro='glyphicon glyphicon-print', est_pro=true, url_pro='../reporteAdministrativo/gestion'
 WHERE cod_pro=32;
+
+
+ALTER TABLE public.producto_precio_sucursal ADD inventario_minimo int2 NOT NULL DEFAULT 0;
+
+ALTER TABLE public.producto_precio_sucursal ADD controlar_producto bool NOT NULL DEFAULT true;
+update producto_precio_sucursal set inventario_minimo = subquery.inventario_minimo_unidad from (select inventario_minimo_unidad,id from producto where estado = true and inventario_minimo_unidad is not null) as subquery
+where subquery.id = producto_id and producto_precio_sucursal.id = 1;
+update producto_precio_sucursal  set controlar_producto = false where id > 1;
+ALTER TABLE public.producto_precio_sucursal ALTER COLUMN controlar_producto DROP NOT NULL;
+ALTER TABLE public.producto_precio_sucursal ALTER COLUMN inventario_minimo DROP NOT NULL;
+ALTER TABLE public.producto DROP COLUMN inventario_minimo_unidad;
+ALTER TABLE public.producto DROP COLUMN inventario_minimo_caja;
+ALTER TABLE public.venta ADD costo_adicional numeric(10,2) NOT NULL DEFAULT 0;
+ALTER TABLE public.venta ALTER COLUMN numero TYPE int8 USING numero::int8;

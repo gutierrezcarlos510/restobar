@@ -238,13 +238,13 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			}
 			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta where sucursal_id =?", Long.class, obj.getSucursalId());
 			obj.setId(ventaId);
-			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
-					"VALUES(?, ?, ?, ?, now(), ?, ?, ?, ?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
+			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, costo_adicional, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
+					"VALUES(?, ?, ?, ?, now(), ?, ?, ?, ?,?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
 			if(obj.getTipo() == 2) { // si es venta finalizada
 				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from venta where sucursal_id = ?", Long.class, obj.getSucursalId());
 				obj.setNumero(numero);
 			}
-			boolean saveVenta = db.update(sqlString,ventaId, obj.getNumero(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getGestion(),
+			boolean saveVenta = db.update(sqlString,ventaId, obj.getNumero(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getCostoAdicional(), obj.getGestion(),
 					obj.getTipo(), obj.getSucursalId(),obj.getSubtotal(),obj.getMesaId(), obj.getCantidadPersonas(),obj.getFormaPagoId(),obj.getTotalPagado(),obj.getTotalCambio(),obj.getCreatedBy())>0;
 			if(saveVenta) {
 				// Se registra el historico de venta
@@ -345,12 +345,12 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
 				return new DataResponse(false, msgValidacion);
 			}
-			sqlString = "update venta set numero=?,tipo=?,usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, subtotal=?, mesa_id=?, cantidad_personas=?, updated_by=?, updated_at=now() where id=?";
+			sqlString = "update venta set numero=?,tipo=?,usuario_id=?, cliente_id=?, obs=?, total=?, descuento=?, costo_adicional=?, subtotal=?, mesa_id=?, cantidad_personas=?, updated_by=?, updated_at=now() where id=?";
 			if(obj.getTipo() == 2) { // si es venta finalizada
 				Long numero = db.queryForObject("select coalesce(max(numero),0)+1 from venta where sucursal_id = ?", Long.class, obj.getSucursalId());
 				obj.setNumero(numero);
 			}
-			boolean saveVenta = db.update(sqlString,obj.getNumero(),obj.getTipo(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(),obj.getSubtotal(),obj.getMesaId(),
+			boolean saveVenta = db.update(sqlString,obj.getNumero(),obj.getTipo(),obj.getUsuarioId(), obj.getClienteId(),obj.getObs(), obj.getTotal(), obj.getDescuento(), obj.getCostoAdicional(),obj.getSubtotal(),obj.getMesaId(),
 					obj.getCantidadPersonas(),obj.getCreatedBy(), obj.getId())>0;
 			if(saveVenta) {
 				short detalleVentaId = db.queryForObject("select coalesce(max(id),0)+1 from detalle_venta where venta_id=?", Short.class, obj.getId());
@@ -481,7 +481,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	}
 	public VentaInfoWrap obtenerVentaInfo(Long codVen){
 		try {
-			sqlString = "select v.id,v.numero,v.arqueo_id,v.gestion,v.detalle_arqueo_id,v.tipo,v.obs,v.fecha,v.cantidad_personas,v.created_at,v.total,v.descuento,v.subtotal, v.total_pagado, v.total_cambio," +
+			sqlString = "select v.id,v.numero,v.arqueo_id,v.gestion,v.detalle_arqueo_id,v.tipo,v.obs,v.fecha,v.cantidad_personas,v.created_at,v.total,v.descuento,v.subtotal, v.total_pagado, v.total_cambio,v.costo_adicional," +
 					"concat(p.nom_per,' ',p.priape_per) as xusuario,concat(p3.nom_per,' ',p3.priape_per) as xcliente,concat(p2.nom_per,' ',p2.priape_per) as xcreated_by,m.nombre as xmesa from venta v " +
 					"inner join persona p on p.cod_per = v.usuario_id " +
 					"inner join mesa m on m.id=v.mesa_id " +

@@ -6,18 +6,34 @@ import java.util.Date;
 import java.util.List;
 
 public class Venta  {
-	private Long id,usuarioId,clienteId,arqueoId;
+	private Long id,usuarioId,clienteId,arqueoId,numero;
 	private Integer gestion,detalleArqueoId,sucursalId;
 	private Short tipo;
 	private String obs;
 	private Date fecha;
-	private BigDecimal total,descuento,subtotal, totalPagado, totalCambio, numero;
+	private BigDecimal total,descuento,subtotal, totalPagado, totalCambio,costoAdicional;
 	private Boolean estado;
 	private String xusuario,xcliente;
 	private Short mesaId, cantidadPersonas, formaPagoId;
 	private Timestamp createdAt, updatedAt;
 	private Long createdBy, updatedBy;
 	private List<DetalleVenta> detalles;
+
+	public Long getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
+	public BigDecimal getCostoAdicional() {
+		return costoAdicional;
+	}
+
+	public void setCostoAdicional(BigDecimal costoAdicional) {
+		this.costoAdicional = costoAdicional;
+	}
 
 	public BigDecimal getTotalPagado() {
 		return totalPagado;
@@ -33,14 +49,6 @@ public class Venta  {
 
 	public void setTotalCambio(BigDecimal totalCambio) {
 		this.totalCambio = totalCambio;
-	}
-
-	public BigDecimal getNumero() {
-		return numero;
-	}
-
-	public void setNumero(BigDecimal numero) {
-		this.numero = numero;
 	}
 
 	public Timestamp getCreatedAt() {

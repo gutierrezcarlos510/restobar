@@ -113,8 +113,9 @@ public class VentaC {
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			Persona user = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			Long cod_user = -1L;
-			if (!usuario)
+			if (usuario) {
 				cod_user = user.getCod_per();
+			}
 			return ventaS.listado(request, estado,cod_user, gestion.getCod_suc(), tipo);
 		} catch (Exception ex) {
 			System.out.println("error lista arqueo de caja: "+ex.toString());
@@ -225,6 +226,7 @@ public class VentaC {
 			parametros.put("ventaId", id);
 			parametros.put("subtotal", venta.getSubtotal());
 			parametros.put("descuento", venta.getDescuento());
+			parametros.put("costoAdicional", venta.getCostoAdicional());
 			parametros.put("total", venta.getTotal());
 			parametros.put("totalPagado", venta.getTotalPagado());
 			parametros.put("totalCambio", venta.getTotalCambio());

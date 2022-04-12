@@ -11,13 +11,21 @@ public class VentaInfoWrap {
     private Short tipo;
     private String obs;
     private Date fecha;
-    private BigDecimal total,descuento,subtotal, totalPagado, totalCambio;
+    private BigDecimal total,descuento,subtotal, totalPagado, totalCambio, costoAdicional;
     private String xmesa,xusuario,xcliente,xtipo,xformaPago,xcreatedBy;
     private Short cantidadPersonas;
     private Timestamp createdAt;
     private List<DetalleVentaWrap> detalleVenta;
     private List<DetalleVentaWrap> detalleVentaCompuesto;
     private List<DetalleVentaWrap> detalleVentaGlobal;
+
+    public BigDecimal getCostoAdicional() {
+        return costoAdicional;
+    }
+
+    public void setCostoAdicional(BigDecimal costoAdicional) {
+        this.costoAdicional = costoAdicional;
+    }
 
     public List<DetalleVentaWrap> getDetalleVentaGlobal() {
         return detalleVentaGlobal;

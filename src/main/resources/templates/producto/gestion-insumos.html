@@ -95,16 +95,17 @@
                                         <label class="required">Inventario Minimo por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        <input type="text" class="form-control" name="inventarioMinimo" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="required">Inventario Minimo por caja</label>
+                                        <label class="required">Controlar stock m&iacute;nimo</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                            <input type="checkbox" id="controlarProductoSi" class="w3-check" name="controlarProducto" value="true"/>
+                                            <label for="controlarProductoSi" style="margin-right: 25px;margin-left: 25px;">Si</label>
+                                            <span class="input-group-addon"><i class="fa fa-bullhorn"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -248,16 +249,17 @@
                                         <label class="required">Inventario Minimo por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoUnidad" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                        <input type="text" class="form-control" name="inventarioMinimo" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="required">Inventario Minimo por caja</label>
+                                        <label class="required">Controlar stock m&iacute;nimo</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="inventarioMinimoCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                            <input type="checkbox" id="controlarProductoSi2" class="w3-check" name="controlarProducto" value="true"/>
+                                            <label for="controlarProductoSi2" style="margin-right: 25px;margin-left: 25px;">Si</label>
+                                            <span class="input-group-addon"><i class="fa fa-bullhorn"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -327,7 +329,6 @@
                     <th class="none">Precio Costo por Unidad</th>
                     <th class="none">Precio Costo por Caja</th>
                     <th class="none">Inventario Minimo en unidad</th>
-                    <th class="none">Inventario Minimo en caja</th>
                     <th class="none">Presentacion en unidades</th>
                     <th class="none">Presentacion en cajas</th>
                     <th class="none">Tipo de Compra por defecto</th>
@@ -392,7 +393,7 @@
             },
             "columnDefs":[
             	{targets: [0],className:'text-center'},
-            	{targets: [11],className:'text-right'}],
+            	{targets: [10],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -406,9 +407,7 @@
             }, {
                 "data": "pcCaja", "name":"pc_caja"
             }, {
-                "data": "inventarioMinimoUnidad", "name":"inventario_minimo_unidad"
-            }, {
-                "data": "inventarioMinimoCaja", "name":"inventario_minimo_caja"
+                "data": "inventarioMinimo", "name":"inventario_minimo"
             }, {
                 "data": "xpresentacionUnidad", "name":"xpresentacion_unidad"
             }, {
@@ -422,9 +421,9 @@
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(11).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    $('td', row).eq(10).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
                 } else
-                    $('td', row).eq(11).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                    $('td', row).eq(10).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {

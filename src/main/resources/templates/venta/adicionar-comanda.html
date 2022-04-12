@@ -369,6 +369,17 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr  class="w3-right-align">
+                                        <td colspan="4" class="w3-right-align"><label class="required">Costo Adicional</label></td>
+                                        <td colspan="2"  class="w3-right-align">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                                    <input type="text" id="costoAdicionalVenta" name="costoAdicional" min="0" onkeyup="setDescuento()" class="form-control text-right" data-fv-numeric="true" data-fv-numeric-decimalseparator="." value="0" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="4" class="w3-right-align"><label>Total a Pagar</label></td>
                                         <td colspan="2">
@@ -1209,7 +1220,10 @@
         if(!dataReq.venta.descuento) {
             dataReq.venta.descuento = 0;
         }
-        dataReq.venta.total = dataReq.venta.subtotal - dataReq.venta.descuento;
+        if(!dataReq.venta.costoAdicional) {
+            dataReq.venta.costoAdicional = 0;
+        }
+        dataReq.venta.total = dataReq.venta.subtotal - dataReq.venta.descuento + dataReq.venta.costoAdicional;
         dataReq.venta.totalLiteral = 'Son: '+numeroALetras(dataReq.venta.total);
         if(!dataReq.venta.totalPagado) {
             dataReq.venta.totalPagado = 0;
@@ -1219,12 +1233,19 @@
     function setDescuento(){
         setTimeout(function(){
             let descuento = $('#descuentoVenta').val();
+            let costoAdicional= $('#costoAdicionalVenta').val();
             if(!descuento) {
                 descuento = 0;
             } else {
                 descuento = parseFloat(descuento);
             }
+            if(!costoAdicional) {
+                costoAdicional = 0;
+            } else {
+                costoAdicional = parseFloat(costoAdicional);
+            }
             dataReq.venta.descuento = descuento;
+            dataReq.venta.costoAdicional = costoAdicional;
             calcularTotal()
             $('#formulario4').loadJSON(dataReq.venta);
         },250);
@@ -1486,6 +1507,7 @@
                 obs:dataReq.venta.obs,
                 subtotal:dataReq.venta.subtotal,
                 descuento:dataReq.venta.descuento,
+                costoAdicional:dataReq.venta.costoAdicional,
                 total:dataReq.venta.total,
                 totalPagado:dataReq.venta.totalPagado,
                 totalCambio:dataReq.venta.totalCambio,

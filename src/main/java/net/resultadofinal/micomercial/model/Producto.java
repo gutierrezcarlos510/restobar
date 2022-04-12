@@ -8,11 +8,28 @@ public class Producto {
 	private String nombre, foto;
 	private Integer tipoId, tipoGrupo, medidaId, cantidadPlatos;
 	private BigDecimal pcUnit, pvUnit, pvCaja, pcCaja, pvUnitDescuento, pvCajaDescuento, cantidad;
-	private Integer inventarioMinimoUnidad, inventarioMinimoCaja, unidadPorCaja, tipoCompra;
+	private Integer unidadPorCaja, tipoCompra;
 	private Integer presentacionUnidadId, presentacionCajaId;
 	private String xtipo, xpresentacionUnidad, xpresentacionCaja,xgrupo,xtipoCompra,xproducto;
 	private String xmedida,obs;
-	private Boolean hasIngredients;
+	private Short inventarioMinimo;
+	private Boolean hasIngredients,controlarProducto;
+
+	public Boolean getControlarProducto() {
+		return controlarProducto;
+	}
+
+	public void setControlarProducto(Boolean controlarProducto) {
+		this.controlarProducto = controlarProducto;
+	}
+
+	public Short getInventarioMinimo() {
+		return inventarioMinimo;
+	}
+
+	public void setInventarioMinimo(Short inventarioMinimo) {
+		this.inventarioMinimo = inventarioMinimo;
+	}
 
 	public String getXproducto() {
 		return xproducto;
@@ -206,22 +223,6 @@ public class Producto {
 
 	public void setPvCajaDescuento(BigDecimal pvCajaDescuento) {
 		this.pvCajaDescuento = pvCajaDescuento;
-	}
-
-	public Integer getInventarioMinimoUnidad() {
-		return inventarioMinimoUnidad;
-	}
-
-	public void setInventarioMinimoUnidad(Integer inventarioMinimoUnidad) {
-		this.inventarioMinimoUnidad = inventarioMinimoUnidad;
-	}
-
-	public Integer getInventarioMinimoCaja() {
-		return inventarioMinimoCaja;
-	}
-
-	public void setInventarioMinimoCaja(Integer inventarioMinimoCaja) {
-		this.inventarioMinimoCaja = inventarioMinimoCaja;
 	}
 
 	public Integer getUnidadPorCaja() {
