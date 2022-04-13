@@ -348,7 +348,7 @@ function calcularTotal() {
                 "data": "id", "name":"id"
             }],
             "createdRow": function(row, data, index) {
-                $('td', row).eq(5).html('<a href="#" class="btn btn-xs btn-primary seleccionado" ><i class="fa fa-arrow-circle-right"></i></a>');
+                $('td', row).eq(5).html('<button type="button" class="btn btn-xs btn-primary seleccionado" ><i class="fa fa-arrow-circle-right"></i></button>');
             },
             "drawCallback": function(settings) {
                 $('.seleccionado').click(function() {

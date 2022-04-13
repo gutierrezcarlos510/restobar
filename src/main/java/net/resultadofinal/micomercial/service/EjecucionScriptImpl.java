@@ -76,9 +76,9 @@ public class EjecucionScriptImpl extends DbConeccion implements EjecucionScriptS
 				case 14:
 					sqlString += "delete from movimiento;";
 					break;
-//				case 15:
-//					sqlString += "delete from dato where cod_per > 1;";
-//					break;
+				case 15:
+					sqlString += "delete from pago_credito_compra;";
+					break;
 //				case 16:
 //					sqlString += "delete from tiene_sucursal where cod_per > 1;";
 //					break;

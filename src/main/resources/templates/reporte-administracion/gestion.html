@@ -1,4 +1,4 @@
-<div class="box box-primary">
+<div class="box box-primary" xmlns:th="http://www.thymeleaf.org">
     <div class="box-header with-border">
         <h3 class="box-title custom-bolder">REPORTES DE ADMINISTRACION</h3>
     </div>
@@ -62,7 +62,7 @@
             </div>
         </form>
         <hr>
-        <form id="formulario2" method="post" action="../reporte/reporte2"
+        <form id="formulario2" method="post" action="../reporteAdministrativo/compra"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -74,6 +74,8 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
                             <span class="form-control form-control-plaintext text-input">Informe de Compras</span>
+                            <input type="hidden" name="tipo" value="1" />
+                            <input type="hidden" id="tipoImpresion2" name="tipoImpresion" value="pdf" />
                         </div>
                     </div>
                 </div>
@@ -82,8 +84,9 @@
                         <label>Sucursal</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="sucursalId" data-fv-notempty="true">
                                 <option value="">Seleccionar</option>
+                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                             </select>
                         </div>
                     </div>
@@ -93,8 +96,8 @@
                         <label>Usuario</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <select class="form-control" name="">
-                                <option value="">Todos</option>
+                            <select class="form-control" name="userId">
+                                <option value="-1" selected>Todos</option>
                             </select>
                         </div>
                     </div>
@@ -118,8 +121,8 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm2('pdf')" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm2('xls')" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
@@ -320,6 +323,10 @@
     </div>
 </div>
 <script type="text/javascript">
+    function actionForm2(tipoImpresion){
+        $('#tipoImpresion2').val(tipoImpresion);
+        $('#formulario2').submit();
+    }
     $(document).ready(function() {
         moment.locale('es');
         $('#reportrange2').val(moment().format('LLLL'));
@@ -348,6 +355,17 @@
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
+            let $form = $(e.target);
+            let formdata = $('#formulario2').formToJSON();
+            if(formdata.tipoImpresion === 'pdf') {
+                $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
+                $("#reportes").modal('show');
+                $('#formulario1')[0].reset();
+                $('#formulario1').data('formValidation').resetForm();
+            } else {
+                abrirLoad();
+                reportXLS('../reporteAdministrativo/compra?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-compra');
+            }
 
         });
         $('#formulario3').formValidation({
