@@ -328,7 +328,6 @@
                     <th class="all">Tipo de producto</th>
                     <th class="none">Precio Costo por Unidad</th>
                     <th class="none">Precio Costo por Caja</th>
-                    <th class="none">Inventario Minimo en unidad</th>
                     <th class="none">Presentacion en unidades</th>
                     <th class="none">Presentacion en cajas</th>
                     <th class="none">Tipo de Compra por defecto</th>
@@ -393,7 +392,7 @@
             },
             "columnDefs":[
             	{targets: [0],className:'text-center'},
-            	{targets: [10],className:'text-right'}],
+            	{targets: [9],className:'text-right'}],
             "ordering":true,
             "order":[[0,'desc']],
             "columns": [{
@@ -407,8 +406,6 @@
             }, {
                 "data": "pcCaja", "name":"pc_caja"
             }, {
-                "data": "inventarioMinimo", "name":"inventario_minimo"
-            }, {
                 "data": "xpresentacionUnidad", "name":"xpresentacion_unidad"
             }, {
                 "data": "xpresentacionCaja", "name":"xpresentacion_caja"
@@ -421,9 +418,9 @@
             }],
             "createdRow": function(row, data, index) {
                 if (data.estado) {
-                    $('td', row).eq(10).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
+                    $('td', row).eq(9).html('<div class="btn-group btn-group-xs"><button class="btn btn-primary btn-sm modificar"  data-toggle="tooltip" data-placement="top" title="Modificar" data-id="' + data.cod_pro + '"><i class="fa fa-edit"></i><br>editar</button><button class="btn btn-sm btn-danger eliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar" data-id="' + data.cod_pro + '"><i class="glyphicon glyphicon-remove"></i><br>borrar</button></div>');
                 } else
-                    $('td', row).eq(10).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
+                    $('td', row).eq(9).html('<button class="btn btn-sm btn-primary activar" data-id="' + data.cod_pro + '" data-toggle="tooltip" data-placement="top" title="Dar de alta"><i class="glyphicon glyphicon-plus-sign"></i><br/>activar</button>');
             },
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {

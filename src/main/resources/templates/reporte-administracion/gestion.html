@@ -3,7 +3,7 @@
         <h3 class="box-title custom-bolder">REPORTES DE ADMINISTRACION</h3>
     </div>
     <div class="box-body">
-        <form id="formulario1" method="post" action="../reporte/reporte2"
+        <form id="formulario1" method="post" action="../reporte/reporte1"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -23,8 +23,9 @@
                         <label>Sucursal</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="sucursalId" data-fv-notempty="true">
                                 <option value="">Seleccionar</option>
+                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                             </select>
                         </div>
                     </div>
@@ -34,7 +35,7 @@
                         <label>Tipo</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        <select class="form-control" name="">
+                        <select class="form-control" name="tipo">
                             <option value="">Inventario Actual</option>
                             <option value="">Control de Stock</option>
                         </select>
@@ -54,15 +55,15 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm('pdf',1)" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm('xls',1)" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
         <hr>
-        <form id="formulario2" method="post" action="../reporteAdministrativo/compra"
+        <form id="formulario2" method="post" action="../reporteAdministrativo/reporte2"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -121,15 +122,15 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" onclick="actionForm2('pdf')" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" onclick="actionForm2('xls')" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm('pdf',2)" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm('xls',2)" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
         <hr>
-        <form id="formulario3" method="post" action="../reporte/reporte3"
+        <form id="formulario3" method="post" action="../reporteAdministrativo/reporte2"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -139,6 +140,8 @@
                     <div class="form-group">
                         <label>3.- Reporte</label>
                         <div class="input-group">
+                            <input type="hidden" name="tipo" value="2" />
+                            <input type="hidden" id="tipoImpresion3" name="tipoImpresion" value="pdf" />
                             <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
                             <span class="form-control form-control-plaintext text-input">Informe de Ventas</span>
                         </div>
@@ -149,8 +152,9 @@
                         <label>Sucursal</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="sucursalId" data-fv-notempty="true">
                                 <option value="">Seleccionar</option>
+                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                             </select>
                         </div>
                     </div>
@@ -160,8 +164,8 @@
                         <label>Usuario</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <select class="form-control" name="">
-                                <option value="">Todos</option>
+                            <select class="form-control" name="userId" data-fv-notempty="true">
+                                <option value="-1">Todos</option>
                             </select>
                         </div>
                     </div>
@@ -185,15 +189,15 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm('pdf',3)" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm('xls',3)" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
         <hr>
-        <form id="formulario4" method="post" action="../reporte/reporte4"
+        <form id="formulario4" method="post" action="../reporteAdministrativo/reporte2"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -203,6 +207,8 @@
                     <div class="form-group">
                         <label>4.- Reporte</label>
                         <div class="input-group">
+                            <input type="hidden" name="tipo" value="3" />
+                            <input type="hidden" id="tipoImpresion4" name="tipoImpresion" value="pdf" />
                             <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
                             <span class="form-control form-control-plaintext text-input">Informe de Arqueo de Caja</span>
                         </div>
@@ -213,8 +219,9 @@
                         <label>Sucursal</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="sucursalId" data-fv-notempty="true">
                                 <option value="">Seleccionar</option>
+                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                             </select>
                         </div>
                     </div>
@@ -224,8 +231,8 @@
                         <label>Usuario</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <select class="form-control" name="" >
-                                <option value="">Todos</option>
+                            <select class="form-control" name="userId" data-fv-notempty="true">
+                                <option value="-1">Todos</option>
                             </select>
                         </div>
                     </div>
@@ -249,15 +256,15 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm('pdf',4)" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm('xls',4)" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
         <hr>
-        <form id="formulario5" method="post" action="../reporte/reporte4"
+        <form id="formulario5" method="post" action="../reporteAdministrativo/reporte2"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -267,6 +274,8 @@
                     <div class="form-group">
                         <label>5.- Reporte</label>
                         <div class="input-group">
+                            <input type="hidden" name="tipo" value="4" />
+                            <input type="hidden" id="tipoImpresion5" name="tipoImpresion" value="pdf" />
                             <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
                             <span class="form-control form-control-plaintext text-input">Informe de Movimientos</span>
                         </div>
@@ -277,8 +286,9 @@
                         <label>Sucursal</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="sucursalId" data-fv-notempty="true">
                                 <option value="">Seleccionar</option>
+                                <option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option>
                             </select>
                         </div>
                     </div>
@@ -288,8 +298,8 @@
                         <label>Usuario</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <select class="form-control" name="" id="">
-                                <option value="">Todos</option>
+                            <select class="form-control" name="userId" data-fv-notempty="true">
+                                <option value="-1" selected>Todos</option>
                             </select>
                         </div>
                     </div>
@@ -313,8 +323,8 @@
                     <div class="form-group">
                         <label>Imprimir</label><br>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
-                            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+                            <button type="button" onclick="actionForm('pdf',5)" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Pdf</button>
+                            <button type="button" onclick="actionForm('xls',5)" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
                         </div>
                     </div>
                 </div>
@@ -323,9 +333,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    function actionForm2(tipoImpresion){
-        $('#tipoImpresion2').val(tipoImpresion);
-        $('#formulario2').submit();
+    function actionForm(tipoImpresion, xid){
+        $('#tipoImpresion'+xid).val(tipoImpresion);
+        $('#formulario'+xid).submit();
     }
     $(document).ready(function() {
         moment.locale('es');
@@ -349,7 +359,21 @@
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-
+            let $form = $(e.target);
+            let formdata = $('#formulario1').formToJSON();
+            if(formdata.tipoImpresion === 'pdf') {
+                $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
+                $("#reportes").modal('show');
+            } else {
+                let xinforme = '';
+                if(formdata.tipo === '1') {
+                    xinforme = 'inventario_actual';
+                } else {
+                    xinforme = 'control_stock';
+                }
+                abrirLoad();
+                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId,xinforme);
+            }
         });
         $('#formulario2').formValidation({
             locale: 'es_ES'
@@ -360,31 +384,52 @@
             if(formdata.tipoImpresion === 'pdf') {
                 $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
                 $("#reportes").modal('show');
-                $('#formulario1')[0].reset();
-                $('#formulario1').data('formValidation').resetForm();
             } else {
                 abrirLoad();
-                reportXLS('../reporteAdministrativo/compra?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-compra');
+                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-compra');
             }
-
         });
         $('#formulario3').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-
+            let $form = $(e.target);
+            let formdata = $('#formulario3').formToJSON();
+            if(formdata.tipoImpresion === 'pdf') {
+                $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
+                $("#reportes").modal('show');
+            } else {
+                abrirLoad();
+                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-venta');
+            }
         });
         $('#formulario4').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-
+            let $form = $(e.target);
+            let formdata = $('#formulario4').formToJSON();
+            if(formdata.tipoImpresion === 'pdf') {
+                $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
+                $("#reportes").modal('show');
+            } else {
+                abrirLoad();
+                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-caja');
+            }
         });
         $('#formulario5').formValidation({
             locale: 'es_ES'
         }).on('success.form.fv', function(e) {
             e.preventDefault();
-
+            let $form = $(e.target);
+            let formdata = $('#formulario5').formToJSON();
+            if(formdata.tipoImpresion === 'pdf') {
+                $("#frameReportes").attr("src", $form.attr('action') + '?' + $form.serialize());
+                $("#reportes").modal('show');
+            } else {
+                abrirLoad();
+                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId+'&userId='+formdata.userId,'informe-movimiento');
+            }
         });
 
         $('#daterange-btn2').daterangepicker(

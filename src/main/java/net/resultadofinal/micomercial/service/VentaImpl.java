@@ -373,8 +373,8 @@ public class VentaImpl extends DbConeccion implements VentaS {
 				DetalleArqueo det = new DetalleArqueo(arqueoIdSesionado, TipoArqueoE.INGRESO_VENTA.getTipo(), obj.getFormaPagoId(), "Venta #"+obj.getNumero(),obj.getTotal(), true);
 				short detalleArqueoId = arqueoS.adicionarDetalle(det);
 				if(detalleArqueoId > 0) {
-					boolean saveArqueo = db.update("update venta set arqueo_id=?, detalle_arqueo_id=?,total_pagado=?,total_cambio=?,forma_pago_id=? where id=?",
-							arqueoIdSesionado, detalleArqueoId, obj.getTotalPagado(), obj.getTotalCambio(), obj.getFormaPagoId(), obj.getId()) > 0;
+					boolean saveArqueo = db.update("update venta set arqueo_id=?, detalle_arqueo_id=?,total_pagado=?,total_cambio=?,forma_pago_id=?,updated_at=now(),updated_by=? where id=?",
+							arqueoIdSesionado, detalleArqueoId, obj.getTotalPagado(), obj.getTotalCambio(), obj.getFormaPagoId(), obj.getCreatedBy(), obj.getId()) > 0;
 					if(!saveArqueo) {
 						throw new RuntimeException("Error al cruzar datos de aruqeo con venta");
 					}

@@ -139,7 +139,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			Long id = generarCodigo();
 			sqlString = "INSERT INTO producto(id, nombre, foto, tipo_id, tipo_grupo, pc_unit, pc_caja, " +
 					"unidad_por_caja, tipo_compra, presentacion_unidad_id, presentacion_caja_id, estado,medida_id,obs) " +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true,?,?);";
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true,?,?);";
 			boolean save = db.update(sqlString, id, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPcCaja(), p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(),p.getObs()) > 0;
 			if(save) {

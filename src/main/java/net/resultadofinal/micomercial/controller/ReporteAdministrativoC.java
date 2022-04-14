@@ -29,8 +29,8 @@ public class ReporteAdministrativoC {
         model.addAttribute("sucursales", sucursalS.listAll());
         return "reporte-administracion/gestion";
     }
-    @RequestMapping("compra")
-    public void plantilla1(HttpServletRequest request, HttpServletResponse response, Integer tipo, String fini, String ffin,String tipoImpresion,Long userId, Integer sucursalId) {
+    @RequestMapping("reporte2")
+    public void reporte2(HttpServletRequest request, HttpServletResponse response, Integer tipo, String fini, String ffin,String tipoImpresion,Long userId, Integer sucursalId) {
         String nameReport="",nameFile, reportUrl;
 
         Map<String, Object> parametros = new HashMap<String, Object>();
@@ -40,6 +40,12 @@ public class ReporteAdministrativoC {
                 break;
             case 2:
                 nameReport="informe_venta";
+                break;
+            case 3:
+                nameReport="informe_caja";
+                break;
+            case 4:
+                nameReport="informe_movimiento";
                 break;
             default:
                 break;

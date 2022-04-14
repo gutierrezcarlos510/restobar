@@ -998,3 +998,9 @@ ALTER TABLE public.producto DROP COLUMN inventario_minimo_unidad;
 ALTER TABLE public.producto DROP COLUMN inventario_minimo_caja;
 ALTER TABLE public.venta ADD costo_adicional numeric(10,2) NOT NULL DEFAULT 0;
 ALTER TABLE public.venta ALTER COLUMN numero TYPE int8 USING numero::int8;
+
+
+
+--data 13/04/2022
+ALTER TABLE public.arqueo ADD forma_pago_id int2 NULL;
+update arqueo set forma_pago_id = 1;
