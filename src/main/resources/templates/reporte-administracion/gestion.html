@@ -3,7 +3,7 @@
         <h3 class="box-title custom-bolder">REPORTES DE ADMINISTRACION</h3>
     </div>
     <div class="box-body">
-        <form id="formulario1" method="post" action="../reporte/reporte1"
+        <form id="formulario1" method="post" action="../reporteAdministrativo/reporte1"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
               data-fv-icon-invalid="glyphicon glyphicon-remove"
@@ -13,6 +13,7 @@
                     <div class="form-group">
                         <label>1.- Reporte</label>
                         <div class="input-group">
+                            <input type="hidden" id="tipoImpresion1" name="tipoImpresion" value="pdf" />
                             <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
                             <span class="form-control form-control-plaintext text-input">Informe de Almacen</span>
                         </div>
@@ -36,18 +37,23 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         <select class="form-control" name="tipo">
-                            <option value="">Inventario Actual</option>
-                            <option value="">Control de Stock</option>
+                            <option value="1">Inventario Actual</option>
+                            <option value="2">Control de Stock</option>
                         </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Fecha</label>
+                        <input type='hidden' id="fini1" name="fini" /> <input type='hidden' id="ffin1" name="ffin" />
+                        <label for="daterange-btn2">Rango de fechas de ventas (Restricci&oacute;n Fecha fin: HOY)</label>
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <span class="form-control" id="fechaReporteAlmacen">Lunes, 11 de abril del 2022</span>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default pull-right" id="daterange-btn1">
+                                    <i class="fa fa-calendar"></i> <i class="fa fa-caret-down"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control w3-white" id="reportrange1" name="reportrange" readonly="readonly" data-fv-notempty="true" />
                         </div>
                     </div>
                 </div>
@@ -105,9 +111,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <input type='hidden' id="fini2" name="fini" /> <input
-                            type='hidden' id="ffin2" name="ffin" /> <label
-                            for="daterange-btn2">Seleccione el rango de fechas</label>
+                        <input type='hidden' id="fini2" name="fini" /> <input type='hidden' id="ffin2" name="ffin" />
+                        <label for="daterange-btn2">Seleccione el rango de fechas</label>
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default pull-right" id="daterange-btn2">
@@ -339,6 +344,9 @@
     }
     $(document).ready(function() {
         moment.locale('es');
+        $('#reportrange1').val(moment().format('LLLL'));
+        $('#fini1').val(moment().format('DD/MM/YYYY'));
+        $('#ffin1').val(moment().format('DD/MM/YYYY'));
         $('#reportrange2').val(moment().format('LLLL'));
         $('#fini2').val(moment().format('DD/MM/YYYY'));
         $('#ffin2').val(moment().format('DD/MM/YYYY'));
@@ -372,7 +380,7 @@
                     xinforme = 'control_stock';
                 }
                 abrirLoad();
-                reportXLS('../reporteAdministrativo/reporte2?tipo='+formdata.tipo+'&tipoImpresion='+formdata.tipoImpresion+'&sucursalId='+formdata.sucursalId,xinforme);
+                reportXLS('../reporteAdministrativo/reporte1?tipo='+formdata.tipo+'&tipoImpresion='+formdata.tipoImpresion+'&fini='+formdata.fini+'&ffin='+formdata.ffin+'&sucursalId='+formdata.sucursalId,xinforme);
             }
         });
         $('#formulario2').formValidation({
@@ -432,6 +440,31 @@
             }
         });
 
+        $('#daterange-btn1').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Desde Ayer': [moment().subtract(1, 'days'), moment()],
+                    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Ultima 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Desde el Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().endOf('month')]
+                },
+                startDate: moment(),
+                endDate: moment()
+            },
+            function (start, end) {
+                end = moment()
+                if(start.isSame(end,'day')){
+                    $('#reportrange1').val(start.format('LLLL'));
+                }else{
+                    $('#reportrange1').val(start.format('D MMMM [del] YYYY') + ' [ AL ] ' + end.format('D MMMM [del] YYYY'));
+                }
+                $('#formulario1').data('formValidation').enableFieldValidators('reportrange',true).revalidateField('reportrange');
+                $('#fini1').val(start.format('DD/MM/YYYY'));
+                $('#ffin1').val(end.format('DD/MM/YYYY'));
+            }
+        );
         $('#daterange-btn2').daterangepicker(
             {
                 ranges: {

@@ -1002,5 +1002,48 @@ ALTER TABLE public.venta ALTER COLUMN numero TYPE int8 USING numero::int8;
 
 
 --data 13/04/2022
-ALTER TABLE public.arqueo ADD forma_pago_id int2 NULL;
-update arqueo set forma_pago_id = 1;
+CREATE OR REPLACE FUNCTION public.venta_eliminar(cod bigint, user_id bigint)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+DECLARE v_producto int8;
+DECLARE v_cantidad numeric(10,2);
+DECLARE v_sucursal int4;
+DECLARE v_cursor1 CURSOR FOR select producto_id,cantidad,v.sucursal_id from detalle_venta dv inner join venta v on v.id = dv.venta_id where venta_id =cod ;
+DECLARE v_arqueo int8;
+DECLARE v_detalle_arqueo int2;
+DECLARE cant_inicial numeric(10,2);
+DECLARE cant_final numeric(10,2);
+DECLARE REVERSION_VENTA int4:=2;
+DECLARE numero_venta int8;
+DECLARE total_venta numeric(10,2);
+DECLARE forma_pago_venta int2;
+begin
+	v_arqueo = (SELECT coalesce(max(a.id),-1) FROM arqueo a where a.delegado_id=user_id and a.custodio_final_id is  null and a.estado = true);
+--	v_arqueo = (select coalesce(max(arqueo_id),0) from venta where id = cod);
+	v_detalle_arqueo = (select coalesce(max(id),0)+1 from detalle_arqueo where arqueo_id = v_arqueo);
+	if(v_arqueo > 0 and v_detalle_arqueo > 0) then
+	--	update detalle_arqueo set estado=false where arqueo_id=v_arqueo and id = v_detalle_arqueo;
+		numero_venta = (select coalesce(max(numero),0) from venta where id=cod);
+		total_venta = (select coalesce(max(total),0) from venta where id=cod);
+		forma_pago_venta = (select coalesce(max(forma_pago_id),0) from venta where id=cod);
+		if (numero_venta > 0) then -- Se hara descuento si la comanda es realizada
+			INSERT INTO detalle_arqueo(arqueo_id, id, tipo, descripcion, monto, fecha, estado, forma_pago_id,es_debe) VALUES(v_arqueo, v_detalle_arqueo, REVERSION_VENTA, concat('Reversion de venta #',numero_venta), total_venta, now(), true, forma_pago_venta,false);
+		end if;
+	end if;
+	OPEN v_cursor1;
+		loop
+		FETCH v_cursor1 INTO v_producto,v_cantidad,v_sucursal;
+			EXIT WHEN NOT FOUND;
+			cant_inicial := (select cantidad from almacen where producto_id=v_producto and sucursal_id=v_sucursal);
+			cant_final := cant_inicial + v_cantidad ;
+			update almacen set cantidad = cant_final where producto_id = v_producto and sucursal_id = v_sucursal;
+				insert into historico_almacen(producto_id, sucursal_id, fecha, usuario_id, cantidad_inicial, cantidad_entrante, cantidad_final, tipo, observacion)
+			VALUES(v_producto, v_sucursal, now(),user_id ,cant_inicial , v_cantidad, cant_final, 4, 'Reversion de la venta');
+		end loop;
+		close v_cursor1;
+		update venta set estado=false,tipo=3, updated_by = user_id, updated_at = now() where id=cod;
+		RETURN TRUE;
+END
+$function$
+;

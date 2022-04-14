@@ -29,6 +29,35 @@ public class ReporteAdministrativoC {
         model.addAttribute("sucursales", sucursalS.listAll());
         return "reporte-administracion/gestion";
     }
+    @RequestMapping("reporte1")
+    public void reporte1(HttpServletRequest request, HttpServletResponse response, Integer tipo, String fini, String ffin,String tipoImpresion, Integer sucursalId) {
+        String nameReport="",nameFile, reportUrl;
+
+        Map<String, Object> parametros = new HashMap<String, Object>();
+        switch (tipo) {
+            case 1:
+                nameReport="inventario_actual";
+                break;
+            case 2:
+                nameReport="informe_stock_actual";
+                break;
+            default:
+                break;
+        }
+        if(!nameReport.isEmpty()) {
+            try {
+                nameFile = nameReport+"_"+fini+"_"+ffin;
+                reportUrl="/Reportes/"+nameReport+".jasper";
+                parametros.put("fini", fini);
+                parametros.put("ffin", ffin);
+                obtenerEncabezado(request, parametros, sucursalId);
+                GeneradorReportes g = new GeneradorReportes();
+                g.generarReporte(response, getClass().getResource(reportUrl),tipoImpresion, parametros, dataSource.getConnection(), nameFile, "inline");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @RequestMapping("reporte2")
     public void reporte2(HttpServletRequest request, HttpServletResponse response, Integer tipo, String fini, String ffin,String tipoImpresion,Long userId, Integer sucursalId) {
         String nameReport="",nameFile, reportUrl;
