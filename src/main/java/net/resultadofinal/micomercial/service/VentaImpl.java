@@ -482,7 +482,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	public VentaInfoWrap obtenerVentaInfo(Long codVen){
 		try {
 			sqlString = "select v.id,v.numero,v.arqueo_id,v.gestion,v.detalle_arqueo_id,v.tipo,v.obs,v.fecha,v.cantidad_personas,v.created_at,v.total,v.descuento,v.subtotal, v.total_pagado, v.total_cambio,v.costo_adicional," +
-					"concat(p.nom_per,' ',p.priape_per) as xusuario,concat(p3.nom_per,' ',p3.priape_per) as xcliente,concat(p2.nom_per,' ',p2.priape_per) as xcreated_by,m.nombre as xmesa from venta v " +
+					"concat(p.nom_per,' ',p.priape_per) as xusuario,concat(p3.nom_per,' ',p3.priape_per) as xcliente,concat(p2.nom_per,' ',p2.priape_per) as xcreated_by,m.nombre as xmesa,fp.nombre xforma_pago from venta v " +
 					"inner join persona p on p.cod_per = v.usuario_id " +
 					"inner join mesa m on m.id=v.mesa_id " +
 					"inner join persona p2 on p2.cod_per = v.created_by " +

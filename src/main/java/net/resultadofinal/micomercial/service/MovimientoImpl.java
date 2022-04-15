@@ -84,7 +84,7 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 						"values(?,now(),?,?,?,?,true,?,?)";
 				boolean save = db.update(sqlString, id, obj.getCreatedBy(),obj.getSucursalOrigen(),obj.getSucursalDestino(),obj.getTipo(), obj.getObs(), obj.getEstadoMovimiento()) > 0;
 				adicionarDetalles(obj);
-				return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
+				return new DataResponse(save, id,Utils.getSuccessFailedAdd(ENTITY, save));
 			} else {
 				return new DataResponse(false, "No se encontro detalles de la cartilla");
 			}

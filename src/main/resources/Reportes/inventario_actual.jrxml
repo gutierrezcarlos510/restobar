@@ -33,7 +33,7 @@
 	<parameter name="codSuc" class="java.lang.Integer"/>
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[select p.id,p.nombre as xproducto,p.unidad_por_caja,case p.tipo_grupo when 1 then 'Producto' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida preparada' when 5 then 'terial de servicio' else '' end as xtipo ,coalesce(sum(dc.cantidad_unitaria),0) as compras,coalesce(sum(dv.cantidad_unitaria),0) as ventas,coalesce(sum(dm.cantidad_unitaria),0) as ingresos,
+		<![CDATA[select p.id,p.nombre as xproducto,p.unidad_por_caja,case p.tipo_grupo when 1 then 'Producto' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida preparada' when 5 then 'Material de servicio' else '' end as xtipo ,coalesce(sum(dc.cantidad_unitaria),0) as compras,coalesce(sum(dv.cantidad_unitaria),0) as ventas,coalesce(sum(dm.cantidad_unitaria),0) as ingresos,
 coalesce(sum(dm2.cantidad_unitaria),0) as egresos,coalesce(sum(dm3.cantidad_unitaria),0) as ingreso_sucursal,coalesce(sum(dm4.cantidad_unitaria),0) as salida_sucursal,coalesce(max(a.cantidad),0) as almacen_unidad
 from producto_precio_sucursal pps
 inner join producto p on p.id = pps.producto_id and p.estado = true
@@ -52,7 +52,7 @@ left join movimiento m4 on m4.id = dm4.movimiento_id and m4.estado = true and m4
 left join almacen a on a.producto_id = p.id and a.sucursal_id = $P{codSuc} 
 where pps.sucursal_id =  $P{codSuc}  and pps.id = 1 and pps.controlar_producto = true
 group by p.id,p.nombre,p.unidad_por_caja
-order by p.nombre asc]]>
+order by p.tipo_grupo,p.nombre asc]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>

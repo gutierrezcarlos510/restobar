@@ -233,7 +233,7 @@ public class VentaC {
 			parametros.put("xcliente", venta.getXcliente());
 			parametros.put("xusuario", venta.getXusuario());
 			parametros.put("xfecha", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(venta.getFecha()));
-
+			parametros.put("xformaPago", venta.getXformaPago());
 			Utils.loadDataReport(parametros, general);
 			GeneradorReportes generador=new GeneradorReportes();
 			generador.generarReporteJson(response, getClass().getResource(reportUrl), tipo,parametros,jsonDetalles ,nombre, estado);

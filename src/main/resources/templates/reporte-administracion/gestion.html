@@ -3,6 +3,16 @@
         <h3 class="box-title custom-bolder">REPORTES DE ADMINISTRACION</h3>
     </div>
     <div class="box-body">
+        <div class="alert bg-red-gradient" id="arqueoAbierto" style="display: none;">
+            <strong>Arqueo de cajas.- </strong> Informar que tienen arqueo de cajas abiertas. Para realizar un cierre correcto, favor de cerrar las cajas restantes.
+            <br>
+            Arqueos: <strong id="dataArqueoAbierto"></strong>
+        </div>
+        <div class="alert bg-red-gradient" id="ventaAbierta" style="display: none;">
+            <strong>Ventas pendientes.- </strong> Informar que tienen ventas pendientes. Para realizar un cierre correcto, favor de terminar las ventas restantes de la sucursal.
+            <br>
+            Ventas: <strong id="dataVentaAbierta"></strong>
+        </div>
         <form id="formulario1" method="post" action="../reporteAdministrativo/reporte1"
               data-fv-framework="bootstrap" data-fv-excluded="disabled"
               data-fv-icon-valid="glyphicon glyphicon-ok"
@@ -36,7 +46,8 @@
                         <label>Tipo</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        <select class="form-control" name="tipo">
+                        <select class="form-control" name="tipo" data-fv-notempty="true">
+                            <option value="">Seleccionar</option>
                             <option value="1">Inventario Actual</option>
                             <option value="2">Control de Stock</option>
                         </select>
@@ -561,5 +572,30 @@
                 $('#ffin5').val(end.format('DD/MM/YYYY'));
             }
         );
+
+        $.get('../reporteAdministrativo/obtenerValidacionCierreGeneral',function(resp){
+            if(resp.status) {
+                if(resp.data.existeArqueosAbiertos) {
+                    $('#arqueoAbierto').show(1000)
+                    let aux = '';
+                    resp.data.validacionArqueo.forEach(item => {
+                        aux += item.xsucursal + ', Total arqueos abiertos: '+item.total+' (Cod. Arqueos: '+item.codigos+') -';
+                    });
+                    $('#dataArqueoAbierto').html(aux.substring(0,aux.length-2));
+                } else {
+                    $('#arqueoAbierto').hide();
+                }
+                if(resp.data.existeVentasAbiertas) {
+                    $('#ventaAbierta').show(1000)
+                    let aux = '';
+                    resp.data.validacionVenta.forEach(item => {
+                        aux += item.xsucursal + ' Total ventas abiertas: '+item.total+' (Cod. Ventas: '+item.codigos+') -';
+                    });
+                    $('#dataVentaAbierta').html(aux.substring(0,aux.length-2));
+                } else {
+                    $('#ventaAbierta').hide();
+                }
+            }
+        })
     });
 </script>

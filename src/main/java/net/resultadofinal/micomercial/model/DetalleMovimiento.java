@@ -10,6 +10,17 @@ public class DetalleMovimiento {
     private String xproducto;
     private BigDecimal cantidad, cantidadUnitaria;
 
+    public DetalleMovimiento() {
+    }
+
+    public DetalleMovimiento(Long productoId, Boolean tipo, Boolean esIngreso, BigDecimal cantidad, BigDecimal cantidadUnitaria) {
+        this.productoId = productoId;
+        this.tipo = tipo;
+        this.esIngreso = esIngreso;
+        this.cantidad = cantidad;
+        this.cantidadUnitaria = cantidadUnitaria;
+    }
+
     public Integer getUnidadPorCaja() {
         return unidadPorCaja;
     }
@@ -62,6 +73,11 @@ public class DetalleMovimiento {
         return tipo;
     }
 
+    /**
+     * true = unidad
+     * false = caja
+     * @param tipo
+     */
     public void setTipo(Boolean tipo) {
         this.tipo = tipo;
     }

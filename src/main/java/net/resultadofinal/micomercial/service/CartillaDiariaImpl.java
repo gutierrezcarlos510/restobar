@@ -1,8 +1,11 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.enumeration.HistoricoE;
+import net.resultadofinal.micomercial.enumeration.TipoMovimientoE;
 import net.resultadofinal.micomercial.model.CartillaDiaria;
 import net.resultadofinal.micomercial.model.DetalleCartillaDiaria;
+import net.resultadofinal.micomercial.model.DetalleMovimiento;
+import net.resultadofinal.micomercial.model.Movimiento;
 import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
 import net.resultadofinal.micomercial.model.form.CartillaSucursalForm;
 import net.resultadofinal.micomercial.model.form.DetalleCartillaForm;
@@ -36,6 +39,8 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	}
 	@Autowired
 	private AlmacenS almacenS;
+	@Autowired
+	private MovimientoS movimientoS;
 	private static final Logger logger = LoggerFactory.getLogger(CartillaDiariaImpl.class);
 	private static final String ENTITY = "CartillaDiaria";
 	private String sqlString;
@@ -90,7 +95,21 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 				sqlString = "insert into cartilla_diaria(id,finicio,usuario_id,cod_suc,estado,estado_cartilla) values(?,now(),?,?,true,true)";
 				boolean save = db.update(sqlString, id, obj.getUsuarioId(),obj.getCodSuc()) > 0;
 				obj.setId(id);
-				adicionarDetalles(obj);
+				//Lista de productos agregados
+				List<DetalleMovimiento> detalleMovimientoList = new ArrayList<>();
+				adicionarDetalles(obj,detalleMovimientoList);
+				if(!detalleMovimientoList.isEmpty()) {
+					Movimiento movimiento = new Movimiento();
+					movimiento.setDetalles(detalleMovimientoList);
+					movimiento.setUsuarioRevision(obj.getUsuarioId());
+					movimiento.setSucursalOrigen(obj.getCodSuc());
+					movimiento.setUpdatedBy(obj.getUsuarioId());
+					movimiento.setCreatedBy(obj.getUsuarioId());
+					movimiento.setObs("Registrado desde registro adicionar cartilla diaria");
+					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
+					registroMovimientoCierreDiario(movimiento);
+				}
 				return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
 			} else {
 				return new DataResponse(false, "No se encontro detalles de la cartilla");
@@ -102,7 +121,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 	}
 	@Override
 	@Transactional
-	public void adicionarDetalles(CartillaDiariaForm obj){
+	public void adicionarDetalles(CartillaDiariaForm obj,List<DetalleMovimiento> detalleMovimientoList){
 		if(UtilClass.isNotNullEmpty(obj.getCartillaSucursalFormList())) {
 			sqlString = "select coalesce(max(id),0)+1 from detalle_cartilla_diaria where cartilla_diaria_id=?";
 			int i= db.queryForObject(sqlString, Integer.class, obj.getId());
@@ -125,12 +144,16 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 												item.getCantidadModificar(),item.getId(), item.getCartillaDiariaId());
 										if(!esProductoFabricado) {
 											almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidadModificar(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+											DetalleMovimiento detalleMovimiento = new DetalleMovimiento(item.getProductoId(),true,true,item.getCantidadModificar(),item.getCantidadModificar());
+											detalleMovimientoList.add(detalleMovimiento);
 										}
 									}
 								} else { // Adicionar
 									db.update(sqlString, obj.getId(),i,det.getId(),subdet.getId(),item.getProductoId(),item.getPrecioIndividual(),item.getPrecioCompuesto(),item.getCantidad());
 									if(!esProductoFabricado) {
 										almacenS.registrarAlmacen(item.getProductoId(),obj.getCodSuc(),item.getCantidad(),obj.getUsuarioId(), HistoricoE.MODIFICACION_CARTILLA_DIARIA.getTipo(),"");
+										DetalleMovimiento detalleMovimiento = new DetalleMovimiento(item.getProductoId(),true,true,item.getCantidad(),item.getCantidad());
+										detalleMovimientoList.add(detalleMovimiento);
 									}
 									i++;
 								}
@@ -152,7 +175,9 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 						db.update("delete from detalle_cartilla_diaria where id = ? and cartilla_diaria_id = ?", data.getId(), data.getCartillaDiariaId());
 						boolean esProductoFabricado = db.queryForObject("select count(*)>0 from producto p inner join tipo_producto tp on tp.id = p.tipo_id and es_preparado=false and es_comerciable = true where p.id=?", Boolean.class, data.getProductoId());
 						if(!esProductoFabricado) {
-							almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),new BigDecimal(-1).multiply(data.getCantidad()),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
+							almacenS.registrarAlmacen(data.getProductoId(),obj.getCodSuc(),data.getCantidad().negate(),obj.getUsuarioId(), HistoricoE.REVERSION_CARTILLA_DIARIA.getTipo(), "Eliminado al modificar cartilla diaria, y se quito el detalle, cartilla diaria #"+data.getCartillaDiariaId());
+							DetalleMovimiento detalleMovimiento = new DetalleMovimiento(data.getProductoId(),true,false,data.getCantidad(),data.getCantidad());
+							detalleMovimientoList.add(detalleMovimiento);
 						}
 					}
 				}
@@ -170,7 +195,21 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 				sqlString = "update cartilla_diaria set usuario_id=? where id=?";
 				boolean update = db.update(sqlString, obj.getUsuarioId(), obj.getId()) > 0;
 //				db.update("delete from detalle_cartilla_diaria where cartilla_diaria_id = ?", obj.getId());
-				adicionarDetalles(obj);
+				//Lista de productos agregados
+				List<DetalleMovimiento> detalleMovimientoList = new ArrayList<>();
+				adicionarDetalles(obj,detalleMovimientoList);
+				if(!detalleMovimientoList.isEmpty()) {
+					Movimiento movimiento = new Movimiento();
+					movimiento.setDetalles(detalleMovimientoList);
+					movimiento.setUsuarioRevision(obj.getUsuarioId());
+					movimiento.setSucursalOrigen(obj.getCodSuc());
+					movimiento.setUpdatedBy(obj.getUsuarioId());
+					movimiento.setCreatedBy(obj.getUsuarioId());
+					movimiento.setObs("Registrado desde modificacion de cartilla diaria");
+					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
+					registroMovimientoCierreDiario(movimiento);
+				}
 				return new DataResponse(update, Utils.getSuccessFailedMod(ENTITY, update));
 			} else {
 				return new DataResponse(false, "No se encontro detalles de la cartilla");
@@ -194,11 +233,32 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 			throw new RuntimeException(Utils.errorEli(ENTITY, e.getMessage()));
 		}
 	}
-	public Boolean eliminar(Long cod_com,Long user, Integer sucursalId){
+	@Transactional
+	public Boolean eliminar(Long cartillaDiariaId,Long user, Integer sucursalId){
 		try {
-//			logger.info("eliminar: "+cod_com+"  "+est);
-			Short res = db.queryForObject("select cartilla_diaria_eliminar(?,?,?);",Short.class,cod_com,user, sucursalId);
+			Short res = db.queryForObject("select cartilla_diaria_eliminar(?,?,?);",Short.class,cartillaDiariaId,user, sucursalId);
 			if(res > 0) {
+				CartillaDiaria cartilla = obtener(cartillaDiariaId);
+				List<DetalleCartillaDiaria> detalles = obtenerDetalles(cartillaDiariaId);
+				List<DetalleMovimiento> detallesMovimiento = new ArrayList<>();
+				for(DetalleCartillaDiaria item : detalles) {
+					if(item.getCantidad() != null && item.getCantidad().floatValue() > 0f) {
+						DetalleMovimiento det = new DetalleMovimiento(item.getProductoId(),true,false,item.getCantidad(),item.getCantidad());
+						detallesMovimiento.add(det);
+					}
+				}
+				if(!detallesMovimiento.isEmpty()) {
+					Movimiento movimiento = new Movimiento();
+					movimiento.setDetalles(detallesMovimiento);
+					movimiento.setUsuarioRevision(cartilla.getUsuarioId());
+					movimiento.setSucursalOrigen(cartilla.getCodSuc());
+					movimiento.setUpdatedBy(cartilla.getUsuarioId());
+					movimiento.setCreatedBy(cartilla.getUsuarioId());
+					movimiento.setObs("Registrado desde eliminacion de cartilla diaria");
+					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
+					registroMovimientoCierreDiario(movimiento);
+				}
 				return true;
 			} else {
 				if(res == -2) {
@@ -242,7 +302,6 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 							}
 						}
 					}
-
 					Map<Integer,List<DetalleCartillaForm>> agrupadoPorCartillaSucursal = detalleCartillaFormList.stream().collect(Collectors.groupingBy(DetalleCartillaForm::getCartillaSucursalId));
 					for (Map.Entry<Integer,List<DetalleCartillaForm>> item : agrupadoPorCartillaSucursal.entrySet()) {
 						if(UtilClass.isNotNullEmpty(item.getValue())) {
@@ -290,19 +349,53 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 			}
 			if(UtilClass.isNotNullEmpty(obj.getListaCierre())) {
 				sqlString = "update detalle_cartilla_diaria set cantidad_editada_final = ?, cantidad_final_almacen = ? where cartilla_diaria_id = ? and id =?;";
-				obj.getListaCierre().stream().forEach(it-> {
+				List<DetalleMovimiento> detalleMovimientoList = new ArrayList<>();
+				for (CartillaDiariaCierreWrap it : obj.getListaCierre()) {
 					BigDecimal diferencia = it.getCantidadFinalAlmacen().subtract(it.getCantidadAlmacen());
 					if(diferencia.compareTo(new BigDecimal(0))!=0) {
+						DetalleMovimiento detalleMovimiento = null;
+						if(diferencia.compareTo(new BigDecimal(0)) > 0) {
+							detalleMovimiento = new DetalleMovimiento(it.getProductoId(),true,true,diferencia,diferencia);
+						} else {
+							detalleMovimiento = new DetalleMovimiento(it.getProductoId(), true,false, diferencia.negate(),diferencia.negate());
+						}
+						detalleMovimientoList.add(detalleMovimiento);
 						db.update(sqlString, diferencia,it.getCantidadFinalAlmacen(), it.getCartillaDiariaId(), it.getId());
 						almacenS.registrarAlmacen(it.getProductoId(), sucursalId, diferencia,userId, HistoricoE.MODIFICACION_CIERRE_CARTILLA.getTipo(), "Modificacion por cierre diario, #"+obj.getCartillaDiariaId());
 					}
-				});
+				}
+				//Si existe detalles, hay que registrar en movimientos
+				if(!detalleMovimientoList.isEmpty()) {
+					Movimiento movimiento = new Movimiento();
+					movimiento.setDetalles(detalleMovimientoList);
+					movimiento.setUsuarioRevision(userId);
+					movimiento.setSucursalOrigen(sucursalId);
+					movimiento.setUpdatedBy(userId);
+					movimiento.setCreatedBy(userId);
+					movimiento.setObs("Registrado desde cierre de cartilla diaria");
+					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
+					registroMovimientoCierreDiario(movimiento);
+				}
 			}
 			boolean status = db.update("update cartilla_diaria set usuario_cierre =?, fecha_cierre = now(),estado_cartilla = false  where id=?",userId, obj.getCartillaDiariaId())>0;
 			return Utils.getResponseDataAdd("Registro Cierre Diario",status);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());
+		}
+	}
+	//Si existe modificacion del inventario, se registra como movimiento
+	public void registroMovimientoCierreDiario(Movimiento movimiento){
+		DataResponse resp = movimientoS.adicionar(movimiento);
+		if(resp.isStatus()) {
+			movimiento.setId((long)resp.getData());
+			DataResponse resp2 = movimientoS.revisar(movimiento);
+			if(!resp2.isStatus()) {
+				throw new RuntimeException("Error al revisar el registro del movimiento");
+			}
+		} else {
+			throw new RuntimeException("Error al registrar el movimiento de los productos.");
 		}
 	}
 	public DataResponse obtenerResumenDetalleCierre(Long cartillaDiariaId, Integer sucursalId) {

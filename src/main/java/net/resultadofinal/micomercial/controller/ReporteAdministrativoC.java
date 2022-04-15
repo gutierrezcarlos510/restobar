@@ -2,18 +2,23 @@ package net.resultadofinal.micomercial.controller;
 
 import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.Persona;
+import net.resultadofinal.micomercial.model.Rol;
 import net.resultadofinal.micomercial.model.Sucursal;
 import net.resultadofinal.micomercial.service.SucursalS;
+import net.resultadofinal.micomercial.util.DataResponse;
 import net.resultadofinal.micomercial.util.GeneradorReportes;
 import net.resultadofinal.micomercial.util.MyConstant;
+import net.resultadofinal.micomercial.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,6 +116,15 @@ public class ReporteAdministrativoC {
                 param.put("telefono", sucursal.getTelefono());
                 param.put("direccion", sucursal.getDireccion());
             }
+        }
+    }
+    @RequestMapping("obtenerValidacionCierreGeneral")
+    public @ResponseBody
+    DataResponse obtenerValidacionCierreGeneral() {
+        try {
+            return new DataResponse(true, sucursalS.obtenerValidacionCierreGeneral(), "Se realizo con exito la consulta.");
+        } catch (Exception e) {
+            return new DataResponse(false, e.getMessage());
         }
     }
 }

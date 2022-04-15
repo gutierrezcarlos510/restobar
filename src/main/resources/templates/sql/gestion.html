@@ -16,7 +16,9 @@
 		  	<div class="col-md-4">
 		  	<ul class="w3-ul w3-card-4">
 		    <li class="w3-display-container">&times; |  Limpieza Completa <span  class="w3-button w3-transparent w3-display-right"> <a href="#" class="enlaceScript" data-id="60"><i class="glyphicon glyphicon-console"></i> ejecutar</a></span></li>
-		  </ul>
+				<li class="w3-display-container">&times; |  Limpieza Sucursal: <select name="sucursalId" id="sucursalId">
+					<option value="">Seleccionar</option><option th:each="s : ${sucursales}" th:value="${s.cod_suc}" th:text="${s.nombre}"></option></select> <span  class="w3-button w3-transparent w3-display-right"> <a href="#" class="enlaceScript" data-id="61"><i class="glyphicon glyphicon-console"></i> ejecutar</a></span></li>
+		  	</ul>
 		  	</div>
 		  </div>
 		  
@@ -41,9 +43,20 @@
     			}).then((result) => {
     				if (result.isConfirmed) {
     					let valor = parseInt($(this).data('id'));
-        				$.post('../ejecucion/execute',{'code':valor,'password':result.value},function(resp){
-    	    				finishTransaction(resp);
-    	    			});
+    					if(valor === 61) {
+    						let sucursalId = $('#sucursalId option:selected').val();
+    						if(sucursalId) {
+								$.post('../ejecucion/execute',{'sucursalId':sucursalId,'code':valor,'password':result.value},function(resp){
+									finishTransaction(resp);
+								});
+							} else {
+    							modalAlert('Seleccione Sucursal', 'Ingrese una sucursal', 'error')
+							}
+						} else {
+							$.post('../ejecucion/execute',{'code':valor,'password':result.value},function(resp){
+								finishTransaction(resp);
+							});
+						}
     				}
     	    	});
     	});

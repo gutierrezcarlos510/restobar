@@ -1,9 +1,7 @@
 package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.*;
-import net.resultadofinal.micomercial.model.wrap.Organigrama;
-import net.resultadofinal.micomercial.model.wrap.RolOrganigrama;
-import net.resultadofinal.micomercial.model.wrap.UsuarioOrganigrama;
+import net.resultadofinal.micomercial.model.wrap.*;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -206,6 +204,23 @@ public class SucursalImpl extends DbConeccion implements SucursalS {
 			return o;
 		} catch(Exception ex) {
 			return null;
+		}
+	}
+	public ValidacionCierreGeneral obtenerValidacionCierreGeneral(){
+		try {
+			ValidacionCierreGeneral obj = new ValidacionCierreGeneral();
+			sqlString = "select sucursal_id,s.nombre as xsucursal,string_agg(a.id::varchar,',') codigos,count(*) total from arqueo a " +
+					"inner join sucursal s on s.cod_suc = a.sucursal_id and s.estado =true " +
+					"where a.estado = true and (a.ffin is null and a.monto_final is null) group by a.sucursal_id,s.nombre;";
+			obj.setValidacionArqueo(db.query(sqlString, BeanPropertyRowMapper.newInstance(ValidacionCierreSucursal.class)));
+			sqlString = "select v.sucursal_id,s.nombre as xsucursal,string_agg(v.numero::varchar,',') codigos,count(*) total from venta v " +
+					"inner join sucursal s on s.cod_suc = v.sucursal_id and s.estado = true " +
+					"where v.estado = true and v.tipo != 2 " +
+					"group by v.sucursal_id,s.nombre ;";
+			obj.setValidacionVenta(db.query(sqlString, BeanPropertyRowMapper.newInstance(ValidacionCierreSucursal.class)));
+			return obj;
+		} catch (Exception e) {
+			throw new RuntimeException("Error al validar cierres generales"+e.toString());
 		}
 	}
 }

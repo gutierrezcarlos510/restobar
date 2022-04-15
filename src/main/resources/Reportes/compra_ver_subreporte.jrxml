@@ -11,7 +11,7 @@
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<parameter name="cod_com" class="java.lang.Long"/>
 	<queryString>
-		<![CDATA[select * from detallecompra_obtener($P{cod_com}) as (cod_com bigint,cod_detcom integer,cod_pro int8,pre_detcom numeric(10,2),can_detcom integer,des_detcom numeric(10,2),subtot_detcom numeric(10,2),tot_detcom numeric(10,2), cantidad_unitaria integer,tipo_compra int2,producto varchar(150))]]>
+		<![CDATA[select * from detallecompra_obtener($P{cod_com}) as (cod_com bigint,cod_detcom integer,cod_pro int8,pre_detcom numeric(10,2),can_detcom numeric(10,2),des_detcom numeric(10,2),subtot_detcom numeric(10,2),tot_detcom numeric(10,2), cantidad_unitaria numeric(10,2),tipo_compra int2,producto varchar(150))]]>
 	</queryString>
 	<field name="cod_com" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="cod_com"/>
@@ -29,7 +29,7 @@
 		<property name="com.jaspersoft.studio.field.label" value="pre_detcom"/>
 		<property name="com.jaspersoft.studio.field.name" value="pre_detcom"/>
 	</field>
-	<field name="can_detcom" class="java.lang.Integer">
+	<field name="can_detcom" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="can_detcom"/>
 		<property name="com.jaspersoft.studio.field.name" value="can_detcom"/>
 	</field>
@@ -45,7 +45,7 @@
 		<property name="com.jaspersoft.studio.field.label" value="tot_detcom"/>
 		<property name="com.jaspersoft.studio.field.name" value="tot_detcom"/>
 	</field>
-	<field name="cantidad_unitaria" class="java.lang.Integer">
+	<field name="cantidad_unitaria" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_unitaria"/>
 	</field>
 	<field name="tipo_compra" class="java.lang.Integer">
@@ -56,7 +56,7 @@
 		<property name="com.jaspersoft.studio.field.name" value="producto"/>
 	</field>
 	<variable name="total" class="java.lang.Float">
-		<variableExpression><![CDATA[($F{can_detcom}*$F{pre_detcom}.floatValue())-$F{des_detcom}.floatValue()]]></variableExpression>
+		<variableExpression><![CDATA[($F{can_detcom}.floatValue()*$F{pre_detcom}.floatValue())-$F{des_detcom}.floatValue()]]></variableExpression>
 	</variable>
 	<variable name="xtipo" class="java.lang.String">
 		<variableExpression><![CDATA[$F{tipo_compra}==1 ? "Unidesdes":"Cajas"]]></variableExpression>

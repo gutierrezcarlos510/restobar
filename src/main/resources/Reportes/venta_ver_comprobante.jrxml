@@ -31,6 +31,7 @@
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<parameter name="des_gen" class="java.lang.String"/>
 	<parameter name="costoAdicional" class="java.math.BigDecimal"/>
+	<parameter name="xformaPago" class="java.lang.String"/>
 	<queryString language="JSON">
 		<![CDATA[]]>
 	</queryString>
@@ -428,6 +429,13 @@
 				</textElement>
 				<text><![CDATA[Costo adicional: ]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="102" width="174" height="17" uuid="acb4ebd2-d72c-4936-b708-69a4b0ad8a63"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{xformaPago}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

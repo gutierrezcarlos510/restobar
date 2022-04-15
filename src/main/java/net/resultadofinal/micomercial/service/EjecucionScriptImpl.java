@@ -79,26 +79,68 @@ public class EjecucionScriptImpl extends DbConeccion implements EjecucionScriptS
 				case 15:
 					sqlString += "delete from pago_credito_compra;";
 					break;
-//				case 16:
-//					sqlString += "delete from tiene_sucursal where cod_per > 1;";
-//					break;
-//				case 17:
-//					sqlString += "delete from usurol where cod_per > 1;";
-//					break;
-//				case 18:
-//					sqlString += "delete from proveedor where cod_pro > 1;";
-//					break;
-//				case 19:
-//					sqlString += "delete from cliente where cod_cli > 1;";
-//					break;
-//				case 20:
-//					sqlString += "delete from secretaria where cod_sec > 1;";
-//					break;
-//				case 21:
-//					sqlString += "delete from persona where cod_per > 1;";
-//					break;
 				default:
 					break;
+				}
+			}
+			db.update(sqlString);
+			return new DataResponse(true, "Se realizo con exito el script.");
+		} catch (Exception e) {
+			throw new RuntimeException("No se realizo el script: "+e.getMessage());
+		}
+	}
+	public DataResponse script3(int num[],Integer sucursalId){
+		try {
+			sqlString = "";
+			for (int i = 0; i < num.length; i++) {
+				switch (num[i]) {//Limpiar transaccion de compra y venta
+					case 1:
+						sqlString += "delete from detalle_compra where cod_com in (select cod_com from compra where cod_suc="+sucursalId+");";
+						break;
+					case 2:
+						sqlString += "delete from pago_credito_compra where compra_id in (select cod_com from compra where cod_suc = "+sucursalId+");";
+						break;
+					case 3:
+						sqlString += "delete from compra where cod_suc="+sucursalId+";";
+						break;
+					case 4:
+						sqlString += "delete from detalle_venta where venta_id in (select id from venta where sucursal_id = "+sucursalId+");";
+						break;
+					case 5:
+						sqlString += "delete from detalle_historico_venta where venta_id in (select id from venta where sucursal_id = "+sucursalId+");";
+						break;
+					case 6:
+						sqlString += "delete from historico_venta where venta_id in (select id from venta where sucursal_id = "+sucursalId+"); ";
+						break;
+					case 7:
+						sqlString += "delete from venta where sucursal_id = "+sucursalId+";";
+						break;
+					case 8:
+						sqlString += "delete from detalle_arqueo where arqueo_id in (select id from arqueo where sucursal_id="+sucursalId+");";
+						break;
+					case 9:
+						sqlString += "delete from arqueo where sucursal_id = "+sucursalId+";";
+						break;
+					case 10://Limpieza de productos
+						sqlString += "delete from historico_almacen where sucursal_id = "+sucursalId+" ;";
+						break;
+					case 11:
+						sqlString += "delete from almacen where sucursal_id = "+sucursalId+" ;";
+						break;
+					case 12:
+						sqlString += "delete from detalle_cartilla_diaria where cartilla_diaria_id in (select id from cartilla_diaria where cod_suc = "+sucursalId+") ;";
+						break;
+					case 13:
+						sqlString += "delete from cartilla_diaria where cod_suc = "+sucursalId+";";
+						break;
+					case 14:
+						sqlString += "delete from detalle_movimiento where movimiento_id in (select id from movimiento where sucursal_origen = "+sucursalId+");";
+						break;
+					case 15:
+						sqlString += "delete from movimiento where sucursal_origen = "+sucursalId+";";
+						break;
+					default:
+						break;
 				}
 			}
 			db.update(sqlString);

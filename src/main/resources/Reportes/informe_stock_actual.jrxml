@@ -33,7 +33,7 @@
 	<parameter name="codSuc" class="java.lang.Integer"/>
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[select p.id,p.nombre as xproducto,p.unidad_por_caja,case p.tipo_grupo when 1 then 'Producto' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida preparada' when 5 then 'terial de servicio' else '' end as xtipo,
+		<![CDATA[select p.id,p.nombre as xproducto,p.unidad_por_caja,case p.tipo_grupo when 1 then 'Producto' when 2 then 'Insumo' when 3 then 'Plato' when 4 then 'Bebida preparada' when 5 then 'Material de servicio' else '' end as xtipo,
 coalesce(max(pps.inventario_minimo),0) as inventario_minimo,
 coalesce(sum(dv.cantidad_unitaria),0) as ventas,coalesce(max(a.cantidad),0) as almacen_unidad,
 case when coalesce(max(a.cantidad),0) > coalesce(max(pps.inventario_minimo),0) then (case when coalesce(max(a.cantidad),0) > (coalesce(max(pps.inventario_minimo),0)*2) then 'Alto stock' else 'Medio Stock' end) else 'Bajo Stock' end as interpretacion_stock
@@ -44,7 +44,7 @@ left join venta v on v.id = dv.venta_id and v.estado = true and v.fecha between 
 left join almacen a on a.producto_id = p.id and a.sucursal_id =  $P{codSuc} 
 where pps.sucursal_id = $P{codSuc} and pps.id = 1 and pps.controlar_producto = true
 group by p.id,p.nombre,p.unidad_por_caja,p.tipo_grupo,pps.inventario_minimo 
-order by p.nombre asc;]]>
+order by p.tipo_grupo,p.nombre asc;]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>

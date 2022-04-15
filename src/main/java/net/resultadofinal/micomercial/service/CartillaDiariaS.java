@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.CartillaDiaria;
 import net.resultadofinal.micomercial.model.DetalleCartillaDiaria;
+import net.resultadofinal.micomercial.model.DetalleMovimiento;
 import net.resultadofinal.micomercial.model.form.CartillaDiariaForm;
 import net.resultadofinal.micomercial.model.wrap.CierreWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
@@ -19,13 +20,13 @@ public interface CartillaDiariaS {
 
     DataResponse adicionar(CartillaDiariaForm obj);
 
-    void adicionarDetalles(CartillaDiariaForm obj);
+    void adicionarDetalles(CartillaDiariaForm obj, List<DetalleMovimiento> detalleMovimientoList);
 
     DataResponse modificar(CartillaDiariaForm obj);
 
     DataResponse darEstado(Integer id, Boolean estado);
 
-    Boolean eliminar(Long cod_com,Long user, Integer sucursalId);
+    Boolean eliminar(Long cartillaDiariaId,Long user, Integer sucursalId);
 
     CartillaDiariaForm obtenerCartillaDiariaForm (Long cartillaDiariaId);
 
