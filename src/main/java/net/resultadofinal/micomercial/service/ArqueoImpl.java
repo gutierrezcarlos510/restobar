@@ -72,6 +72,19 @@ public class ArqueoImpl extends DbConeccion implements ArqueoS {
 			return null;
 		}
 	}
+	public DataTableResults<DetalleArqueo> listadoDetallesIngreseEgreso(HttpServletRequest request, boolean estado,Long arqueo) {
+		try {
+			SqlBuilder sqlBuilder = new SqlBuilder("detalle_arqueo da");
+			sqlBuilder.setSelect("da.*");
+			sqlBuilder.setWhere("da.estado=:xestado and da.arqueo_id= :xcod and (da.tipo=3 or da.tipo=4)");
+			sqlBuilder.addParameter("xestado", estado);
+			sqlBuilder.addParameter("xcod", arqueo);
+			return utilDataTableS.list(request, DetalleArqueo.class, sqlBuilder);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	@Override
 	public Arqueo obtenerCaja(Long id) {
 		try {

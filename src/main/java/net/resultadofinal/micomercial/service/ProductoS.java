@@ -21,4 +21,6 @@ public interface ProductoS {
 	DataResponse modificarIngredientes(Long producto, Long ingredientes[], Integer cantidades[],Integer cantidadPlatos);
 	DataResponse eliminarIngrediente(Long productoId, Short id);
 	List<Ingrediente> obtenerIngredientesPorProducto(Long productoId);
+	List<Producto> obtenerProductosSucursal(Integer sucursalId);
+	DataResponse actualizarControlProducto(Producto obj, Integer sucursalId);
 }

@@ -46,6 +46,12 @@ public class ProductoC {
 	private static final Logger logger = LoggerFactory.getLogger(ProductoC.class);
 	private static final String ENTITY = "producto";
 
+	@RequestMapping("gestionInventarioActivo")
+	public String gestionInventarioActivo(HttpServletRequest request,Model model){
+		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+		model.addAttribute("productos", productoS.obtenerProductosSucursal(gestion.getCod_suc()));
+		return "producto/gestionInventario";
+	}
 	@RequestMapping("gestion")
 	public String gestion(Model model){
 		model.addAttribute("tipos",tipoproductoS.listAll(MyConstant.BEBIDA));
@@ -211,6 +217,17 @@ public class ProductoC {
 	DataResponse eliminarIngrediente(Long productoId, Short id){
 		try {
 			return productoS.eliminarIngrediente(productoId, id);
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+
+	@RequestMapping("activarControlProducto")
+	public @ResponseBody
+	DataResponse activarControlProducto(HttpServletRequest request,Producto obj){
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.actualizarControlProducto(obj, gestion.getCod_suc());
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
 		}

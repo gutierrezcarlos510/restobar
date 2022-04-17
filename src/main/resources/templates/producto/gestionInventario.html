@@ -1,0 +1,39 @@
+<section xmlns:th="http://www.thymeleaf.org">
+<div class="box box-primary">
+    <div class="box-header with-border">
+
+        <!-- /.modal -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3">
+                <h1><span class="fa  fa-ellipsis-v"></span> Inventario Activo </h1>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-3" th:each="p : ${productos}">
+                <div class="box no-border w3-hover-blue">
+                    <div class="box-body">
+                        <label  th:text="${p.nombre}" th:for="${'prod-'+p.id}"></label>
+                        <input type="checkbox" class="w3-check checkProducto pull-right" th:id="${'prod-'+p.id}" name="id" th:value="${p.id}" th:checked="${p.controlarProducto}" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->
+<script type="text/javascript" th:inline="none">
+    $(document).ready(function() {
+        $('.checkProducto').change(function(){
+            let cod = $(this).val();
+            let aux = $(this).is(':checked');
+            $.post('../producto/activarControlProducto',{'id':cod,'controlarProducto':aux},function(resp){
+                mostrarMensaje('info',resp.msg);
+            })
+        })
+    });
+</script>
+</section>

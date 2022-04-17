@@ -43,7 +43,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			sqlBuilder.addJoin("caracteristica c on c.id = p.medida_id");
 			sqlBuilder.addLeftJoin("presentacion p1 on p1.id = p.presentacion_unidad_id");
 			sqlBuilder.addLeftJoin("presentacion p2 on p2.id = p.presentacion_caja_id");
-			sqlBuilder.addLeftJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");
+			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");
@@ -243,6 +243,24 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));
 			return null;
+		}
+	}
+	public List<Producto> obtenerProductosSucursal(Integer sucursalId){
+		try {
+			sqlString ="select p.*,pps.controlar_producto from producto_precio_sucursal pps " +
+					"inner join producto p on p.id = pps.producto_id and pps .sucursal_id = ? and pps.es_principal = true " +
+					"where p.estado = true order by p.tipo_grupo,p.nombre asc;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(Producto.class), sucursalId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	public DataResponse actualizarControlProducto(Producto obj, Integer sucursalId) {
+		try {
+			boolean isUpdated = db.update("update producto_precio_sucursal set controlar_producto =? where producto_id =? and sucursal_id = ? and es_principal=true", obj.getControlarProducto(), obj.getId(), sucursalId) > 0;
+			return Utils.getResponseDataMod("Producto", isUpdated);
+		} catch (Exception ex) {
+			throw new RuntimeException(Utils.errorEli("Ingrediente", ex.getMessage()));
 		}
 	}
 }

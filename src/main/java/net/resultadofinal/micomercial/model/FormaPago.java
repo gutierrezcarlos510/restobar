@@ -2,8 +2,34 @@ package net.resultadofinal.micomercial.model;
 
 public class FormaPago {
     private Short id;
-    private String nombre;
+    private String nombre,alias;
     private Boolean esEfectivoCaja, estado;
+    private String xsucursal;
+    private Integer sucursalId;
+
+    public String getXsucursal() {
+        return xsucursal;
+    }
+
+    public void setXsucursal(String xsucursal) {
+        this.xsucursal = xsucursal;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public Integer getSucursalId() {
+        return sucursalId;
+    }
+
+    public void setSucursalId(Integer sucursalId) {
+        this.sucursalId = sucursalId;
+    }
 
     public Short getId() {
         return id;

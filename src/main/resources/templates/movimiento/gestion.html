@@ -231,7 +231,8 @@
                 $('td', row).eq(2).html(dataReq.xtipo[data.tipo]);
                 $('td', row).eq(3).html(dataReq.xestadoMovimiento[data.estadoMovimiento]);
                 if (data.estado) {
-                    let buttons = '<button class="btn btn-info ver"  data-toggle="tooltip" data-placement="top" title="Ver Movimiento"><i class="fa fa-eye"></i><br>ver </button>';
+                    let buttons = '<button class="btn btn-success imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir Movimiento"><i class="fa fa-print"></i><br>imprimir </button>';
+                    buttons += '<button class="btn btn-info ver"  data-toggle="tooltip" data-placement="top" title="Ver Movimiento"><i class="fa fa-eye"></i><br>ver </button>';
                     if(data.estadoMovimiento === 0) {
                         if(data.tipo === 1 ) {
                             if(data.sucursalDestino === sucursalSesionada) {
@@ -325,6 +326,11 @@
                         })
                     })
                     $('#modalRevisarVer').modal('show');
+                });
+                $('.imprimir').click(function() {
+                    let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
+                    $("#frameReportes").attr("src", "../movimiento/ver?id=" + obj.id);
+                    $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',

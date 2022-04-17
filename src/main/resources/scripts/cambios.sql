@@ -1047,3 +1047,10 @@ begin
 END
 $function$
 ;
+
+UPDATE public.proceso
+SET nom_pro='Forma de pago', des_pro='Gestiona las formas de pago de cada sucursal', ico_pro='glyphicon glyphicon-briefcase', est_pro=true, url_pro='../formaPago/gestion'
+WHERE cod_pro=33;
+UPDATE public.proceso
+SET nom_pro='Inventario Activo', des_pro='Gestiona el inventario activo', ico_pro='glyphicon glyphicon-bookmark', est_pro=true, url_pro='../producto/gestionInventarioActivo'
+WHERE cod_pro=34;

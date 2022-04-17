@@ -1,14 +1,18 @@
 package net.resultadofinal.micomercial.controller;
 
+import com.google.gson.GsonBuilder;
 import net.resultadofinal.micomercial.model.DetalleMovimiento;
 import net.resultadofinal.micomercial.model.General;
 import net.resultadofinal.micomercial.model.Movimiento;
 import net.resultadofinal.micomercial.model.Persona;
+import net.resultadofinal.micomercial.model.wrap.VentaInfoWrap;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.service.MovimientoS;
 import net.resultadofinal.micomercial.service.SucursalS;
 import net.resultadofinal.micomercial.util.DataResponse;
+import net.resultadofinal.micomercial.util.GeneradorReportes;
 import net.resultadofinal.micomercial.util.MyConstant;
+import net.resultadofinal.micomercial.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/movimiento/*")
@@ -27,6 +36,8 @@ public class MovimientoC {
 	private MovimientoS movimientoS;
 	@Autowired
 	private SucursalS sucursalS;
+	@Autowired
+	private DataSource dataSource;
 	@RequestMapping("gestion")
 	public String gestion(HttpServletRequest request, Model model){
 		General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
@@ -113,6 +124,36 @@ public class MovimientoC {
 			return new DataResponse(exist, obj, "Se realizo con exito la consulta");
 		} catch (Exception e) {
 			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("ver")
+	public void ver(HttpServletRequest request, HttpServletResponse response, Long id){
+		try {
+			General general = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			String nombre="movimiento_"+id+"_"+general.getGes_gen(),tipo="pdf",estado="inline";
+			Persona us=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			String reportUrl="/Reportes/movimiento_ver.jasper";
+			Movimiento movimiento = movimientoS.obtener(id);
+			if(movimiento.getTipo() == 1) {
+				reportUrl="/Reportes/movimiento_traspaso_ver.jasper";
+			}
+			Map<String, Object> parametros=new HashMap<String, Object>();
+			parametros.put("usuario", us.toString());
+			parametros.put("movimientoId", id);
+			parametros.put("xusuarioRevision", movimiento.getXusuarioRevision());
+			parametros.put("xcreatedBy", movimiento.getXcreatedBy());
+			parametros.put("xcreatedAt", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(movimiento.getCreatedAt()));
+			parametros.put("xtipo", movimiento.getXtipo());
+			parametros.put("xestadoMovimiento", movimiento.getXestadoMovimiento());
+			parametros.put("xfechaRevision", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(movimiento.getFechaRevision()));
+			parametros.put("obs", movimiento.getObs());
+			parametros.put("sucursalOrigen", movimiento.getXsucursalOrigen());
+			parametros.put("xusuario", movimiento.getXsucursalDestino());
+			Utils.loadDataReport(parametros, general);
+			GeneradorReportes generador=new GeneradorReportes();
+			generador.generarReporte(response, getClass().getResource(reportUrl), tipo,parametros, dataSource.getConnection(),nombre, estado);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

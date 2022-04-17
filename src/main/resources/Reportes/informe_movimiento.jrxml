@@ -33,7 +33,8 @@
 	<parameter name="codSuc" class="java.lang.Integer"/>
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[select p.nombre as xproducto,concat(p1.nom_per,' ',p1.priape_per) xusuario,m.fecha_revision,m.obs,case m.tipo when 1 then 'Traspaso entre sucursales' when 2 then 'Registro desde movimiento' else '' end as xtipo,dm.*,
+		<![CDATA[select p.nombre as xproducto,concat(p1.nom_per,' ',p1.priape_per) xusuario,m.fecha_revision,m.obs,case m.tipo when 1 then 'Traspaso entre sucursales' when 2 then 'Registro desde movimiento' when 3 then 'Modificacion de almacen' 
+when 4 then 'Actualizacion de cierre diario' when 5 then 'Registro de cartilla' when 6 then 'Actualizacion de cartilla' else '' end as xtipo,dm.*,
 s1.nombre as xorigen,s2.nombre as xdestino,m.sucursal_origen ,m.sucursal_destino,(m.sucursal_destino =  $P{codSuc} ) as ingreso_sucursal_externa,case when dm.tipo then 'Unidades' else 'Cajas' end as xmedida
 from detalle_movimiento dm 
 inner join producto p on p.id = dm.producto_id 
@@ -498,7 +499,7 @@ order by dm.movimiento_id,dm.id asc]]>
 					<font size="6"/>
 					<paragraph leftIndent="3" rightIndent="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{xtipo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{xtipo} ]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="449" y="0" width="61" height="24" uuid="60da6b90-0cc9-4293-96a9-61a36dca42d7">

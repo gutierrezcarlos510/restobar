@@ -106,7 +106,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					movimiento.setUpdatedBy(obj.getUsuarioId());
 					movimiento.setCreatedBy(obj.getUsuarioId());
 					movimiento.setObs("Registrado desde registro adicionar cartilla diaria");
-					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setTipo(TipoMovimientoE.REGISTRO_MOVIMIENTO.getTipo());
 					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
 					registroMovimientoCierreDiario(movimiento);
 				}
@@ -206,7 +206,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					movimiento.setUpdatedBy(obj.getUsuarioId());
 					movimiento.setCreatedBy(obj.getUsuarioId());
 					movimiento.setObs("Registrado desde modificacion de cartilla diaria");
-					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CARTILLA_DIARIA.getTipo());
 					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
 					registroMovimientoCierreDiario(movimiento);
 				}
@@ -255,7 +255,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					movimiento.setUpdatedBy(cartilla.getUsuarioId());
 					movimiento.setCreatedBy(cartilla.getUsuarioId());
 					movimiento.setObs("Registrado desde eliminacion de cartilla diaria");
-					movimiento.setTipo(TipoMovimientoE.MODIFICACION_CIERRE_CARTILLA.getTipo());
+					movimiento.setTipo(TipoMovimientoE.REGISTRO_CARTILLA_DIARIA.getTipo());
 					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
 					registroMovimientoCierreDiario(movimiento);
 				}

@@ -128,6 +128,16 @@ public class ArqueoCajaC {
 			return null;
 		}
 	}
+	@RequestMapping("listaDetalleIngresoEgreso")
+	public @ResponseBody
+	DataTableResults<DetalleArqueo> listaDetalleIngresoEgreso(HttpServletRequest request, boolean estado,Long arqueoId) {
+		try {
+			return arqueocajaS.listadoDetallesIngreseEgreso(request, estado, arqueoId);
+		} catch (Exception ex) {
+			System.out.println("error lista arqueo de caja: "+ex.toString());
+			return null;
+		}
+	}
 	@RequestMapping("iniciar")
 	public @ResponseBody
     DataResponse iniciar(HttpServletRequest request, Model model, Arqueo arqueo)

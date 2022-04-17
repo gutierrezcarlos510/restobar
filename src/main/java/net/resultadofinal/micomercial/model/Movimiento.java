@@ -9,8 +9,24 @@ public class Movimiento {
     private Integer sucursalOrigen, sucursalDestino;
     private Short tipo, estadoMovimiento;
     private Boolean estado;
-    private String obs, xcreatedBy,xusuarioRevision,xsucursalOrigen, xsucursalDestino;
+    private String obs, xcreatedBy,xusuarioRevision,xsucursalOrigen, xsucursalDestino, xestadoMovimiento, xtipo;
     private List<DetalleMovimiento> detalles;
+
+    public String getXtipo() {
+        return xtipo;
+    }
+
+    public void setXtipo(String xtipo) {
+        this.xtipo = xtipo;
+    }
+
+    public String getXestadoMovimiento() {
+        return xestadoMovimiento;
+    }
+
+    public void setXestadoMovimiento(String xestadoMovimiento) {
+        this.xestadoMovimiento = xestadoMovimiento;
+    }
 
     public String getXsucursalDestino() {
         return xsucursalDestino;

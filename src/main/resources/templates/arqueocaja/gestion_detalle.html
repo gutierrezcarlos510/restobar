@@ -223,9 +223,9 @@
     var esPropioCajero = /*[[${esPropioCajero}]]*/ false;
 </script>
 <script type="text/javascript" th:inline="none">
-    if(esPropioCajero) {
-        $('#tabla').hide();
-    }
+    // if(esPropioCajero) {
+    //     $('#tabla').hide();
+    // }
     var dataReq = {
         TIPO_INGRESO: 3,
         TIPO_EGRESO: 4,
@@ -294,7 +294,7 @@
             "serverSide": true,
             "ajax": {
                 "type": "POST",
-                "url": "../arqueocaja/lista_detalle",
+                "url": "../arqueocaja/listaDetalleIngresoEgreso",
                 "data": function(d) {
                     d.estado = $('input[name=estado]:checked').val();
                     d.arqueoId = arqueoId;

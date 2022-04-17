@@ -56,7 +56,16 @@ public class MovimientoImpl extends DbConeccion implements MovimientoS {
 	@Override
 	public Movimiento obtener(Long id){
 		try {
-			List<Movimiento> lista = db.query("select m.*,concat(p.nom_per,' ',p.priape_per) as xcreated_by,concat(p2.nom_per,' ',p2.priape_per) as xusuario_revision,s1.nombre as xsucursal_origen,s2.nombre as xsucursal_destino from movimiento m inner join persona p on p.cod_per = m.created_by inner join sucursal s1 on s1.cod_suc = m.sucursal_origen left join sucursal s2 on s2.cod_suc = m.sucursal_destino left join persona p2 on p2.cod_per = m.usuario_revision where id=?", BeanPropertyRowMapper.newInstance(Movimiento.class), id);
+			sqlString = "select m.*,concat(p1.nom_per, ' ', p1.priape_per) as xcreated_by,concat(p2.nom_per,' ',p2.priape_per) as xusuario_revision,s1.nombre as xsucursal_origen,s2.nombre as xsucursal_destino," +
+					"case m.tipo when 1 then 'Traspaso entre sucursales' when 2 then 'Registro desde movimientos' when 3 then 'Modificacion desde almacen' when 4 then 'Cierre de cartilla' when 5 then 'Registro cartilla diaria' when 6 then 'Actualizacion cartilla diaria' when 7 then 'Eliminacion cartilla diaria' else '' end as xtipo," +
+					"case m.estado_movimiento when 0 then 'Pendiente' when 1 then 'Aceptado' when 2 then 'Rechazado' else '' end as xestado_movimiento " +
+					"from movimiento m " +
+					"inner join persona p1 on p1.cod_per = m.created_by " +
+					"left join persona p2 on p2.cod_per = m.usuario_revision " +
+					"inner join sucursal s1 on s1.cod_suc = m.sucursal_origen " +
+					"left join sucursal s2 on s2.cod_suc = m.sucursal_destino " +
+					"where m.id = ?";
+			List<Movimiento> lista = db.query(sqlString, BeanPropertyRowMapper.newInstance(Movimiento.class), id);
 			return UtilClass.getFirst(lista);
 		} catch (Exception e) {
 			logger.error(Utils.errorGet(ENTITY, e.toString()));

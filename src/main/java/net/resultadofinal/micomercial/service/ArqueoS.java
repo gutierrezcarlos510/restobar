@@ -16,6 +16,7 @@ import java.util.List;
 public interface ArqueoS {
 	DataTableResults<Arqueo> listado(HttpServletRequest request, boolean estado, Long xuser, int xgestion, boolean estaActivoCaja);
 	DataTableResults<DetalleArqueo> listadoDetalles(HttpServletRequest request, boolean estado,Long arqueo);
+	DataTableResults<DetalleArqueo> listadoDetallesIngreseEgreso(HttpServletRequest request, boolean estado,Long arqueo);
 	Arqueo arqueocajaVerificarSesionActual(Long cod, Integer sucursal);
 	Long obtenerArqueoSesionActiva(Long codPer, Integer sucursal);
 	List<DetalleArqueo> obtenerDetallexArqueoCaja(Long cod);
