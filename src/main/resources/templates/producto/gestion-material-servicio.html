@@ -318,8 +318,8 @@
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertEliminacion("Eliminacion de insumo", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/eliminar?cod_pro='+obj.cod_pro, function(resp){
+                	alertEliminacion("Eliminacion de material de servicio", ("Cod. producto: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/eliminar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -331,8 +331,8 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaProducto.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de Material de Servicio", ("Cod. insumo: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
+                	alertAdicion("Activacion de Material de Servicio", ("Cod. material de servicio: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/activar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -355,10 +355,6 @@
                     // $('#presentacionCajaId2').val(obj.presentacionCajaId).trigger('chosen:updated');
                     $('#imgActual').attr('src','/producto/'+obj.foto);
                     $('#modalModificar').modal('show');
-                });
-                $('.imprimir').click(function() {
-                    $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
-                    $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',

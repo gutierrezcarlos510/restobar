@@ -3,6 +3,7 @@ package net.resultadofinal.micomercial.service;
 import net.resultadofinal.micomercial.model.Ingrediente;
 import net.resultadofinal.micomercial.model.Producto;
 import net.resultadofinal.micomercial.model.ProductoPrecioSucursal;
+import net.resultadofinal.micomercial.model.Sucursal;
 import net.resultadofinal.micomercial.pagination.DataTableResults;
 import net.resultadofinal.micomercial.pagination.SqlBuilder;
 import net.resultadofinal.micomercial.util.*;
@@ -34,6 +35,8 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	private static final int BEBIDA = 2;
 	@Autowired
 	private UtilDataTableS utilDataTableS;
+	@Autowired
+	private SucursalS sucursalS;
 	public DataTableResults<Producto> listado(HttpServletRequest request, boolean estado, Integer clase, Integer sucursal) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("producto p");
@@ -134,6 +137,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 	public Long generarCodigo() {
 		return db.queryForObject("select coalesce(max(id),0)+1 from producto", Long.class);
 	}
+	@Transactional
 	public DataResponse adicionar(Producto p,Integer sucursalId){
 		try {
 			Long id = generarCodigo();
@@ -144,7 +148,15 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 					p.getPcCaja(), p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(),p.getObs()) > 0;
 			if(save) {
 				if(p.getPvUnit() != null || p.getInventarioMinimo() != null) {
-					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)1,p.getPvUnit(),p.getInventarioMinimo(),p.getControlarProducto()));
+//					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)1,p.getPvUnit(),p.getInventarioMinimo(),p.getControlarProducto()));
+					List<Sucursal> sucursales = sucursalS.listAll();
+					sucursales.stream().forEach(it -> {
+						if(it.getCod_suc() == sucursalId) {
+							registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)1,p.getPvUnit(),p.getInventarioMinimo(),p.getControlarProducto()));
+						} else {
+							registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,it.getCod_suc(),(short)1,null,null,false));
+						}
+					});
 				}
 				if(p.getPvCaja() != null) {
 					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)2,p.getPvCaja(),null,null));
@@ -162,6 +174,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			throw new RuntimeException(Utils.errorAdd(ENTITY, e.getMessage()));
 		}
 	}
+	@Transactional
 	public DataResponse modificar(Producto p, Integer sucursalId){
 		try {
 			sqlString = "update producto set nombre=?, foto=?, tipo_id=?, tipo_grupo=?, pc_unit=?, pc_caja=?, " +

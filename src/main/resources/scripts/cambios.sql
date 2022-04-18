@@ -1054,3 +1054,6 @@ WHERE cod_pro=33;
 UPDATE public.proceso
 SET nom_pro='Inventario Activo', des_pro='Gestiona el inventario activo', ico_pro='glyphicon glyphicon-bookmark', est_pro=true, url_pro='../producto/gestionInventarioActivo'
 WHERE cod_pro=34;
+
+
+ALTER TABLE public.producto_precio_sucursal ALTER COLUMN precio DROP NOT NULL;

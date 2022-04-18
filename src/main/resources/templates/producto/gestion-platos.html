@@ -337,8 +337,8 @@
             "drawCallback": function(settings) {
                 $('.eliminar').click(function() {
                     let obj = tablaPlato.row($(this).closest('tr')).data();
-                	alertEliminacion("Eliminacion de Plato", ("Cod. plato: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/eliminar?cod_pro='+obj.cod_pro, function(resp){
+                	alertEliminacion("Eliminacion de Plato", ("Cod. plato: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/eliminar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -350,8 +350,8 @@
                 });
                 $('.activar').click(function() {
                 	let obj = tablaPlato.row($(this).closest('tr')).data();
-                	alertAdicion("Activacion de Plato", ("Cod. producto: "+ obj.cod_pro+", Nombre: "+obj.nom_pro), function(){
-        				jQuery.post('../producto/activar?cod_pro='+obj.cod_pro, function(resp){
+                	alertAdicion("Activacion de Plato", ("Cod. producto: "+ obj.id+", Nombre: "+obj.nombre), function(){
+        				jQuery.post('../producto/activar?id='+obj.id, function(resp){
         					if(resp.status){
         						$('#tabla').dataTable().fnDraw('page');
         						mostrarMensaje('success', resp.msg);
@@ -419,10 +419,6 @@
                             modalAlert('Error de transaccion', resp.msg, 'error');
                         }
                     })
-                });
-                $('.imprimir').click(function() {
-                    $("#frameReportes").attr("src", "../producto/imprimir_codigos?cod_pro=" + $(this).data('id'));
-                    $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({
                     animated: 'fade',
