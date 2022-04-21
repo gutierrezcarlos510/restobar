@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallearqueo_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="185" leftMargin="20" rightMargin="10" topMargin="1" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallearqueo_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="197" leftMargin="8" rightMargin="10" topMargin="1" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
 	<property name="ireport.zoom" value="3.4522712143931042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="101"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\CARLOS\\workspace\\resultadofinal\\src\\Reportes\\"]]></defaultValueExpression>
 	</parameter>
@@ -23,7 +32,7 @@ case da.tipo when 1 then 'Ingreso por venta' when 2 then 'Reversion de venta' wh
 case when da.es_debe then 'Ingreso' else 'Egreso' end as xes_debe
 from detalle_arqueo da 
 inner join forma_pago fp on fp.id = da.forma_pago_id 
-where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId} ]]>
+where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 	</queryString>
 	<field name="arqueo_id" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="arqueo_id"/>
@@ -179,7 +188,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId} ]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{xtipo} + " - "+$F{xes_debe}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="40" y="105" width="140" height="40" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201">
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>

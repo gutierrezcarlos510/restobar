@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informe_movimiento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="20" rightMargin="15" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="56cc1816-0edf-41bc-8c57-381293e20025">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
@@ -45,10 +45,10 @@ left join detalle_movimiento dm on dm.producto_id = p.id and dm.es_ingreso = tru
 left join movimiento m on m.id = dm.movimiento_id and m.estado = true and m.estado_movimiento = 1 and m.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m.tipo > 1 and m.sucursal_origen =  $P{codSuc} --no es traspaso y es ingreso
 left join detalle_movimiento dm2 on dm2.producto_id = p.id and dm2.es_ingreso = false
 left join movimiento m2 on m2.id = dm2.movimiento_id and m2.estado = true and m2.estado_movimiento = 1 and m2.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m2.tipo > 1 and m2.sucursal_origen =  $P{codSuc} --no es traspaso y es ingreso
-left join detalle_movimiento dm3 on dm3.producto_id = p.id and dm3.es_ingreso = true
-left join movimiento m3 on m3.id = dm3.movimiento_id and m3.estado = true and m3.estado_movimiento = 1 and m3.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m3.tipo = 1 and m3.sucursal_destino =  $P{codSuc}  --es traspaso y es ingreso
-left join detalle_movimiento dm4 on dm4.producto_id = p.id and dm4.es_ingreso = false
-left join movimiento m4 on m4.id = dm4.movimiento_id and m4.estado = true and m4.estado_movimiento = 1 and m4.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m4.tipo = 1 and m4.sucursal_origen =  $P{codSuc}  --es traspaso y es egreso
+left join detalle_movimiento dm3 on dm3.producto_id = p.id and dm3.es_ingreso = true and dm3.movimiento_id in
+(select m3.id from movimiento m3 where m3.estado = true and m3.estado_movimiento = 1 and m3.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m3.tipo = 1 and m3.sucursal_destino =  $P{codSuc} ) --es traspaso y es ingreso
+left join detalle_movimiento dm4 on dm4.producto_id = p.id and dm4.es_ingreso = false and dm4.movimiento_id in
+(select m4.id from movimiento m4 where m4.id = dm4.movimiento_id and m4.estado = true and m4.estado_movimiento = 1 and m4.fecha_revision::date between to_date( $P{fini} ,'DD/MM/YYYY') and  to_date( $P{ffin} ,'DD/MM/YYYY') and m4.tipo = 1 and m4.sucursal_origen =  $P{codSuc} ) --es traspaso y es egreso
 left join almacen a on a.producto_id = p.id and a.sucursal_id = $P{codSuc} 
 where pps.sucursal_id =  $P{codSuc}  and pps.id = 1 and pps.controlar_producto = true
 group by p.id,p.nombre,p.unidad_por_caja
@@ -60,35 +60,45 @@ order by p.tipo_grupo,p.nombre asc]]>
 		<property name="com.jaspersoft.studio.field.name" value="id"/>
 	</field>
 	<field name="xproducto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xproducto"/>
 		<property name="com.jaspersoft.studio.field.label" value="xproducto"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
 	</field>
 	<field name="unidad_por_caja" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="unidad_por_caja"/>
 		<property name="com.jaspersoft.studio.field.label" value="unidad_por_caja"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
 	</field>
 	<field name="xtipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xtipo"/>
 		<property name="com.jaspersoft.studio.field.label" value="xtipo"/>
 	</field>
 	<field name="compras" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="compras"/>
 		<property name="com.jaspersoft.studio.field.label" value="compras"/>
 	</field>
 	<field name="ventas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ventas"/>
 		<property name="com.jaspersoft.studio.field.label" value="ventas"/>
 	</field>
 	<field name="ingresos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ingresos"/>
 		<property name="com.jaspersoft.studio.field.label" value="ingresos"/>
 	</field>
 	<field name="egresos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="egresos"/>
 		<property name="com.jaspersoft.studio.field.label" value="egresos"/>
 	</field>
 	<field name="ingreso_sucursal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ingreso_sucursal"/>
 		<property name="com.jaspersoft.studio.field.label" value="ingreso_sucursal"/>
 	</field>
 	<field name="salida_sucursal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="salida_sucursal"/>
 		<property name="com.jaspersoft.studio.field.label" value="salida_sucursal"/>
 	</field>
 	<field name="almacen_unidad" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="almacen_unidad"/>
 		<property name="com.jaspersoft.studio.field.label" value="almacen_unidad"/>
 	</field>
 	<variable name="n" class="java.lang.Integer" calculation="Count">

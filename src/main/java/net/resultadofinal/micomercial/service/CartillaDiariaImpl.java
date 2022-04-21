@@ -413,4 +413,33 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 			throw new RuntimeException(ex.getMessage());
 		}
 	}
+	public DataResponse obtenerUltimaCartillaDiaria(Integer sucursalId) {
+		try {
+			sqlString = "select coalesce(max(cd.id),0) from cartilla_diaria cd where cd.cod_suc =? and cd.estado = true and cd.estado_cartilla = false;";
+			Integer cartillaId = db.queryForObject(sqlString, Integer.class, sucursalId);
+			return new DataResponse(true, cartillaId, "Se realizo con exito");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+
+	@Transactional
+	public DataResponse duplicar(CartillaDiaria obj){
+		try {
+			Long id = db.queryForObject("select coalesce(max(id),0)+1 from cartilla_diaria", Long.class);
+			sqlString = "insert into cartilla_diaria(id,finicio,usuario_id,cod_suc,estado,estado_cartilla) values(?,cast(? as timestamp),?,?,true,true)";
+			boolean save = db.update(sqlString, id, obj.getXfinicio(),obj.getUsuarioId(),obj.getCodSuc()) > 0;
+			if(save) {
+				sqlString = "insert into detalle_cartilla_diaria(cartilla_diaria_id,id,cartilla_sucursal_id,detalle_cartilla_sucursal_id,producto_id,precio_individual,precio_compuesto,cantidad) " +
+						"select ?, dcd.id,dcd.cartilla_sucursal_id,dcd.detalle_cartilla_sucursal_id ,dcd.producto_id ,dcd.precio_individual,dcd.precio_compuesto,0 " +
+						"from detalle_cartilla_diaria dcd where dcd.cartilla_diaria_id = ?;";
+				db.update(sqlString, id, obj.getId());
+			}
+			return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
+		} catch (Exception e) {
+			logger.error(Utils.errorMod(ENTITY, e.toString()));
+			throw new RuntimeException(Utils.errorMod(ENTITY, ""));
+		}
+	}
 }

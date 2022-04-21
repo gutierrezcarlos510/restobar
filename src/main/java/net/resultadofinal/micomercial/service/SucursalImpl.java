@@ -60,8 +60,14 @@ public class SucursalImpl extends DbConeccion implements SucursalS {
 	@Transactional
 	public DataResponse adicionar(Sucursal s){
 		try {
-			sqlString = "insert into sucursal(cod_suc,nombre,descripcion,telefono,direccion,estado,alias) values((select coalesce(max(cod_suc),0)+1 from sucursal),?,?,?,?,true,?);";
-			boolean save = db.update(sqlString,s.getNombre(),s.getDescripcion(),s.getTelefono(), s.getDireccion(), s.getAlias()) > 0;
+			sqlString = "select coalesce(max(cod_suc),0)+1 from sucursal";
+			Integer sucursalId = db.queryForObject(sqlString, Integer.class);
+			sqlString = "insert into sucursal(cod_suc,nombre,descripcion,telefono,direccion,estado,alias) values(?,?,?,?,?,true,?);";
+			boolean save = db.update(sqlString,sucursalId,s.getNombre(),s.getDescripcion(),s.getTelefono(), s.getDireccion(), s.getAlias()) > 0;
+			if(save) {
+				sqlString = "insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo) select p.id,?, 1, 'Unidad', null, true,false,null from producto p  where p.estado = true";
+				db.update(sqlString, sucursalId);
+			}
 			return Utils.getResponseDataAdd(ENTITY, save);
 		} catch (Exception e) {
 			logger.error(Utils.errorAdd(ENTITY, e.toString()));

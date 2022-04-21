@@ -155,4 +155,30 @@ public class CartillaDiariaC {
 			return new DataResponse(false, e.getMessage());
 		}
 	}
+	@RequestMapping("obtenerUltimaCartillaCierre")
+	public @ResponseBody
+	DataResponse obtenerUltimaCartillaCierre(HttpServletRequest request){
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return cartillaDiariaS.obtenerUltimaCartillaDiaria(gestion.getCod_suc());
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
+	@RequestMapping("duplicar")
+	public @ResponseBody
+	DataResponse duplicar(HttpServletRequest request, CartillaDiaria obj){
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			Persona user=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
+			if(gestion != null && user != null) {
+				obj.setUsuarioId(user.getCod_per());
+				obj.setCodSuc(gestion.getCod_suc());
+				return cartillaDiariaS.duplicar(obj);
+			}
+			return new DataResponse(false, "Sin sesion, ingrese nuevamente.");
+		} catch (Exception e) {
+			return new DataResponse(false, e.getMessage());
+		}
+	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface ProductoS {
 	DataTableResults<Producto> listado(HttpServletRequest request, boolean estado, Integer clase, Integer sucursal);
 	DataTableResults<Producto> listaPorTipo(HttpServletRequest request, boolean estado, Integer tipo,Integer sucursal);
+	DataTableResults<Producto> listaPorTipoYControlInventario(HttpServletRequest request, boolean estado, Integer tipo, Integer sucursal);
 	DataTableResults<Producto> listaPorTipoGrupoAlmacen(HttpServletRequest request, boolean estado, Integer tipo, Integer sucursal);
 	Producto obtener(Long id);
 	Long generarCodigo();

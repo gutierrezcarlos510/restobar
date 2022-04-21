@@ -1057,3 +1057,103 @@ WHERE cod_pro=34;
 
 
 ALTER TABLE public.producto_precio_sucursal ALTER COLUMN precio DROP NOT NULL;
+
+
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 1, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =1);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 1, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =1);
+
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 1, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =1);
+
+--sucursal 2
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 2, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =2);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 2, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =2);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 2, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =2);
+
+
+--sucursal 3
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 3, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =3);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 3, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =3);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 3, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =3);
+
+
+--sucursal 4
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 4, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =4);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 4, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =4);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 4, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =4);
+
+--sucursal 5
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 5, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =5);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 5, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =5);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 5, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =5);
+
+
+--sucursal 6
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 6, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =6);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 6, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =6);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 6, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =6);
+
+
+--sucursal 7
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 8, 2, 'Caja', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 2 and pps.sucursal_id =8);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id, 8, 3, 'Unidad con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 3 and pps.sucursal_id =8);
+
+insert into producto_precio_sucursal (producto_id, sucursal_id, id, nombre, precio, es_principal, controlar_producto, inventario_minimo)
+select p.id,8, 4, 'Caja con descuento', 0, false,false,null from producto p
+where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_id from producto_precio_sucursal pps where pps.id = 4 and pps.sucursal_id =8);
+
+select nombre,count(*),string_agg(id::varchar,',') from producto where estado = true group by nombre having count(*)>1;
+update producto set estado = false where id in (357,169);--producto repetido

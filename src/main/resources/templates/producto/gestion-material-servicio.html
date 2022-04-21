@@ -30,32 +30,58 @@
                                         </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Unidades Por Caja</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="ion ion-pound"></i></span>
+                                                    <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Tipo de compra por defecto</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-cart-plus"></i></span>
+                                                    <select id="tipoCompra1" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">En unidad</option>
+                                                        <option value="2">En caja</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Medida de la cantidad</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                                    <select id="medidaId1" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                                        <option value="">Seleccionar</option>
+                                                        <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Controlar stock m&iacute;nimo</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" id="controlarProductoSi" class="w3-check" name="controlarProducto" value="true"/>
+                                                    <label for="controlarProductoSi" style="margin-right: 25px;margin-left: 25px;">Si</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
-                                        <label class="required">Unidades Por Caja</label>
+                                        <label class="required">Inventario Minimo por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="required">Tipo de compra por defecto</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cart-plus"></i></span>
-                                        <select id="tipoCompra1" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">En unidad</option>
-                                            <option value="2">En caja</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="required">Medida de la cantidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-                                        <select id="medidaId1" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
-                                        </select>
+                                            <input type="text" class="form-control" name="inventarioMinimo" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                 </div>
@@ -127,32 +153,59 @@
                                         </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Unidades Por Caja</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="ion ion-pound"></i></span>
+                                                    <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Tipo de compra por defecto</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                                                    <select id="tipoCompra2" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">En unidad</option>
+                                                        <option value="2">En caja</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Medida de la cantidad</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                                    <select id="medidaId2" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
+                                                        <option value="">Seleccionar</option>
+                                                        <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="required">Controlar stock m&iacute;nimo</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" id="controlarProductoSi2" class="w3-check" name="controlarProducto" value="true"/>
+                                                    <label for="controlarProductoSi2" style="margin-right: 25px;margin-left: 25px;">Si</label>
+                                                    <span class="input-group-addon"><i class="fa fa-bullhorn"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
-                                        <label class="required">Unidades Por Caja</label>
+                                        <label class="required">Inventario Minimo por unidad</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="ion ion-pound"></i></span>
-                                        <input type="text" class="form-control" name="unidadPorCaja" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="required">Tipo de compra por defecto</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
-                                        <select id="tipoCompra2" name="tipoCompra" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">En unidad</option>
-                                            <option value="2">En caja</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="required">Medida de la cantidad</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-                                        <select id="medidaId2" name="medidaId" class="form-control input-md" data-placeholder="Selecccionar..." data-fv-notempty="true">
-                                            <option value="">Seleccionar</option>
-                                            <option th:each="m : ${medidas}" th:value="${m.id}" th:text="${m.nombre}"></option>
-                                        </select>
+                                            <input type="text" class="form-control" name="inventarioMinimo" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)">
                                         </div>
                                     </div>
                                 </div>

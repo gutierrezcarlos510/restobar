@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver_comprobante" pageWidth="215" pageHeight="700" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimiento_ver" pageWidth="215" pageHeight="700" columnWidth="187" leftMargin="8" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="402"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="587"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -13,7 +14,6 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="movimientoId" class="java.lang.Long"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="dir_gen" class="java.lang.String"/>
@@ -35,48 +35,60 @@ case when dm.tipo then 'Unidades' else 'Cajas' end as xtipo,
 case when dm.es_ingreso then 'Ingreso' else 'Salida' end as xes_ingreso
 from detalle_movimiento dm 
 inner join producto p on p.id = dm.producto_id 
-where dm.movimiento_id = 1]]>
+where dm.movimiento_id = $P{movimientoId} ]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
 	</field>
 	<field name="movimiento_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="movimiento_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="movimiento_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
 	</field>
 	<field name="producto_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="producto_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="producto_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
 	</field>
 	<field name="cantidad" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
 		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
 		<property name="net.sf.jasperreports.json.field.expression" value="cantidad"/>
 		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
 	</field>
 	<field name="tipo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
 		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
+		<fieldDescription><![CDATA[true=unidad, false=caja]]></fieldDescription>
 	</field>
 	<field name="cantidad_unitaria" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad_unitaria"/>
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_unitaria"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
 	</field>
 	<field name="es_ingreso" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="es_ingreso"/>
 		<property name="com.jaspersoft.studio.field.label" value="es_ingreso"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_movimiento"/>
+		<fieldDescription><![CDATA[true= ingresa, false = sale]]></fieldDescription>
 	</field>
 	<field name="xproducto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xproducto"/>
 		<property name="com.jaspersoft.studio.field.label" value="xproducto"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="producto"/>
 		<property name="net.sf.jasperreports.json.field.expression" value="xproducto"/>
 		<fieldDescription><![CDATA[xproducto]]></fieldDescription>
 	</field>
 	<field name="xtipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xtipo"/>
 		<property name="com.jaspersoft.studio.field.label" value="xtipo"/>
 	</field>
 	<field name="xes_ingreso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="xes_ingreso"/>
 		<property name="com.jaspersoft.studio.field.label" value="xes_ingreso"/>
 	</field>
 	<background>
@@ -295,7 +307,7 @@ where dm.movimiento_id = 1]]>
 	</columnHeader>
 	<detail>
 		<band height="35" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="175" height="20" uuid="29c25bb0-bb83-4bc0-b729-1f8993c39d33">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e45adce7-88aa-4196-9749-52eb26195eb4"/>
 				</reportElement>
@@ -373,7 +385,7 @@ where dm.movimiento_id = 1]]>
 				</textElement>
 				<text><![CDATA[Usuario : ]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="25" width="175" height="25" uuid="acb4ebd2-d72c-4936-b708-69a4b0ad8a63"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>

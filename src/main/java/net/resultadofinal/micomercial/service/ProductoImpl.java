@@ -46,7 +46,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			sqlBuilder.addJoin("caracteristica c on c.id = p.medida_id");
 			sqlBuilder.addLeftJoin("presentacion p1 on p1.id = p.presentacion_unidad_id");
 			sqlBuilder.addLeftJoin("presentacion p2 on p2.id = p.presentacion_caja_id");
-			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");
+			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");
@@ -66,6 +66,26 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			sqlBuilder.setSelect("p.*,pps1.controlar_producto,pps1.precio as  pv_unit,pps2.precio as  pv_caja,pps3.precio as  pv_unit_descuento,pps4.precio as  pv_caja_descuento,pps5.inventario_minimo,tp.nombre as xtipo");
 			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and tp.id=:xtipo");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");
+			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
+			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
+			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");
+			sqlBuilder.addLeftJoin("producto_precio_sucursal pps5 on pps5.sucursal_id = :xsuc and pps5.producto_id = p.id and pps5.id = 1");
+			sqlBuilder.setWhere("p.estado=:xestado ");
+			sqlBuilder.addParameter("xestado",estado);
+			sqlBuilder.addParameter("xtipo",tipo);
+			sqlBuilder.addParameter("xsuc", sucursal);
+			return utilDataTableS.list(request, Producto.class, sqlBuilder);
+		} catch (Exception e) {
+			logger.error("Error al listar productos: "+e.toString());
+			return null;
+		}
+	}
+	public DataTableResults<Producto> listaPorTipoYControlInventario(HttpServletRequest request, boolean estado, Integer tipo, Integer sucursal) {
+		try {
+			SqlBuilder sqlBuilder = new SqlBuilder("producto p");
+			sqlBuilder.setSelect("p.*,pps1.controlar_producto,pps1.precio as  pv_unit,pps2.precio as  pv_caja,pps3.precio as  pv_unit_descuento,pps4.precio as  pv_caja_descuento,pps5.inventario_minimo,tp.nombre as xtipo");
+			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and tp.id=:xtipo");
+			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");
@@ -131,8 +151,14 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 
 	}
 	public void actualizarPrecioProductoSucursal(ProductoPrecioSucursal obj) {
-		db.update("update producto_precio_sucursal set precio = ?,inventario_minimo=?,controlar_producto=? where producto_id = ? and sucursal_id = ? and id = ?",
-				obj.getPrecio(), obj.getInventarioMinimo(), obj.getControlarProducto()!=null ? obj.getControlarProducto():false, obj.getProductoId(), obj.getSucursalId(), obj.getId());
+		sqlString = "select count(*)>0 from producto_precio_sucursal where producto_id = ? and sucursal_id = ? and id = ?";
+		boolean existeProducto = db.queryForObject(sqlString, Boolean.class, obj.getProductoId(), obj.getSucursalId(), obj.getId());
+		if(existeProducto) {
+			db.update("update producto_precio_sucursal set precio = ?,inventario_minimo=?,controlar_producto=? where producto_id = ? and sucursal_id = ? and id = ?",
+					obj.getPrecio(), obj.getInventarioMinimo(), obj.getControlarProducto()!=null ? obj.getControlarProducto():false, obj.getProductoId(), obj.getSucursalId(), obj.getId());
+		} else {
+			registrarPrecioProductoSucursal(obj);
+		}
 	}
 	public Long generarCodigo() {
 		return db.queryForObject("select coalesce(max(id),0)+1 from producto", Long.class);
@@ -147,7 +173,7 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			boolean save = db.update(sqlString, id, p.getNombre(), p.getFoto(), p.getTipoId(), p.getTipoGrupo(), p.getPcUnit(),
 					p.getPcCaja(), p.getUnidadPorCaja(), p.getTipoCompra(), p.getPresentacionUnidadId(), p.getPresentacionCajaId(), p.getMedidaId(),p.getObs()) > 0;
 			if(save) {
-				if(p.getPvUnit() != null || p.getInventarioMinimo() != null) {
+				if(p.getPvUnit() != null || p.getInventarioMinimo() != null ) {
 //					registrarPrecioProductoSucursal(new ProductoPrecioSucursal(id,sucursalId,(short)1,p.getPvUnit(),p.getInventarioMinimo(),p.getControlarProducto()));
 					List<Sucursal> sucursales = sucursalS.listAll();
 					sucursales.stream().forEach(it -> {

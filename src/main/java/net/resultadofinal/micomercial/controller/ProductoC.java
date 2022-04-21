@@ -111,6 +111,17 @@ public class ProductoC {
 			return null;
 		}
 	}
+	@RequestMapping("listaPorTipoYControlInventario")
+	public @ResponseBody
+	DataTableResults<Producto> listaPorTipoYControlInventario(HttpServletRequest request, boolean estado, Integer tipo) {
+		try {
+			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
+			return productoS.listaPorTipoYControlInventario(request, estado, tipo, gestion.getCod_suc());
+		} catch (Exception ex) {
+			logger.error("error lista productos: "+ex.toString());
+			return null;
+		}
+	}
 	@RequestMapping("listarPorTipoProductoAlmacen")
 	public @ResponseBody
 	DataTableResults<Producto> listarPorTipoProductoAlmacen(HttpServletRequest request, Integer tipo) {

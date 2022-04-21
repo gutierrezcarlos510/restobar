@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,7 +84,8 @@ public class PrincipalC {
 					sesion.setAttribute(MyConstant.Session.GESTION, general);
 					sesion.setAttribute(MyConstant.Session.SUCURSAL, sucursal);
 					sesion.setAttribute(MyConstant.Session.SUCURSALES, misSucursales);
-					return "principal/principal" + MyConstant.SYSTEM;
+//					return "principal/principal" + MyConstant.SYSTEM;
+					return "sucursal/seleccion-sucursal";
 				}else {
 					return "principal/login" + MyConstant.SYSTEM;
 				}
@@ -147,5 +150,55 @@ public class PrincipalC {
 	@RequestMapping("asistencia")
 	public String asistencia(){
 		return "principal/asistencia";
+	}
+	@RequestMapping("cambiarSucursal")
+	public String cambiarSucursal(HttpServletRequest request, Model model, Integer sucursal) throws IOException {
+		HttpSession sesion = request.getSession();
+		Persona person = (Persona) sesion.getAttribute(MyConstant.Session.USER);
+		Rol rolSesionado = (Rol) sesion.getAttribute(MyConstant.Session.ROL);
+		if (person != null) {
+			if(sucursal == null) {
+				sucursal = 0;
+			}
+			model.addAttribute(MyConstant.Session.USER, person);
+			model.addAttribute(MyConstant.Session.ROL, rolSesionado);
+			model.addAttribute(MyConstant.Session.ROLES, person.getRoles());
+			List<GeneralWrap> sucursales = (List<GeneralWrap>) sesion.getAttribute(MyConstant.Session.SUCURSALES);
+			model.addAttribute(MyConstant.Session.SUCURSALES, sucursales);
+			if (sucursales != null && !sucursales.isEmpty()) {
+				GeneralWrap sucursalSelected = sucursales.get(sucursal);
+				int year = Calendar.getInstance().get(Calendar.YEAR);
+				boolean existYearNow = false;
+				for (General gestion: sucursalSelected.getGeneralList()) {
+					if(year == gestion.getGes_gen()) {
+						existYearNow = true;
+						model.addAttribute(MyConstant.Session.GESTION, gestion);
+						sesion.setAttribute(MyConstant.Session.GESTION, gestion);
+					}
+				}
+				if(!existYearNow) {
+					model.addAttribute(MyConstant.Session.GESTION, sucursalSelected.getGeneralList().get(0));
+					sesion.setAttribute(MyConstant.Session.GESTION, sucursalSelected.getGeneralList().get(0));
+				}
+				model.addAttribute(MyConstant.Session.SUCURSAL, sucursalSelected.getSucursal());
+				sesion.setAttribute(MyConstant.Session.SUCURSAL, sucursalSelected.getSucursal());
+			}
+
+			List<Menu> menuList = null;
+			Rol rol = null;
+			if(UtilClass.isNotNullEmpty(person.getRoles())) {
+				rol = person.getRoles().get(0);
+				menuList = menuS.listarPorRol(rol.getCod_rol());
+			}
+			model.addAttribute("menus", menuList);
+			model.addAttribute("msg", "bienvenido, " + person.getNom_per() + " " + person.getPriape_per());
+
+			return "principal/principal" + MyConstant.SYSTEM;
+		} else {
+			model.addAttribute("msg", "Sesion finalizada");
+//			model.addAttribute("categorias",categoriaS.listar_todos());
+			model.addAttribute("isCliente", 0);
+			return "principal/login";
+		}
 	}
 }

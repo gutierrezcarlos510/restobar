@@ -9,8 +9,16 @@ public class CartillaDiaria {
     private Long usuarioId,usuarioCierre;
     private boolean estado, estadoCartilla;
     private Integer codSuc;
-    private String xusuario;
+    private String xusuario,xfinicio;
     private List<DetalleCartillaDiaria> detalles;
+
+    public String getXfinicio() {
+        return xfinicio;
+    }
+
+    public void setXfinicio(String xfinicio) {
+        this.xfinicio = xfinicio;
+    }
 
     public String getXusuario() {
         return xusuario;

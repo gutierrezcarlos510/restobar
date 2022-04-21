@@ -34,4 +34,6 @@ public interface CartillaDiariaS {
 
     DataResponse cerrarCartilla(Integer sucursalId, Long userId, CierreWrap obj);
     DataResponse obtenerResumenDetalleCierre(Long cartillaDiariaId, Integer sucursalId);
+    DataResponse obtenerUltimaCartillaDiaria(Integer sucursalId);
+    DataResponse duplicar(CartillaDiaria obj);
 }

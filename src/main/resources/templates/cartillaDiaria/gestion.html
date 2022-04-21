@@ -30,11 +30,44 @@
             </div>
         </div>
     </form>
+    <form id="formularioDuplicar" autocomplete="off" method="post" action="../cartillaDiaria/duplicar" data-backdrop="static" data-fv-framework="bootstrap" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
+        <div id="modalDuplicar" class="modal fade" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Recuperar y registrar cartilla anterior</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert w3-pale-green">
+                            <p>Atencion.- una vez ingresado el codigo de una cartilla diaria anterior, se duplica los datos una nueva cartilla diaria para el dia de hoy.</p>
+                            <p>Es inprescindible que no haya cartillas diarias abiertas.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de nueva cartilla</label>
+                            <input type="date" class="form-control" id="fechaNueva" name="xfinicio" data-fv-notempty="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Codigo de cartilla diaria anterior</label>
+                            <input type="text" class="form-control" name="id" id="codigoAnterior" data-fv-notempty="true" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-social btn-google" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> Cancelar</button>
+                        <button type="submit" class="btn btn-social btn-bitbucket"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 <div class="box box-primary">
     <div class="box-header with-border">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <h1><span class="fa  fa-ellipsis-v"></span> Cartilla Diaria</h1>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success" id="btnRegistrarAnterior">Recuperar y registrar <br>Cartilla anterior</button>
             </div>
             <div class="col-md-4">
                 <div class="btn-group btn-group-justified">
@@ -92,6 +125,21 @@
         }, 1500);
     }
     $(document).ready(function() {
+        $('#btnRegistrarAnterior').click(function(){
+            $('#formularioDuplicar').data('formValidation').resetForm();
+            $('#formularioDuplicar')[0].reset();
+            jQuery.post('../cartillaDiaria/obtenerUltimaCartillaCierre', function(resp){
+                if(resp.status) {
+                    if(resp.data > 0) {
+                        $('#fechaNueva').val(moment().format('YYYY-MM-DD'))
+                        $('#codigoAnterior').val(resp.data);
+                        $('#modalDuplicar').modal('show');
+                    } else {
+                        modalAlert('Sin cartillas anteriores', 'No se encontraron cartillas diarias anteriores', 'info');
+                    }
+                }
+            })
+        });
         $('.select-chosen').chosen({
             no_results_text: "No se encuentra:",
             width: '100%'
@@ -229,6 +277,21 @@
                         $('#tabla').dataTable().fnDraw('page');
                     })
                 });
+            });
+        });
+        $('#formularioDuplicar').formValidation({
+            locale: 'es_ES'
+        }).on('success.form.fv', function(e) {
+            e.preventDefault();
+            alertAdicion('Confirmar transaccion', 'Esta seguro de realizar la transaccion?',function(){
+                var xform = $(e.target);
+                $.post(xform.attr('action'), xform.serialize(), function(result) {
+                    finishTransaction(result, function(){
+                        xform.data('formValidation').resetForm();
+                        $('.modal').modal('hide');
+                        $('#tabla').dataTable().fnDraw('page');
+                    });
+                }, 'json');
             });
         });
     });

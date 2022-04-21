@@ -8,112 +8,47 @@
 	<meta name="author" content="Ing. Carlos Franz Gutierrez Gutierrez">
 	<title>MiaSuper</title>
 	<link rel="icon" type="image/x-icon" href="../../icon/favicon.ico">
-	<link th:href="@{/css/bootstrap-4.css}" rel="stylesheet">
-	<link th:href="@{/css/w3.css}" rel="stylesheet">
-	<link th:href="@{/css/datepicker.min.css}" rel="stylesheet">
-	<link th:href="@{/css/formValidation.min.css}" rel="stylesheet">
-	<link rel="stylesheet" th:href="@{/css/chosen.css}">
-	<link th:href="@{/css/metisMenu.min.css}" rel="stylesheet">
-	<link th:href="@{/css/dataTables.bootstrap.css}" rel="stylesheet">
-	<link th:href="@{/css/dataTables.responsive.css}" rel="stylesheet">
-	<link th:href="@{/css/sb-admin-2-cfgg.css}" rel="stylesheet">
-	<link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
-	<link th:href="@{/css/fileinput.min.css}" rel="stylesheet" type="text/css">
-	<link th:href="@{/css/custombox.css}" media="all" rel="stylesheet" type="text/css" />
-	<link th:href="@{/css/bootstrap-duallistbox.css}" media="all" rel="stylesheet" type="text/css" />
-	<link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet">
-	<link th:href="@{/css/dataTables.bootstrap.css}" rel="stylesheet">
-	<link th:href="@{/css/fixedHeader.dataTables.min.css}" rel="stylesheet" />
-	<link th:href="@{/css/Chart.min.css}" rel="stylesheet" />
-	<link th:href="@{/css/custom.css}" rel="stylesheet" />
-	<link rel="stylesheet" th:href="@{/css/daterangepicker-bs3.css}">
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="/css/ionicons.min.css" />
+	<link rel="stylesheet" href="/css/AdminLTE.css" />
+	<link rel="stylesheet" href="/css/_all-skins.css" />
 </head>
-<body>
-<form name="formulario" class="" id="formulario" method="post" action="../principal/cambiarSucursal" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">
-<div class="row mt-5 pt-5">
-	<div class="col-md-4"></div>
-	<div class="col-md-4">
-		<table class="w3-table w3-border">
-			<thead>
-			<tr>
-				<th colspan="3" class="w3-center">
-					<h2>ACCESO A SUCURSAL</h2>
-					<hr>
-				</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td class="font-weight-bold">ID</td>
-				<td th:text="${user.codusu}" class="w3-right-align pr-4"></td>
-				<td rowspan="7">
-					<img src="/img/sucursales.png" width="220px" alt="">
-				</td>
-			</tr>
-			<tr>
-				<td class="font-weight-bold" colspan="2">USUARIO</td>
-			</tr>
-			<tr>
-				<td colspan="2" th:text="${user.usuario.login}" class="w3-right-align pr-4"></td>
-			</tr>
-			<tr>
-				<td class="font-weight-bold" colspan="2">NOMBRES Y APELLIDOS</td>
-			</tr>
-			<tr>
-				<td colspan="2" th:text="${user.nombre}+ ' '+${user.ap}" class="w3-right-align pr-4"></td>
-			</tr>
-			<tr>
-				<td class="font-weight-bold" colspan="2">ROL</td>
-			</tr>
-			<tr>
-				<td colspan="2" th:text="${user.roles[0].nombre}" class="w3-right-align pr-4"></td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<div class="form-group">
-						<label class="font-weight-bold">Seleccionar sucursal a ingresar</label>
-						<select class="form-control select-chosen form-control-lg" id="sucursalSeleccion" name="sucursal" data-fv-notempty="true">
-							<option value="">Seleccionar sucursal...</option>
-							<option th:each="s,ind : ${sucursales}" th:value="${ind.index}" th:text="${s.nombre}"></option>
-						</select>
-					</div>
-				</td>
-			</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="3">
-						<div class="pull-right">
-							<a class="btn btn-lg btn-danger" href="/">
-								CANCELAR
-							</a>
-							<button class="btn btn-lg btn-primary" type="submit">
-								ACEPTAR
-							</button>
-						</div>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
+<body class="hold-transition login-page">
+<!--<form name="formulario" class="" id="formulario" method="post" action="../principal/cambiarSucursal" data-fv-excluded="disabled" data-fv-icon-valid="glyphicon glyphicon-ok" data-fv-icon-invalid="glyphicon glyphicon-remove" data-fv-icon-validating="glyphicon glyphicon-refresh">-->
+	<div class="login-box">
+<!--		<div class="login-logo">-->
+<!--			<a href="#"><b>Restobar</b>Sibol</a>-->
+<!--		</div>-->
+		<div class="login-box-body">
+			<h1 align="center" class="w3-xxxlarge"><span class="fa fa-building"></span></h1>
+			<p class="login-box-msg custom-bolder">ACCESO A SUCURSAL</p>
+			<div class="form-group has-feedback">
+				<label class="font-weight-bold">Seleccionar sucursal a ingresar</label>
+				<select class="form-control input-lg" id="sucursalSeleccion" name="sucursal" data-fv-notempty="true" required>
+					<option value="">Seleccionar sucursal...</option>
+					<option th:each="s,ind : ${sucursales}" th:value="${ind.index}" th:text="${s.sucursal.nombre}"></option>
+				</select>
+			</div>
+			<div class="social-auth-links text-center">
+				<button type="button" class="btn btn-lg btn-block btn-facebook" id="btnEnviar"> Aceptar</button>
+				<button type="button" class="btn btn-lg btn-block btn-google" onclick="location.href='../principal/salir'"> Salir de Sistema</button>
+			</div>
+		</div>
+		<!-- /.login-box-body -->
 	</div>
-</div>
-</form>
 
-<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/moment.js}"></script>
-<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min-cfgg.js}"></script>
-<script type="text/javascript" th:src="@{/js/es.js}"></script>
-<script type="text/javascript" th:src="@{/js/formValidation.js}"></script>
-<script type="text/javascript" th:src="@{/js/framework/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/es_ES.js}"></script>
-<script type="text/javascript" th:src="@{/js/sb-admin-2-cfgg.js}"></script>
-<script type="text/javascript" th:src="@{/js/sweetalert2.all.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.loadJSON.js}"></script>
+
+<script src="/js/jquery-3.5.1.js"></script>
 <script th:inline="none">
 	$(document).ready(function() {
-	$('#formulario').formValidation({
-		excluded: [':disabled']
-	})
+		$('#btnEnviar').click(function(){
+			let suc = $('#sucursalSeleccion option:selected').val();
+			if(suc) {
+				location.href = '../principal/cambiarSucursal?sucursal='+suc;
+			} else
+				console.log(suc)
+		})
 		setTimeout($('#sucursalSeleccion').focus(),500);
 	});
 </script>

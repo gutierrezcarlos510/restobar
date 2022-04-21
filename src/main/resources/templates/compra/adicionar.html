@@ -123,18 +123,20 @@
                         <label class="col-md-3 control-label required">Cantidad a mover expresada en</label>
                         <div class="col-md-9 radio w3-medium">
                             <label for="enUnidad">
-                                <input type="radio" name="tipoDetalle"  id="enUnidad" value="1" data-fv-notempty="true"/> <i class="fa fa-cube"></i> Unidades
+                                <input type="radio" name="tipoDetalle"  id="enUnidad" class="checkedTipoDetalle" value="1" data-fv-notempty="true"/> <i class="fa fa-cube"></i> Unidades
                             </label>
                             <label for="enCaja" style="margin-left: 25px;">
-                                <input type="radio" name="tipoDetalle"  id="enCaja" value="2" data-fv-notempty="true"/> <i class="fa fa-cubes"></i> Cajas
+                                <input type="radio" name="tipoDetalle"  id="enCaja" class="checkedTipoDetalle" value="2" data-fv-notempty="true"/> <i class="fa fa-cubes"></i> Cajas
                             </label>
+                            <br><br>
+                            <label class="custom-bolder">Unidades por caja: <span id="unixcaja"></span></label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Cantidad</label>
                         <div class="col-md-9">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="ion ion-pound custom-bolder"></i></span>
+                                <span class="input-group-addon"><i class="ion ion-pound custom-bolder"></i> <b id="presentacionProducto"></b></span>
                                 <input type="text" class="form-control text-right" id="can1" name="can1" data-fv-notempty="true" onClick="this.setSelectionRange(0, this.value.length)" data-fv-numeric="true" data-fv-numeric-decimalseparator=".">
                             </div>
                         </div>
@@ -353,6 +355,7 @@ function calcularTotal() {
             "drawCallback": function(settings) {
                 $('.seleccionado').click(function() {
                     let obj = tablaProducto.row($(this).closest('tr')).data();
+                    $('#unixcaja').html(obj.unidadPorCaja);
                     let existe = false;
                     $('#productoSeleccionado').html('');
                     $('.listaProductos').each(function() {
@@ -440,7 +443,14 @@ function calcularTotal() {
                 $(this).html(i + 1);
             });
         }
-
+        $('.checkedTipoDetalle').change(function(){
+            let value = parseInt($(this).val());
+            if(value === 1) {
+                $('#presentacionProducto').html(productSelected.xpresentacionUnidad);
+            } else {
+                $('#presentacionProducto').html(productSelected.xpresentacionCaja);
+            }
+        });
         $(document).on('click', '.input-remove-row', function() {
             var tr = $(this).closest('tr');
             tr.fadeOut(100, function() {

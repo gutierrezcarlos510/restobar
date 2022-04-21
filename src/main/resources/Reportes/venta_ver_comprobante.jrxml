@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver_comprobante" pageWidth="215" pageHeight="700" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver_comprobante" pageWidth="215" pageHeight="700" columnWidth="187" leftMargin="8" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ventaRestoBar"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="402"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="587"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="ventaId" class="java.lang.Long"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="descuento" class="java.math.BigDecimal"/>
@@ -245,7 +236,7 @@
 	</columnHeader>
 	<detail>
 		<band height="35" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="175" height="20" uuid="29c25bb0-bb83-4bc0-b729-1f8993c39d33">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e45adce7-88aa-4196-9749-52eb26195eb4"/>
 				</reportElement>
