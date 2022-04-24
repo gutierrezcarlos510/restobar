@@ -301,12 +301,12 @@
                 });
                 $('.imprimir').click(function() {
                     let obj = tablaArqueo.row($(this).closest('tr')).data();
-                    $("#frameReportes").attr("src", "../arqueocaja/ver?arqueoId=" + obj.id);
+                    $("#frameReportes").attr("src", "../arqueocaja/ver?arqueoId=" + obj.id+'&esImpresionFacturera=true');
                     $("#reportes").modal('show');
                 });
                 $('.ventas').click(function() {
                     let obj = tablaArqueo.row($(this).closest('tr')).data();
-                    $("#frameReportes").attr("src", "../arqueocaja/ver_informe_venta?arqueoId=" + obj.id);
+                    $("#frameReportes").attr("src", "../arqueocaja/ver_informe_venta?arqueoId=" + obj.id+'&esImpresionFacturera=true');
                     $("#reportes").modal('show');
                 });
                 $('button[data-toggle="tooltip"]').tooltip({

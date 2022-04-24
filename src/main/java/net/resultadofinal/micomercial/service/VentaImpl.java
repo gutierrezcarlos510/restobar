@@ -236,7 +236,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			if(!msgValidacion.isEmpty()) { // Si es invalido cantidad en almacen
 				return new DataResponse(false, msgValidacion);
 			}
-			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta where sucursal_id =?", Long.class, obj.getSucursalId());
+			Long ventaId = db.queryForObject("select coalesce(max(id),0)+1 from venta", Long.class);
 			obj.setId(ventaId);
 			sqlString = "insert into venta(id, numero, usuario_id, cliente_id, fecha, obs, total, descuento, costo_adicional, gestion, estado, tipo, sucursal_id, subtotal, mesa_id, cantidad_personas, forma_pago_id, total_pagado, total_cambio, created_by, created_at) " +
 					"VALUES(?, ?, ?, ?, now(), ?, ?, ?, ?,?, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";

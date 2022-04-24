@@ -284,7 +284,7 @@ public class ArqueoCajaC {
 			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			General gestion = (General) request.getSession().getAttribute(MyConstant.Session.GESTION);
 			String nombre = "arqueocaja_" + arqueoId + "_" + gestion.getGes_gen(), tipo = "pdf", estado = "inline";
-			String reportUrl = (esImpresionFacturera!=null && esImpresionFacturera)?"/Reportes/arqueocaja_ver_factura.jasper":"/Reportes/arqueocaja_ver.jasper";
+			String reportUrl = (esImpresionFacturera!=null && esImpresionFacturera)?"/Reportes/arqueocaja_ver_rollo.jasper":"/Reportes/arqueocaja_ver.jasper";
 			Arqueo arqueo = arqueocajaS.obtenerCaja(arqueoId);
 			if(arqueo == null){
 				logger.error("No se encontro ultima caja del usuario para ver");
@@ -352,7 +352,29 @@ public class ArqueoCajaC {
 			}
 			parametros.put("usuario", us.toString());
 			parametros.put("cod_arqcaj", arqueo.getId());
-			commonVer(request, response, gestion, nombre, tipo, estado, reportUrl, arqueo, parametros, montoReal, montoFinal, interpretacion);
+			Utils.loadDataReport(parametros, gestion);
+			if(esImpresionFacturera!=null && !esImpresionFacturera) {
+				String SubRep=getClass().getResource("/Reportes/arqueocaja_ver.jasper").toString();
+				parametros.put("path", SubRep.substring(0, SubRep.lastIndexOf("/")));
+			}
+
+			parametros.put("delegado", arqueo.getXdelegado());
+			parametros.put("cusini", arqueo.getXcustodioInicial());
+			parametros.put("cusfin", arqueo.getXcustodioFinal());
+			parametros.put("estado", arqueo.getEstado() ? "Activo" : "Inactivo");
+			parametros.put("fini", arqueo.getFinicio().toString());
+			parametros.put("ffin", arqueo.getFfin() != null ? arqueo.getFfin().toString() : "");
+			parametros.put("monrea", montoReal);
+			parametros.put("monini", arqueo.getMontoInicial());
+			parametros.put("monfin", montoFinal);
+			parametros.put("gestion", gestion.getGes_gen());
+			parametros.put("sucursalId", gestion.getCod_suc());
+			parametros.put("logsintex_gen", gestion.getLogsintex_gen());
+
+			parametros.put("interpretacion", interpretacion);
+			GeneradorReportes generador = new GeneradorReportes();
+			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,
+					datasource.getConnection(), nombre, estado);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("error de reporte caja=" + e.toString());
