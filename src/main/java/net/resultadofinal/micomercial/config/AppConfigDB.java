@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("net.resultadofinal.micomercial")
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:application.properties")
 public class AppConfigDB {
 
     @Autowired

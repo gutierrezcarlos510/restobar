@@ -1,6 +1,6 @@
 package net.resultadofinal.micomercial.util;
 
-public final class MyConstant {
+public class MyConstant {
 	public static final String URL_SYSTEM = "https://restobar.sibol.net";
 	public static final int ROL_PERSONAL_VENTA = 4;
 	public static final boolean INACTIVE = false;
@@ -12,16 +12,11 @@ public final class MyConstant {
 	public static final String PRODUCTO_DEFAULT = "notimage.png";
 	public final static String FORMAT_IMG_PRODUCTO="producto-";
 	public static final String CLAVE = "tarijabolivia";
-//	public static final String RAIZ = "../archivosRestobar";//Windows
-	public static final String RAIZ = "/home/carlos/apache-tomcat-9.0.45/archivosRestobar";//Linux Server/tomcat
-	public static final String RUTA_AVATAR = RAIZ + "/avatars";
-	public static final String RUTA_GENERAL = RAIZ + "/general";
-	public static final String RUTA_CARRERA = RAIZ + "/carrera";
+	public static final String RAIZ = "../archivosRestobar";//Windows
+//	public static final String RAIZ = "/home/carlos/apache-tomcat-9.0.45/archivosRestobar";//Linux Server/tomcat
+	public static final String RUTA_AVATAR =  RAIZ + "/avatars";
 	public static final String URL_PATH_AVATAR = "/avatars/";
-	public static final String URL_PATH_GENERAL = "/general/";
-	public static final String URL_PATH_CARRERA = "/carrera/";
 	public static final String SYSTEM = "-resfit";//Ingresa a resultado fitness COMPRA Y VENTA
-	public static final boolean VENTA_CON_SELECT = true;//Venta con select para buscar producto POTOSI
 	public static class Archivo {
 		public static final String RUTA_PRODUCTO = RAIZ+ "/producto";
 	public final static String DIR_VIEW_PRODUCTOS="/producto/";
