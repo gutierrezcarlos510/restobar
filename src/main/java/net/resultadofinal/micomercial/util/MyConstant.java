@@ -12,8 +12,8 @@ public class MyConstant {
 	public static final String PRODUCTO_DEFAULT = "notimage.png";
 	public final static String FORMAT_IMG_PRODUCTO="producto-";
 	public static final String CLAVE = "tarijabolivia";
-	public static final String RAIZ = "../archivosRestobar";//Windows
-//	public static final String RAIZ = "/home/carlos/apache-tomcat-9.0.45/archivosRestobar";//Linux Server/tomcat
+//	public static final String RAIZ = "../archivosRestobar";//Windows
+	public static final String RAIZ = "/home/carlos/apache-tomcat-9.0.45/archivosRestobar";//Linux Server/tomcat
 	public static final String RUTA_AVATAR =  RAIZ + "/avatars";
 	public static final String URL_PATH_AVATAR = "/avatars/";
 	public static final String SYSTEM = "-resfit";//Ingresa a resultado fitness COMPRA Y VENTA
