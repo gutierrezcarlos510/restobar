@@ -46,7 +46,8 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			sqlBuilder.addJoin("caracteristica c on c.id = p.medida_id");
 			sqlBuilder.addLeftJoin("presentacion p1 on p1.id = p.presentacion_unidad_id");
 			sqlBuilder.addLeftJoin("presentacion p2 on p2.id = p.presentacion_caja_id");
-			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
+//			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
+			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");//Se quito la condicion para controlar productos
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");
@@ -85,7 +86,8 @@ public class ProductoImpl extends DbConeccion implements ProductoS {
 			SqlBuilder sqlBuilder = new SqlBuilder("producto p");
 			sqlBuilder.setSelect("p.*,pps1.controlar_producto,pps1.precio as  pv_unit,pps2.precio as  pv_caja,pps3.precio as  pv_unit_descuento,pps4.precio as  pv_caja_descuento,pps5.inventario_minimo,tp.nombre as xtipo");
 			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and tp.id=:xtipo");
-			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
+//			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1 and pps1.controlar_producto = true");
+			sqlBuilder.addJoin("producto_precio_sucursal pps1 on pps1.sucursal_id = :xsuc and pps1.producto_id = p.id and pps1.id = 1");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps2 on pps2.sucursal_id = :xsuc and pps2.producto_id = p.id and pps2.id = 2");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps3 on pps3.sucursal_id = :xsuc and pps3.producto_id = p.id and pps3.id = 3");
 			sqlBuilder.addLeftJoin("producto_precio_sucursal pps4 on pps4.sucursal_id = :xsuc and pps4.producto_id = p.id and pps4.id = 4");

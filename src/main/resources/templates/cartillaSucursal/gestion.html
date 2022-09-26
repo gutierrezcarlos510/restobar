@@ -185,6 +185,7 @@
                     $('#tablaDetalle > tbody').html('');
                     dataReq.sizeDetails = 0;
                     $('input[type=hidden]').val('');
+                    $('.select-chosen').trigger('chosen:updated');
                     $('#modalAdicionar').modal('show');
                 }
             }],
