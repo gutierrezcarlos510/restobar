@@ -108,7 +108,7 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					movimiento.setObs("Registrado desde registro adicionar cartilla diaria");
 					movimiento.setTipo(TipoMovimientoE.REGISTRO_MOVIMIENTO.getTipo());
 					movimiento.setEstadoMovimiento((short)1);//1= estado aceptado
-					registroMovimientoCierreDiario(movimiento);
+//					registroMovimientoCierreDiario(movimiento);
 				}
 				return new DataResponse(save, Utils.getSuccessFailedAdd(ENTITY, save));
 			} else {
