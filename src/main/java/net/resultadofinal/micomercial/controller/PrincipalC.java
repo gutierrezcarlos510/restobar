@@ -38,6 +38,11 @@ public class PrincipalC {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PrincipalC.class);
 
+	@RequestMapping("test")
+	public String test(Model model){
+		model.addAttribute("msg","Sistema de Administraci&oacute;n y Control Comercial");
+		return "principal/index2" ;
+	}
 	@RequestMapping("login")
 	public String login(Model model){
 		model.addAttribute("msg","Sistema de Administraci&oacute;n y Control Comercial");

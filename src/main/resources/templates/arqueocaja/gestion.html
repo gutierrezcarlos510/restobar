@@ -240,7 +240,7 @@
                 }
                 $('td', row).eq(6).html(xestado);
                 if (data.estado) {
-                    btnAux += '<button class="btn bg-purple ventas"  data-toggle="tooltip" data-placement="top" title="Imprimir ventas"><i class="fa fa-shopping-cart"></i><br>ventas</button><button class="btn btn-info btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
+                    btnAux += '<button class="btn btn-info btn-sm imprimir"  data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>';
                     $('td', row).eq(7).html('<div class="btn-group '+(UtilBrowser.isMobil()?'btn-group-vertical':'')+' btn-group-xs">' + btnAux + '</div>');
                 } else {
                     $('td', row).eq(7).html('<button class="btn btn-success imprimir" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="glyphicon glyphicon-print"></i><br>imprimir</button>');

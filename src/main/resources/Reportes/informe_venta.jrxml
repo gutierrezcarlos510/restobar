@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informe_venta" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="560" leftMargin="20" rightMargin="15" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="56cc1816-0edf-41bc-8c57-381293e20025">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
@@ -24,95 +24,94 @@
 	<parameter name="codSuc" class="java.lang.Integer"/>
 	<parameter name="gestion" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[select v.sucursal_id, v.numero,v.id,concat(p1.nom_per,' ',p1.priape_per) xusuario,concat(p2.nom_per,' ',p2.priape_per,' ',coalesce(p2.segape_per,'')) xmesero,
+		<![CDATA[select v.sucursal_id, v.numero,v.id,concat(p1.nom_per,' ',p1.priape_per) xusuario,concat(p2.nom_per,' ',p2.priape_per,' ',coalesce(p2.segape_per,'')) xcliente,
 v.fecha ,v.subtotal ,v.descuento ,v.total ,v.costo_adicional,v.arqueo_id,v.detalle_arqueo_id,v.numero,v.forma_pago_id ,fp.alias as xforma_pago,fp.es_efectivo_caja,updated_at
 from venta v 
 inner join persona p1 on p1.cod_per = v.updated_by 
-inner join persona p2  on p2.cod_per = v.usuario_id 
+inner join persona p2  on p2.cod_per = v.cliente_id 
 inner join forma_pago fp on fp.id = v.forma_pago_id 
 where v.tipo = 2 and v.estado = true and v.sucursal_id= $P{codSuc}  and cast(v.fecha as date) between to_date( $P{fini} ,'DD/MM/YYYY') and to_date( $P{ffin}   ,'DD/MM/YYYY')
 order by v.id asc]]>
 	</queryString>
 	<field name="sucursal_id" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="sucursal_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="sucursal_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="sucursal_id"/>
 	</field>
 	<field name="numero" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="numero"/>
 		<property name="com.jaspersoft.studio.field.label" value="numero"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
 	</field>
 	<field name="id" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="id"/>
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
 	</field>
 	<field name="xusuario" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="xusuario"/>
 		<property name="com.jaspersoft.studio.field.label" value="xusuario"/>
+		<property name="com.jaspersoft.studio.field.name" value="xusuario"/>
 	</field>
-	<field name="xmesero" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="xmesero"/>
-		<property name="com.jaspersoft.studio.field.label" value="xmesero"/>
+	<field name="xcliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xcliente"/>
+		<property name="com.jaspersoft.studio.field.name" value="xcliente"/>
 	</field>
 	<field name="fecha" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
 		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
 	</field>
 	<field name="subtotal" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
 		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
 	</field>
 	<field name="descuento" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="descuento"/>
 		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="descuento"/>
 	</field>
 	<field name="total" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="total"/>
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
 	</field>
 	<field name="costo_adicional" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="costo_adicional"/>
 		<property name="com.jaspersoft.studio.field.label" value="costo_adicional"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="costo_adicional"/>
 	</field>
 	<field name="arqueo_id" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="arqueo_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="arqueo_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="arqueo_id"/>
 	</field>
 	<field name="detalle_arqueo_id" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="detalle_arqueo_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="detalle_arqueo_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="detalle_arqueo_id"/>
 	</field>
 	<field name="COLUMN_13" class="java.lang.Long">
-		<property name="com.jaspersoft.studio.field.name" value="numero"/>
 		<property name="com.jaspersoft.studio.field.label" value="numero"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
 	</field>
 	<field name="forma_pago_id" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="forma_pago_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="forma_pago_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+		<property name="com.jaspersoft.studio.field.name" value="forma_pago_id"/>
 	</field>
 	<field name="xforma_pago" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="xforma_pago"/>
 		<property name="com.jaspersoft.studio.field.label" value="xforma_pago"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="forma_pago"/>
+		<property name="com.jaspersoft.studio.field.name" value="xforma_pago"/>
 	</field>
 	<field name="es_efectivo_caja" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="es_efectivo_caja"/>
 		<property name="com.jaspersoft.studio.field.label" value="es_efectivo_caja"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="forma_pago"/>
+		<property name="com.jaspersoft.studio.field.name" value="es_efectivo_caja"/>
 	</field>
 	<field name="updated_at" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.name" value="updated_at"/>
 		<property name="com.jaspersoft.studio.field.label" value="updated_at"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
 	</field>
@@ -292,7 +291,7 @@ order by v.id asc]]>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Mesero]]></text>
+				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="345" y="0" width="77" height="13" uuid="5c63e647-899b-45f7-bf74-1c0177561887">
@@ -448,7 +447,7 @@ order by v.id asc]]>
 					<font size="6"/>
 					<paragraph leftIndent="3" rightIndent="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{xmesero}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{xcliente}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="345" y="0" width="77" height="12" uuid="95324701-6c2f-4611-b285-64d2fec478b5">

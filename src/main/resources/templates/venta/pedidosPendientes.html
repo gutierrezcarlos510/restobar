@@ -88,6 +88,7 @@
                     let areaId = parseInt($('#areaId option:selected').val());
                     $("#frameReportes").attr("src", "../venta/verPedidoPendiente?ventaId=" + obj.ventaId+'&historicoVentaId='+obj.historicoVentaId+'&areaId='+areaId);
                     $("#reportes").modal('show');
+                    $.post('../')
                 });
                 $('.confirmar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();

@@ -6,7 +6,15 @@ public class HistoricoVenta {
     private Long ventaId;
     private Timestamp fecha;
     private Short id;
-    private String xmesa, xusuario, xcliente;
+    private String xmesa, xusuario, xcliente,obs;
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
 
     public String getXmesa() {
         return xmesa;

@@ -1,0 +1,75 @@
+<html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<head>
+<script type="text/javascript" src="/js/BrowserPrint-3.0.216.min.js"></script>
+<script type="text/javascript">
+var selected_device;
+var devices = [];
+function setup()
+{
+	//Get the default device from the application as a first step. Discovery takes longer to complete.
+	BrowserPrint.getDefaultDevice("printer", function(device)
+			{
+				//Add device to list of devices and to html select element
+				selected_device = device;
+				devices.push(device);
+				// var html_select = document.getElementById("selected_device");
+				// var option = document.createElement("option");
+				// option.text = device.name;
+				// html_select.add(option);
+				
+				//Discover any other devices available to the application
+				BrowserPrint.getLocalDevices(function(device_list){
+					for(var i = 0; i < device_list.length; i++)
+					{
+						//Add device to list of devices and to html select element
+						var device = device_list[i];
+						if(!selected_device || device.uid != selected_device.uid)
+						{
+							devices.push(device);
+						}
+					}
+					
+				}, function(){alert("Error getting local devices")},"printer");
+				
+			}, function(error){
+				alert(error);
+			})
+}
+function writeToSelectedPrinter(dataToWrite)
+{
+	selected_device.send(dataToWrite, undefined, errorCallback);
+}
+var readCallback = function(readData) {
+	if(readData === undefined || readData === null || readData === "")
+	{
+		alert("No Response from Device");
+	}
+	else
+	{
+		alert(readData);
+	}
+	
+}
+var errorCallback = function(errorMessage){
+	alert("Error: " + errorMessage);	
+}
+function readFromSelectedPrinter()
+{
+
+	selected_device.read(readCallback, errorCallback);
+	
+}
+window.onload = setup;
+</script>
+</head>
+<body>
+<!--Selected Device: <select id="selected_device" onchange=onDeviceSelected(this);></select> &lt;!&ndash;  <input type="button" value="Change" onclick="changeDevice();">&ndash;&gt; <br/><br/>-->
+<input type="text" name="write_text" id="write_text"><button type="button" value="Write" onclick="imprimir()">Escribir</button><br/><br/>
+<script type="text/javascript">
+function imprimir(){
+	writeToSelectedPrinter('hola Bermejo')
+}
+</script>
+</body>
+</html>

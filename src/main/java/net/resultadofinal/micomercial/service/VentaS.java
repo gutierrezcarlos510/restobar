@@ -2,6 +2,7 @@ package net.resultadofinal.micomercial.service;
 
 import net.resultadofinal.micomercial.model.DetalleVenta;
 import net.resultadofinal.micomercial.model.HistoricoVenta;
+import net.resultadofinal.micomercial.model.PedidoPendientePrint;
 import net.resultadofinal.micomercial.model.Venta;
 import net.resultadofinal.micomercial.model.form.VentaForm;
 import net.resultadofinal.micomercial.model.wrap.VentaInfoWrap;
@@ -32,4 +33,5 @@ public interface VentaS {
     DataTableResults<VentaPedidoWrap> listadoPedidoCocina(HttpServletRequest request, int xsucursal, Short area);
     DataResponse registrarPedidoRealizado(Long ventaId, Short historicoVentaId, Short areaId);
     HistoricoVenta obtenerHistoricoVenta(Long ventaId, Short historicoId);
+    List<PedidoPendientePrint> listarPedidoPendiente(Long ventaId, Short areaId);
 }

@@ -598,7 +598,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	}
 	public HistoricoVenta obtenerHistoricoVenta(Long ventaId, Short historicoId) {
 		try {
-			sqlString = "select hv.venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario,concat(p3.nom_per, ' ', p3.priape_per) as xcliente from historico_venta hv " +
+			sqlString = "select v.obs,hv.venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario,concat(p3.nom_per, ' ', p3.priape_per) as xcliente from historico_venta hv " +
 					"inner join venta v on v.id = hv.venta_id " +
 					"inner join mesa m on m.id = v.mesa_id " +
 					"inner join persona p2 on p2.cod_per = v.usuario_id " +
@@ -608,6 +608,21 @@ public class VentaImpl extends DbConeccion implements VentaS {
 			return UtilClass.getFirst(lista);
 		} catch (Exception e) {
 			throw new RuntimeException("Error: "+e.getMessage());
+		}
+	}
+	public List<PedidoPendientePrint> listarPedidoPendiente(Long ventaId, Short areaId) {
+		try {
+			sqlString = "select p.nombre, string_agg(dhv.cantidad::varchar,', ' order by dhv.historico_venta_id asc) cantidades " +
+					"from historico_venta hv " +
+					"inner join detalle_historico_venta dhv on dhv.venta_id = hv.venta_id and hv.id = dhv.historico_venta_id " +
+					"inner join producto p on p.id = dhv.producto_id " +
+					"inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = ? or -1 = ? " +
+					"where hv.venta_id = ? " +
+					"group by p.nombre;";
+			return db.query(sqlString, BeanPropertyRowMapper.newInstance(PedidoPendientePrint.class), areaId, areaId, ventaId);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
 		}
 	}
 }
