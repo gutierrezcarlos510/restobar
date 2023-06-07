@@ -621,32 +621,8 @@ order by da.id asc]]>
 				</textElement>
 				<text><![CDATA[Total Egresos (-) Bs. : ]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="323" y="69" width="149" height="20" uuid="4ccd0821-dba0-47e5-9201-58eea38727d3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<text><![CDATA[Monto Inicial (+) Bs. : ]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="472" y="69" width="83" height="20" uuid="4eabecd9-4aec-4f16-9a1a-f7a522025064"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-					<paragraph leftIndent="5" rightIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{monini}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="323" y="89" width="149" height="20" uuid="859a22d9-8b49-4d57-b8e7-59992252bbd5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<text><![CDATA[Monto Final (=) Bs. : ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="472" y="89" width="83" height="20" uuid="70df721e-acc9-4600-b808-cd0b0edfa51b"/>
+				<reportElement x="560" y="49" width="3" height="11" uuid="70df721e-acc9-4600-b808-cd0b0edfa51b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -654,7 +630,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$V{final}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="323" y="116" width="149" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
+				<reportElement x="323" y="70" width="149" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -667,7 +643,7 @@ order by da.id asc]]>
 				<text><![CDATA[Monto Real  Bs. : ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="472" y="116" width="83" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
+				<reportElement x="472" y="70" width="83" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -680,7 +656,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="303" y="139" width="252" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
+				<reportElement x="303" y="93" width="252" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>

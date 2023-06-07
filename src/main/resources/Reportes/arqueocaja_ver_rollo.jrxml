@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver" pageWidth="215" pageHeight="842" columnWidth="190" leftMargin="10" rightMargin="15" topMargin="20" bottomMargin="20" uuid="38508f05-8ccb-4644-985b-30fc88f35b33">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
@@ -455,7 +455,7 @@ order by da.id asc]]>
 		<band/>
 	</columnFooter>
 	<summary>
-		<band height="336">
+		<band height="340">
 			<textField>
 				<reportElement x="130" y="49" width="60" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -471,46 +471,6 @@ order by da.id asc]]>
 					<paragraph rightIndent="5"/>
 				</textElement>
 				<text><![CDATA[TOTAL PERCIBIDO (=) Bs. : ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="198" width="190" height="13" uuid="708e3a93-81d4-437d-943f-b792888926fd"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{delegado}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="253" width="190" height="13" uuid="cd506ce0-406e-44ba-84c6-e12927d0cbf6"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{cusfin}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="211" width="190" height="13" uuid="7727c56b-55fa-4604-978a-52e41c2a5d24"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Firma del Cajero]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="266" width="190" height="13" uuid="6a8851f0-3253-4051-8102-dcd81aa7d9d7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Firma del Supervisor]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="9" width="60" height="20" uuid="2fe0cf4e-80c6-4c38-b2f5-7d8f506775fc"/>
@@ -545,39 +505,7 @@ order by da.id asc]]>
 				<text><![CDATA[Total Egresos (-) Bs. : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="17" y="69" width="113" height="20" uuid="4ccd0821-dba0-47e5-9201-58eea38727d3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<text><![CDATA[Monto Inicial (+) Bs. : ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="130" y="69" width="60" height="20" uuid="4eabecd9-4aec-4f16-9a1a-f7a522025064"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-					<paragraph leftIndent="5" rightIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{monini}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="17" y="89" width="113" height="20" uuid="859a22d9-8b49-4d57-b8e7-59992252bbd5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<text><![CDATA[Monto Final (=) Bs. : ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="130" y="89" width="60" height="20" uuid="70df721e-acc9-4600-b808-cd0b0edfa51b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{final}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="116" width="130" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
+				<reportElement x="0" y="69" width="130" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -590,7 +518,7 @@ order by da.id asc]]>
 				<text><![CDATA[Monto Real  Bs. : ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="116" width="60" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
+				<reportElement x="130" y="69" width="60" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -603,7 +531,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="139" width="190" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
+				<reportElement x="0" y="92" width="190" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>
@@ -616,14 +544,14 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{interpretacion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="310" width="140" height="26" uuid="6277eadc-65c2-45ba-8b36-f9c4c381e960"/>
+				<reportElement x="50" y="314" width="140" height="26" uuid="6277eadc-65c2-45ba-8b36-f9c4c381e960"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="310" width="50" height="26" uuid="b6e3367d-f7e5-4491-803d-fa70e248a914">
+				<reportElement x="0" y="314" width="50" height="26" uuid="b6e3367d-f7e5-4491-803d-fa70e248a914">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -632,19 +560,30 @@ order by da.id asc]]>
 				<text><![CDATA[Usuario de impresion :]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="50" y="299" width="140" height="11" uuid="162b946b-805a-4af3-8971-990a07ac7d1d"/>
+				<reportElement x="50" y="303" width="140" height="11" uuid="162b946b-805a-4af3-8971-990a07ac7d1d"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="299" width="50" height="11" uuid="4afd554a-acd9-4c84-b79c-42dbaacc0ac4"/>
+				<reportElement x="0" y="303" width="50" height="11" uuid="4afd554a-acd9-4c84-b79c-42dbaacc0ac4"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha :]]></text>
 			</staticText>
+			<subreport>
+				<reportElement x="0" y="133" width="190" height="157" uuid="7db96b0f-9329-40b1-9610-20d7a98e8a31"/>
+				<subreportParameter name="arqueoId">
+					<subreportParameterExpression><![CDATA[$P{cod_arqcaj}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sucursalId">
+					<subreportParameterExpression><![CDATA[$P{sucursalId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{path}+"/arqueocaja_ver_subdetalle.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>

@@ -616,7 +616,7 @@ public class VentaImpl extends DbConeccion implements VentaS {
 					"from historico_venta hv " +
 					"inner join detalle_historico_venta dhv on dhv.venta_id = hv.venta_id and hv.id = dhv.historico_venta_id " +
 					"inner join producto p on p.id = dhv.producto_id " +
-					"inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = ? or -1 = ? " +
+					"inner join tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = ? or -1 = ? ) " +
 					"where hv.venta_id = ? " +
 					"group by p.nombre;";
 			return db.query(sqlString, BeanPropertyRowMapper.newInstance(PedidoPendientePrint.class), areaId, areaId, ventaId);

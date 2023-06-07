@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver_subdetalle" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dccc4ea5-9b6f-4b87-a72e-56fd0672b132">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver_subdetalle" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="592" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="dccc4ea5-9b6f-4b87-a72e-56fd0672b132">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="arqueoId" class="java.lang.Long"/>
 	<parameter name="sucursalId" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -29,21 +38,21 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="40" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="180" height="30" uuid="13b7172e-3f54-44dd-a8bb-7cdebd55ed62">
+				<reportElement x="0" y="0" width="130" height="30" uuid="13b7172e-3f54-44dd-a8bb-7cdebd55ed62">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Detalle de Ingresos]]></text>
+				<text><![CDATA[Resumen Financiero]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="0" width="94" height="30" uuid="ba15c4d3-ad34-4297-a6b2-ecdfc62e848d">
+				<reportElement x="130" y="0" width="50" height="30" uuid="ba15c4d3-ad34-4297-a6b2-ecdfc62e848d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
 				</reportElement>
 				<box>
@@ -59,7 +68,7 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 	<detail>
 		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="180" height="25" uuid="eb403994-b25a-4204-b2dd-5f8475aedf16">
+				<reportElement x="0" y="0" width="130" height="25" uuid="eb403994-b25a-4204-b2dd-5f8475aedf16">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -68,7 +77,7 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 				<textFieldExpression><![CDATA[$F{xforma_pago}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="0" width="94" height="25" uuid="8ba0c801-4c57-4d14-821b-cac0f1bc2ee8">
+				<reportElement x="130" y="0" width="50" height="25" uuid="8ba0c801-4c57-4d14-821b-cac0f1bc2ee8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -81,7 +90,7 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 	<summary>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="180" height="25" uuid="03ce6eff-e8f3-47d0-84d5-5fee770a6944">
+				<reportElement x="0" y="0" width="130" height="25" uuid="03ce6eff-e8f3-47d0-84d5-5fee770a6944">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c2c51a-55ee-4bb7-b5a4-aafd24e8da8b"/>
 				</reportElement>
 				<box>
@@ -93,7 +102,7 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 				<text><![CDATA[TOTAL INGRESOS]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="180" y="0" width="94" height="25" uuid="c90a7745-ac62-44c4-8a0e-265f16c03a4b">
+				<reportElement x="130" y="0" width="50" height="25" uuid="c90a7745-ac62-44c4-8a0e-265f16c03a4b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="66c08341-9033-43b6-ac94-24b2293e60eb"/>
 				</reportElement>
 				<box>
@@ -109,9 +118,9 @@ from forma_pago fp where sucursal_id =  $P{sucursalId}  and estado = true]]>
 	<noData>
 		<band height="30">
 			<staticText>
-				<reportElement x="0" y="0" width="274" height="30" uuid="abb8cb1b-456b-453d-a29d-88b43d2d90f9"/>
+				<reportElement x="0" y="0" width="180" height="30" uuid="abb8cb1b-456b-453d-a29d-88b43d2d90f9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Sin datos de ingresos]]></text>
+				<text><![CDATA[Sin datos financieros]]></text>
 			</staticText>
 		</band>
 	</noData>

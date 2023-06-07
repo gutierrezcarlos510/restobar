@@ -1157,3 +1157,10 @@ where p.estado = true and p.tipo_grupo = 1 and p.id not in (select pps.producto_
 
 select nombre,count(*),string_agg(id::varchar,',') from producto where estado = true group by nombre having count(*)>1;
 update producto set estado = false where id in (357,169);--producto repetido
+
+
+--Adicion 2023, cliente llave primaria
+ALTER TABLE public.cliente ADD CONSTRAINT cliente_pk PRIMARY KEY (cod_cli);
+INSERT INTO public.cliente
+(cod_cli, est_cli)
+VALUES(0, NULL);

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,7 +65,7 @@ public class PrincipalC {
 		return null;
 	}
 	@RequestMapping("validar")
-	public String validar(HttpServletRequest request,Model model,String login,String password){
+	public String validar(HttpServletRequest request, Model model, String login, String password, RedirectAttributes redirectAttributes){
 		try {
 			Persona usuario=usuarioS.iniciarSesion(login, password);
 			if(usuario==null){
@@ -89,6 +90,10 @@ public class PrincipalC {
 					sesion.setAttribute(MyConstant.Session.GESTION, general);
 					sesion.setAttribute(MyConstant.Session.SUCURSAL, sucursal);
 					sesion.setAttribute(MyConstant.Session.SUCURSALES, misSucursales);
+					if(misSucursales.size() == 1) {
+						redirectAttributes.addAttribute("sucursal", 0);
+						return "redirect:/principal/cambiarSucursal";
+					}
 //					return "principal/principal" + MyConstant.SYSTEM;
 					return "sucursal/seleccion-sucursal";
 				}else {

@@ -385,7 +385,7 @@ public class ArqueoCajaC {
 						   String estado, String reportUrl, Arqueo arqueo, Map<String, Object> parametros, BigDecimal montoReal,
 						   BigDecimal montoFinal, String interpretacion) throws JRException, SQLException, IOException {
 		Utils.loadDataReport(parametros, gestion);
-		String SubRep=getClass().getResource("/Reportes/arqueocaja_ver.jasper").toString();
+		String SubRep = getClass().getResource("/Reportes/arqueocaja_ver.jasper").toString();
 		parametros.put("delegado", arqueo.getXdelegado());
 		parametros.put("cusini", arqueo.getXcustodioInicial());
 		parametros.put("cusfin", arqueo.getXcustodioFinal());

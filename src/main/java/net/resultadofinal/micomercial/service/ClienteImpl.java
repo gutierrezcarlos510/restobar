@@ -24,8 +24,6 @@ public class ClienteImpl extends DbConeccion implements ClienteS {
 	public ClienteImpl(DataSource dataSource) {
 		this.db = new JdbcTemplate(dataSource);		
 	}
-	@Autowired
-	private UsuarioS usuarioS;
 	private static final Logger logger = LoggerFactory.getLogger(ClienteImpl.class);
 	private static final String ENTITY = "cliente";
 	private String sqlString;

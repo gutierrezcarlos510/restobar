@@ -1,5 +1,6 @@
 package net.resultadofinal.micomercial.service;
 
+import net.resultadofinal.micomercial.controller.CartillaDiariaC;
 import net.resultadofinal.micomercial.enumeration.HistoricoE;
 import net.resultadofinal.micomercial.enumeration.TipoMovimientoE;
 import net.resultadofinal.micomercial.model.CartillaDiaria;
@@ -352,9 +353,9 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 				List<DetalleMovimiento> detalleMovimientoList = new ArrayList<>();
 				for (CartillaDiariaCierreWrap it : obj.getListaCierre()) {
 					BigDecimal diferencia = it.getCantidadFinalAlmacen().subtract(it.getCantidadAlmacen());
-					if(diferencia.compareTo(new BigDecimal(0))!=0) {
+					if(diferencia.compareTo(BigDecimal.ZERO) != 0) {
 						DetalleMovimiento detalleMovimiento = null;
-						if(diferencia.compareTo(new BigDecimal(0)) > 0) {
+						if(diferencia.compareTo(BigDecimal.ZERO) > 0) {
 							detalleMovimiento = new DetalleMovimiento(it.getProductoId(),true,true,diferencia,diferencia);
 						} else {
 							detalleMovimiento = new DetalleMovimiento(it.getProductoId(), true,false, diferencia.negate(),diferencia.negate());
@@ -407,7 +408,29 @@ public class CartillaDiariaImpl extends DbConeccion implements CartillaDiariaS {
 					"inner join tipo_producto tp on tp.id = p.tipo_id and tp.es_preparado " +
 					"inner join almacen a on a.producto_id = dcd.producto_id and a.sucursal_id = ?" +
 					"where dcd.cartilla_diaria_id =?;";
-			return new DataResponse(true, db.query(sqlString, BeanPropertyRowMapper.newInstance(CartillaDiariaCierreWrap.class), sucursalId, cartillaDiariaId),Utils.successGet("Resumen detalle cierre"));
+			List<CartillaDiariaCierreWrap> lista = db.query(sqlString, BeanPropertyRowMapper.newInstance(CartillaDiariaCierreWrap.class), sucursalId, cartillaDiariaId);
+
+			if(UtilClass.isNotNullEmpty(lista)) {
+				List<CartillaDiariaCierreWrap> productosUnicos = new ArrayList<>();
+				boolean esRepetido = false;
+				for (CartillaDiariaCierreWrap item : lista) {
+					if(!productosUnicos.isEmpty()) {
+						esRepetido = false;
+						for (CartillaDiariaCierreWrap productosUnico : productosUnicos) {
+							if(productosUnico.getProductoId() == item.getProductoId()) {
+								esRepetido = true;
+							}
+						}
+						if(!esRepetido) {
+							productosUnicos.add(item);
+						}
+					} else {
+						productosUnicos.add(item);
+					}
+				}
+				return new DataResponse(true, productosUnicos,Utils.successGet("Resumen detalle cierre"));
+			}
+			return new DataResponse(true, lista,Utils.successGet("Resumen detalle cierre"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());

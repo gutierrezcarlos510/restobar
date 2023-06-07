@@ -290,26 +290,27 @@ public class VentaC {
 		}
 	}
 	@RequestMapping("verPedidoPendientePrintZebra")
-	public DataResponse verPedidoPendientePrintZebra(HttpServletRequest request, HttpServletResponse response, Long ventaId, Short historicoVentaId, Short areaId) {
+	public @ResponseBody DataResponse verPedidoPendientePrintZebra(HttpServletRequest request, HttpServletResponse response, Long ventaId, Short historicoVentaId, Short areaId) {
 		try {
 			Persona us = (Persona) request.getSession().getAttribute(MyConstant.Session.USER);
 			HistoricoVenta obj = ventaS.obtenerHistoricoVenta(ventaId, historicoVentaId);
-			StringBuilder cadena = new StringBuilder("****** PEDIDO Pendientee *******\n\n");
-			cadena.append("Comanda: "+ventaId+"\n");
-			cadena.append("xcliente"+ obj.getXcliente()+"\n");
-			cadena.append("xusuario"+ obj.getXusuario()+"\n");
-			cadena.append("Fecha: "+ (obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(obj.getFecha()): "")+"\n");
-			cadena.append("Mesa"+obj.getXmesa()+"\n");
-			cadena.append("Detalle de Venta \n");
-			List<PedidoPendientePrint> lista = ventaS.listarPedidoPendiente(obj.getVentaId(), areaId);
-			for (PedidoPendientePrint ped: lista) {
-				cadena.append(ped.getNombre()+"\n");
-				cadena.append(ped.getCantidades()+"\n");
+			List<String> lista = new ArrayList<>();
+			lista.add("****** PEDIDO Pendiente *******");
+			lista.add("Comanda: "+ventaId);
+			lista.add("xcliente"+ obj.getXcliente());
+			lista.add("xusuario"+ obj.getXusuario());
+			lista.add("Fecha: "+ (obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(obj.getFecha()): ""));
+			lista.add("Mesa"+obj.getXmesa());
+			lista.add("Detalle de Venta ");
+			List<PedidoPendientePrint> detalles = ventaS.listarPedidoPendiente(obj.getVentaId(), areaId);
+			for (PedidoPendientePrint ped: detalles) {
+				lista.add(ped.getNombre());
+				lista.add(ped.getCantidades());
 			}
-			cadena.append("obs"+ obj.getObs()+"\n\n");
-			cadena.append("Impreso por: "+ us.toString());
-			cadena.append("Impreso en: "+ (new Date()));
-			return new DataResponse(true, cadena, "");
+			lista.add("obs"+ obj.getObs());
+			lista.add("Impreso por: "+ us.toString());
+			lista.add("Impreso en: "+ (new Date()));
+			return new DataResponse(true, lista, "");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new DataResponse(false, e.getMessage());

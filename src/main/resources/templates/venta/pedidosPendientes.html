@@ -1,4 +1,4 @@
-
+<script type="text/javascript" src="/js/BrowserPrint-3.0.216.min.js"></script>
 <section xmlns:th="http://www.thymeleaf.org">
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -48,8 +48,66 @@
 </div>
 <!-- /.box -->
 <script type="text/javascript" th:inline="none">
-    $(document).ready(function() {
+    var selected_device;
+    var devices = [];
+    function setup()
+    {
+        //Get the default device from the application as a first step. Discovery takes longer to complete.
+        BrowserPrint.getDefaultDevice("printer", function(device)
+        {
+            //Add device to list of devices and to html select element
+            selected_device = device;
+            devices.push(device);
+            // var html_select = document.getElementById("selected_device");
+            // var option = document.createElement("option");
+            // option.text = device.name;
+            // html_select.add(option);
 
+            //Discover any other devices available to the application
+            BrowserPrint.getLocalDevices(function(device_list){
+                for(var i = 0; i < device_list.length; i++)
+                {
+                    //Add device to list of devices and to html select element
+                    var device = device_list[i];
+                    if(!selected_device || device.uid != selected_device.uid)
+                    {
+                        devices.push(device);
+                    }
+                }
+
+            }, function(){alert("Error getting local devices")},"printer");
+
+        }, function(error){
+            alert(error);
+        })
+    }
+    function writeToSelectedPrinter(dataToWrite)
+    {
+        selected_device.send(dataToWrite, undefined, errorCallback);
+    }
+    var readCallback = function(readData) {
+        if(readData === undefined || readData === null || readData === "")
+        {
+            alert("No Response from Device");
+        }
+        else
+        {
+            alert(readData);
+        }
+
+    }
+    var errorCallback = function(errorMessage){
+        alert("Error: " + errorMessage);
+    }
+    function readFromSelectedPrinter()
+    {
+
+        selected_device.read(readCallback, errorCallback);
+
+    }
+    window.onload = setup;
+    $(document).ready(function() {
+        setup();
         $('#tabla').DataTable({
             buttons: [],
             "ajax": {
@@ -88,7 +146,16 @@
                     let areaId = parseInt($('#areaId option:selected').val());
                     $("#frameReportes").attr("src", "../venta/verPedidoPendiente?ventaId=" + obj.ventaId+'&historicoVentaId='+obj.historicoVentaId+'&areaId='+areaId);
                     $("#reportes").modal('show');
-                    $.post('../')
+                    // $.post('../venta/verPedidoPendientePrintZebra?ventaId=' + obj.ventaId+'&historicoVentaId='+obj.historicoVentaId+'&areaId='+areaId, function(resp){
+                    //     if(resp.status && resp.data) {
+                    //         resp.data.forEach(it => {
+                    //             // setTimeout(writeToSelectedPrinter(it),2000);
+                    //             selected_device.send(it, undefined, errorCallback);
+                    //         })
+                    //     } else {
+                    //         modalAlert('Error', resp.msg, 'error');
+                    //     }
+                    // });
                 });
                 $('.confirmar').click(function() {
                     let obj = $('#tabla').DataTable().row($(this).closest('tr')).data();
