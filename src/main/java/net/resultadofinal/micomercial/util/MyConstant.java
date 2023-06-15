@@ -13,6 +13,7 @@ public class MyConstant {
 	public final static String FORMAT_IMG_PRODUCTO="producto-";
 	public static final String CLAVE = "tarijabolivia";
 //	public static final String RAIZ = "../archivosRestobar";//Windows
+//	public static final String RAIZ = "/media/carlos/MisDatos/programacion/IdeaProjects/archivos/archivosRestobar";//Linux Server/tomcat
 	public static final String RAIZ = "/home/carlos/apache-tomcat-9.0.45/archivosRestobar";//Linux Server/tomcat
 	public static final String RUTA_AVATAR =  RAIZ + "/avatars";
 	public static final String URL_PATH_AVATAR = "/avatars/";

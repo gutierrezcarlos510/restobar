@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver" pageWidth="215" pageHeight="842" columnWidth="190" leftMargin="10" rightMargin="15" topMargin="20" bottomMargin="20" uuid="38508f05-8ccb-4644-985b-30fc88f35b33">
+<!-- Created with Jaspersoft Studio version 8.2.0.final using JasperReports Library version 6.20.3-415f9428cffdb6805c6f85bbb29ebaf18813a2ab  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="arqueocaja_ver" pageWidth="215" pageHeight="842" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38508f05-8ccb-4644-985b-30fc88f35b33">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -8,15 +8,6 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="910"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="ges_gen" class="java.lang.Integer"/>
 	<parameter name="delegado" class="java.lang.String"/>
 	<parameter name="cusini" class="java.lang.String"/>
@@ -125,8 +116,9 @@ order by da.id asc]]>
 	<title>
 		<band height="92">
 			<textField>
-				<reportElement x="0" y="11" width="190" height="11" uuid="faa476c8-afd4-43a5-836b-93ddbdf2917b">
+				<reportElement x="0" y="11" width="175" height="11" uuid="faa476c8-afd4-43a5-836b-93ddbdf2917b">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
@@ -134,8 +126,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="33" width="190" height="11" uuid="1eb3c6d5-7f09-4b14-832c-b7b2420e8c13">
+				<reportElement x="0" y="33" width="175" height="11" uuid="1eb3c6d5-7f09-4b14-832c-b7b2420e8c13">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
@@ -143,8 +136,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="44" width="190" height="11" uuid="cc9dfd7e-2fa6-46b6-8628-44778cb5a3b1">
+				<reportElement x="0" y="44" width="175" height="11" uuid="cc9dfd7e-2fa6-46b6-8628-44778cb5a3b1">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
@@ -152,8 +146,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA["Gestion "+$P{gestion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="22" width="190" height="11" uuid="1143f5ab-9892-447b-9aa5-d837ac7727fa">
+				<reportElement x="0" y="22" width="175" height="11" uuid="1143f5ab-9892-447b-9aa5-d837ac7727fa">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
@@ -161,8 +156,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="190" height="11" uuid="fa320237-e8db-4925-92b3-bdd066b5d7d1">
+				<reportElement x="0" y="0" width="175" height="11" uuid="fa320237-e8db-4925-92b3-bdd066b5d7d1">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
@@ -170,14 +166,18 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="55" width="190" height="20" uuid="b6144a66-1333-4f40-a365-a03ce84c1fee"/>
+				<reportElement x="0" y="55" width="175" height="20" uuid="b6144a66-1333-4f40-a365-a03ce84c1fee">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Arqueo de Caja]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="75" width="190" height="15" uuid="8da23093-d66a-4b7a-b325-be9ff90734a3"/>
+				<reportElement x="0" y="75" width="175" height="15" uuid="8da23093-d66a-4b7a-b325-be9ff90734a3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -188,9 +188,10 @@ order by da.id asc]]>
 	<pageHeader>
 		<band height="130">
 			<textField>
-				<reportElement x="60" y="13" width="130" height="13" uuid="769055e6-d3bc-4e49-8403-7959e6f3cd10">
+				<reportElement x="60" y="13" width="115" height="13" uuid="769055e6-d3bc-4e49-8403-7959e6f3cd10">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -199,8 +200,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{ges_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="91" width="130" height="13" uuid="f3cfc635-3149-4389-a761-161848a8f58f">
+				<reportElement x="60" y="91" width="115" height="13" uuid="f3cfc635-3149-4389-a761-161848a8f58f">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -216,8 +218,9 @@ order by da.id asc]]>
 				<text><![CDATA[Gestion :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="60" y="39" width="130" height="26" uuid="9e0e90a9-ff6a-4e24-a4c7-1792830fe9b3">
+				<reportElement x="60" y="39" width="115" height="26" uuid="9e0e90a9-ff6a-4e24-a4c7-1792830fe9b3">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -240,8 +243,9 @@ order by da.id asc]]>
 				<text><![CDATA[Cajero :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="60" y="26" width="130" height="13" uuid="77a5fc9e-a6d8-41e5-bb26-3b30f7cdf329">
+				<reportElement x="60" y="26" width="115" height="13" uuid="77a5fc9e-a6d8-41e5-bb26-3b30f7cdf329">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -250,7 +254,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{delegado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="0" width="130" height="13" uuid="43ec3bbb-45ab-4983-9084-696a0c09ea97">
+				<reportElement x="60" y="0" width="115" height="13" uuid="43ec3bbb-45ab-4983-9084-696a0c09ea97">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -297,8 +301,9 @@ order by da.id asc]]>
 				<text><![CDATA[F. Fin :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="60" y="65" width="130" height="26" uuid="bc41eba6-5cf8-4870-95ab-19ac385b1db7">
+				<reportElement x="60" y="65" width="115" height="26" uuid="bc41eba6-5cf8-4870-95ab-19ac385b1db7">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -307,8 +312,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{cusfin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="104" width="130" height="13" uuid="85b29414-3d2d-41c5-95cf-793b196c1538">
+				<reportElement x="60" y="104" width="115" height="13" uuid="85b29414-3d2d-41c5-95cf-793b196c1538">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -317,8 +323,9 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{fini}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="117" width="130" height="13" uuid="98693641-ced7-4adf-b4dc-e7fa8e129c88">
+				<reportElement x="60" y="117" width="115" height="13" uuid="98693641-ced7-4adf-b4dc-e7fa8e129c88">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -338,21 +345,21 @@ order by da.id asc]]>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="44" height="16" uuid="04940a1e-e21f-47a5-aaa4-92eaa5ce4c9e"/>
+				<reportElement x="85" y="0" width="44" height="16" uuid="04940a1e-e21f-47a5-aaa4-92eaa5ce4c9e"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Debe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="144" y="0" width="46" height="16" uuid="ac025689-0acf-4c7e-a84b-8bf6c5dcbfb1"/>
+				<reportElement x="129" y="0" width="46" height="16" uuid="ac025689-0acf-4c7e-a84b-8bf6c5dcbfb1"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Haber]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="20" y="0" width="80" height="16" uuid="74261072-8392-48fd-af2c-b103f9b72688"/>
+				<reportElement x="20" y="0" width="65" height="16" uuid="74261072-8392-48fd-af2c-b103f9b72688"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
@@ -363,7 +370,7 @@ order by da.id asc]]>
 	<detail>
 		<band height="30">
 			<textField pattern="d/M/yy h:mm:ss a">
-				<reportElement stretchType="ElementGroupHeight" x="20" y="0" width="80" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e"/>
+				<reportElement stretchType="ElementGroupHeight" x="20" y="0" width="65" height="15" uuid="b2cdc449-49fd-4332-b9d9-a2a735c4e18e"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -377,7 +384,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="0" y="15" width="130" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
+				<reportElement stretchType="ElementGroupHeight" x="0" y="15" width="129" height="15" uuid="94084780-fcbb-433c-a46b-b944ced3f826"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.0"/>
@@ -392,7 +399,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="145" y="0" width="45" height="15" uuid="405fe45d-a480-4b25-a53b-daac87388414"/>
+				<reportElement stretchType="ElementGroupHeight" x="129" y="0" width="46" height="15" uuid="405fe45d-a480-4b25-a53b-daac87388414"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -421,7 +428,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$V{cont}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="100" y="0" width="45" height="15" uuid="a93c7ca6-981f-432a-9802-cc256285463d"/>
+				<reportElement stretchType="ElementGroupHeight" x="85" y="0" width="44" height="15" uuid="a93c7ca6-981f-432a-9802-cc256285463d"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -436,7 +443,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$F{xdebe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="130" y="15" width="60" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f"/>
+				<reportElement stretchType="ElementGroupHeight" x="129" y="15" width="46" height="15" uuid="a524b391-34b3-4080-8777-55c30d4ff52f"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.0"/>
@@ -457,7 +464,7 @@ order by da.id asc]]>
 	<summary>
 		<band height="340">
 			<textField>
-				<reportElement x="130" y="49" width="60" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
+				<reportElement x="129" y="49" width="46" height="20" uuid="48715e7a-2382-4097-82ad-187c18961fed"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -465,7 +472,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="49" width="130" height="20" uuid="0eeab7ba-f4ab-4518-b179-c4013d1eac39"/>
+				<reportElement x="0" y="49" width="129" height="20" uuid="0eeab7ba-f4ab-4518-b179-c4013d1eac39"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -473,7 +480,7 @@ order by da.id asc]]>
 				<text><![CDATA[TOTAL PERCIBIDO (=) Bs. : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="130" y="9" width="60" height="20" uuid="2fe0cf4e-80c6-4c38-b2f5-7d8f506775fc"/>
+				<reportElement x="129" y="9" width="46" height="20" uuid="2fe0cf4e-80c6-4c38-b2f5-7d8f506775fc"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -481,7 +488,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$V{ingresos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="29" width="60" height="20" uuid="73c7eef4-06ee-4faf-81fa-a2ab0aa9a3c2"/>
+				<reportElement x="129" y="29" width="46" height="20" uuid="73c7eef4-06ee-4faf-81fa-a2ab0aa9a3c2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -489,7 +496,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$V{egresos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="17" y="9" width="113" height="20" uuid="d71fa5b7-d5f9-48da-ab73-8c2ab8b64b0d"/>
+				<reportElement x="17" y="9" width="112" height="20" uuid="d71fa5b7-d5f9-48da-ab73-8c2ab8b64b0d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -497,7 +504,7 @@ order by da.id asc]]>
 				<text><![CDATA[Total Ingresos (+) Bs. : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="17" y="29" width="113" height="20" uuid="f67740e8-25b0-4cd9-a6f5-95f0e804660d"/>
+				<reportElement x="17" y="29" width="112" height="20" uuid="f67740e8-25b0-4cd9-a6f5-95f0e804660d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 					<paragraph rightIndent="5"/>
@@ -505,7 +512,7 @@ order by da.id asc]]>
 				<text><![CDATA[Total Egresos (-) Bs. : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="69" width="130" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
+				<reportElement x="0" y="69" width="129" height="20" uuid="2f9c7dc1-e9d7-469e-b44e-30f11f799e26"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -518,7 +525,7 @@ order by da.id asc]]>
 				<text><![CDATA[Monto Real  Bs. : ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="69" width="60" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
+				<reportElement x="129" y="69" width="46" height="20" uuid="ca69210b-896e-4eb5-b889-0259f246db63"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -531,7 +538,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{monrea}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="92" width="190" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
+				<reportElement x="0" y="92" width="175" height="41" uuid="90864689-3b3b-4dd7-b8f9-006fc5435ff1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>
@@ -544,7 +551,7 @@ order by da.id asc]]>
 				<textFieldExpression><![CDATA[$P{interpretacion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="314" width="140" height="26" uuid="6277eadc-65c2-45ba-8b36-f9c4c381e960"/>
+				<reportElement x="50" y="314" width="125" height="26" uuid="6277eadc-65c2-45ba-8b36-f9c4c381e960"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
@@ -560,7 +567,7 @@ order by da.id asc]]>
 				<text><![CDATA[Usuario de impresion :]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="50" y="303" width="140" height="11" uuid="162b946b-805a-4af3-8971-990a07ac7d1d"/>
+				<reportElement x="50" y="303" width="125" height="11" uuid="162b946b-805a-4af3-8971-990a07ac7d1d"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>

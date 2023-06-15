@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimiento_ver" pageWidth="215" pageHeight="700" columnWidth="187" leftMargin="8" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
+<!-- Created with Jaspersoft Studio version 8.2.0.final using JasperReports Library version 6.20.3-415f9428cffdb6805c6f85bbb29ebaf18813a2ab  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimiento_ver" pageWidth="215" pageHeight="700" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92573fab-b550-43b4-892b-3996751a374a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="402"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="587"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="movimientoId" class="java.lang.Long"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="dir_gen" class="java.lang.String"/>
@@ -35,7 +26,7 @@ case when dm.tipo then 'Unidades' else 'Cajas' end as xtipo,
 case when dm.es_ingreso then 'Ingreso' else 'Salida' end as xes_ingreso
 from detalle_movimiento dm 
 inner join producto p on p.id = dm.producto_id 
-where dm.movimiento_id = $P{movimientoId} ]]>
+where dm.movimiento_id = $P{movimientoId}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -95,16 +86,16 @@ where dm.movimiento_id = $P{movimientoId} ]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="106" splitType="Stretch">
+		<band height="93" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="79" width="175" height="13" forecolor="#000000" uuid="e9587105-86e5-4dbe-92df-aba1309332b3"/>
+				<reportElement x="0" y="66" width="175" height="13" forecolor="#000000" uuid="e9587105-86e5-4dbe-92df-aba1309332b3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RECIBO DE MOVIMIENTO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="92" width="175" height="14" forecolor="#000000" uuid="a920bee3-5360-4a01-b4bd-64ef22377d45"/>
+				<reportElement x="0" y="79" width="175" height="14" forecolor="#000000" uuid="a920bee3-5360-4a01-b4bd-64ef22377d45"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -114,28 +105,30 @@ where dm.movimiento_id = $P{movimientoId} ]]>
 				<textFieldExpression><![CDATA["Gestion "+$P{gestion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="52" width="175" height="13" forecolor="#000000" uuid="3701e48e-8570-45b2-b670-75bf98ebe9f9"/>
+				<reportElement x="0" y="39" width="175" height="13" forecolor="#000000" uuid="3701e48e-8570-45b2-b670-75bf98ebe9f9"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="39" width="175" height="13" forecolor="#000000" uuid="78501d6e-a418-4c54-b49b-0f9851ec5f0a"/>
+				<reportElement x="0" y="26" width="175" height="13" forecolor="#000000" uuid="78501d6e-a418-4c54-b49b-0f9851ec5f0a"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="13" width="175" height="26" forecolor="#000000" uuid="1abb8fa2-1b8e-454a-987d-fd9049b4285a"/>
+				<reportElement x="0" y="13" width="175" height="13" forecolor="#000000" uuid="1abb8fa2-1b8e-454a-987d-fd9049b4285a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="65" width="175" height="13" forecolor="#000000" uuid="a199bbc0-ad1d-4da2-9855-b1b4c60377f4"/>
+				<reportElement x="0" y="52" width="175" height="13" forecolor="#000000" uuid="a199bbc0-ad1d-4da2-9855-b1b4c60377f4"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -157,7 +150,7 @@ where dm.movimiento_id = $P{movimientoId} ]]>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Fec. registro :]]></text>
+				<text><![CDATA[F.Registro :]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="50" y="19" width="125" height="12" forecolor="#000000" uuid="9c824a90-76c9-4c94-8791-f45f26e3cceb"/>

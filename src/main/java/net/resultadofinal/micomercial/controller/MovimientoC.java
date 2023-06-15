@@ -142,10 +142,10 @@ public class MovimientoC {
 			parametros.put("movimientoId", id);
 			parametros.put("xusuarioRevision", movimiento.getXusuarioRevision());
 			parametros.put("xcreatedBy", movimiento.getXcreatedBy());
-			parametros.put("xcreatedAt", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(movimiento.getCreatedAt()));
+			parametros.put("xcreatedAt", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(movimiento.getCreatedAt()));
 			parametros.put("xtipo", movimiento.getXtipo());
 			parametros.put("xestadoMovimiento", movimiento.getXestadoMovimiento());
-			parametros.put("xfechaRevision", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(movimiento.getFechaRevision()));
+			parametros.put("xfechaRevision", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(movimiento.getFechaRevision()));
 			parametros.put("obs", movimiento.getObs());
 			parametros.put("sucursalOrigen", movimiento.getXsucursalOrigen());
 			parametros.put("xusuario", movimiento.getXsucursalDestino());

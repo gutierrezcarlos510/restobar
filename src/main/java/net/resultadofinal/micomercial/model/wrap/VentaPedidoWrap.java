@@ -4,11 +4,32 @@ import java.sql.Timestamp;
 
 public class VentaPedidoWrap {
     private Long ventaId;
+    private Short tipo;
     private Timestamp fecha;
     private String xmesa;
     private String xusuario;
     private String xcliente;
     private Short areaDestino, historicoVentaId;
+    public String getXtipo(){
+        if(tipo != null) {
+            switch (tipo) {
+                case 1:
+                    return "Comanda pendiente";
+                case 2:
+                    return "Comanda pagada";
+                case 3:
+                    return "Comanda revertida";
+                case 4:
+                    return "Pedido";
+                case 5:
+                    return "Reserva";
+                default:
+                    return "-";
+            }
+        } else {
+            return "sn";
+        }
+    }
 
     public String getXmesa() {
         return xmesa;

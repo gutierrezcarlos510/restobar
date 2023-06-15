@@ -214,6 +214,10 @@ public class VentaC {
 			Persona us=(Persona)request.getSession().getAttribute(MyConstant.Session.USER);
 			String reportUrl="/Reportes/venta_ver_comprobante.jasper";
 			VentaInfoWrap venta = ventaS.obtenerVentaInfo(id);
+			Locale locale = new Locale("es", "ES");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEEEEEEE dd 'de' MMMMM 'de' yyyy HH:mm a", locale);
+			String xfecha = simpleDateFormat.format(venta.getCreatedAt());
+			System.out.println("fecha: "+xfecha);
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.serializeNulls();
 			String jsonDetalles = gsonBuilder.create().toJson(venta.getDetalleVentaGlobal());
@@ -229,8 +233,9 @@ public class VentaC {
 			parametros.put("totalCambio", venta.getTotalCambio());
 			parametros.put("xcliente", venta.getXcliente());
 			parametros.put("xusuario", venta.getXusuario());
-			parametros.put("xfecha", new SimpleDateFormat("DD/MM/YYYY HH:mm:ss").format(venta.getFecha()));
+			parametros.put("xfecha", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(venta.getCreatedAt()));
 			parametros.put("xformaPago", venta.getXformaPago());
+			parametros.put("xmesa", venta.getXmesa());
 			Utils.loadDataReport(parametros, general);
 			GeneradorReportes generador=new GeneradorReportes();
 			generador.generarReporteJson(response, getClass().getResource(reportUrl), tipo,parametros,jsonDetalles ,nombre, estado);
@@ -280,6 +285,7 @@ public class VentaC {
 			parametros.put("xfecha", obj.getFecha() != null ? new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(obj.getFecha()): "");
 			parametros.put("xmesa", obj.getXmesa());
 			parametros.put("areaId", areaId);
+			parametros.put("obs", obj.getObs());
 			System.out.println(obj.getObs());
 			GeneradorReportes generador = new GeneradorReportes();
 			generador.generarReporte(response, getClass().getResource(reportUrl), tipo, parametros,

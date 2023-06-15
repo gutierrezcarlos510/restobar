@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 8.2.0.final using JasperReports Library version 6.20.3-415f9428cffdb6805c6f85bbb29ebaf18813a2ab  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="venta_ver_comprobante" pageWidth="215" pageHeight="700" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="92573fab-b550-43b4-892b-3996751a374a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RESTOBAR"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="402"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="587"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="ventaId" class="java.lang.Long"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="xcliente" class="java.lang.String"/>
@@ -42,10 +33,11 @@ group by p.nombre]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="21" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="1" width="175" height="20" uuid="3db7733a-d85d-4294-bbd0-ff5ce1755fdd">
+				<reportElement x="0" y="1" width="175" height="15" uuid="3db7733a-d85d-4294-bbd0-ff5ce1755fdd">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e45adce7-88aa-4196-9749-52eb26195eb4"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -54,7 +46,7 @@ group by p.nombre]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
 				<text><![CDATA[PEDIDO]]></text>
@@ -62,44 +54,44 @@ group by p.nombre]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="43" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="19" width="35" height="12" forecolor="#000000" uuid="426f1671-8eed-4924-88a0-949a584c79d8"/>
+				<reportElement x="0" y="12" width="35" height="12" forecolor="#000000" uuid="426f1671-8eed-4924-88a0-949a584c79d8"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="35" y="19" width="140" height="12" forecolor="#000000" uuid="9c824a90-76c9-4c94-8791-f45f26e3cceb"/>
+				<reportElement x="35" y="12" width="140" height="12" forecolor="#000000" uuid="9c824a90-76c9-4c94-8791-f45f26e3cceb"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{xfecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="7" width="35" height="12" forecolor="#000000" uuid="f1034e3d-22a7-4ca8-9c56-1fca67ec0c89"/>
+				<reportElement x="0" y="0" width="35" height="12" forecolor="#000000" uuid="f1034e3d-22a7-4ca8-9c56-1fca67ec0c89"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Código :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="35" y="7" width="140" height="12" forecolor="#000000" uuid="eb0d63d8-3a04-4341-8419-8b507e88193c"/>
+				<reportElement x="35" y="0" width="140" height="12" forecolor="#000000" uuid="eb0d63d8-3a04-4341-8419-8b507e88193c"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{ventaId} + " - "+$P{xmesa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="35" y="31" width="140" height="12" uuid="a33741aa-0f1b-475a-8a4f-de34fae65492"/>
+				<reportElement x="35" y="24" width="140" height="12" uuid="a33741aa-0f1b-475a-8a4f-de34fae65492"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{xusuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="31" width="35" height="12" forecolor="#000000" uuid="13423c41-8f31-4562-bb9e-27906559ee13"/>
+				<reportElement x="0" y="24" width="35" height="12" forecolor="#000000" uuid="13423c41-8f31-4562-bb9e-27906559ee13"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
@@ -108,10 +100,11 @@ group by p.nombre]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="40" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="175" height="20" uuid="5b501003-11b8-44cd-82c8-5afd573bb3e7">
+				<reportElement x="0" y="0" width="175" height="15" uuid="5b501003-11b8-44cd-82c8-5afd573bb3e7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e45adce7-88aa-4196-9749-52eb26195eb4"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -123,8 +116,9 @@ group by p.nombre]]>
 				<text><![CDATA[Detalle de Venta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="20" width="40" height="20" uuid="4f657d04-dce2-46f0-bb34-57f989257ac9">
+				<reportElement x="135" y="15" width="40" height="15" uuid="4f657d04-dce2-46f0-bb34-57f989257ac9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7458ec3f-8c5f-4a2f-993c-b36bcc56a9ab"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -135,8 +129,9 @@ group by p.nombre]]>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="135" height="20" uuid="e4c1b686-6a4b-4332-8b8a-21fa23338842">
+				<reportElement x="0" y="15" width="135" height="15" uuid="e4c1b686-6a4b-4332-8b8a-21fa23338842">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64c8a2c3-d9f7-4bb0-8cc0-0e2bfc169c49"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.75"/>
@@ -150,7 +145,7 @@ group by p.nombre]]>
 	</columnHeader>
 	<detail>
 		<band height="35" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="175" height="20" uuid="29c25bb0-bb83-4bc0-b729-1f8993c39d33">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e45adce7-88aa-4196-9749-52eb26195eb4"/>
 				</reportElement>
@@ -176,36 +171,15 @@ group by p.nombre]]>
 	</detail>
 	<summary>
 		<band height="40" splitType="Stretch">
-			<textField>
-				<reportElement x="34" y="0" width="140" height="12" forecolor="#000000" uuid="f0c82da5-88ca-4af8-ae50-445025a3d64a"/>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="34" y="12" width="140" height="12" forecolor="#000000" uuid="e07d58fc-8ac2-4329-85e5-86593e8f1421"/>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="0" y="12" width="34" height="12" forecolor="#000000" uuid="829dbe62-e223-457e-babf-c75cbbae2a86"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
+				<reportElement x="0" y="0" width="175" height="12" forecolor="#000000" uuid="07586758-8da3-4ae5-b01c-bdceb3cefbd0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Fecha : ]]></text>
+				<text><![CDATA[Observacion:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="34" height="12" forecolor="#000000" uuid="07586758-8da3-4ae5-b01c-bdceb3cefbd0"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Usuario : ]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="0" y="24" width="175" height="16" uuid="e909bf45-45e4-4bf2-8fc8-9edd3738b94e"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="0" y="12" width="175" height="28" uuid="e909bf45-45e4-4bf2-8fc8-9edd3738b94e"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>

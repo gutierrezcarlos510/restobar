@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallearqueo_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="197" leftMargin="8" rightMargin="10" topMargin="1" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
+<!-- Created with Jaspersoft Studio version 8.2.0.final using JasperReports Library version 6.20.3-415f9428cffdb6805c6f85bbb29ebaf18813a2ab  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallearqueo_ver" pageWidth="215" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="1" bottomMargin="20" uuid="82b9b79f-a2f2-4a16-a689-7c3e406eae1c">
 	<property name="ireport.zoom" value="3.4522712143931042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="101"/>
@@ -85,52 +85,54 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="108" splitType="Stretch">
+		<band height="93" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="0" y="80" width="180" height="13" forecolor="#0A0100" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
+				<reportElement x="0" y="65" width="175" height="13" forecolor="#0A0100" uuid="642243d4-f0c2-4757-9a30-4c1c8d43b787"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Detalle Arqueo]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="93" width="180" height="15" forecolor="#0A0100" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
+				<reportElement x="5" y="78" width="170" height="15" forecolor="#0A0100" uuid="ee101cd9-bf54-4cd3-bf89-e9c15ab8a092"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Codigo de Arqueo "+$F{arqueo_id}+" - "+$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="54" width="180" height="13" forecolor="#0A0100" uuid="558afa5e-d7cd-4636-81a2-8d7174e37322"/>
+				<reportElement x="0" y="39" width="175" height="13" forecolor="#0A0100" uuid="558afa5e-d7cd-4636-81a2-8d7174e37322"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tel_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="41" width="180" height="13" forecolor="#0A0100" uuid="ac7c796d-73ef-4d9d-9f40-0a77378b2cf8"/>
+				<reportElement x="0" y="26" width="175" height="13" forecolor="#0A0100" uuid="ac7c796d-73ef-4d9d-9f40-0a77378b2cf8"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dir_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="13" width="180" height="28" forecolor="#0A0100" uuid="e54e4b3f-908c-4ce8-8944-9f2d9c49042f"/>
+				<reportElement x="0" y="13" width="175" height="13" forecolor="#0A0100" uuid="e54e4b3f-908c-4ce8-8944-9f2d9c49042f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{des_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="67" width="180" height="13" forecolor="#0A0100" uuid="a751c7f0-a0b0-4427-955e-7578aa10c114"/>
+				<reportElement x="0" y="52" width="175" height="13" forecolor="#0A0100" uuid="a751c7f0-a0b0-4427-955e-7578aa10c114"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{lug_gen}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="180" height="13" forecolor="#0A0100" uuid="ea213743-51ee-4664-b655-ba600eb36b0a"/>
+				<reportElement x="0" y="0" width="175" height="13" forecolor="#0A0100" uuid="ea213743-51ee-4664-b655-ba600eb36b0a"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -150,7 +152,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 				<text><![CDATA[Fecha : ]]></text>
 			</staticText>
 			<textField pattern="EEEEEEEEE dd &apos;de&apos; MMMMM &apos;de&apos; yyyy HH:mmss a">
-				<reportElement x="40" y="0" width="140" height="30" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb">
+				<reportElement x="40" y="0" width="135" height="30" uuid="cdb29e38-06c8-4bec-9f43-b42f665906eb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
@@ -169,7 +171,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 				<text><![CDATA[Forma de pago: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="30" width="140" height="30" uuid="f9057fff-980a-4367-ac21-077b041bc558">
+				<reportElement x="40" y="30" width="135" height="30" uuid="f9057fff-980a-4367-ac21-077b041bc558">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
@@ -179,7 +181,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 				<textFieldExpression><![CDATA[$F{xforma_pago}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="60" width="140" height="30" uuid="5df1a06e-882e-48b4-847b-beea3cce9181">
+				<reportElement x="40" y="60" width="135" height="30" uuid="5df1a06e-882e-48b4-847b-beea3cce9181">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Top">
@@ -189,7 +191,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 				<textFieldExpression><![CDATA[$F{xtipo} + " - "+$F{xes_debe}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight">
-				<reportElement x="40" y="105" width="140" height="40" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201">
+				<reportElement x="40" y="105" width="135" height="40" uuid="6aca4f99-2ff5-4cd5-a4df-bbc9a8b5f201">
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -201,7 +203,7 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="90" width="140" height="15" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b">
+				<reportElement x="40" y="90" width="135" height="15" uuid="d8260a30-0d82-41ee-8483-b3886d40a82b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -250,14 +252,14 @@ where da.arqueo_id = $P{arqueoId} and da.id =  $P{detalleArqueoId}]]>
 	<summary>
 		<band height="24" splitType="Stretch">
 			<textField>
-				<reportElement x="32" y="0" width="148" height="12" forecolor="#050101" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
+				<reportElement x="32" y="0" width="143" height="12" forecolor="#050101" uuid="5e0a31bc-b43d-4a70-beb8-a935650eab55"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="32" y="12" width="148" height="12" forecolor="#050101" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
+				<reportElement x="32" y="12" width="143" height="12" forecolor="#050101" uuid="1f501f24-79a9-444c-8f59-251b86660226"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>

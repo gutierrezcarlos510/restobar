@@ -564,16 +564,16 @@ public class VentaImpl extends DbConeccion implements VentaS {
 	public DataTableResults<VentaPedidoWrap> listadoPedidoCocina(HttpServletRequest request, int xsucursal, Short area) {
 		try {
 			SqlBuilder sqlBuilder = new SqlBuilder("historico_venta hv");
-			sqlBuilder.setSelect("hv.venta_id,hv.id historico_venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario");
+			sqlBuilder.setSelect("hv.venta_id,v.tipo,hv.id historico_venta_id,hv.fecha,m.nombre as xmesa,concat(p2.nom_per, ' ', p2.priape_per) as xusuario");
 			sqlBuilder.setSelectConcat(",concat(p3.nom_per, ' ', p3.priape_per) as xcliente,tp.area_destino");
 			sqlBuilder.addJoin("detalle_historico_venta dhv on dhv.venta_id = hv.venta_id and hv.id = dhv.historico_venta_id and dhv.esta_impreso = false");
 			sqlBuilder.addJoin("producto p on p.id = dhv.producto_id");
 			sqlBuilder.addJoin("tipo_producto tp on tp.id = p.tipo_id and (tp.area_destino = :xarea or -1 = :xarea)");
-			sqlBuilder.addJoin("venta v on v.id = hv.venta_id and v.estado = true and v.tipo = 1");
+			sqlBuilder.addJoin("venta v on v.id = hv.venta_id and v.estado = true and v.tipo in (1,2,4,5)");
 			sqlBuilder.addJoin("mesa m on m.id = v.mesa_id");
 			sqlBuilder.addJoin("persona p2 on p2.cod_per = v.usuario_id");
 			sqlBuilder.addJoin("persona p3 on p3.cod_per = v.cliente_id");
-			sqlBuilder.setGroupBy("hv.venta_id,hv.id,hv.fecha,m.nombre,p2.nom_per, p2.priape_per,p3.nom_per, p3.priape_per,tp.area_destino");
+			sqlBuilder.setGroupBy("hv.venta_id,v.tipo,hv.id,hv.fecha,m.nombre,p2.nom_per, p2.priape_per,p3.nom_per, p3.priape_per,tp.area_destino");
 			sqlBuilder.addParameter("xarea", area);
 			sqlBuilder.addParameter("xsucursal",xsucursal);
 			return utilDataTableS.list(request, VentaPedidoWrap.class, sqlBuilder);
